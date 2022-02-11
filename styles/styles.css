@@ -1,0 +1,136 @@
+@import "navbar.css";
+@import "footer.css";
+
+:root {
+	font-size :16px;
+	color: black;
+	font-family: pangram, serif;
+	--bgcolor: #F8F8F8
+}
+
+@font-face {
+	font-family: pangram;
+	src: url(../fonts/PPPangramSansRounded-CompactRegular.otf);
+}
+html, body {
+	width: 100%;
+	min-width: 15rem;
+	margin: 0;
+	background-color: var(--bgcolor);
+}
+main, nav, header, footer {
+	margin: 0 5rem;
+	padding: 0 2rem 0;
+}
+
+h1, h2, h3, h4, h5, h6, p {
+	text-align: center;
+	margin: 0;
+}
+h1{font-size:4rem;}
+h2{font-size:3.5rem;}
+h3{font-size:3rem;}
+h4{font-size:2rem;}
+h5{font-size:1.75rem;}
+h6{font-size:1.5rem;}
+p{font-size: 1rem;}
+.h1 {width: 4rem;height: 4rem;}
+.h2 {width: 3.5rem;height: 3.5rem;}
+.h3 {width: 3rem;height: 3rem;}
+.h4 {width: 2rem; height: 2rem;}
+.h5 {width: 1.75rem;height: 1.75rem;}
+.h6 {width: 1.5rem;height: 1.5rem;}
+.p  {width: 1rem;height: 1rem;}
+
+.redtext{
+	color: red;
+}
+label{
+	display:none;
+}
+button{
+	color: black;
+	font-family: pangram, serif;
+}
+input, option, select{
+	height: 2rem;
+	font-size :1rem;
+	color: black;
+	font-family: pangram, serif;
+	border: 0.2rem solid black;
+	border-radius: 0.5rem;
+	padding: 0 0.2rem;
+	margin: 0.2rem;
+	text-align: center;
+}
+.horizontal{
+	display:flex;
+}
+.red{background-color: red;}
+.grey{background-color: #C4C4C4;}
+.circle{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	margin: 1rem;
+}
+
+.centre{
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.bottom{
+	display:flex;
+	align-items:flex-end;
+	justify-content:end;
+}
+.imageButton{
+	cursor: pointer;
+	margin: 0 1rem;
+	border: 0.1rem solid transparent;
+}
+.imageButton:hover{
+	border: 0.1rem solid grey;
+}
+
+
+@media only screen and (max-width: 40rem) {
+	main, nav, header, footer {
+		margin: 0 1rem;
+		padding: 0 1rem 0;
+	}
+	h1{font-size:3rem;}
+	h2{font-size:2.75rem;}
+	h3{font-size:2.5rem;}
+	h4{font-size:1.75rem;}
+	h5{font-size:1.5rem;}
+	h6{font-size:1.25rem;}
+	.h1 {width: 3rem;height: 3rem;}
+	.h2 {width: 2.75rem;height: 2.75rem;}
+	.h3 {width: 2.5rem;height: 2.5rem;}
+	.h4 {width: 1.75rem; height: 1.75rem;}
+	.h5 {width: 1.5rem;height: 1.5rem;}
+	.h6 {width: 1.25rem;height: 1.25rem;}
+}
+
+@media only screen and (max-width: 25rem) {
+	main, nav, header, footer {
+		margin: 0 0.5rem;
+		padding: 0 0.5rem 0;
+	}
+	h1{font-size:2.5rem;}
+	h2{font-size:2.25rem;}
+	h3{font-size:2rem;}
+	h4{font-size:1.5rem;}
+	h5{font-size:1.25rem;}
+	h6{font-size:1rem;}
+	.h1 {width: 2.5rem;height: 2.5rem;}
+	.h2 {width: 2.25rem; height: 2.25rem;}
+	.h3 {width: 2rem;height: 2rem;}
+	.h4 {width: 1.5rem;height: 1.5rem;}
+	.h5 {width: 1.25rem;height: 1.25rem;}
+	.h6 {width: 1rem;height: 1rem;}
+}

@@ -1,0 +1,56 @@
+.avatarProfile{
+	border-radius: 50%;
+	border: 0.3rem solid black;
+}
+.dashboardLinkSection{
+	cursor: pointer;
+	padding: 1rem;
+	display:flex;
+	flex-basis:auto;
+	align-items: flex-start;
+	border: 0.2rem solid black;
+	margin: 1rem 0;
+	border-radius: 1rem;
+}
+.dashboardLinkSection.pink:hover, .dashboardLinkSection.pink:active{
+	border: 0.2rem solid pink;
+}
+.dashboardLinkSection.purple:hover, .dashboardLinkSection.purple:active{
+	border: 0.2rem solid rgb(141, 96, 205);
+}
+.dashboardLinkSection.blue:hover, .dashboardLinkSection.blue:active{
+	border: 0.2rem solid skyblue;
+}
+.dashboardLinkSection.green:hover, .dashboardLinkSection.green:active{
+	border: 0.2rem solid lightgreen;
+}
+.dashboardLinkIcon{
+	height: 4rem;
+}
+.dashboardLinkArrow {
+	height: 1rem;
+	align-self: flex-end;
+	justify-self: end;
+}
+main {
+	display:grid;
+	grid-template-columns: repeat( auto-fit, minmax(18rem, auto) );;
+	align-items: center;
+	justify-content: center;
+	column-gap: 2rem;
+}
+.pink{background-color: #F9EEF3;}
+.purple{background-color: #D0C8FF;}
+.blue{background-color: #B1E0FC;}
+.green{background-color: #D0F4C4;}
+
+@media only screen and (max-width: 40rem) {
+	main {
+		grid-template-columns: repeat( auto-fit, minmax(17rem, auto) );;
+	}
+}
+@media only screen and (max-width: 25rem) {
+	main {
+		grid-template-columns: repeat( auto-fit, minmax(16rem, auto) );;
+	}
+}
