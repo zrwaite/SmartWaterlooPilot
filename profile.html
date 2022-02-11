@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SWR Profile</title>
+	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
+	<link href="styles/profile.css" rel="stylesheet" type="text/css" />
+	<script src="components/nav.js"></script>
+	<script src="components/footer.js"></script>
+</head>
+<body>
+	<div id="navbar"></div>
+	<script>Navbar("navbar")</script>
+	<section class="progressBubbles">
+		<hr class="bubblesLine">
+		<div class="bubbles">
+			<div class="bubbleItem">
+				<div class="bubble">1</div>
+				<p>Password</p>
+			</div>
+			<div class="bubbleItem">
+				<div class="bubble selectedBubble">2</div>
+				<p>Profile</p>
+			</div>
+			<div class="bubbleItem">
+				<div class="bubble">3</div>
+				<p>Avatar</p>
+			</div>
+		</div>
+	</section>
+	<header>
+		<h3>Complete Profile 📝</h3>
+		<p>
+			Explanation of why this information is being collected and how and why it will be used.
+		</p>
+		<p class="redtext">
+			Fields marked with a red * are required.
+		</p>
+	</header>
+	<main>
+
+		<section class="formGrid">
+			<label for="day">Day</label>
+			<label for="month">Month</label>
+			<label for="year">Year</label>
+			<div class="formDiv">
+				<p>
+					Date of Birth<span style="color: red">*</span>
+				</p>
+				<div class="horizontal">
+					<input name="day" id="dayInput" placeholder="DD"/>
+					<pre> / </pre>
+					<input name="month" id="monthInput" placeholder="MM"/>
+					<pre> / </pre>
+					<input name="year" id="yearInput" placeholder="YY"/>
+				</div>
+			</div>
+			<div class="formDiv">
+				<p>
+					Gender<span style="color: red">*</span>
+				</p>
+				<select>
+					<option selected disabled hidden>--Select--</option>
+					<option>Male</option>
+					<option>Female</option>
+					<option>Non-Binary</option>
+					<option>Genderqueer</option>
+					<option>Agender</option>
+					<option>Genderfluid</option>
+					<option>Other</option>
+					<option>Prefer not to say</option>
+				</select>
+			</div>
+			<div class="formDiv horizontal">
+				<div>
+					<p>
+						Height<span style="color: red">*</span>
+					</p>
+					<div class="pill">
+						<input name="height" id="heightInput" placeholder="168"/>
+						<p class="pillText">cm</p>
+					</div>
+				</div>
+				<div>
+					<p>
+						Weight<span style="color: red">*</span>
+					</p>
+					<div class="pill">
+						<input name="weight" id="weightInput" placeholder="160"/>
+						<p class="pillText">lbs</p>
+					</div>
+				</div>
+			</div>
+			<div class="formDiv">
+				<p>
+					Religion <span style="color: grey">(Optional)</span>
+				</p>
+				<select>
+					<option selected disabled hidden>--Select--</option>
+					<option>Muslim</option>
+					<option>Jewish</option>
+					<option>Satanist</option>
+					<option>Atheist</option>
+					<option>Agnostic</option>
+					<option>Scientologist</option>
+					<option>Buddhist</option>
+					<option>Sikh</option>
+					<option>Hindu</option>
+					<option>Taoism</option>
+					<option>Jainism</option>
+					<option>Pastafarianism</option>
+					<option>Greek Mythology</option>
+					<option>Spaghetti Monster</option>
+					<option>Roman Mythology</option>
+					<option>Norse Mythology</option>
+					<option>Not religious, but like, spiritual</option>
+					<option>Other</option>
+				</select>
+			</div>
+			<div class="formDiv">
+				<p>
+					Sexuality <span style="color: grey">(Optional)</span>
+				</p>
+				<select>
+					<option selected disabled hidden>--Select--</option>
+					<option>Asexual</option>
+					<option>Bisexual</option>
+					<option>Heterosexual</option>
+					<option>Demisexual</option>
+					<option>Lesbian</option>
+					<option>Gay</option>
+					<option>Pansexual</option>
+					<option>Aromantic</option>
+					<option>Bicurios</option>
+					<option>Questioning</option>
+					<option>Fluid</option>
+					<option>Other</option>
+				</select>
+			</div>
+			<div class="formDiv">
+				<p>
+					Race <span style="color: grey">(Optional)</span>
+				</p>
+				<select>
+					<option selected disabled hidden>--Select--</option>
+					<option>White</option>
+					<option>Black or African American</option>
+					<option>Native American or Alaska Native</option>
+					<option>Asian</option>
+					<option>Native Hawaiian or Other Pacific Islander</option>
+					<option>Hispanic</option>
+					<option>Other</option>
+				</select>
+			</div>
+			<div class="formDiv horizontal">
+				<div>
+					<p>
+						Grade<span style="color: red">*</span>
+					</p>
+					<div class="horizontal">
+						<div class="pill">
+							<p class="pillText">-</p>
+							<input name="grade" id="gradeInput" value="7"/>
+							<p class="pillText">+</p>
+						</div>
+					</div>
+				</div>
+				<div>
+					<p>
+						Postal Code<span style="color: red">*</span>
+					</p>
+					<input name="postalCode" id="postalCodeInput" placeholder="M5A"/>
+				</div>
+			</div>
+		</section>
+		<div class="formDiv">
+			<button class="continueButton">
+				Continue
+			</button>
+		</div>
+	</main>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>SWR Dashboard</title>
+	<link href="styles/styles.css" rel="stylesheet" type="text/css" />
+	<link href="styles/dashboard.css" rel="stylesheet" type="text/css" />
+	<script src="components/nav.js"></script>
+	<script src="components/footer.js"></script>
+</head>
+<body>
+	<div id="navbar"></div>
+	<script>Navbar("navbar")</script>
+	<header class="centre">
+		<h4>Dashboard 📌</h4>
+		<img class="avatarProfile" src="images/avatar.png"/>
+		<div class="horizontal">
+			<h5>Tyragreenex</h5>
+			<img class="h5 imageButton" src="images/settings.svg"/>
+		</div>
+	</header>
+	<main>
+		<button class="dashboardLinkSection pink">
+			<img class="dashboardLinkIcon" src="images/calender.png"/>
+			<div>
+				<h5>Coming Up</h5>
+				<hr>
+				<p>See my events</p>
+			</div>
+			<img class="dashboardLinkArrow" src="images/arrow.png"/>
+		</button>
+		<button class="dashboardLinkSection purple">
+			<img class="dashboardLinkIcon" src="images/data.png"/>
+			<div>
+				<h5>My Data</h5>
+				<hr>
+				<p>See my data</p>
+			</div>
+			<img class="dashboardLinkArrow" src="images/arrow.png"/>
+		</button>
+		<button class="dashboardLinkSection blue">
+			<img class="dashboardLinkIcon" src="images/ticket.png"/>
+			<div>
+				<h5>Events</h5>
+				<hr>
+				<p>See events list</p>
+			</div>
+			<img class="dashboardLinkArrow" src="images/arrow.png"/>
+		</button>
+		<button class="dashboardLinkSection green">
+			<img class="dashboardLinkIcon" src="images/clipboard.png"/>
+			<div>
+				<h5>Surveys</h5>
+				<hr>
+				<p>See surveys list</p>
+			</div>
+			<img class="dashboardLinkArrow" src="images/arrow.png"/>
+		</button>
+	</main>
+</body>
+</html>
