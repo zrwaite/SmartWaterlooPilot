@@ -1,0 +1,93 @@
+.progressBubbles{
+	margin: 0 2rem;
+}
+.bubbles{
+	position: relative;
+	display: flex;
+	align-items: stretch;
+	justify-content:space-between;
+}	
+.bubble{
+	border: 0.2rem solid black;
+	border-radius: 50%;
+	padding: 0.5rem;
+	background-color: white;
+	height: 1rem;
+	width: 1rem;
+	text-align: center;
+}
+.selectedBubble{
+	background-color: black;
+	color: white
+}
+.bubblesLine{
+	position:relative;
+	top: 1.9rem;
+	border: 0.2rem solid black;
+}
+.bubbleItem{
+	display:flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--bgcolor);
+}
+h3, p{
+	text-align: left;
+}
+header>h2, header>p{
+	margin: 0.7rem 0.5rem;
+}
+#gradeInput{
+	width: 1.5rem;
+}
+#dayInput, #monthInput, #yearInput {
+	width: 2rem;
+}
+.pill{
+	display:flex;
+	margin: 0.2rem;
+}
+.pill>*{
+	border: 0.2rem solid black;
+	border-left: none;
+	border-radius: 0;
+	margin: 0;
+}
+.pill>*:first-child{
+	border-radius: 0.5rem 0 0 0.5rem;
+	border-left: 0.2rem solid black;
+}
+.pill>*:last-child{
+	border-radius: 0 0.5rem 0.5rem 0;
+	border: 0.2rem solid black;
+	border-left: none;
+}
+.pillText{
+	line-height: 2rem;
+	padding: 0 0.5rem;
+}
+#heightInput, #weightInput {
+	width: 3rem;
+}
+#postalCodeInput{
+	width: 5rem;
+}
+.formDiv{
+	margin: 1rem;
+}
+.continueButton{
+	width: 100%;
+	max-width: 15rem;
+	height: 2rem;
+	font-size: 1rem;
+	background-color: black;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: center;
+	border:none;
+}
+.formGrid{
+	display:grid;
+	grid-template-columns: repeat( auto-fit, minmax(25rem, auto) );;
+}
