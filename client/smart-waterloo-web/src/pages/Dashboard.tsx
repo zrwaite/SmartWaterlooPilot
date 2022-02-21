@@ -1,6 +1,8 @@
 import "../styles/styles.css";
 // import {Link} from "react-router-dom";
 import "../styles/dashboard.css";
+import Navbar from "../components/Navbar";
+
 //Todo change buttons to links
 import avatarImg from "../images/avatar.png";
 import calenderImg from "../images/calender.png";
@@ -12,6 +14,7 @@ import arrowIcon from "../images/arrow.png";
 function Account() {
     return (
 		<>
+			<Navbar />
 			<header className="centre">
 				<h4>Dashboard 📌</h4>
 				<img className="avatarProfile" src={avatarImg} alt="avatarImage"/>

@@ -1,15 +1,17 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
+import Profile from "./pages/Profile/Profile";
+import SplashPage from "./pages/SplashPage";
+import NotFound from "./pages/NotFound";
 
 function App() {
 	return (
 		<Router>
-			<Navbar />
 			<Routes>
+				<Route path="/" element={<SplashPage />}></Route>
 				<Route path="/dashboard" element={<Dashboard />}></Route>
 				<Route path="/profile" element={<Profile />}></Route>
+				<Route path="*" element={<NotFound />}></Route>
 			</Routes>
 		</Router>
 	);
