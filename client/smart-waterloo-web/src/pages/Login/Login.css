@@ -1,0 +1,30 @@
+.avatarImage{
+	width: 10rem;
+	height: auto;
+}
+.loginButton{
+	width: min(80%, 15rem);
+	height: 3rem;
+	font-size: 2rem;
+}
+.loginFormMobile {
+	border-top: 0.3rem solid black;
+	padding-top: 0.5rem;
+	display:flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+.loginFormDesktop{
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.passwordInput{
+	display:flex;
+	flex-direction: column;
+	align-items: inherit;
+	justify-content: inherit;
+	margin: 1rem 0;
+}
