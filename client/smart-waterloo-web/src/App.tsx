@@ -5,6 +5,7 @@ import SplashPage from "./pages/SplashPage/SplashPage";
 import ScanQR from "./pages/ScanQR/ScanQR";
 import Privacy from "./pages/Privacy/Privacy";
 import Login from "./pages/Login/Login";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import NotFound from "./pages/NotFound";
 import About from "./pages/About/About";
 import { useEffect } from 'react';
@@ -33,6 +34,7 @@ function App() {
 				<Route path="/about" element={<About />}></Route>
 				<Route path="/privacy" element={<Privacy />}></Route>
 				<Route path="/login" element={<Login />}></Route>
+				<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
 				<Route path="*" element={<NotFound />}></Route>
 
 			</Routes>
