@@ -1,9 +1,8 @@
-import "../../styles/styles.css";
 // import {Link} from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import ProfileFormGrid from "./ProfileFormGrid/ProfileFormGrid"
 
-import "../../styles/profile.css";
+import "./profile.css";
 //Todo change buttons to links
 function Profile() {
     return (

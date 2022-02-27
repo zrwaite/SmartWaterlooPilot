@@ -1,15 +1,15 @@
 // import {Link} from "react-router-dom";
-import "../styles/dashboard.css";
-import Navbar from "../components/Navbar/Navbar";
+import "./dashboard.css";
+import Navbar from "../../components/Navbar/Navbar";
 
 //Todo change buttons to links
-import avatarImg from "../images/avatar.png";
-import calenderImg from "../images/calender.png";
-import dataImg from "../images/data.png";
-import ticketImg from "../images/ticket.png";
-import clipboardImg from "../images/clipboard.png";
-import settingsIcon from "../images/settings.svg";
-import arrowIcon from "../images/arrow.png";
+import avatarImg from "../../images/avatar.png";
+import calenderImg from "../../images/calender.png";
+import dataImg from "../../images/data.png";
+import ticketImg from "../../images/ticket.png";
+import clipboardImg from "../../images/clipboard.png";
+import settingsIcon from "../../images/settings.svg";
+import arrowIcon from "../../images/arrow.png";
 function Account() {
     return (
 		<>

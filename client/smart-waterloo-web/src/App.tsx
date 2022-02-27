@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import Profile from "./pages/Profile/Profile";
-import SplashPage from "./pages/SplashPage";
+import SplashPage from "./pages/SplashPage/SplashPage";
 import NotFound from "./pages/NotFound";
 
 import "./styles/styles.css";

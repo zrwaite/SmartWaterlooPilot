@@ -13,6 +13,9 @@
 	height: 100%;
 	padding-right: 0.5rem;
 }
+.rightNav>*{
+	padding: 0 0.5rem;
+}
 
 .leftNav{
 	display:flex;
