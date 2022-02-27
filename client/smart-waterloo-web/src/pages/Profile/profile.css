@@ -81,11 +81,6 @@ header>h2, header>p{
 	max-width: 15rem;
 	height: 2rem;
 	font-size: 1rem;
-	background-color: black;
-	color: white;
-	border-radius: 0.5rem;
-	text-align: center;
-	border:none;
 }
 .formGrid{
 	display:grid;

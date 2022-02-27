@@ -1,5 +1,5 @@
 // import {Link} from "react-router-dom";
-import "./dashboard.css";
+import "./Dashboard.css";
 import Navbar from "../../components/Navbar/Navbar";
 
 //Todo change buttons to links

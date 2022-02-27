@@ -2,7 +2,7 @@
 import Navbar from "../../components/Navbar/Navbar";
 import ProfileFormGrid from "./ProfileFormGrid/ProfileFormGrid"
 
-import "./profile.css";
+import "./Profile.css";
 //Todo change buttons to links
 function Profile() {
     return (

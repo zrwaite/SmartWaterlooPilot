@@ -1,9 +1,10 @@
-import "./navbar.css";
+import "./Navbar.css";
 // import{Link} from "react-router-dom";
 import {icons} from "../../images/icons";
 import React from "react";
 import Modal from "react-modal";
 import {navItems} from "./navItems";
+import {mobileWidth} from "../../constants";
 
 type NavbarProps = { };
 type NavbarState = { open: boolean, mobileView: boolean };
@@ -17,7 +18,7 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 			transform: "translateX(-50%)",
 		},
 	};
-	constructor(props:{}) {
+	constructor(props:NavbarProps) {
 		super(props);
 		this.state = {
 			open: false,
@@ -53,7 +54,7 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 	}
 	
 	updatePredicate() {
-		this.setState({ ...this.state, mobileView: window.innerWidth < 400 });
+		this.setState({ ...this.state, mobileView: window.innerWidth < mobileWidth });
 	}
 	render() {
 		return (

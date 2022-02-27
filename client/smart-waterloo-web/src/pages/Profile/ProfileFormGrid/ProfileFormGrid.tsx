@@ -105,7 +105,7 @@ function ProfileFormGrid() {
 					</div>
 				</section>
 				<div className="formDiv">
-					<button className="continueButton" onClick={()=>{console.log(state)}}>
+					<button className="blackButton continueButton" onClick={()=>{console.log(state)}}>
 						Continue
 					</button>
 				</div>

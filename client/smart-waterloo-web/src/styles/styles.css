@@ -96,6 +96,20 @@ input, option, .select{
 	box-shadow: 1px 1px 1px 1px lightgrey, -1px -1px 1px 1px lightgrey, -1px 1px 1px 1px lightgrey, 1px -1px 1px 1px lightgrey;
 }
 
+.blackButton{
+	background-color: black;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: center;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+}
+.blackButton:hover .blackButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: black;
+}
+
 
 @media only screen and (max-width: 40rem) {
 	main, nav, header, footer {

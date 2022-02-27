@@ -1,0 +1,16 @@
+.scanCardButton{
+	height: 3rem;
+	font-size: 2rem;
+	width: min(80%, 20rem);
+}
+.qrCodePNG{
+	height: 8rem;
+	width: auto;
+}
+.QRPageContainer{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+}

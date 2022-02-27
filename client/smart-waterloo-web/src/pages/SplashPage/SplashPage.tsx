@@ -1,7 +1,7 @@
 // import {Link} from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 
-import "./splashpage.css";
+import "./SplashPage.css";
 //Todo change buttons to links
 function SplashPage() {
     return (
