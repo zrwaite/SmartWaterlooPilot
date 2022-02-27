@@ -49,7 +49,7 @@ class Login extends React.Component<LoginProps, LoginState> {
 						<p>Enter your password to continue using "Name of the Project"</p>
 						<div className="passwordInput">
 							<h6>Password</h6>
-							<input name="password" id="passwordInput" placeholder="Password" type={"text"} value={this.state.inputs.password} onChange={this.handleInputChange}/>
+							<input name="password" id="passwordInput" placeholder="Password" type={"password"} value={this.state.inputs.password} onChange={this.handleInputChange}/>
 							<a>Forgot your password?</a>
 						</div>
 						<button className="blackButton loginButton">Sign In</button>

@@ -4,14 +4,11 @@
 	width: min(80%, 20rem);
 }
 .qrCodePNG{
-	height: 8rem;
-	width: auto;
-}
-.QRPageDesktop p{
-	text-align: center;
+	height: auto;
+	width: min(80%, 20rem);
 }
 .QRInfoPanel{
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: var(--defaultTextAlign);
 }

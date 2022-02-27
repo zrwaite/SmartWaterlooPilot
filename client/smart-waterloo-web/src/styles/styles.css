@@ -2,7 +2,8 @@
 	font-size :16px;
 	color: black;
 	font-family: pangram, serif;
-	--bgcolor: #F8F8F8
+	--bgcolor: #F8F8F8;
+	--defaultTextAlign: "left"
 }
 
 @font-face {
@@ -25,7 +26,7 @@ main, nav, header, footer {
 }
 
 h1, h2, h3, h4, h5, h6{
-	text-align: center;
+	text-align: var(--defaultTextAlign);
 	margin: 0;
 }
 h1{font-size:4rem;}
@@ -65,7 +66,7 @@ input, option, .select{
 	border-radius: 0.5rem;
 	padding: 0 0.2rem;
 	margin: 0.2rem;
-	text-align: center;
+	text-align: var(--defaultTextAlign);
 }
 .horizontal{
 	display:flex;
@@ -123,7 +124,7 @@ input, option, .select{
 
 .PageContainer{
 	display: flex;
-	align-items: center;
+	align-items: var(--defaultTextAlign);
 	justify-content: center;
 	flex-direction: column;
 	padding: 1rem 1rem;
