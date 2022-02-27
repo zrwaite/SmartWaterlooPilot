@@ -1,6 +1,6 @@
 import "../../styles/styles.css";
 // import {Link} from "react-router-dom";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import ProfileFormGrid from "./ProfileFormGrid/ProfileFormGrid"
 
 import "../../styles/profile.css";

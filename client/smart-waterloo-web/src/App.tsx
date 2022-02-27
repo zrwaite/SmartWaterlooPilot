@@ -4,6 +4,8 @@ import Profile from "./pages/Profile/Profile";
 import SplashPage from "./pages/SplashPage";
 import NotFound from "./pages/NotFound";
 
+import "./styles/styles.css";
+
 function App() {
 	return (
 		<Router>

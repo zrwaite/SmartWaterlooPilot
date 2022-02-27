@@ -1,0 +1,38 @@
+.navbar{
+	display:flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: white;
+	padding: 0;
+	margin: 0 0 0.5rem 0;
+}
+.rightNav{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding-right: 0.5rem;
+}
+
+.leftNav{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+}
+.navModal{
+	display: flex;
+	flex-direction: column;
+}
+.navModal>* {
+	width: 100%;
+}
+.navModalItem{
+	display: flex;
+	justify-content: space-between;
+}
+.navModalHeader{
+	display: flex;
+	justify-content: flex-end;
+	margin: 0;
+	margin-bottom: 0.5rem;
+}
