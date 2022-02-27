@@ -1,13 +1,13 @@
 import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import {mobileWidth} from "../../constants";
-import "./About.css";
+import "./Privacy.css";
 // import {Link} from "react-router-dom";
 //Todo change buttons to links
-type AboutProps = {};
-type AboutState = {mobileView: boolean};
-class About extends React.Component<AboutProps, AboutState> {
-	constructor(props:AboutProps) {
+type PrivacyProps = {};
+type PrivacyState = {mobileView: boolean};
+class Privacy extends React.Component<PrivacyProps, PrivacyState> {
+	constructor(props:PrivacyProps) {
 		super(props);
 		this.updateSize = this.updateSize.bind(this);
 		this.state = {
@@ -33,7 +33,7 @@ class About extends React.Component<AboutProps, AboutState> {
 				<Navbar root={false}/>
 				<div className={"PageContainer"}>
 					<div className={this.state.mobileView? "":"DesktopPanel"}>
-						{this.state.mobileView?<h6>About</h6>:<h4 className={"AboutHeader"}>About</h4>}
+						{this.state.mobileView?<h6 className={"PrivacyMobileHeader"}>Privacy Policy 😎</h6>:<h4 className={"PrivacyDesktopHeader"}>Privacy Policy 😎</h4>}
 						<p>
 							Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. 
 							<br/>
@@ -50,4 +50,4 @@ class About extends React.Component<AboutProps, AboutState> {
 	}
 }
 
-export default About;
+export default Privacy;
