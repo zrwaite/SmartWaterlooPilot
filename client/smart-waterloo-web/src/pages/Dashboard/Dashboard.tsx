@@ -13,7 +13,7 @@ import arrowIcon from "../../images/arrow.png";
 function Account() {
     return (
 		<>
-			<Navbar />
+			<Navbar root={true}/>
 			<header className="centre">
 				<h4>Dashboard 📌</h4>
 				<img className="avatarProfile" src={avatarImg} alt="avatarImage"/>

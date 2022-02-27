@@ -24,10 +24,11 @@ main, nav, header, footer {
 	padding: 0 2rem 0;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6{
 	text-align: center;
 	margin: 0;
 }
+p{margin:0}
 h1{font-size:4rem;}
 h2{font-size:3.5rem;}
 h3{font-size:3rem;}
@@ -74,7 +75,6 @@ input, option, .select{
 	align-items: center;
 	justify-content: center;
 	border-radius: 50%;
-	margin: 1rem;
 }
 
 .centre{
@@ -104,10 +104,27 @@ input, option, .select{
 	border: 0.2rem solid black;
 	transition: color 0.3s, background-color 0.3s;
 }
-.blackButton:hover .blackButton:active{
+.blackButton:hover, .blackButton:active{
 	cursor: pointer;
 	background-color: white;
 	color: black;
+}
+
+.DesktopPanel{
+	max-width: 40rem;
+	background-color: var(--bgcolor);
+	border: 0.3rem solid black;
+	border-radius: 1rem;
+	margin: 3rem;
+	padding: 2rem;
+}
+
+.PageContainer{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	justify-content: center;
+	padding: 0 1rem;
 }
 
 

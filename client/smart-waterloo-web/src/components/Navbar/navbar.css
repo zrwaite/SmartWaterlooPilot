@@ -3,7 +3,7 @@
 	align-items: center;
 	justify-content: space-between;
 	background-color: white;
-	padding: 0;
+	padding: 1rem;
 	margin: 0 0 0.5rem 0;
 }
 .rightNav{
@@ -21,6 +21,9 @@
 	display:flex;
 	align-items: center;
 	justify-content: center;
+}
+.leftNav>*{
+	margin: 0 0.5rem;
 }
 .navModal{
 	display: flex;

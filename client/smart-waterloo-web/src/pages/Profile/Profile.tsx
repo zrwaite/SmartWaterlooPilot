@@ -7,7 +7,7 @@ import "./Profile.css";
 function Profile() {
     return (
 		<>
-			<Navbar />
+			<Navbar root={true}/>
 			<section className="progressBubbles">
 				<hr className="bubblesLine"/>
 				<div className="bubbles">

@@ -3,10 +3,12 @@ import checkIcon from "./check.svg";
 import closeIcon from "./close.svg";
 import editIcon from "./edit.svg";
 import rightArrowIcon from "./rightArrow.svg";
+import leftArrowIcon from "./leftArrow.svg";
 export const icons = {
 	menu: menuIcon,
 	check: checkIcon,
 	close: closeIcon,
 	edit: editIcon,
-	rightArrow: rightArrowIcon
+	rightArrow: rightArrowIcon,
+	leftArrow: leftArrowIcon
 }

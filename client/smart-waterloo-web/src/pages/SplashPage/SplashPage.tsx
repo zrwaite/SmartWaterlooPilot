@@ -6,7 +6,7 @@ import "./SplashPage.css";
 function SplashPage() {
     return (
 		<>
-		<Navbar/>
+			<Navbar root={true}/>
 			<section className="splashPage">
 				<div className="grey circle h1"></div>
 				<h3>Name of the Project</h3>

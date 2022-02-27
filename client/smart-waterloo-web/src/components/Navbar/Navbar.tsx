@@ -6,7 +6,7 @@ import Modal from "react-modal";
 import {navItems} from "./navItems";
 import {mobileWidth} from "../../constants";
 
-type NavbarProps = { };
+type NavbarProps = {root:boolean};
 type NavbarState = { open: boolean, mobileView: boolean };
 class Navbar extends React.Component<NavbarProps, NavbarState> {
 	customStyles = {
@@ -57,6 +57,7 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 		this.setState({ ...this.state, mobileView: window.innerWidth < mobileWidth });
 	}
 	render() {
+		if (this.props.root)
 		return (
 			<div className="navbar">
 				<div className="leftNav">
@@ -89,6 +90,14 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 					</div>
 				</Modal>
 			</div>
+		);
+		else return (
+			<div className="navbar">
+				<div className="leftNav">
+					<img src={icons.leftArrow} alt="back" className="h5"/>
+					<h6>Back</h6>
+				</div>
+			</div>	
 		);
 	}
 }

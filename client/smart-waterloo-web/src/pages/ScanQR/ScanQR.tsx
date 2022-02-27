@@ -32,16 +32,21 @@ class ScanQR extends React.Component<ScanQRProps, ScanQRState> {
 
 		return (
 			<>
-				<Navbar/>
-				<div className={"QRPageContainer"}>
-					<h1>Welcome! 🎉</h1>
-					<p>
-						Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Want to learn more about it? 
-						<a>Read More</a>
-					</p>
-					<a>Privacy Policy</a>
-					<img className={"qrCodePNG"} src={this.state.mobileView?QRMobilePNG:QRDesktopPNG} alt="QRCode Scanner"/>
-					<button className={"blackButton scanCardButton"}>Scan Card</button>
+				<Navbar root={true}/>
+				<div className={"PageContainer"}>
+					<div className={this.state.mobileView? "":"DesktopPanel"}>
+						<div className={"QRInfoPanel"}>
+							<h1>Welcome! 🎉</h1>
+							<p>
+								Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Want to learn more about it? 
+								<a>Read More</a>
+							</p>
+							<a>Privacy Policy</a>
+							<img className={"qrCodePNG"} src={this.state.mobileView?QRMobilePNG:QRDesktopPNG} alt="QRCode Scanner"/>
+							<button className={"blackButton scanCardButton"}>Scan Card</button>
+
+						</div>
+					</div>
 				</div>
 			</>
 		);
