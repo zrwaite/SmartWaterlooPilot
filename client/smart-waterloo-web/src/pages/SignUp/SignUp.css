@@ -9,9 +9,3 @@
 	font-size: 2rem;
 	width: min(80%, 20rem);
 }
-.signUpContainer{
-	display:flex;
-	align-items: var(--defaultTextAlign);
-	justify-content: center;
-	flex-direction: column;
-}

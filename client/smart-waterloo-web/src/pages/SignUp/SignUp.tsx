@@ -1,18 +1,26 @@
 import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
 import {mobileWidth} from "../../constants";
-import QRCard from "../../images/cardIcon.png";
 import "./SignUp.css";
+import Profile from "./Profile/Profile";
+import Landing from "./Landing/Landing";
+import Password from "./Password/Password";
+import StepBubbles from "./StepBubbles/StepBubbles";
 // import {Link} from "react-router-dom";
 //Todo change buttons to links
 type SignUpProps = {};
-type SignUpState = {mobileView: boolean};
+type SignUpState = {
+	mobileView: boolean;
+	step: number;
+};
 class SignUp extends React.Component<SignUpProps, SignUpState> {
 	constructor(props:SignUpProps) {
 		super(props);
 		this.updateSize = this.updateSize.bind(this);
+		this.updateStep = this.updateStep.bind(this);
 		this.state = {
-			mobileView:false
+			mobileView:false,
+			step: 0
 		}
 	}
 	componentDidMount() {
@@ -27,20 +35,31 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 	updateSize() {
 		this.setState({ ...this.state, mobileView: window.innerWidth < mobileWidth });
 	}
+	updateStep(step:number) {
+		this.setState({...this.state, step: step});
+	}
 	render() {
-		let redText = {color: "red"};
+		let stepSection;
+		switch (this.state.step) {
+			case 0: stepSection = (
+				<Landing updateStep={this.updateStep}/>
+			); break; case 1: stepSection = (
+				<Password updateStep={this.updateStep}/>
+			); break; case 2: stepSection = (
+				<Profile updateStep={this.updateStep}/>
+			); break; case 3: stepSection = (
+				<h1>Avatar to come</h1>
+			);break; default: stepSection = (
+				<h1>Invalid step "{this.state.step}"</h1>
+			);
+		}
 		return (
 			<>
 				<Navbar root={false}/>
 				<div className={"PageContainer"}>
 					<div className={this.state.mobileView? "":"DesktopPanel"}>
-						<div className={"signUpContainer"}>
-							<h4>Let's get started ✏️</h4>
-							<p>Explanation of what that is. Explanation of what claiming an account means and what can the user do with this account.</p>
-							<img src={QRCard} alt="QRCard" className="QRCardIcon"/>
-							<p style={redText}>Important Notice: In the case of losing your card you will never be able to get your account back.</p>
-							<button className={"blackButton signUpButton"}>Let's get started</button>
-						</div>
+						{this.state.step?<StepBubbles step={this.state.step}/>:null}
+						{stepSection}
 					</div>
 				</div>	
 			</>

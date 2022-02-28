@@ -114,12 +114,12 @@ input, option, .select{
 }
 
 .DesktopPanel{
-	max-width: 40rem;
-	background-color: var(--bgcolor);
+	background-color: #F8F8F8;
 	border: 0.3rem solid black;
 	border-radius: 1rem;
 	margin: 0 3rem 3rem;
 	padding: 2rem;
+	width: min(80%, 40rem);
 }
 
 .PageContainer{

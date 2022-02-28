@@ -1,0 +1,6 @@
+.signUpContainer{
+	display:flex;
+	align-items: var(--defaultTextAlign);
+	justify-content: center;
+	flex-direction: column;
+}

@@ -1,9 +1,12 @@
 // import {Link} from "react-router-dom";
-import {genderOptions, religionOptions, sexualityOptions, raceOptions, profileFormGridState} from "./ProfileFormGridData";
+import {genderOptions, religionOptions, sexualityOptions, raceOptions, profileFormGridState} from "./FormGridData";
 import {useState} from "react";
 import Select, {ActionMeta} from "react-select";
 //Todo change buttons to links
-function ProfileFormGrid() {
+type ProfileFormGridProps = {
+	updateStep: Function
+}
+function ProfileFormGrid(props:ProfileFormGridProps) {
 	let [state, setState] = useState(profileFormGridState);
 	let stateKeys: keyof typeof state;
 	let handleInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => {
@@ -105,7 +108,7 @@ function ProfileFormGrid() {
 					</div>
 				</section>
 				<div className="formDiv">
-					<button className="blackButton continueButton" onClick={()=>{console.log(state)}}>
+					<button className="blackButton continueButton" onClick={() => props.updateStep(3)}>
 						Continue
 					</button>
 				</div>
