@@ -24,7 +24,10 @@ main, nav, header, footer {
 	margin: 0 5rem;
 	padding: 0 2rem 0;
 }
-
+hr{
+	width: 100%;
+	margin: 0;
+}
 h1, h2, h3, h4, h5, h6{
 	text-align: var(--defaultTextAlign);
 	margin: 0;

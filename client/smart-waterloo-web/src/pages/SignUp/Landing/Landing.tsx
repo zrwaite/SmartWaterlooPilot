@@ -13,8 +13,10 @@ function Landing(props:LandingProps) {
 			<div className={"signUpContainer"}>
 				<h4>Let's get started ✏️</h4>
 				<p>Explanation of what that is. Explanation of what claiming an account means and what can the user do with this account.</p>
-				<img src={QRCard} alt="QRCard" className="QRCardIcon"/>
-				<p style={redText}>Important Notice: In the case of losing your card you will never be able to get your account back.</p>
+				<div className="QRCardContainer">
+					<img src={QRCard} alt="QRCard" className="QRCardIcon"/>
+					<p style={redText}>Important Notice: In the case of losing your card you will never be able to get your account back.</p>
+				</div>
 				<button onClick={() => props.updateStep(1)}className={"blackButton signUpButton"}>Let's get started</button>
 			</div>
 		</>

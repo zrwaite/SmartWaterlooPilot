@@ -43,12 +43,6 @@ header>h2, header>p{
 .formDiv{
 	margin: 1rem;
 }
-.continueButton{
-	width: 100%;
-	max-width: 15rem;
-	height: 2rem;
-	font-size: 1rem;
-}
 .formGrid{
 	display:grid;
 	grid-template-columns: repeat( auto-fit, minmax(25rem, auto) );;

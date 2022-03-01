@@ -21,7 +21,7 @@ function StepBubbles(props:StepBubblesProps) {
 						<p>Profile</p>
 					</div>
 					<div className="bubbleItem">
-						<div className={props.step===3?"bubble":"bubble selectedBubble"}>3</div>
+						<div className={props.step===3||props.step===4?"bubble":"bubble selectedBubble"}>3</div>
 						<p>Avatar</p>
 					</div>
 				</div>

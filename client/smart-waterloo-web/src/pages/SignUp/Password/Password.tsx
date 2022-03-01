@@ -7,7 +7,7 @@ type PasswordProps = {
 }
 function Password(props:PasswordProps) {
     return (
-		<>
+		<div className={"passwordContainer"}>
 			<h4>Set up your Password 🔐</h4>
 			<p>Do not share your password with anyone</p>
 			<div className="passwordFormInput">
@@ -17,7 +17,7 @@ function Password(props:PasswordProps) {
 				<input type="password2" className="password2Input" id="password2Input" name="password2Input" placeholder="Confirm Password"/>
 			</div>
 			<button onClick={() => props.updateStep(2)} className={"blackButton confirmPasswordButton"}>Confirm Password</button>
-		</>
+		</div>
     );
 }
 

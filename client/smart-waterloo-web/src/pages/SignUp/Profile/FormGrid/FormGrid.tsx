@@ -108,7 +108,7 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 					</div>
 				</section>
 				<div className="formDiv">
-					<button className="blackButton continueButton" onClick={() => props.updateStep(3)}>
+					<button className="blackButton signUpButton" onClick={() => props.updateStep(3)}>
 						Continue
 					</button>
 				</div>

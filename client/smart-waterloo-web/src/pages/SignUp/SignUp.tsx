@@ -4,6 +4,8 @@ import {mobileWidth} from "../../constants";
 import "./SignUp.css";
 import Profile from "./Profile/Profile";
 import Landing from "./Landing/Landing";
+import MeetAvatar from "./MeetAvatar/MeetAvatar";
+import Nickname from "./Nickname/Nickname";
 import Password from "./Password/Password";
 import StepBubbles from "./StepBubbles/StepBubbles";
 // import {Link} from "react-router-dom";
@@ -48,8 +50,10 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 			); break; case 2: stepSection = (
 				<Profile updateStep={this.updateStep}/>
 			); break; case 3: stepSection = (
-				<h1>Avatar to come</h1>
-			);break; default: stepSection = (
+				<MeetAvatar updateStep={this.updateStep}/>
+			);break; case 4: stepSection = (
+				<Nickname />
+			); break; default: stepSection = (
 				<h1>Invalid step "{this.state.step}"</h1>
 			);
 		}
