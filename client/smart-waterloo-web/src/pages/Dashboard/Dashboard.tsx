@@ -1,6 +1,6 @@
 // import {Link} from "react-router-dom";
 import "./Dashboard.css";
-import Navbar from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar";
 
 //Todo change buttons to links
 import avatarImg from "../../images/avatar.png";

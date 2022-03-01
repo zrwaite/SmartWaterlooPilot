@@ -1,13 +1,13 @@
 import React from "react";
-import Navbar from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar";
 import {mobileWidth} from "../../constants";
 import "./SignUp.css";
-import Profile from "./Profile/Profile";
-import Landing from "./Landing/Landing";
-import MeetAvatar from "./MeetAvatar/MeetAvatar";
-import Nickname from "./Nickname/Nickname";
-import Password from "./Password/Password";
-import StepBubbles from "./StepBubbles/StepBubbles";
+import Profile from "./Profile";
+import Landing from "./Landing";
+import MeetAvatar from "./MeetAvatar";
+import Nickname from "./Nickname";
+import Password from "./Password";
+import StepBubbles from "./StepBubbles";
 // import {Link} from "react-router-dom";
 //Todo change buttons to links
 type SignUpProps = {};

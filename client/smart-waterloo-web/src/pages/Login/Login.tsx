@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar";
 import {mobileWidth} from "../../constants";
 import AvatarPNG from "../../images/fullAvatar.png";
 import "./Login.css";

@@ -1,6 +1,6 @@
 import React from "react";
 // import {Link} from "react-router-dom";
-import ProfileFormGrid from "./FormGrid/FormGrid"
+import ProfileFormGrid from "./FormGrid"
 
 import "./Profile.css";
 //Todo change buttons to links

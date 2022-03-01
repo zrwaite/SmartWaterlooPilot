@@ -1,4 +1,4 @@
-import Navbar from "../../components/Navbar/Navbar";
+import Navbar from "../../components/Navbar";
 import {mobileWidth} from "../../constants";
 // import {Link} from "react-router-dom";
 import QRDesktopPNG from "../../images/QRDesktop.png";

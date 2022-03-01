@@ -1,5 +1,4 @@
 // import {Link} from "react-router-dom";
-import QRCard from "../../../images/cardIcon.png";
 import "./StepBubbles.css";
 
 //Todo change buttons to links
