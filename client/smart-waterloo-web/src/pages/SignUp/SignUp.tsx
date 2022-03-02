@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../../components/Navbar";
-import {mobileWidth} from "../../constants";
+import {MobileContext} from "../../App";
 import "./SignUp.css";
 import Profile from "./Profile";
 import Landing from "./Landing";
@@ -12,36 +12,21 @@ import StepBubbles from "./StepBubbles";
 //Todo change buttons to links
 type SignUpProps = {};
 type SignUpState = {
-	mobileView: boolean;
 	step: number;
 };
 class SignUp extends React.Component<SignUpProps, SignUpState> {
 	constructor(props:SignUpProps) {
 		super(props);
-		this.updateSize = this.updateSize.bind(this);
 		this.updateStep = this.updateStep.bind(this);
 		this.state = {
-			mobileView:false,
 			step: 0
 		}
-	}
-	componentDidMount() {
-		this.updateSize();
-		window.addEventListener("resize", this.updateSize);
-	}
-	
-	componentWillUnmount() {
-		window.removeEventListener("resize", this.updateSize);
-	}
-	
-	updateSize() {
-		this.setState({ ...this.state, mobileView: window.innerWidth < mobileWidth });
 	}
 	updateStep(step:number) {
 		this.setState({...this.state, step: step});
 	}
 	render() {
-		let stepSection;
+		let stepSection:any;
 		switch (this.state.step) {
 			case 0: stepSection = (
 				<Landing updateStep={this.updateStep}/>
@@ -61,10 +46,12 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 			<>
 				<Navbar root={true}/>
 				<div className={"PageContainer"}>
-					<div className={this.state.mobileView? "":"DesktopPanel"}>
-						{this.state.step?<StepBubbles step={this.state.step}/>:null}
-						{stepSection}
-					</div>
+					<MobileContext.Consumer>
+						{({mobile}) => (<div className={mobile? "":"DesktopPanel"}>
+							{this.state.step?<StepBubbles step={this.state.step}/>:null}
+							{stepSection}
+						</div>)}
+					</MobileContext.Consumer>
 				</div>	
 			</>
 		);
