@@ -4,14 +4,14 @@ import {icons} from "../../images/icons";
 import React from "react";
 import Modal from "react-modal";
 import {navItems} from "./navItems";
-import {mobileWidth} from "../../constants";
 import BackNav from "./BackNav";
 import {Link} from "react-router-dom";
+import {MobileContext} from "../../App";
 
 type NavbarProps = {
 	root:boolean;
 };
-type NavbarState = { open: boolean, mobileView: boolean };
+type NavbarState = { open: boolean };
 class Navbar extends React.Component<NavbarProps, NavbarState> {
 	customStyles = {
 		content: {
@@ -22,87 +22,65 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 			transform: "translateX(-50%)",
 		},
 	};
-// 	 foo2(first: string, second: boolean) : undefined
-//  foo2(first: number, second?: undefined): undefined
-// function foo2<T>(first: T, second?: boolean): undefined{
-//   return undefined
-// }
 	constructor(props:NavbarProps) {
 		super(props);
 		this.state = {
-			open: false,
-			mobileView: false
+			open: false
 		}
 		Modal.setAppElement("#root");
 		this.openModal = this.openModal.bind(this);
 		this.closeModal = this.closeModal.bind(this);
-		this.updatePredicate = this.updatePredicate.bind(this);
 	}
-		
-	// let subtitle:HTMLElement|null;
 
 	openModal() {
 		this.setState({...this.state, open:true});
 	}
 
-	afterOpenModal() {
-		// if (subtitle) subtitle.style.color = '#f00';
-	}
-
 	closeModal() {
 		this.setState({...this.state, open:false});
-	}
-
-	componentDidMount() {
-		this.updatePredicate();
-		window.addEventListener("resize", this.updatePredicate);
-	}
-	
-	componentWillUnmount() {
-		window.removeEventListener("resize", this.updatePredicate);
-	}
-	
-	updatePredicate() {
-		this.setState({ ...this.state, mobileView: window.innerWidth < mobileWidth });
 	}
 	render() {
 		if (this.props.root)
 		return (
-			<div className="navbar">
-				<div className="leftNav">
-					<div className="grey circle h6"></div>
-					<h6>Name of the Project</h6>
-				</div>
-				<div className="rightNav">
-					{this.state.mobileView?
-						<img className="h3 imageButton" onClick={this.openModal} src={icons.menu} alt="menu" />
-						:
-						navItems.map((item,i) => 
-						<Link key={i} to={item.link} className={"removeLinkStyles"}>
-							{item.title}
-						</Link> 
-						)
-					}
-				</div>
-				<Modal isOpen={this.state.open} onAfterOpen={this.afterOpenModal} onRequestClose={this.closeModal} style={this.customStyles} contentLabel="Example Modal">
-					<div className="navModal">
-						<div className="navModalHeader">
-							<img className="h4 imageButton" onClick={this.closeModal} src={icons.close} alt="close"></img>
+			<MobileContext.Consumer>
+				{({mobile}) => (
+					<div className="navbar">
+						<div className="leftNav">
+							<div className="grey circle h6"></div>
+							<h6>Name of the Project</h6>
 						</div>
-						{
-							navItems.map((item,i) => 
+						<div className="rightNav">
+							{mobile?
+								<img className="h3 imageButton" onClick={this.openModal} src={icons.menu} alt="menu" />
+								:
+								navItems.map((item,i) => 
 								<Link key={i} to={item.link} className={"removeLinkStyles"}>
-									{i?<hr></hr>:null}
-									<div className="navModalItem">
-										<h6>{item.title}</h6>
-										<img className="h5" src={icons.rightArrow} alt="arrow"></img>
-									</div>
-								</Link>
-							)
-						}
+									{item.title}
+								</Link> 
+								)
+							}
+						</div>
+						<Modal isOpen={this.state.open} onRequestClose={this.closeModal} style={this.customStyles} contentLabel="Example Modal">
+							<div className="navModal">
+								<div className="navModalHeader">
+									<img className="h4 imageButton" onClick={this.closeModal} src={icons.close} alt="close"></img>
+								</div>
+								{
+									navItems.map((item,i) => 
+										<Link key={i} to={item.link} className={"removeLinkStyles"}>
+											{i?<hr></hr>:null}
+											<div className="navModalItem">
+												<h6>{item.title}</h6>
+												<img className="h5" src={icons.rightArrow} alt="arrow"></img>
+											</div>
+										</Link>
+									)
+								}
+							</div>
+						</Modal>
 					</div>
-				</Modal>
-			</div>
+				)}
+			</MobileContext.Consumer>
 		);
 		else return (
 			<div className="navbar">

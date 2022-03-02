@@ -11,8 +11,10 @@ import clipboardImg from "../../images/clipboard.png";
 import settingsIcon from "../../images/settings.svg";
 import arrowIcon from "../../images/arrow.png";
 import Cookies from "universal-cookie";
-
-function Account() {
+// import {useContext} from "react";
+// import {MobileContext} from "../../App";
+const Account = () => {
+	// let {mobile} = useContext(MobileContext);
 	const cookies = new Cookies();
 	cookies.set("back", "/about");
 	// const [cookies, setCookie, removeCookie] = useCookies(['back']);
