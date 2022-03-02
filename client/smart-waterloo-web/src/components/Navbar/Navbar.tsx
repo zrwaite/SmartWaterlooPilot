@@ -5,8 +5,12 @@ import React from "react";
 import Modal from "react-modal";
 import {navItems} from "./navItems";
 import {mobileWidth} from "../../constants";
+import BackNav from "./BackNav";
+import {Link} from "react-router-dom";
 
-type NavbarProps = {root:boolean};
+type NavbarProps = {
+	root:boolean;
+};
 type NavbarState = { open: boolean, mobileView: boolean };
 class Navbar extends React.Component<NavbarProps, NavbarState> {
 	customStyles = {
@@ -18,18 +22,23 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 			transform: "translateX(-50%)",
 		},
 	};
+// 	 foo2(first: string, second: boolean) : undefined
+//  foo2(first: number, second?: undefined): undefined
+// function foo2<T>(first: T, second?: boolean): undefined{
+//   return undefined
+// }
 	constructor(props:NavbarProps) {
 		super(props);
 		this.state = {
 			open: false,
 			mobileView: false
 		}
-	
 		Modal.setAppElement("#root");
 		this.openModal = this.openModal.bind(this);
 		this.closeModal = this.closeModal.bind(this);
 		this.updatePredicate = this.updatePredicate.bind(this);
 	}
+		
 	// let subtitle:HTMLElement|null;
 
 	openModal() {
@@ -68,7 +77,11 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 					{this.state.mobileView?
 						<img className="h3 imageButton" onClick={this.openModal} src={icons.menu} alt="menu" />
 						:
-						navItems.map((item,i) => <div key={i}>{item.title}</div>)
+						navItems.map((item,i) => 
+						<Link key={i} to={item.link} className={"removeLinkStyles"}>
+							{item.title}
+						</Link> 
+						)
 					}
 				</div>
 				<Modal isOpen={this.state.open} onAfterOpen={this.afterOpenModal} onRequestClose={this.closeModal} style={this.customStyles} contentLabel="Example Modal">
@@ -78,13 +91,13 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 						</div>
 						{
 							navItems.map((item,i) => 
-								<div key={i}>
+								<Link key={i} to={item.link} className={"removeLinkStyles"}>
 									{i?<hr></hr>:null}
 									<div className="navModalItem">
 										<h6>{item.title}</h6>
 										<img className="h5" src={icons.rightArrow} alt="arrow"></img>
 									</div>
-								</div>
+								</Link>
 							)
 						}
 					</div>
@@ -93,10 +106,7 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 		);
 		else return (
 			<div className="navbar">
-				<div className="leftNav">
-					<img src={icons.leftArrow} alt="back" className="h5"/>
-					<h6>Back</h6>
-				</div>
+				<BackNav />
 			</div>	
 		);
 	}

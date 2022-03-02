@@ -26,6 +26,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
 					</p>
 				</header>
 				<ProfileFormGrid updateStep={this.props.updateStep}/>
+				<button onClick={() => this.props.updateStep(1)} className={"blackButton"}>Back</button>
 			</>
 		);
 	}

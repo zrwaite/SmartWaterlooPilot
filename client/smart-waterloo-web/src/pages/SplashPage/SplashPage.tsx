@@ -2,8 +2,11 @@
 import Navbar from "../../components/Navbar";
 
 import "./SplashPage.css";
+import Cookies from "universal-cookie";
 //Todo change buttons to links
 function SplashPage() {
+	const cookies = new Cookies();
+	cookies.set("back", "/");
     return (
 		<>
 			<Navbar root={true}/>

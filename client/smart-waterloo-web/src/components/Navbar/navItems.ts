@@ -1,9 +1,11 @@
 // import {icons} from "../../images/icons";
 export const navItems = [
 	{
-		title: "About"
+		title: "About",
+		link: "/about"
 	},
 	{
-		title: "Privacy"
+		title: "Privacy",
+		link: "/privacy"
 	},
 ]

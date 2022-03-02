@@ -5,12 +5,15 @@ import QRDesktopPNG from "../../images/QRDesktop.png";
 import QRMobilePNG from "../../images/QRMobile.png";
 import "./ScanQR.css";
 import React from "react";
+import Cookies from "universal-cookie";
 //Todo change buttons to links
 type ScanQRProps = { };
 type ScanQRState = { mobileView: boolean };
 class ScanQR extends React.Component<ScanQRProps, ScanQRState> {
+	cookies = new Cookies()
 	constructor(props:ScanQRProps) {
 		super(props);
+		this.cookies.set("back", "/qr");
 		this.updatePredicate = this.updatePredicate.bind(this);
 		this.state = {
 			mobileView:false

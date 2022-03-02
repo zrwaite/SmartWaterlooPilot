@@ -42,7 +42,6 @@ function App() {
 				<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
 				<Route path="/signup" element={<SignUp />}></Route>
 				<Route path="*" element={<NotFound />}></Route>
-
 			</Routes>
 		</Router>
 	);

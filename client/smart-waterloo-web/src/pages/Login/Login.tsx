@@ -3,13 +3,17 @@ import Navbar from "../../components/Navbar";
 import {mobileWidth} from "../../constants";
 import AvatarPNG from "../../images/fullAvatar.png";
 import "./Login.css";
+import Cookies from "universal-cookie";
+
 // import {Link} from "react-router-dom";
 //Todo change buttons to links
 type LoginProps = {};
 type LoginState = {mobileView: boolean, inputs:{password:string}};
 class Login extends React.Component<LoginProps, LoginState> {
+	cookies = new Cookies();
 	constructor(props:LoginProps) {
 		super(props);
+		this.cookies.set("back", "/login");
 		this.updateSize = this.updateSize.bind(this);
 		this.state = {
 			mobileView:false,

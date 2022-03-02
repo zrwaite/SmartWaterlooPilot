@@ -52,14 +52,14 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 			); break; case 3: stepSection = (
 				<MeetAvatar updateStep={this.updateStep}/>
 			);break; case 4: stepSection = (
-				<Nickname />
+				<Nickname updateStep={this.updateStep}/>
 			); break; default: stepSection = (
 				<h1>Invalid step "{this.state.step}"</h1>
 			);
 		}
 		return (
 			<>
-				<Navbar root={false}/>
+				<Navbar root={true}/>
 				<div className={"PageContainer"}>
 					<div className={this.state.mobileView? "":"DesktopPanel"}>
 						{this.state.step?<StepBubbles step={this.state.step}/>:null}
