@@ -9,8 +9,9 @@
 	flex-basis:auto;
 	align-items: flex-start;
 	border: 0.2rem solid black;
-	margin: 1rem 0;
+	margin: 1rem;
 	border-radius: 1rem;
+	min-width: 18rem;
 }
 .dashboardLinkSection.pink:hover, .dashboardLinkSection.pink:active{
 	border: 0.2rem solid pink;
@@ -32,12 +33,18 @@
 	align-self: flex-end;
 	justify-self: end;
 }
-main {
+.mobileDashboardContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: stretch;
+}
+.dashboardContainer {
 	display:grid;
-	grid-template-columns: repeat( auto-fit, minmax(18rem, auto) );;
-	align-items: center;
-	justify-content: center;
-	column-gap: 2rem;
+	grid-template-columns: repeat( auto-fit, minmax(25rem, auto) );;
+	align-items:stretch;
+	justify-content: stretch;
+	width: 100%;
 }
 .pink{background-color: #F9EEF3;}
 .purple{background-color: #D0C8FF;}

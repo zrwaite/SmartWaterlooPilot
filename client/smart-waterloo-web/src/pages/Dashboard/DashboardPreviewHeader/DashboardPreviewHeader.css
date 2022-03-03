@@ -1,0 +1,12 @@
+.previewHeaderContainer{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+}
+.previewHeaderContainer>*{
+	margin: 0 0.5rem 0 0;
+}
+.previewHeaderContainer hr{
+	width: 30%;
+}

@@ -73,6 +73,14 @@ input, option, .select{
 }
 .horizontal{
 	display:flex;
+	align-items: center;
+	justify-content: center;
+}
+.vertical{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 }
 .red{background-color: red;}
 .grey{background-color: #C4C4C4;}
@@ -123,6 +131,14 @@ input, option, .select{
 	margin: 0 3rem 3rem;
 	padding: 2rem;
 	width: min(80%, 40rem);
+}
+.panel{
+	background-color: #F8F8F8;
+	border: 0.3rem solid black;
+	border-radius: 1rem;
+	margin: 1rem;
+	padding: 1rem;
+	/* width: 100%; */
 }
 
 .PageContainer{
