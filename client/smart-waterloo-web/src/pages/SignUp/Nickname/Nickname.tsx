@@ -4,7 +4,7 @@ import "./Nickname.css";
 type NicknameProps = { 
 	updateStep: Function,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => void
-	nicknameData: {nickname:string}
+	nicknameData: {nickname:string, avatarString:string}
 };
 function Nickname(props: NicknameProps) {
 	const spacing = {
@@ -18,7 +18,7 @@ function Nickname(props: NicknameProps) {
 			<div className={"nicknameContainer"}>
 				<h4>Almost there 😎</h4>
 				<p style={spacing}>Now let's give a nickname to your Avatar</p>
-				<img src={Avatar} alt="Avatar" className="avatarImage"/>
+				<img src={`https://avatars.dicebear.com/api/bottts/${props.nicknameData.avatarString}.svg`} alt="Avatar" className="avatarImage"/>
 				<hr/>
 				<input onChange={props.handleParentInputChange} name="nickname" type="text" className="nicknameInput" id="nicknameInput" placeholder="Enter a nickname" value={props.nicknameData.nickname}/>
 				<p style={redText}>*Do not use your real name or the name of someone you know for privacy reasons.</p>

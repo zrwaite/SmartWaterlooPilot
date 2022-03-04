@@ -26,15 +26,18 @@ const defaultProfileProps = {
 	sexuality: "",
 }
 const defaultNicknameProps = {
-	nickname: ""
+	nickname: "",
+	avatarString: ""
+}
+const defaultAvatarProps = {
+	avatarString: ""
 }
 const defaultSignUpState = {
 	step: 0,
 	formInputs: {
 		...defaultProfileProps,
 		...defaultNicknameProps,
-		password: "",
-		avatar: ""
+		...defaultAvatarProps,
 	}
 }
 type SignUpState = typeof defaultSignUpState;
@@ -47,9 +50,15 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 		cookies.set("back", "/signup");
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSelectChange = this.handleSelectChange.bind(this);
+		this.childSetState = this.childSetState.bind(this);
 	}
 	updateStep(step:number) {
 		this.setState({...this.state, step: step});
+	}
+	childSetState(key:keyof typeof defaultSignUpState.formInputs, value:string) {
+		let partialInputs = {...this.state.formInputs};
+		partialInputs[key] = value;
+		this.setState({...this.state, formInputs: partialInputs});
 	}
 	handleInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => {
 		let inputKeys: keyof typeof this.state.formInputs;
@@ -77,6 +86,12 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 		nicknamePropKeys.forEach(key => nicknameProps[key] = this.state.formInputs[key]);
 		return nicknameProps;
 	}
+	getAvatarProps(){
+		let avatarProps = defaultAvatarProps;
+		let avatarPropKeys = Object.keys(defaultAvatarProps) as [keyof typeof defaultAvatarProps];
+		avatarPropKeys.forEach(key => avatarProps[key] = this.state.formInputs[key]);
+		return avatarProps;
+	}
 	render() {
 		let stepSection:any;
 		
@@ -93,7 +108,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 			); break; case 2: stepSection = (
 				<Profile {...userInputFunctions} formData={this.getProfileProps()} />
 			); break; case 3: stepSection = (
-				<MeetAvatar updateStep={this.updateStep}/>
+				<MeetAvatar avatarData={this.getAvatarProps()} updateParentState={this.childSetState} updateStep={this.updateStep}/>
 			);break; case 4: stepSection = (
 				<Nickname {...userInputFunctions} nicknameData={this.getNicknameProps()}/>
 			); break; default: stepSection = (
