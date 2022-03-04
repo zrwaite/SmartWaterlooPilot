@@ -1,4 +1,3 @@
-import Avatar from "../../../images/fullAvatar.png";
 import "./Nickname.css";
 
 type NicknameProps = { 

@@ -137,7 +137,17 @@ input, option, .select{
 	border-radius: 1rem;
 	margin: 0 2rem 2rem;
 	padding: 2rem;
-	width: min(80%, 40rem);
+	width: min(90%, 40rem);
+	box-sizing: border-box;
+}
+.fullScreenPanel{
+	background-color: #F8F8F8;
+	border: 0.3rem solid black;
+	border-radius: 1rem;
+	margin: 0 2rem 2rem;
+	padding: 2rem;
+	width: calc(100% - 4rem);
+	box-sizing: border-box;
 }
 .panel{
 	background-color: #F8F8F8;
@@ -150,6 +160,7 @@ input, option, .select{
 .asideContainer{
 	display: flex;
 	height: 90%;
+	width: 100%;
 }
 
 .PageContainer{
@@ -165,6 +176,8 @@ input, option, .select{
 }
 .besideAside{
 	width: 100%;
+	box-sizing: border-box;
+	/* flex-basis: 0; */
 }
 
 @media only screen and (max-width: 40rem) {
