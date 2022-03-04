@@ -32,11 +32,6 @@
 .navModal>* {
 	width: 100%;
 }
-.navModalItem{
-	display: flex;
-	justify-content: space-between;
-	margin: 0.5rem 0;
-}
 .navModalHeader{
 	display: flex;
 	justify-content: flex-end;

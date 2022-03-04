@@ -155,6 +155,7 @@ input, option, .select{
 	border-radius: 1rem;
 	margin: 1rem;
 	padding: 1rem;
+	overflow: hidden;
 	/* width: 100%; */
 }
 .asideContainer{

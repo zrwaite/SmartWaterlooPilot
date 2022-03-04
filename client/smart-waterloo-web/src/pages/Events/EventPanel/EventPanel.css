@@ -8,9 +8,6 @@
 	border-radius: 1rem;
 	padding: 0.5rem;
 }
-.activeEventPanel{
-	background-color: #6ec6f933;
-}
 .eventPanelHeader{
 	display: flex;
 	justify-content: space-between;

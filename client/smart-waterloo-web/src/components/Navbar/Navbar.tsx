@@ -4,9 +4,11 @@ import {icons} from "../../images/icons";
 import React from "react";
 import Modal from "react-modal";
 import {primaryNavItems} from "./navItems";
+import {topElements as primarySidebarItems} from "../Sidebar/SidebarOptions";
 import BackNav from "./BackNav";
 import {Link} from "react-router-dom";
 import {MobileContext} from "../../App";
+import MobileNavItem from "./MobileNavItem";
 
 type NavbarProps = {
 	root:boolean;
@@ -66,14 +68,8 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 									<img className="h4 imageButton" onClick={this.closeModal} src={icons.close} alt="close"></img>
 								</div>
 								{
-									primaryNavItems.map((item,i) => 
-										<Link key={i} to={item.link} className={"removeLinkStyles"}>
-											{i?<hr></hr>:null}
-											<div className="navModalItem">
-												<h6>{item.title}</h6>
-												<img className="h5" src={icons.rightArrow} alt="arrow"></img>
-											</div>
-										</Link>
+									[...primaryNavItems, ...primarySidebarItems].map((item,i) => 
+										<MobileNavItem {...item} i={i} key={i}/>
 									)
 								}
 							</div>

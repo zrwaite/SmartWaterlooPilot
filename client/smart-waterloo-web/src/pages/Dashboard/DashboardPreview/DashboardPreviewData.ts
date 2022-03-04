@@ -10,7 +10,8 @@ const DashboardPreviewData =  {
 		long: "See the events that are coming up for you.",
 		icon: calenderImg,
 		iconName: "calendar",
-		color: "pink"
+		color: "pink",
+		link: "/events"
 	},
 	events: {
 		title: "Events",
@@ -18,7 +19,8 @@ const DashboardPreviewData =  {
 		long: "See all the events that are available to you.",
 		icon: ticketImg,
 		iconName: "ticket",
-		color: "blue"
+		color: "blue",
+		link: "/events"
 	},
 	data: {
 		title: "My Data", 
@@ -26,7 +28,8 @@ const DashboardPreviewData =  {
 		long: "See the most relevant information about your data.",
 		icon: dataImg,
 		iconName: "data",
-		color: "purple"
+		color: "purple",
+		link: "/data"
 	},
 	surveys: {
 		title: "Surveys",
@@ -34,7 +37,8 @@ const DashboardPreviewData =  {
 		long: "See all the surveys that are published by your city.",
 		icon: clipboardImg,
 		iconName: "clipboard",
-		color: "green"
+		color: "green",
+		link: "/surveys"
 	}
 }
 export default DashboardPreviewData;

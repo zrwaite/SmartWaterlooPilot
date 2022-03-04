@@ -6,12 +6,16 @@ interface EventPanelProps {
 	start_date:string,
 	end_date: string,
 	category: string,
-	signed_up: boolean
+	signed_up: boolean,
+	upcoming?: boolean
 }
 
 const EventPanel = (props: EventPanelProps) => {
+	const activeColour = {
+		backgroundColor: props.upcoming?"#F9EEF3":"#6ec6f933"
+	}
 	return (
-		<div className={`eventPanel ${props.signed_up?"activeEventPanel":""}`}>
+		<div style={props.signed_up?activeColour:{}} className={`eventPanel`}>
 			<div className="eventPanelHeader">
 				<div>
 					<p>New</p>
