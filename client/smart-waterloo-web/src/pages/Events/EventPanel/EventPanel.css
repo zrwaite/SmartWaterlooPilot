@@ -8,8 +8,19 @@
 	border-radius: 1rem;
 	padding: 0.5rem;
 }
+.eventPanel>*{
+	margin: 0.2rem;
+}
+
 .eventPanelHeader{
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
+}
+.eventBubble{
+	border-radius: 0.5rem;
+	padding: 0.1rem 0.3rem;
+	margin-right: 0.5rem;
+	color: white;
+	text-align: center;
 }

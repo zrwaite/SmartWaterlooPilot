@@ -10,6 +10,7 @@ import TestPage from "./pages/TestPage";
 // import OnboardingButton from "./components/Navbar/authentication/metmaskauth";
 import SignUp from "./pages/SignUp";
 import About from "./pages/About";
+import SharedData from "./pages/SharedData";
 import MyData from "./pages/MyData";
 import Events from "./pages/Events";
 import Surveys from "./pages/Surveys";
@@ -56,6 +57,7 @@ function App() {
 					<Route path="/dashboard" element={<Dashboard />}></Route>
 					<Route path="/qr" element={<ScanQR />}></Route>
 					<Route path="/about" element={<About />}></Route>
+					<Route path="/sharedData" element={<SharedData />}></Route>
 					<Route path="/privacy" element={<Privacy />}></Route>
 					<Route path="/login" element={<Login />}></Route>
 					{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
