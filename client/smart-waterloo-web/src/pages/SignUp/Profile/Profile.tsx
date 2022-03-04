@@ -1,12 +1,14 @@
 import React from "react";
-// import {Link} from "react-router-dom";
+import {ActionMeta} from "react-select";
+import {ProfileFormGridState} from "./FormGrid/FormGridData";
 import ProfileFormGrid from "./FormGrid"
-
 import "./Profile.css";
-//Todo change buttons to links
 
 type ProfileProps = { 
-	updateStep: Function;
+	updateStep: Function,
+	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => void,
+	handleParentSelectChange:  (newValue: null|{ value: string; label: string; }, actionMeta: ActionMeta<{value: string,label: string}>) => void,
+	formData: ProfileFormGridState
 };
 type ProfileState = { };
 class Profile extends React.Component<ProfileProps, ProfileState> {
@@ -25,7 +27,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
 						Fields marked with a red * are required.
 					</p>
 				</header>
-				<ProfileFormGrid updateStep={this.props.updateStep}/>
+				<ProfileFormGrid {...this.props}/>
 				<button onClick={() => this.props.updateStep(1)} className={"blackButton"}>Back</button>
 			</>
 		);

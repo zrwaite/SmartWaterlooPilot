@@ -13,7 +13,7 @@ function StepBubbles(props:StepBubblesProps) {
 				<div className="bubbles">
 					<div className="bubbleItem">
 						<div className={props.step===1?"bubble":"bubble selectedBubble"}>1</div>
-						<p>Password</p>
+						<p>MetaMask</p>
 					</div>
 					<div className="bubbleItem">
 						<div className={props.step===2?"bubble":"bubble selectedBubble"}>2</div>

@@ -1,11 +1,11 @@
-// import {Link} from "react-router-dom";
 import Avatar from "../../../images/fullAvatar.png";
 import "./Nickname.css";
 
-//Todo change buttons to links
-type NicknameProps = {
-	updateStep: Function
-}
+type NicknameProps = { 
+	updateStep: Function,
+	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => void
+	nicknameData: {nickname:string}
+};
 function Nickname(props: NicknameProps) {
 	const spacing = {
 		margin: "0.5rem 0"
@@ -20,7 +20,7 @@ function Nickname(props: NicknameProps) {
 				<p style={spacing}>Now let's give a nickname to your Avatar</p>
 				<img src={Avatar} alt="Avatar" className="avatarImage"/>
 				<hr/>
-				<input type="text" className="nicknameInput" id="nicknameInput" placeholder="Enter a nickname"/>
+				<input onChange={props.handleParentInputChange} name="nickname" type="text" className="nicknameInput" id="nicknameInput" placeholder="Enter a nickname" value={props.nicknameData.nickname}/>
 				<p style={redText}>*Do not use your real name or the name of someone you know for privacy reasons.</p>
 				<button style={spacing} onClick={() => console.log("signup")} className={"blackButton signUpButton"}>Start using "The Project"</button>
 			</div>

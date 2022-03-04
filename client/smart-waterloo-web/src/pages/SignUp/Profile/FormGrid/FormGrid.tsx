@@ -1,25 +1,39 @@
 // import {Link} from "react-router-dom";
-import {genderOptions, religionOptions, sexualityOptions, raceOptions, profileFormGridState} from "./FormGridData";
-import {useState} from "react";
-import Select, {ActionMeta} from "react-select";
+import {genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState} from "./FormGridData";
+// import {useState} from "react";
+import Select, {ActionMeta, ThemeConfig} from "react-select";
 //Todo change buttons to links
 type ProfileFormGridProps = {
-	updateStep: Function
+	updateStep: Function,
+	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => void,
+	handleParentSelectChange:  (newValue: null|{ value: string; label: string; }, actionMeta: ActionMeta<{value: string,label: string}>) => void,
+	formData: ProfileFormGridState
 }
 function ProfileFormGrid(props:ProfileFormGridProps) {
-	let [state, setState] = useState(profileFormGridState);
-	let stateKeys: keyof typeof state;
-	let handleInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => {
-        const name = event.target.name as typeof stateKeys;
-        let partialState = {...state};
-		partialState[name] = event.target.value;
-        setState(partialState);
-    }
-	const handleSelectChange = (newValue: null|{ value: string; label: string; }, actionMeta: ActionMeta<{value: string,label: string}>) => {
-		const name = actionMeta.name as typeof stateKeys;
-		let partialState = {...state};
-		partialState[name] = newValue?.value || "";
-        setState(partialState);
+	// let [state, setState] = useState(profileFormGridState);
+	// let stateKeys: keyof typeof state;
+	// let props.handleParentInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => {
+    //     const name = event.target.name as typeof stateKeys;
+    //     let partialState = {...state};
+	// 	partialState[name] = event.target.value;
+    //     setState(partialState);
+	// 	let obj:any = {};
+	// 	obj[name] = event.target.value;;
+	// 	props.updateParentState(obj);
+    // }
+	// const props.handleParentSelectChange = (newValue: null|{ value: string; label: string; }, actionMeta: ActionMeta<{value: string,label: string}>) => {
+	// 	const name = actionMeta.name as typeof stateKeys;
+	// 	let partialState = {...state};
+	// 	partialState[name] = newValue?.value || "";
+    //     setState(partialState);
+	// }
+	const selectStyle = {
+		menu: () => ({
+			// width: state.selectProps.width,
+			borderBottom: '1px dotted pink',
+			// color: state.selectProps.menuColor,
+			padding: 20,
+		}),
 	}
 	let redText = {color: "red"};
 	let greyText = {color: "grey"};
@@ -35,18 +49,18 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 							Date of Birth<span style={redText}>*</span>
 						</p>
 						<div className="horizontal">
-							<input name="day" id="dayInput" placeholder="DD" type={"text"} value={state.day} onChange={handleInputChange}/>
+							<input name="day" id="dayInput" placeholder="DD" type={"text"} value={props.formData.day} onChange={props.handleParentInputChange}/>
 							<pre> / </pre>
-							<input name="month" id="monthInput" placeholder="MM"  type={"text"} value={state.month} onChange={handleInputChange}/>
+							<input name="month" id="monthInput" placeholder="MM"  type={"text"} value={props.formData.month} onChange={props.handleParentInputChange}/>
 							<pre> / </pre>
-							<input name="year" id="yearInput" placeholder="YY"  type={"text"} value={state.year} onChange={handleInputChange}/>
+							<input name="year" id="yearInput" placeholder="YY"  type={"text"} value={props.formData.year} onChange={props.handleParentInputChange}/>
 						</div>
 					</div>
 					<div className="formDiv">
 						<p>
 							Gender<span style={redText}>*</span>
 						</p>
-						<Select name={"gender"} onChange={handleSelectChange} options={genderOptions}/>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.gender} name={"gender"} onChange={props.handleParentSelectChange} options={genderOptions}/>
 					</div>
 					<div className="formDiv horizontal">
 						<div>
@@ -54,7 +68,7 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 								Height<span style={redText}>*</span>
 							</p>
 							<div className="pill">
-								<input name="height" id="heightInput" placeholder="168" type={"text"} value={state.height} onChange={handleInputChange}/>
+								<input name="height" id="heightInput" placeholder="168" type={"text"} value={props.formData.height} onChange={props.handleParentInputChange}/>
 								<p className="pillText">cm</p>
 							</div>
 						</div>
@@ -63,7 +77,7 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 								Weight<span style={redText}>*</span>
 							</p>
 							<div className="pill">
-								<input name="weight" id="weightInput" placeholder="160" type={"text"} value={state.weight} onChange={handleInputChange}/>
+								<input name="weight" id="weightInput" placeholder="160" type={"text"} value={props.formData.weight} onChange={props.handleParentInputChange}/>
 								<p className="pillText">lbs</p>
 							</div>
 						</div>
@@ -72,19 +86,19 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 						<p>
 							Religion <span style={greyText}>(Optional)</span>
 						</p>
-						<Select name={"religion"} onChange={handleSelectChange} options={religionOptions}/>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.religion} name={"religion"} onChange={props.handleParentSelectChange} options={religionOptions}/>
 					</div>
 					<div className="formDiv">
 						<p>
 							Sexuality <span style={greyText}>(Optional)</span>
 						</p>
-						<Select name={"sexuality"} onChange={handleSelectChange} options={sexualityOptions}/>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.sexuality} name={"sexuality"} onChange={props.handleParentSelectChange} options={sexualityOptions}/>
 					</div>
 					<div className="formDiv">
 						<p>
 							Race <span style={greyText}>(Optional)</span>
 						</p>
-						<Select name={"race"} onChange={handleSelectChange} options={raceOptions}/>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.race} name={"race"} onChange={props.handleParentSelectChange} options={raceOptions}/>
 					</div>
 					<div className="formDiv horizontal">
 						<div>
@@ -94,7 +108,7 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 							<div className="horizontal">
 								<div className="pill">
 									<p className="pillText">-</p>
-									<input name="grade" id="gradeInput" type={"text"} value={state.grade} onChange={handleInputChange}/>
+									<input name="grade" id="gradeInput" type={"text"} value={props.formData.grade} onChange={props.handleParentInputChange}/>
 									<p className="pillText">+</p>
 								</div>
 							</div>
@@ -103,7 +117,7 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 							<p>
 								Postal Code<span style={redText}>*</span>
 							</p>
-							<input name="postalCode" id="postalCodeInput" placeholder="M5A" type={"text"} value={state.postalCode} onChange={handleInputChange}/>
+							<input name="postalCode" id="postalCodeInput" placeholder="M5A" type={"text"} value={props.formData.postalCode} onChange={props.handleParentInputChange}/>
 						</div>
 					</div>
 				</section>

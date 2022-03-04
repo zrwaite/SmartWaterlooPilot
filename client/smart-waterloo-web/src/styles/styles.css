@@ -118,6 +118,13 @@ input, option, .select{
 	border: 0.2rem solid black;
 	transition: color 0.3s, background-color 0.3s;
 }
+.disabledButton{
+	background-color: grey;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: center;
+	border: 0.2rem solid black;
+}
 .blackButton:hover, .blackButton:active{
 	cursor: pointer;
 	background-color: white;

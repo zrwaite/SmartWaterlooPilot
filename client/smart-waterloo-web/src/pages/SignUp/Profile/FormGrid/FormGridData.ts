@@ -51,17 +51,18 @@ const raceOptions = [
 	{ value: "Hispanic", label: "Hispanic" },
 	{ value: "Other", label: "Other" }
 ]
-const profileFormGridState = {
-	day: "",
-	month: "",
-	year: "",
-	gender: "",
-	height: "",
-	weight: "",
-	grade: "7",
-	postalCode: "",
-	race: "",
-	religion: "",
-	sexuality: ""
+type ProfileFormGridState = {
+	day: string,
+	month: string,
+	year: string,
+	gender: string,
+	height: string,
+	weight: string,
+	grade: string,
+	postalCode: string,
+	race: string,
+	religion: string,
+	sexuality: string
 }
-export {genderOptions, religionOptions, sexualityOptions, raceOptions, profileFormGridState}
+export {genderOptions, religionOptions, sexualityOptions, raceOptions}
+export type {ProfileFormGridState}

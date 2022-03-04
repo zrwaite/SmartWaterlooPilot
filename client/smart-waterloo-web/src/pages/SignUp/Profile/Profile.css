@@ -42,8 +42,20 @@ header>h2, header>p{
 }
 .formDiv{
 	margin: 1rem;
+	width: 100%;
 }
 .formGrid{
-	display:grid;
-	grid-template-columns: repeat( auto-fit, minmax(25rem, auto) );;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.selectComponent{
+	font-size :1rem;
+	color: black;
+	font-family: pangram, serif;
+	border: 0.2rem solid black;
+	border-radius: 0.5rem;
+	margin: 0.2rem;
+	text-align: var(--defaultTextAlign);
 }
