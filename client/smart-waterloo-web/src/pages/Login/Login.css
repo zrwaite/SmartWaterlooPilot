@@ -6,7 +6,7 @@
 .loginButton{
 	width: min(80%, 15rem);
 	height: 3rem;
-	font-size: 2rem;
+	font-size: 1.5rem;
 }
 .loginFormMobile {
 	border-top: 0.3rem solid black;

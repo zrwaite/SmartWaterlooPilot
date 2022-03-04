@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import NotFound from "./pages/NotFound";
 import TestPage from "./pages/TestPage";
+// import OnboardingButton from "./components/Navbar/authentication/metmaskauth";
 import SignUp from "./pages/SignUp";
 import About from "./pages/About";
 import MyData from "./pages/MyData";
@@ -57,6 +58,7 @@ function App() {
 					<Route path="/about" element={<About />}></Route>
 					<Route path="/privacy" element={<Privacy />}></Route>
 					<Route path="/login" element={<Login />}></Route>
+					{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
 					<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
 					<Route path="/signup" element={<SignUp />}></Route>
 					<Route path="/test" element={<TestPage />}></Route>
