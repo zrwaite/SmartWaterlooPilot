@@ -91,7 +91,7 @@ input, option, .select{
 	border-radius: 50%;
 }
 
-.centre{
+.center{
 	display:flex;
 	flex-direction: column;
 	align-items: center;
@@ -128,7 +128,7 @@ input, option, .select{
 	background-color: #F8F8F8;
 	border: 0.3rem solid black;
 	border-radius: 1rem;
-	margin: 0 3rem 3rem;
+	margin: 0 2rem 2rem;
 	padding: 2rem;
 	width: min(80%, 40rem);
 }
@@ -139,6 +139,10 @@ input, option, .select{
 	margin: 1rem;
 	padding: 1rem;
 	/* width: 100%; */
+}
+.asideContainer{
+	display: flex;
+	height: 90%;
 }
 
 .PageContainer{
@@ -151,6 +155,9 @@ input, option, .select{
 .removeLinkStyles{
 	color: black;
 	text-decoration: none;
+}
+.besideAside{
+	width: 100%;
 }
 
 @media only screen and (max-width: 40rem) {

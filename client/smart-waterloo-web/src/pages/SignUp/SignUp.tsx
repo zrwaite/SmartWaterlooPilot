@@ -8,6 +8,7 @@ import MeetAvatar from "./MeetAvatar";
 import Nickname from "./Nickname";
 import Password from "./Password";
 import StepBubbles from "./StepBubbles";
+import Cookies from "universal-cookie";
 // import {Link} from "react-router-dom";
 //Todo change buttons to links
 type SignUpProps = {};
@@ -21,6 +22,8 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 		this.state = {
 			step: 0
 		}
+		const cookies = new Cookies();
+		cookies.set("back", "/signup");
 	}
 	updateStep(step:number) {
 		this.setState({...this.state, step: step});

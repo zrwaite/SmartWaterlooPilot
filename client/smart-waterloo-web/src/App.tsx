@@ -6,8 +6,12 @@ import Privacy from "./pages/Privacy";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import NotFound from "./pages/NotFound";
+import TestPage from "./pages/TestPage";
 import SignUp from "./pages/SignUp";
 import About from "./pages/About";
+import MyData from "./pages/MyData";
+import Events from "./pages/Events";
+import Surveys from "./pages/Surveys";
 import { useEffect } from 'react';
 import "./styles/styles.css";
 import {mobileWidth} from "./constants";
@@ -55,6 +59,10 @@ function App() {
 					<Route path="/login" element={<Login />}></Route>
 					<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
 					<Route path="/signup" element={<SignUp />}></Route>
+					<Route path="/test" element={<TestPage />}></Route>
+					<Route path="/data" element={<MyData />}></Route>
+					<Route path="/surveys" element={<Surveys />}></Route>
+					<Route path="/events" element={<Events />}></Route>
 					<Route path="*" element={<NotFound />}></Route>
 				</Routes>
 			</Router>
