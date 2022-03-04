@@ -47,7 +47,7 @@
 }
 .dashboardGridContainer {
 	display:grid;
-	grid-template-columns: repeat( auto-fit, minmax(25rem, auto) );;
+	grid-template-columns: repeat( auto-fit, minmax(40rem, auto) );;
 	align-items:flex-start;
 	justify-content: stretch;
 	row-gap: 1rem;
@@ -61,14 +61,3 @@
 .purple{background-color: #D0C8FF;}
 .blue{background-color: #B1E0FC;}
 .green{background-color: #D0F4C4;}
-
-@media only screen and (max-width: 40rem) {
-	main {
-		grid-template-columns: repeat( auto-fit, minmax(17rem, auto) );;
-	}
-}
-@media only screen and (max-width: 25rem) {
-	main {
-		grid-template-columns: repeat( auto-fit, minmax(16rem, auto) );;
-	}
-}

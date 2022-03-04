@@ -10,3 +10,12 @@
 .previewHeaderContainer hr{
 	width: 30%;
 }
+.subPanelFlex{
+	display: flex;
+	overflow: hidden;
+	width: 10000%
+}
+.subPanelFlex>*{
+	margin: 0.5rem;
+	width: min(100%, 15rem);
+}

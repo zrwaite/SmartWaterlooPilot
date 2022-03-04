@@ -1,0 +1,15 @@
+.eventPanel{
+	background-color: white;
+	display:flex;
+	align-items: flex-start;
+	flex-direction: column;
+	justify-content: flex-start;
+	border: solid black 0.3rem;
+	border-radius: 1rem;
+	padding: 0.5rem;
+}
+.eventPanelHeader{
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+}

@@ -1,8 +1,7 @@
 // import {Link} from "react-router-dom";
 import {genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState} from "./FormGridData";
 // import {useState} from "react";
-import Select, {ActionMeta, ThemeConfig} from "react-select";
-//Todo change buttons to links
+import Select, {ActionMeta} from "react-select";
 type ProfileFormGridProps = {
 	updateStep: Function,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => void,
@@ -10,31 +9,6 @@ type ProfileFormGridProps = {
 	formData: ProfileFormGridState
 }
 function ProfileFormGrid(props:ProfileFormGridProps) {
-	// let [state, setState] = useState(profileFormGridState);
-	// let stateKeys: keyof typeof state;
-	// let props.handleParentInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => {
-    //     const name = event.target.name as typeof stateKeys;
-    //     let partialState = {...state};
-	// 	partialState[name] = event.target.value;
-    //     setState(partialState);
-	// 	let obj:any = {};
-	// 	obj[name] = event.target.value;;
-	// 	props.updateParentState(obj);
-    // }
-	// const props.handleParentSelectChange = (newValue: null|{ value: string; label: string; }, actionMeta: ActionMeta<{value: string,label: string}>) => {
-	// 	const name = actionMeta.name as typeof stateKeys;
-	// 	let partialState = {...state};
-	// 	partialState[name] = newValue?.value || "";
-    //     setState(partialState);
-	// }
-	const selectStyle = {
-		menu: () => ({
-			// width: state.selectProps.width,
-			borderBottom: '1px dotted pink',
-			// color: state.selectProps.menuColor,
-			padding: 20,
-		}),
-	}
 	let redText = {color: "red"};
 	let greyText = {color: "grey"};
     return (
