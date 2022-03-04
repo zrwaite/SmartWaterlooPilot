@@ -1,5 +1,5 @@
 // import {icons} from "../../images/icons";
-export const navItems = [
+const primaryNavItems = [
 	{
 		title: "About",
 		link: "/about"
@@ -9,3 +9,5 @@ export const navItems = [
 		link: "/privacy"
 	},
 ]
+
+export {primaryNavItems}

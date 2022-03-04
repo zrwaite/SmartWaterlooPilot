@@ -3,7 +3,7 @@ import "./Navbar.css";
 import {icons} from "../../images/icons";
 import React from "react";
 import Modal from "react-modal";
-import {navItems} from "./navItems";
+import {primaryNavItems} from "./navItems";
 import BackNav from "./BackNav";
 import {Link} from "react-router-dom";
 import {MobileContext} from "../../App";
@@ -53,7 +53,7 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 							{mobile?
 								<img className="h3 imageButton" onClick={this.openModal} src={icons.menu} alt="menu" />
 								:
-								navItems.map((item,i) => 
+								primaryNavItems.map((item,i) => 
 								<Link key={i} to={item.link} className={"removeLinkStyles"}>
 									{item.title}
 								</Link> 
@@ -66,7 +66,7 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 									<img className="h4 imageButton" onClick={this.closeModal} src={icons.close} alt="close"></img>
 								</div>
 								{
-									navItems.map((item,i) => 
+									primaryNavItems.map((item,i) => 
 										<Link key={i} to={item.link} className={"removeLinkStyles"}>
 											{i?<hr></hr>:null}
 											<div className="navModalItem">
