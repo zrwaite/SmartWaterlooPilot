@@ -13,6 +13,7 @@ import About from "./pages/About";
 import SharedData from "./pages/SharedData";
 import MyData from "./pages/MyData";
 import Events from "./pages/Events";
+import Survey from "./pages/Survey";
 import Surveys from "./pages/Surveys";
 import { useEffect } from 'react';
 import "./styles/styles.css";
@@ -54,7 +55,7 @@ function App() {
 			<Router>
 				<Routes>
 					<Route path="/" element={<SplashPage />}></Route>
-					<Route path="/dashboard" element={<Dashboard />}></Route>
+					<Route path="/dashboard/*" element={<Dashboard />}></Route>
 					<Route path="/qr" element={<ScanQR />}></Route>
 					<Route path="/about" element={<About />}></Route>
 					<Route path="/sharedData" element={<SharedData />}></Route>
@@ -66,6 +67,7 @@ function App() {
 					<Route path="/test" element={<TestPage />}></Route>
 					<Route path="/data" element={<MyData />}></Route>
 					<Route path="/surveys" element={<Surveys />}></Route>
+					<Route path="/survey/:id" element={<Survey />}></Route>
 					<Route path="/events" element={<Events />}></Route>
 					<Route path="*" element={<NotFound />}></Route>
 				</Routes>

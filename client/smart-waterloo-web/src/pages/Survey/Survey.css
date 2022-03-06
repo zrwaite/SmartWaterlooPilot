@@ -1,0 +1,15 @@
+.surveyHeader{
+	text-align: left;
+}
+.surveyPanel{
+	padding: 5rem; 
+	background-color: #F8F8F8;
+	border: 0.3rem solid black;
+	border-radius: 1rem;
+	margin: 0 2rem 2rem;
+	width: min(90%, 40rem);
+	box-sizing: border-box;
+}
+.surveyPanel>*{
+	padding: 0.5rem;
+}

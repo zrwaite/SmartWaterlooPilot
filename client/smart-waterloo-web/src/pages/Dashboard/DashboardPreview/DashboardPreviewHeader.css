@@ -1,8 +1,13 @@
 .previewHeaderContainer{
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: flex-start;
 	width: 100%;
+}
+.previewHeaderText{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 }
 .previewHeaderContainer>*{
 	margin: 0 0.5rem 0 0;

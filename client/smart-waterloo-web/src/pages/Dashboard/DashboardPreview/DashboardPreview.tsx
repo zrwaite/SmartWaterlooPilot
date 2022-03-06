@@ -4,7 +4,7 @@ import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
 import eventsList from "../../Events/Events.json"
-import surveysList from "../../Surveys/Surveys.json"
+import {exampleSurveys} from "../../../data/Surveys"
 import { dataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"
@@ -19,7 +19,7 @@ const DashboardPreviewHeader = (props:DashboardPreviewHeaderProps) => {
 	return (
 		<div className ={"previewHeaderContainer"}>
 			<img className="dashboardLinkIcon" src={dataset.icon} alt={dataset.iconName}/>
-			<div>
+			<div className={"previewHeaderText"}>
 				<h5>{dataset.title}</h5>
 				<hr/>
 				<p>{props.mobile?dataset.short:dataset.long}</p>
@@ -56,7 +56,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				);})}
 			</>
 		);break; case "surveys": panelList = (<>
-			{surveysList.map((panel, i) => {return (
+			{exampleSurveys.map((panel, i) => {return (
 				i<5?<SurveyPanel key={i} {...panel}/>:null
 			);})}
 		</>
