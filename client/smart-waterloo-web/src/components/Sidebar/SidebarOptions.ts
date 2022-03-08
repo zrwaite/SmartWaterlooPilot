@@ -34,7 +34,7 @@ const bottomElements = [
 	{
 		modalName: "settings",
 		title: "Settings",
-		action: () => {},
+		action:() => {},
 		icon: icons.settings
 	},
 	{
