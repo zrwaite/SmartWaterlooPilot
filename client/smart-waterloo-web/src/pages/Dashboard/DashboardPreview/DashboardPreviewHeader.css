@@ -17,10 +17,8 @@
 }
 .subPanelFlex{
 	display: flex;
-	overflow: hidden;
-	width: 10000%
+	overflow:scroll;
 }
 .subPanelFlex>*{
 	margin: 0.5rem;
-	width: min(100%, 18rem);
 }

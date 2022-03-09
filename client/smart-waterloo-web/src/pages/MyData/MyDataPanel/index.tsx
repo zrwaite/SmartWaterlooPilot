@@ -1,1 +1,1 @@
-export {default} from "./SurveyPanel";
+export {default} from "./MyDataPanel";

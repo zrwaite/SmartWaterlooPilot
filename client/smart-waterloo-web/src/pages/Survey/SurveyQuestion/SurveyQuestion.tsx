@@ -41,7 +41,7 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 	}
 	return (
 		<div>
-			<div className="horizontal">
+			<div className="questionPrompt">
 				<div className={"questionIndexBubble"}>{props.index}</div>
 				<p>{props.prompt}</p>
 			</div>

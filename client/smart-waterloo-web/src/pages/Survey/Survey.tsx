@@ -6,6 +6,7 @@ import SurveyLanding from "./SurveyLanding";
 import "./Survey.css";
 import { useParams } from "react-router-dom";
 import SurveyQuestion from "./SurveyQuestion";
+import Cookies from "universal-cookie";
 
 const defaultSurveyData:SurveyDataType = {
 	title: "Loading...",
@@ -16,6 +17,8 @@ const defaultSurveyData:SurveyDataType = {
 }
 const defaultAnswers:string[] = [];
 const Survey = () => {
+	const cookies = new Cookies()
+	cookies.set("back", "/surveys");
 	const { id } = useParams<"id">();
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
@@ -57,7 +60,7 @@ const Survey = () => {
 		<>
 			<Navbar root={false}/>
 			<div className={"PageContainer"}>
-				<div className={mobile? "":"surveyPanel"}>
+				<div className={mobile? "":"surveyPagePanel"}>
 					{mobile?<h4>{surveyData.title}</h4>:<h4 className={"surveyHeader"}>{surveyData.title}</h4>}
 					<p>{surveyData.organization}</p>
 					<p style={greyText}>{surveyData.length} to fill</p>

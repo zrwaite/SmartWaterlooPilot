@@ -3,7 +3,7 @@ import { MobileContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
-import eventsList from "../../Events/Events.json"
+import {exampleEvents} from "../../../data/Events";
 import {exampleSurveys} from "../../../data/Surveys"
 import { dataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
@@ -46,24 +46,24 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 	let numUpcoming = 0;
 	switch (props.name) {
 		case "events": panelList = (<> 
-				{eventsList.map((event, i) => {return (
-					i<5?<EventPanel key={i} {...event}/>:null
+				{exampleEvents.map((event, i) => {return (
+					i<5?<EventPanel key={i} index={i} {...event}/>:null
 				);})}
 			</>
 		); break; case "data": panelList = (<>
 				{dataPanels.map((panel, i) => {return (
-					i<5?<MyDataPanel key={i} {...panel}/>:null
+					i<5?<MyDataPanel key={i} index={i} {...panel}/>:null
 				);})}
 			</>
 		);break; case "surveys": panelList = (<>
 			{exampleSurveys.map((panel, i) => {return (
-				i<5?<SurveyPanel key={i} {...panel}/>:null
+				i<5?<SurveyPanel key={i} index={i} {...panel}/>:null
 			);})}
 		</>
 	); break; case "upcoming": panelList = (<>
-				{eventsList.map((event, i) => {
+				{exampleEvents.map((event, i) => {
 					if (event.signed_up) return (
-						numUpcoming<5?<EventPanel key={i} upcoming={true} {...event}/>:null
+						numUpcoming<5?<EventPanel index={i} key={i} upcoming={true} {...event}/>:null
 					);
 					else return null;
 				})}

@@ -1,16 +1,19 @@
+import { useNavigate } from "react-router-dom";
 import "./SurveyPanel.css";
 interface SurveyPanelProps {
 	title: string,
 	organization: string,
 	length: string,
-	completed: boolean
+	completed: boolean,
+	index: number,
 }
 
 const SurveyPanel = (props: SurveyPanelProps) => {
 	const colorDiv = {backgroundColor: "#7DE05A"};
 	const greyText = {color: "#848484"};
+	const navigate = useNavigate();
 	return (
-		<div className={`surveyPanel ${props.completed?"activeSurveyPanel":""}`}>
+		<div onClick={() => navigate(`/survey/${props.index}`)} className={`surveyPanel ${props.completed?"activeSurveyPanel":""}`}>
 			<div className="surveyPanelHeader">
 				<div>
 					<p style={colorDiv} className={"surveyBubble"}>New</p>

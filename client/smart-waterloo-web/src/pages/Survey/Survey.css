@@ -1,7 +1,7 @@
 .surveyHeader{
 	text-align: left;
 }
-.surveyPanel{
+.surveyPagePanel{
 	padding: 5rem; 
 	background-color: #F8F8F8;
 	border: 0.3rem solid black;
@@ -10,6 +10,6 @@
 	width: min(90%, 40rem);
 	box-sizing: border-box;
 }
-.surveyPanel>*{
+.surveyPagePanel>*{
 	padding: 0.5rem;
 }

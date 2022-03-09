@@ -3,10 +3,13 @@ import Navbar from "../../components/Navbar";
 import { MobileContext } from "../../App";
 import {useContext} from "react";
 import "./Events.css";
-import eventsData from "./Events.json";
+import { exampleEvents } from "../../data/Events";
 import EventPanel from "./EventPanel";
+import Cookies from "universal-cookie";
 const Events = () => {
 	const {mobile} = useContext(MobileContext);
+	const cookies = new Cookies()
+	cookies.set("back", "/events");
 	return (
 		<>
 			<Navbar root={true}/>
@@ -18,8 +21,8 @@ const Events = () => {
 						<hr/>
 						<p>A brief description about what the events listed here are and any other info that is required.</p>
 						<div className={"eventGrid"}>
-							{eventsData.map((event, i) => {return (
-								<EventPanel key={i} {...event}/>
+							{exampleEvents.map((event, i) => {return (
+								<EventPanel index={i} key={i} {...event}/>
 							);})}
 						</div>
 					</div>

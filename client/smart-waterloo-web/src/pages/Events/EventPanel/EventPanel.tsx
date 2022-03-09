@@ -1,3 +1,4 @@
+import { Navigate, useNavigate } from "react-router-dom";
 import "./EventPanel.css";
 interface EventPanelProps {
 	title: string,
@@ -7,7 +8,9 @@ interface EventPanelProps {
 	end_date: string,
 	category: string,
 	signed_up: boolean,
-	upcoming?: boolean
+	upcoming?: boolean,
+	name: string,
+	index: number,
 }
 
 const EventPanel = (props: EventPanelProps) => {
@@ -17,8 +20,9 @@ const EventPanel = (props: EventPanelProps) => {
 	const colorText = {color: props.upcoming?"#EF276F":"#3FBAFF"};
 	const greyText = {color: "#848484"};
 	const colorDiv = {backgroundColor: props.upcoming?"#EF276F":"#3FBAFF"};
+	const navigate = useNavigate();
 	return (
-		<div style={props.signed_up?activeColour:{}} className={`eventPanel`}>
+		<div onClick={() => navigate(`/eventdetails/${props.name}`)} style={props.signed_up?activeColour:{}} className={`eventPanel`}>
 			<div className="eventPanelHeader">
 				<div className="horizontal">
 					<p style={colorDiv} className={"eventBubble"}>NEW</p>

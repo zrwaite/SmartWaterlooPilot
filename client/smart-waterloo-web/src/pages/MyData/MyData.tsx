@@ -19,7 +19,7 @@ const MyData = () => {
 						<p>A brief description about what the events listed here are and any other info that is required.</p>
 						<div className={"myDataGrid"}>
 							{dataPanels.map((panel, i) => {return (
-								<MyDataPanel key={i} {...panel}/>
+								<MyDataPanel index={i} key={i} {...panel}/>
 							);})}
 						</div>
 					</div>

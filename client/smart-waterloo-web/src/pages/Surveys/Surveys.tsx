@@ -19,7 +19,7 @@ const Surveys = () => {
 						<p>A brief description about what the surveys listed here are and any other info that is required.</p>
 						<div className={"surveyGrid"}>
 							{exampleSurveys.map((survey, i) => {return (
-								<SurveyPanel key={i} {...survey}/>
+								<SurveyPanel index={i} key={i} {...survey}/>
 							);})}
 						</div>
 					</div>
