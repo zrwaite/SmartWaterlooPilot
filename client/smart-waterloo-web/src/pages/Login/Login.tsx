@@ -6,6 +6,7 @@ import Cookies from "universal-cookie";
 import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { MobileContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 declare const window: any;
 
@@ -17,7 +18,8 @@ const Login = () => {
 	const [currentUser, setCurrentUser] = useState("Tyragreenex");
 	const [buttonText, setButtonText] = useState(signIn);
 	const connected = "Connected!";
-	
+
+	const navigate = useNavigate();
 	// const [state, setState] = useState({inputs: {password: ""}});
 	// const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => {
 	// 	let stateKeys: keyof typeof state.inputs;
@@ -51,6 +53,10 @@ const Login = () => {
 			console.log(error);
 		}
 	};
+	//Delay function
+	function delay(ms: number) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
 
 	const connectWallet = async () => {
 		try {
@@ -63,8 +69,17 @@ const Login = () => {
 				method: "eth_requestAccounts",
 			});
 
-			setCurrentUser(accounts[0].substring(0,4) + "..."+ accounts[0].substring(accounts[0].length-4));
+			setCurrentUser(accounts[0].substring(0, 4) + "..." + accounts[0].substring(accounts[0].length - 4));
 			setButtonText(connected);
+			//Just a sleep function for it to wait before moving to dashboard
+			(async () => {
+				// Do something before delay
+				console.log('before delay')
+
+				await delay(1800);
+
+				navigate("/dashboard");
+			})();
 		} catch (error) {
 			console.log(error);
 		}

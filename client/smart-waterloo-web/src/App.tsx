@@ -1,4 +1,5 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import SplashPage from "./pages/SplashPage";
 import ScanQR from "./pages/ScanQR";
@@ -14,6 +15,7 @@ import SharedData from "./pages/SharedData";
 import MyData from "./pages/MyData";
 import Events from "./pages/Events";
 import Survey from "./pages/Survey";
+import EventDetails from "./pages/EventDetails";
 import Surveys from "./pages/Surveys";
 import { useEffect } from 'react';
 import "./styles/styles.css";
@@ -69,6 +71,7 @@ function App() {
 					<Route path="/surveys" element={<Surveys />}></Route>
 					<Route path="/survey/:id" element={<Survey />}></Route>
 					<Route path="/events" element={<Events />}></Route>
+					<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
 					<Route path="*" element={<NotFound />}></Route>
 				</Routes>
 			</Router>
