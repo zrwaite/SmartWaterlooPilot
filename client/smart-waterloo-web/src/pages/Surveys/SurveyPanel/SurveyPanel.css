@@ -11,8 +11,18 @@
 .activeSurveyPanel{
 	background-color: #D0F4C433;
 }
+.surveyPanel>*{
+	margin: 0.2rem;
+}
 .surveyPanelHeader{
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
+}
+.surveyBubble{
+	border-radius: 0.5rem;
+	padding: 0.1rem 0.3rem;
+	margin-right: 0.5rem;
+	color: white;
+	text-align: center;
 }

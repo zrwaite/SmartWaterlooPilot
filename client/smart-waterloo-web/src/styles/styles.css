@@ -60,7 +60,7 @@ button{
 	color: black;
 	font-family: pangram, serif;
 }
-input, option, .select{
+input, option, .select, textarea{
 	height: 2rem;
 	font-size :1rem;
 	color: black;
@@ -70,6 +70,14 @@ input, option, .select{
 	padding: 0 0.2rem;
 	margin: 0.2rem;
 	text-align: var(--defaultTextAlign);
+}
+input[type='radio'], input[type='checkbox']{
+	height: 1.5rem;
+	width: 1.5rem;
+	margin: 0.25rem 0.5rem;
+}
+textarea {
+	resize: vertical;
 }
 .horizontal{
 	display:flex;

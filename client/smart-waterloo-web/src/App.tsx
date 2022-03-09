@@ -11,8 +11,10 @@ import TestPage from "./pages/TestPage";
 // import OnboardingButton from "./components/Navbar/authentication/metmaskauth";
 import SignUp from "./pages/SignUp";
 import About from "./pages/About";
+import SharedData from "./pages/SharedData";
 import MyData from "./pages/MyData";
 import Events from "./pages/Events";
+import Survey from "./pages/Survey";
 import EventDetails from "./pages/EventDetails";
 import Surveys from "./pages/Surveys";
 import { useEffect } from 'react';
@@ -55,9 +57,10 @@ function App() {
 			<Router>
 				<Routes>
 					<Route path="/" element={<SplashPage />}></Route>
-					<Route path="/dashboard" element={<Dashboard />}></Route>
+					<Route path="/dashboard/*" element={<Dashboard />}></Route>
 					<Route path="/qr" element={<ScanQR />}></Route>
 					<Route path="/about" element={<About />}></Route>
+					<Route path="/sharedData" element={<SharedData />}></Route>
 					<Route path="/privacy" element={<Privacy />}></Route>
 					<Route path="/login" element={<Login />}></Route>
 					{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
@@ -66,6 +69,7 @@ function App() {
 					<Route path="/test" element={<TestPage />}></Route>
 					<Route path="/data" element={<MyData />}></Route>
 					<Route path="/surveys" element={<Surveys />}></Route>
+					<Route path="/survey/:id" element={<Survey />}></Route>
 					<Route path="/events" element={<Events />}></Route>
 					<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
 					<Route path="*" element={<NotFound />}></Route>

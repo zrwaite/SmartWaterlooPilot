@@ -3,7 +3,7 @@ import Navbar from "../../components/Navbar";
 import { MobileContext } from "../../App";
 import {useContext} from "react";
 import "./Surveys.css";
-import surveysData from "./Surveys.json";
+import {exampleSurveys} from "../../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 const Surveys = () => {
 	const {mobile} = useContext(MobileContext);
@@ -18,7 +18,7 @@ const Surveys = () => {
 						<hr/>
 						<p>A brief description about what the surveys listed here are and any other info that is required.</p>
 						<div className={"surveyGrid"}>
-							{surveysData.map((survey, i) => {return (
+							{exampleSurveys.map((survey, i) => {return (
 								<SurveyPanel key={i} {...survey}/>
 							);})}
 						</div>
