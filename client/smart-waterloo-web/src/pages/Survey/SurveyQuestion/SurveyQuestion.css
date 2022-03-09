@@ -8,3 +8,17 @@
 	background-color: black;
 	color: white;
 }
+.questionInput, .questionTextarea{
+	width: 100%;
+}
+.questionChoice{
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.questionChoices{
+	display: flex;
+	flex-direction: column;
+	margin: 0 3rem;
+}

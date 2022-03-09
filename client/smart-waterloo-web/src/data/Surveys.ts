@@ -23,8 +23,8 @@ const exampleSurveys:SurveyDataType[] = [
 				type: "mc",
 				choices: ["Good", "Poor"]
 			}, {
-				prompt: "Tell us about your favorite part of the event and why.",
-				type: "long"
+				prompt: "Tell us about your favorite part of the event.",
+				type: "short"
 			}, {
 				prompt: "Would you recommend this event to a friend, why or why not?",
 				type:"long"
