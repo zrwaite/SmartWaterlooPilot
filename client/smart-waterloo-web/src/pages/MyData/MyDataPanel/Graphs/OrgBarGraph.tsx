@@ -1,8 +1,8 @@
-import FakeBarGraph from "./BarGraph.png"
+import FakeBarGraph from "./OrgBarGraph.png"
 import "./Graphs.css";
-const BarGraph = () => {
+const OrgBarGraph = () => {
 	return (
 		<img className={"fakeGraph"} src={FakeBarGraph} alt="fake bar graph"/>
 	)
 }
-export default BarGraph;
+export default OrgBarGraph;

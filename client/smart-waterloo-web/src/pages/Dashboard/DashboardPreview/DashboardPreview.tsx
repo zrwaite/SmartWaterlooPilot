@@ -5,7 +5,7 @@ import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
 import {exampleEvents} from "../../../data/Events";
 import {exampleSurveys} from "../../../data/Surveys"
-import { dataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
+import { userDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"
 import SurveyPanel from "../../Surveys/SurveyPanel"
@@ -51,7 +51,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				);})}
 			</>
 		); break; case "data": panelList = (<>
-				{dataPanels.map((panel, i) => {return (
+				{userDataPanels.map((panel, i) => {return (
 					i<5?<MyDataPanel key={i} index={i} {...panel}/>:null
 				);})}
 			</>

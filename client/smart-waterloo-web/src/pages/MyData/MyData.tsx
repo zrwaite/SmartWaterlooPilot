@@ -2,7 +2,7 @@ import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
 import { MobileContext } from "../../App";
 import {useContext} from "react";
-import { dataPanels } from "./MyDataPanel/MyDataPanels";
+import { userDataPanels } from "./MyDataPanel/MyDataPanels";
 import MyDataPanel from "./MyDataPanel";
 import "./MyData.css";
 import Cookies from "universal-cookie";
@@ -21,7 +21,7 @@ const MyData = () => {
 						<hr/>
 						<p>A brief description about what the events listed here are and any other info that is required.</p>
 						<div className={"myDataGrid"}>
-							{dataPanels.map((panel, i) => {return (
+							{userDataPanels.map((panel, i) => {return (
 								<MyDataPanel index={i} key={i} {...panel}/>
 							);})}
 						</div>
