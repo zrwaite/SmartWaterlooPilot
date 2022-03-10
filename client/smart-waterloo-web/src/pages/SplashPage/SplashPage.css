@@ -10,3 +10,13 @@
 	margin-top: 1rem;
 	text-align: center;
 }
+.splashPageButton{
+	margin-top: 2rem;
+	width: min(20rem, 80%);
+	height: 3rem;
+	font-size: 2rem;
+}
+.splashPageLogo{
+	width: min(40rem, 90%);
+	height: auto;
+}

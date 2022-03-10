@@ -39,10 +39,11 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 			</div>
 		)
 	}
+	const fullWidth = {width: "100%"}
 	return (
-		<div>
+		<div style={fullWidth}>
 			<div className="questionPrompt">
-				<div className={"questionIndexBubble"}>{props.index}</div>
+				<div className={"questionIndexBubble"}>{props.index + 1}</div>
 				<p>{props.prompt}</p>
 			</div>
 			<div>

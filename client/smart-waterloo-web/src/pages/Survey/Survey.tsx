@@ -56,6 +56,7 @@ const Survey = () => {
 	const questions = surveyData.questions.map((question, i) => {
 		return <SurveyQuestion key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
 	})
+	const complete = answers.every(answer => answer!=="");
 	return (
 		<>
 			<Navbar root={false}/>
@@ -64,7 +65,15 @@ const Survey = () => {
 					{mobile?<h4>{surveyData.title}</h4>:<h4 className={"surveyHeader"}>{surveyData.title}</h4>}
 					<p>{surveyData.organization}</p>
 					<p style={greyText}>{surveyData.length} to fill</p>
-					{progress?(<>{questions}</>):<SurveyLanding setParentProgress={childSetProgress}/>}
+					<div className={"surveyForm"}>
+						
+					</div>
+					{progress?(
+						<div className={"surveyForm"}>
+							{questions}
+							<button className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Done</button>
+						</div>
+						):<SurveyLanding setParentProgress={childSetProgress}/>}
 				</div>
 			</div>
 		</>

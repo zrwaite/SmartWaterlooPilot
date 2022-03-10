@@ -9,6 +9,8 @@ import BackNav from "./BackNav";
 import {Link} from "react-router-dom";
 import {MobileContext} from "../../App";
 import MobileNavItem from "./MobileNavItem";
+import SWRLogo from "../../images/SWRLogo.png"
+
 
 type NavbarProps = {
 	root:boolean;
@@ -48,8 +50,7 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 				{({mobile}) => (
 					<div className="navbar">
 						<div className="leftNav">
-							<div className="grey circle h6"></div>
-							<h6>Name of the Project</h6>
+							<img src={SWRLogo} alt={"SWR Logo"} className={"navbarLogo"}/>
 						</div>
 						<div className="rightNav">
 							{mobile?
