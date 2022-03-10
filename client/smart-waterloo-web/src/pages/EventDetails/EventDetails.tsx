@@ -2,7 +2,7 @@ import Navbar from "../../components/Navbar";
 import { MobileContext } from "../../App";
 import {useContext} from "react";
 import "./EventDetails.css";
-import eventsDetailsData from "./EventDetailsData.json";
+import {exampleEvents} from "../../data/Events";
 import NotFound from "../NotFound";
 import {useParams} from "react-router-dom";
 
@@ -10,7 +10,7 @@ const EventsDetails = () => {
 	const {mobile} = useContext(MobileContext);
 
 	const { name } = useParams();
-	const event = eventsDetailsData.find(event => event.name === name);
+	const event = exampleEvents.find(event => event.name === name);
 
 	if (!event) return <NotFound />;
 

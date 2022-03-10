@@ -5,8 +5,11 @@ import {useContext} from "react";
 import { dataPanels } from "./MyDataPanel/MyDataPanels";
 import MyDataPanel from "./MyDataPanel";
 import "./MyData.css";
+import Cookies from "universal-cookie";
 const MyData = () => {
 	const {mobile} = useContext(MobileContext);
+	const cookies = new Cookies();
+	cookies.set("back", "/data");
 	return (
 		<>
 			<Navbar root={true}/>

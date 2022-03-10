@@ -15,6 +15,7 @@ function SplashPage() {
 			<section className="splashPage">
 				<img src={SWRLogo} alt={"SWR Logo"} className="splashPageLogo"/>
 				<h3>Name of the Project</h3>
+				<button onClick={() => navigate("/qr")} className="blackButton splashPageButton">Scan Card</button>
 				<button onClick={() => navigate("/signup")} className="blackButton splashPageButton">Sign Up</button>
 				<button onClick={() => navigate("/login")} className="blackButton splashPageButton">Log In</button>
 			</section>

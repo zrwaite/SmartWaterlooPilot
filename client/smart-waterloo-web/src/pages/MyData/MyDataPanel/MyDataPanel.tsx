@@ -12,7 +12,7 @@ interface MyDataPanelProps {
 const MyDataPanel = (props: MyDataPanelProps) => {
 	const navigate = useNavigate();
 	return (
-		<div onClick={() => navigate("/data")}className={`myDataPanel`}>
+		<div onClick={() => navigate("/shareddata")}className={`myDataPanel`}>
 			<h5>{props.title}</h5>
 			<props.component/>
 			<p>Learn more</p>

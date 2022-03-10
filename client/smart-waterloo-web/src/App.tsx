@@ -1,5 +1,4 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import { useParams } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import SplashPage from "./pages/SplashPage";
 import ScanQR from "./pages/ScanQR";
@@ -60,12 +59,13 @@ function App() {
 					<Route path="/dashboard/*" element={<Dashboard />}></Route>
 					<Route path="/qr" element={<ScanQR />}></Route>
 					<Route path="/about" element={<About />}></Route>
-					<Route path="/sharedData" element={<SharedData />}></Route>
+					<Route path="/shareddata" element={<SharedData />}></Route>
 					<Route path="/privacy" element={<Privacy />}></Route>
 					<Route path="/login" element={<Login />}></Route>
 					{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
 					<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
-					<Route path="/signup" element={<SignUp />}></Route>
+					<Route path="/signup" element={<SignUp org={false} />}></Route>
+					<Route path="/signup/org" element={<SignUp org={true} />}></Route>
 					<Route path="/test" element={<TestPage />}></Route>
 					<Route path="/data" element={<MyData />}></Route>
 					<Route path="/surveys" element={<Surveys />}></Route>

@@ -1,0 +1,18 @@
+.avatarImage{
+	width: 10rem;
+	height: auto;
+	margin-top: 1rem;
+	align-self: center;
+}
+.verifiedContainer{
+	display:flex;
+	align-items: var(--defaultTextAlign);
+	justify-content: center;
+	flex-direction: column;
+}
+.businessNumberInput{
+	margin: 0 0 2rem;
+	text-align: var(--defaultTextAlign);
+	padding: 0 0.5rem;
+	width: min(80%, 15rem);
+}

@@ -3,7 +3,6 @@ import Navbar from "../../components/Navbar";
 import AvatarPNG from "../../images/fullAvatar.png";
 import "./Login.css";
 import Cookies from "universal-cookie";
-import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { MobileContext } from "../../App";
 import { useNavigate } from "react-router-dom";

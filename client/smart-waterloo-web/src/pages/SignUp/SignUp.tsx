@@ -6,12 +6,15 @@ import Profile from "./Profile";
 import Landing from "./Landing";
 import MeetAvatar from "./MeetAvatar";
 import Nickname from "./Nickname";
-import Password from "./MetaMask";
+import MetaMask from "./MetaMask";
+import Verified from "./Verified";
 import StepBubbles from "./StepBubbles";
 import Cookies from "universal-cookie";
 import {ActionMeta} from "react-select";
 
-type SignUpProps = {};
+type SignUpProps = {
+	org:boolean;
+};
 const defaultProfileProps = {
 	day: "",
 	month: "",
@@ -29,6 +32,9 @@ const defaultNicknameProps = {
 	nickname: "",
 	avatarString: ""
 }
+const defaultVerifiedProps = {
+	businessNumber: ""
+}
 const defaultAvatarProps = {
 	avatarString: ""
 }
@@ -38,6 +44,7 @@ const defaultSignUpState = {
 		...defaultProfileProps,
 		...defaultNicknameProps,
 		...defaultAvatarProps,
+		...defaultVerifiedProps
 	}
 }
 type SignUpState = typeof defaultSignUpState;
@@ -92,6 +99,12 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 		avatarPropKeys.forEach(key => avatarProps[key] = this.state.formInputs[key]);
 		return avatarProps;
 	}
+	getVerifiedProps(){
+		let verifiedProps = defaultVerifiedProps;
+		let avatarPropKeys = Object.keys(defaultVerifiedProps) as [keyof typeof defaultVerifiedProps];
+		avatarPropKeys.forEach(key => verifiedProps[key] = this.state.formInputs[key]);
+		return verifiedProps;
+	}
 	render() {
 		let stepSection:any;
 		
@@ -104,13 +117,15 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 			case 0: stepSection = (
 				<Landing updateStep={this.updateStep}/>
 			); break; case 1: stepSection = (
-				<Password updateStep={this.updateStep}/>
+				<MetaMask updateStep={this.updateStep}/>
 			); break; case 2: stepSection = (
+				this.props.org?
+				<Verified {...userInputFunctions} verifiedData={this.getVerifiedProps()}/>:
 				<Profile {...userInputFunctions} formData={this.getProfileProps()} />
 			); break; case 3: stepSection = (
 				<MeetAvatar avatarData={this.getAvatarProps()} updateParentState={this.childSetState} updateStep={this.updateStep}/>
 			);break; case 4: stepSection = (
-				<Nickname {...userInputFunctions} nicknameData={this.getNicknameProps()}/>
+				<Nickname {...userInputFunctions} org={this.props.org} nicknameData={this.getNicknameProps()}/>
 			); break; default: stepSection = (
 				<h1>Invalid step "{this.state.step}"</h1>
 			);
@@ -121,7 +136,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 				<div className={"PageContainer"}>
 					<MobileContext.Consumer>
 						{({mobile}) => (<div className={mobile? "":"DesktopPanel"}>
-							{this.state.step?<StepBubbles step={this.state.step}/>:null}
+							{this.state.step?<StepBubbles org={this.props.org}step={this.state.step}/>:null}
 							{stepSection}
 						</div>)}
 					</MobileContext.Consumer>

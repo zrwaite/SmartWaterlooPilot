@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 type NicknameProps = {
 	updateStep: Function,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void
-	nicknameData: { nickname: string, avatarString: string }
+	nicknameData: { nickname: string, avatarString: string };
+	org: boolean
 };
 function Nickname(props: NicknameProps) {
 	const navigate = useNavigate();
@@ -28,7 +29,11 @@ function Nickname(props: NicknameProps) {
 				<img src={`https://avatars.dicebear.com/api/bottts/${props.nicknameData.avatarString}.svg`} alt="Avatar" className="avatarImage" />
 				<hr />
 				<input onChange={props.handleParentInputChange} name="nickname" type="text" className="nicknameInput" id="nicknameInput" placeholder="Enter a nickname" value={props.nicknameData.nickname} />
-				<p style={redText}>*Do not use your real name or the name of someone you know for privacy reasons.</p>
+				{
+					props.org?
+					<p style={redText}>*Use the real name of the organization that this account is for.</p>:
+					<p style={redText}>*Do not use your real name or the name of someone you know for privacy reasons.</p>
+				}
 				<button style={spacing} onClick={routeChange} className={"blackButton signUpButton"}>Start using "The Project"</button>
 			</div>
 			<button onClick={() => props.updateStep(3)} className={"blackButton"}>Back</button>
