@@ -1,24 +1,97 @@
-.eventDetailsGrid{
-	display:grid;
-	margin-top: 1rem;
-	grid-template-columns: repeat(auto-fit, minmax(12rem, auto));
-	gap: 1rem;
-	width: 50%;
+p{
+	padding: 0.2rem;
 }
-.eventDetailsPanel{
-	background-color: white;
-	display:flex;
-	align-items: flex-start;
-	flex-direction: column;
-	justify-content: flex-start;
-	border: solid black 0.3rem;
-	border-radius: 1rem;
-	padding: 0.5rem;
-	max-width: 300px;
+.eventTitle{
+	font-size: large;
+	font-weight: bold;
+}
+.eventBackButton{
+	display: flex;
+	text-align: "left";
+	/* display: inline-block; */
 }
 .eventImage {
 	display: block;
-	margin-left: auto;
-	margin-right: auto;
-	width: 0%;
+	/* margin-left: auto;
+	margin-right: auto; */
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	border-radius: 0.8rem 0.8rem 0 0;
+  }
+
+.greytext{
+	color: grey;
+}
+.DesktopPanelNoPadding{
+	background-color: #F8F8F8;
+	border: 0.3rem solid black;
+	border-radius: 1rem;
+	margin: 0;
+	padding: 0;
+	width: min(90%, 40rem);
+	box-sizing: border-box;
+}
+
+.DesktopPanelNoBorder{
+	background-color: #F8F8F8;
+	border: 0rem solid black;
+	border-radius: 1rem;
+	margin: 1rem 2rem 2rem;
+	padding: 0;
+	width: min(90%, 40rem);
+	box-sizing: border-box;
+	text-align: left;
+}
+.lightblue{
+	padding: 0.4rem;
+	display: inline-block;
+	background-color: #4294dc;
+	color: white;
+	border-radius: 0.6rem;
+	font-weight: bold;
+}
+.lightbluetext{
+	padding: 0.4rem;
+	color: #4294dc;
+	display: inline-block;
+	font-weight: bold;
+}
+
+.signupButton{
+	display:flex;
+	align-items: center;
+	height: 100%;
+	padding-right: 0.5rem;
+	background-color: black;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: right;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+}
+.signupButton:hover, .signupButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: black;
+}
+.navbarEventDetails{
+	display:flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: white;
+	padding: 1rem;
+	margin: 0 0 0.5rem 0;
+}
+.rightNavEventDetails{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding-right: 0.5rem;
+}
+.leftNavEventDetails{
+	display:flex;
+	align-items: center;
+	justify-content: center;
 }
