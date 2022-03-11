@@ -1,6 +1,7 @@
 import React from 'react';
 import "./EventDetails.css";
-import eventDataRaw from './EventDetailsData.json';
+// import eventDataRaw from './EventDetailsData.json';
+import { exampleEvents }  from "../../data/Events";
 
 interface EventData {
     "name": string;
@@ -17,13 +18,16 @@ interface EventData {
 
 interface MatchingEvent {
     "name": string;
+	"text": string;
+	"class": string;
+	"bottomClass": string;
 }
-const EventInfo = (prop: MatchingEvent): any => {
-    const eventData: EventData[] = eventDataRaw;
+const EventInfo = (props: MatchingEvent): any => {
+    const eventData: EventData[] = exampleEvents;
 
-    const event = eventData.find( event => event.name === prop.name);
+    const event = eventData.find( event => event.name === props.name);
 
-    if (!event) return (<p>Event {prop} not found</p>);
+    if (!event) return (<p>Event {props.name} not found</p>);
 
 	return (
 		<>
@@ -39,8 +43,6 @@ const EventInfo = (prop: MatchingEvent): any => {
 				<p className="greytext">{event.start_date} {event.end_date}</p>
 				<br></br>
 				<p >{event.description}</p>
-				<br></br>
-				<p className="blackButton">Sign Up</p>
 			</div>
 		</>
 	)

@@ -75,6 +75,49 @@ p{
 	background-color: white;
 	color: black;
 }
+.signupLightBlueButton{
+	display:flex;
+	align-items: center;
+	height: 100%;
+	padding-right: 0.5rem;
+	background-color: #4294dc;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: right;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+}
+.signupLightBlueButton:hover, .signupLightBlueButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: #4294dc;
+}
+.bottomButton{
+	background-color: black;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: center;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+}
+.bottomButton:hover, .blackButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: black;
+}
+.bottomLightBlueButton{
+	background-color: #4294dc;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: center;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+}
+.bottomLightBlueButton:hover, .blackButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: #4294dc;
+}
 .navbarEventDetails{
 	display:flex;
 	align-items: center;
@@ -94,4 +137,44 @@ p{
 	display:flex;
 	align-items: center;
 	justify-content: center;
+}
+
+/* Popup style */
+.popup-box {
+	position: fixed;
+	background: #00000050;
+	width: 100%;
+	height: 100vh;
+	top: 0;
+	left: 0;
+  }
+  
+.box {
+	position: relative;
+	width: 70%;
+	margin: 0 auto;
+	height: auto;
+	max-height: 70vh;
+	margin-top: calc(100vh - 85vh - 20px);
+	background: #fff;
+	border-radius: 4px;
+	padding: 20px;
+	border: 1px solid #999;
+	overflow: auto;
+}
+  
+.close-icon {
+	content: 'x';
+	cursor: pointer;
+	position: fixed;
+	right: calc(15% - 30px);
+	top: calc(100vh - 85vh - 33px);
+	background: #ededed;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	line-height: 20px;
+	text-align: center;
+	border: 1px solid #999;
+	font-size: 20px;
 }
