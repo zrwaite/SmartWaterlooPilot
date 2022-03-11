@@ -4,3 +4,13 @@
 	grid-template-columns: repeat(auto-fit, minmax(22rem, auto));
 	gap: 1rem
 }
+.addSurveySection{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.addSurveyButton{
+	width: 10rem;
+	height: 5rem;
+	font-size: 2rem;
+}

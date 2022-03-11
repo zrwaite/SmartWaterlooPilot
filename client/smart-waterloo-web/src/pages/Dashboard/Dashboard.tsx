@@ -9,10 +9,11 @@ import Cookies from "universal-cookie";
 import DashboardPreview from "./DashboardPreview";
 import Sidebar from "../../components/Sidebar";
 import {useContext} from "react";
-import {MobileContext} from "../../App";
+import {MobileContext, OrgContext} from "../../App";
 
 const Dashboard = () => {
 	let {mobile} = useContext(MobileContext);
+	let {org} = useContext(OrgContext);
 	const cookies = new Cookies();
 	cookies.set("back", "/dashboard");
     return (
@@ -28,7 +29,7 @@ const Dashboard = () => {
 				):<Sidebar page="dashboard"/>}
 				<div className={"besideAside"}>
 					<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
-						<DashboardPreview name="upcoming"/>
+						{org?null:<DashboardPreview name="upcoming"/>}
 						<DashboardPreview name="data"/>
 						<DashboardPreview name="events"/>
 						<DashboardPreview name="surveys"/>

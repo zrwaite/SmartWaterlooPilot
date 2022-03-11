@@ -7,3 +7,13 @@
 	grid-template-columns: repeat(auto-fit, minmax(22rem, auto));
 	gap: 1rem
 }
+.addEventButton{
+	height: 5rem;
+	width: 10rem;
+	font-size: 2rem;
+}
+.addEventSection{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+}

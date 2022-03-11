@@ -15,6 +15,7 @@ interface DashboardPreviewHeaderProps {
 	mobile: boolean
 }
 const DashboardPreviewHeader = (props:DashboardPreviewHeaderProps) => {
+	const {mobile} = useContext(MobileContext);
 	const dataset = Data[props.name];
 	return (
 		<div className ={"previewHeaderContainer"}>
@@ -24,7 +25,7 @@ const DashboardPreviewHeader = (props:DashboardPreviewHeaderProps) => {
 				<hr/>
 				<p>{props.mobile?dataset.short:dataset.long}</p>
 			</div>
-			<img className="dashboardLinkArrow" src={arrowIcon} alt="arrow"/>
+			{mobile?<img className="dashboardLinkArrow" src={arrowIcon} alt="arrow"/>:null}
 		</div>
 	)
 }
@@ -48,28 +49,34 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 	let numUpcoming = 0;
 	switch (props.name) {
 		case "events": panelList = (<> 
-				{exampleEvents.map((event, i) => {return (
-					i<5?<EventPanel key={i} index={i} {...event}/>:null
-				);})}
-			</>
+			{exampleEvents.map((event, i) => {return (
+				i<5?<EventPanel key={i} index={i} {...event}/>:null
+			);})}
+			{org?<div className={"dashboardPreviewAddSection"}>
+				<button onClick={() => navigate("/createevent")} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
+			</div>:null}
+		</>
 		); break; case "data": panelList = (<>
-				{dataPanelsData.map((panel, i) => {return (
-					i<5?<MyDataPanel key={i} index={i} {...panel}/>:null
-				);})}
-			</>
+			{dataPanelsData.map((panel, i) => {return (
+				i<5?<MyDataPanel key={i} index={i} {...panel}/>:null
+			);})}
+		</>
 		);break; case "surveys": panelList = (<>
 			{exampleSurveys.map((panel, i) => {return (
 				i<5?<SurveyPanel key={i} index={i} {...panel}/>:null
 			);})}
+			{org?<div className={"dashboardPreviewAddSection"}>
+				<button onClick={() => navigate("/createsurvey")} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
+			</div>:null}
 		</>
 		); break; case "upcoming": panelList = (<>
-				{exampleEvents.map((event, i) => {
-					if (event.signed_up) return (
-						numUpcoming<5?<EventPanel index={i} key={i} upcoming={true} {...event}/>:null
-					);
-					else return null;
-				})}
-			</>
+			{exampleEvents.map((event, i) => {
+				if (event.signed_up) return (
+					numUpcoming<5?<EventPanel index={i} key={i} upcoming={true} {...event}/>:null
+				);
+				else return null;
+			})}
+		</>
 		);
 	}
 	return (

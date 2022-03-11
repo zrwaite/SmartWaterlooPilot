@@ -15,6 +15,7 @@ import MyData from "./pages/MyData";
 import Events from "./pages/Events";
 import Survey from "./pages/Survey";
 import CreateEvent from "./pages/CreateEvent";
+import CreateSurvey from "./pages/CreateSurvey";
 import EventDetails from "./pages/EventDetails";
 import Surveys from "./pages/Surveys";
 import { useEffect } from 'react';
@@ -86,6 +87,7 @@ function App() {
 						<Route path="/events" element={<Events />}></Route>
 						<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
 						{org?<Route path="/createevent" element={<CreateEvent />}></Route>:null}
+						{org?<Route path="/createsurvey" element={<CreateSurvey />}></Route>:null}
 						<Route path="*" element={<NotFound />}></Route>
 					</Routes>
 				</Router>

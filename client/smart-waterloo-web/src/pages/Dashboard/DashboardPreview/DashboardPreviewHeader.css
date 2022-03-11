@@ -22,3 +22,13 @@
 .subPanelFlex>*{
 	margin: 0.5rem;
 }
+.dashboardPreviewAddSection{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.dashboardPreviewAddButton{
+	height: 5rem;
+	width: 10rem;
+	font-size: 2rem;
+}

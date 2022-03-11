@@ -47,7 +47,7 @@
 }
 .dashboardGridContainer {
 	display:grid;
-	grid-template-columns: repeat( auto-fit, minmax(40rem, auto) );;
+	grid-template-columns: repeat( auto-fit, minmax(35rem, auto) );;
 	align-items:flex-start;
 	justify-content: stretch;
 	row-gap: 1rem;
