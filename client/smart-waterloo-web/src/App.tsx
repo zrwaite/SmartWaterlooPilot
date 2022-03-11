@@ -14,6 +14,7 @@ import SharedData from "./pages/SharedData";
 import MyData from "./pages/MyData";
 import Events from "./pages/Events";
 import Survey from "./pages/Survey";
+import CreateEvent from "./pages/CreateEvent";
 import EventDetails from "./pages/EventDetails";
 import Surveys from "./pages/Surveys";
 import { useEffect } from 'react';
@@ -72,6 +73,7 @@ function App() {
 					<Route path="/survey/:id" element={<Survey />}></Route>
 					<Route path="/events" element={<Events />}></Route>
 					<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
+					<Route path="/createevent" element={<CreateEvent />}></Route>
 					<Route path="*" element={<NotFound />}></Route>
 				</Routes>
 			</Router>

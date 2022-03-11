@@ -1,0 +1,38 @@
+.createNavbar{
+	width: 100%;
+	display: flex;
+	justify-content:space-between;
+	align-items: center;
+	margin-bottom: 2rem;
+}
+.createEventHeader{
+	margin: 1rem 0;
+}
+.mcInputs{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+.createEventInput{
+	width: 100%;
+	box-sizing: border-box;
+}
+.singleLineMultiInput{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+.singleLineMultiInput>*{
+	margin: 0 0.2rem
+}
+.createEventMiniInput{
+	width: 2rem;
+}
+.createEventTextArea{
+	width: 100%;
+}
+.createEventButton{
+	width: 80%;
+	margin: auto;
+	height: 2rem;
+}
