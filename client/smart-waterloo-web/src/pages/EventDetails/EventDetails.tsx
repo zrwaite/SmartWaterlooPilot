@@ -22,6 +22,10 @@ const EventsDetails = () => {
 	let {mobile} = useContext(MobileContext);
 	const navigate = useNavigate();
 	const { name } = useParams();
+	const [buttonText, setText] = React.useState("Sign Up");
+	const [signupButtonClass, setClass] = React.useState("signupButton");
+	const [bottomButtonClass, setBottomClass] = React.useState("bottomButton");
+
 	const event = eventDataRaw.find(event => event.name === name);
 
 	if (!event) return <NotFound />;
@@ -36,7 +40,9 @@ const EventsDetails = () => {
 					</div>					
 				</div>
 				<div>
-					<p className='signupButton'>Sign Up</p>
+					<p className={signupButtonClass} onClick={() => { setText("Signed Up ✓") 
+					setClass("signupLightBlueButton")
+					setBottomClass("bottomLightBlueButton") }}>{buttonText}</p>
 				</div>				
 			</div>
 			<div className={"PageContainer"}>
@@ -44,7 +50,12 @@ const EventsDetails = () => {
 					<div className={"eventDetails"}>
 						<img src={event_images.basketball_skills} alt={event.title} className="eventImage" />
 					</div>
-					<EventInfo name={event.name} />
+					<EventInfo name={event.name} text={buttonText} class={signupButtonClass} bottomClass={bottomButtonClass}/>
+					<div className="DesktopPanelNoBorder">
+						<p className={bottomButtonClass} onClick={() => { setText("Signed Up ✓") 
+						setClass("signupLightBlueButton")
+						setBottomClass("bottomLightBlueButton") }}>{buttonText}</p>
+					</div>
 				</div>
 			</div>	
 		</>
