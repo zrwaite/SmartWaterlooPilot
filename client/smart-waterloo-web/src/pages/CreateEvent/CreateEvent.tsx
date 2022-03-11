@@ -48,6 +48,10 @@ const CreateEvent = () => {
 					<h6 style={complete?link:greyText}>Next</h6>
 				</div>
 				<div className={mobile? "":"DesktopPanel"}>
+					<div className={"disclaimer"}>
+						<div className={"infoBubble"}><p>i</p></div>
+						<p>Please make sure information is correct. You will not be able to edit this event once it is published.</p>
+					</div>
 					<h2 className={"createEventHeader"}>Create New Event ✏️</h2>
 					<div className={"formQuestion"}>
 						<p>Name of Event</p>

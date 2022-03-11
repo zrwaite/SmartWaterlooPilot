@@ -7,7 +7,7 @@ import {primaryNavItems} from "./navItems";
 import {topElements as primarySidebarItems} from "../Sidebar/SidebarOptions";
 import BackNav from "./BackNav";
 import {Link} from "react-router-dom";
-import {MobileContext} from "../../App";
+import {MobileContext, OrgContext} from "../../App";
 import MobileNavItem from "./MobileNavItem";
 import SWRLogo from "../../images/SWRLogo.png"
 
@@ -48,34 +48,39 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 		return (
 			<MobileContext.Consumer>
 				{({mobile}) => (
-					<div className="navbar">
-						<div className="leftNav">
-							<img src={SWRLogo} alt={"SWR Logo"} className={"navbarLogo"}/>
-						</div>
-						<div className="rightNav">
-							{mobile?
-								<img className="h3 imageButton" onClick={this.openModal} src={icons.menu} alt="menu" />
-								:
-								primaryNavItems.map((item,i) => 
-								<Link key={i} to={item.link} className={"removeLinkStyles"}>
-									{item.title}
-								</Link> 
-								)
-							}
-						</div>
-						<Modal isOpen={this.state.open} onRequestClose={this.closeModal} style={this.customStyles} contentLabel="Example Modal">
-							<div className="navModal">
-								<div className="navModalHeader">
-									<img className="h4 imageButton" onClick={this.closeModal} src={icons.close} alt="close"></img>
+					<OrgContext.Consumer>
+						{({org, setOrg}) => (
+							<div className="navbar">
+								<div className="leftNav">
+									<img src={SWRLogo} alt={"SWR Logo"} className={"navbarLogo"}/>
+									<h4 onClick={() => setOrg(!org)}>{org?"Org":"User"}</h4>
 								</div>
-								{
-									[...primaryNavItems, ...primarySidebarItems].map((item,i) => 
-										<MobileNavItem {...item} i={i} key={i}/>
-									)
-								}
+								<div className="rightNav">
+									{mobile?
+										<img className="h3 imageButton" onClick={this.openModal} src={icons.menu} alt="menu" />
+										:
+										primaryNavItems.map((item,i) => 
+										<Link key={i} to={item.link} className={"removeLinkStyles"}>
+											{item.title}
+										</Link> 
+										)
+									}
+								</div>
+								<Modal isOpen={this.state.open} onRequestClose={this.closeModal} style={this.customStyles} contentLabel="Example Modal">
+									<div className="navModal">
+										<div className="navModalHeader">
+											<img className="h4 imageButton" onClick={this.closeModal} src={icons.close} alt="close"></img>
+										</div>
+										{
+											[...primaryNavItems, ...primarySidebarItems].map((item,i) => 
+												<MobileNavItem {...item} i={i} key={i}/>
+											)
+										}
+									</div>
+								</Modal>
 							</div>
-						</Modal>
-					</div>
+						)}
+					</OrgContext.Consumer>
 				)}
 			</MobileContext.Consumer>
 		);

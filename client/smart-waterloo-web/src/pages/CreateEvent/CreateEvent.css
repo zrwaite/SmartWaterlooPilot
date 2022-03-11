@@ -3,7 +3,7 @@
 	display: flex;
 	justify-content:space-between;
 	align-items: center;
-	margin-bottom: 2rem;
+	margin-bottom: 3rem;
 }
 .createEventHeader{
 	margin: 1rem 0;
@@ -35,4 +35,22 @@
 	width: 80%;
 	margin: auto;
 	height: 2rem;
+}
+.disclaimer{
+	background-color: #FFEDCA;
+	display:flex;
+	width: calc(100% + 2rem);
+	margin-left: -2rem;
+	margin-top: -2rem;
+	padding: 1rem;
+}
+.infoBubble{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	border: 0.2rem solid black;
+	border-radius: 50%;
+	height: 1rem;
+	width: 1rem;
+	margin: 0.5rem;
 }

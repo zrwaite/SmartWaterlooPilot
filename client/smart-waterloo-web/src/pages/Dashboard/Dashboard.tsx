@@ -10,7 +10,8 @@ import DashboardPreview from "./DashboardPreview";
 import Sidebar from "../../components/Sidebar";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
-const Account = () => {
+
+const Dashboard = () => {
 	let {mobile} = useContext(MobileContext);
 	const cookies = new Cookies();
 	cookies.set("back", "/dashboard");
@@ -38,4 +39,4 @@ const Account = () => {
     );
 }
 
-export default Account;
+export default Dashboard;

@@ -1,15 +1,17 @@
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-import { MobileContext } from "../../App";
+import { MobileContext, OrgContext } from "../../App";
 import {useContext} from "react";
-import { userDataPanels } from "./MyDataPanel/MyDataPanels";
+import { userDataPanels, orgDataPanels } from "./MyDataPanel/MyDataPanels";
 import MyDataPanel from "./MyDataPanel";
 import "./MyData.css";
 import Cookies from "universal-cookie";
 const MyData = () => {
 	const {mobile} = useContext(MobileContext);
+	const {org} = useContext(OrgContext);
 	const cookies = new Cookies();
 	cookies.set("back", "/data");
+	const dataPanelsData = org?orgDataPanels:userDataPanels;
 	return (
 		<>
 			<Navbar root={true}/>
@@ -21,7 +23,7 @@ const MyData = () => {
 						<hr/>
 						<p>A brief description about what the events listed here are and any other info that is required.</p>
 						<div className={"myDataGrid"}>
-							{userDataPanels.map((panel, i) => {return (
+							{dataPanelsData.map((panel, i) => {return (
 								<MyDataPanel index={i} key={i} {...panel}/>
 							);})}
 						</div>

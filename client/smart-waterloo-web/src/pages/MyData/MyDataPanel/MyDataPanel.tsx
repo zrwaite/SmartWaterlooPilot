@@ -8,6 +8,7 @@ interface MyDataPanelProps {
     learnMore: string;
     component: () => JSX.Element;
 	index: Number
+	description:string;
 }
 
 
@@ -20,7 +21,10 @@ const MyDataPanel = (props: MyDataPanelProps) => {
 				<h5>{props.title}</h5>
 				{mobile?null:<p>Learn more</p>}
 			</div>
-			<props.component/>
+			<div className="myDataPanelGraph">
+				<props.component/>
+				{mobile?<p>{props.description}</p>:null}
+			</div>
 			{mobile?<p>Learn more</p>:null}
 		</div>
 	)

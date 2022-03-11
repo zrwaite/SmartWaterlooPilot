@@ -26,14 +26,25 @@ interface mobileContextType {
 	mobile: boolean;
 	setMobile: Function;
 }
+interface orgContextType {
+	org: boolean;
+	setOrg: Function;
+}
 const defaultMobileContext = {
 	mobile: false,
 	setMobile: () => {}
 }
+const defaultOrgContext = {
+	org: true,
+	setOrg: () => {}
+}
 const MobileContext = React.createContext<mobileContextType>(defaultMobileContext);
+const OrgContext = React.createContext<orgContextType>(defaultOrgContext);
 function App() {
 	const [mobile, setMobile] = useState(false);
+	const [org, setOrg] = useState(true);
 	const mobileValue = {mobile, setMobile};
+	const orgValue = {org, setOrg};
 	function updateSizing() {
 		const root:HTMLElement|null = document.querySelector(':root');
 		if (root) {
@@ -54,32 +65,34 @@ function App() {
 	});
 	return (
 		<MobileContext.Provider value={mobileValue}>
-			<Router>
-				<Routes>
-					<Route path="/" element={<SplashPage />}></Route>
-					<Route path="/dashboard/*" element={<Dashboard />}></Route>
-					<Route path="/qr" element={<ScanQR />}></Route>
-					<Route path="/about" element={<About />}></Route>
-					<Route path="/shareddata" element={<SharedData />}></Route>
-					<Route path="/privacy" element={<Privacy />}></Route>
-					<Route path="/login" element={<Login />}></Route>
-					{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
-					<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
-					<Route path="/signup" element={<SignUp org={false} />}></Route>
-					<Route path="/signup/org" element={<SignUp org={true} />}></Route>
-					<Route path="/test" element={<TestPage />}></Route>
-					<Route path="/data" element={<MyData />}></Route>
-					<Route path="/surveys" element={<Surveys />}></Route>
-					<Route path="/survey/:id" element={<Survey />}></Route>
-					<Route path="/events" element={<Events />}></Route>
-					<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
-					<Route path="/createevent" element={<CreateEvent />}></Route>
-					<Route path="*" element={<NotFound />}></Route>
-				</Routes>
-			</Router>
+			<OrgContext.Provider value={orgValue}>	
+				<Router>
+					<Routes>
+						<Route path="/" element={<SplashPage />}></Route>
+						<Route path="/dashboard" element={<Dashboard />}></Route>
+						<Route path="/qr" element={<ScanQR />}></Route>
+						<Route path="/about" element={<About />}></Route>
+						<Route path="/shareddata" element={<SharedData />}></Route>
+						<Route path="/privacy" element={<Privacy />}></Route>
+						<Route path="/login" element={<Login />}></Route>
+						{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
+						<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
+						<Route path="/signup" element={<SignUp org={false} />}></Route>
+						<Route path="/signup/org" element={<SignUp org={true} />}></Route>
+						<Route path="/test" element={<TestPage />}></Route>
+						<Route path="/data" element={<MyData />}></Route>
+						<Route path="/surveys" element={<Surveys />}></Route>
+						<Route path="/survey/:id" element={<Survey />}></Route>
+						<Route path="/events" element={<Events />}></Route>
+						<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
+						{org?<Route path="/createevent" element={<CreateEvent />}></Route>:null}
+						<Route path="*" element={<NotFound />}></Route>
+					</Routes>
+				</Router>
+			</OrgContext.Provider>
 		</MobileContext.Provider>
 	);
 }
 
 export default App;
-export {MobileContext};
+export {MobileContext, OrgContext};

@@ -151,6 +151,7 @@ textarea {
 	padding: 2rem;
 	width: min(90%, 40rem);
 	box-sizing: border-box;
+	overflow: hidden;
 }
 .fullScreenPanel{
 	background-color: #F8F8F8;

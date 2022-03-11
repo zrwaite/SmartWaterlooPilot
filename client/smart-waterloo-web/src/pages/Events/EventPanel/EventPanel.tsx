@@ -22,7 +22,7 @@ const EventPanel = (props: EventPanelProps) => {
 	const colorDiv = {backgroundColor: props.upcoming?"#EF276F":"#3FBAFF"};
 	const navigate = useNavigate();
 	return (
-		<div onClick={() => navigate(`/event/${props.name}`)} style={props.signed_up?activeColour:{}} className={`eventPanel`}>
+		<div onClick={() => navigate(`/eventdetails/${props.name}`)} style={props.signed_up?activeColour:{}} className={`eventPanel`}>
 			<div className="eventPanelHeader">
 				<div className="horizontal">
 					<p style={colorDiv} className={"eventBubble"}>NEW</p>

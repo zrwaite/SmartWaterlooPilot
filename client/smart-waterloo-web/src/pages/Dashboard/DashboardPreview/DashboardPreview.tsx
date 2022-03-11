@@ -1,11 +1,11 @@
 import {useContext} from "react";
-import { MobileContext } from "../../../App";
+import { MobileContext, OrgContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
 import {exampleEvents} from "../../../data/Events";
 import {exampleSurveys} from "../../../data/Surveys"
-import { userDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
+import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"
 import SurveyPanel from "../../Surveys/SurveyPanel"
@@ -35,8 +35,10 @@ interface DashboardPreviewProps {
 const DashboardPreview = (props:DashboardPreviewProps) => {
 	const navigate = useNavigate();
 	const {mobile} = useContext(MobileContext);
+	const {org} = useContext(OrgContext);
 	const color = Data[props.name].color;
 	const linkTo = Data[props.name].link;
+	const dataPanelsData = org?orgDataPanels:userDataPanels;
 	if (mobile) return (
 		<button onClick={()=> navigate(linkTo)}className={`dashboardLinkSection ${color}`}>
 			<DashboardPreviewHeader mobile={true} name={props.name}/>
@@ -51,7 +53,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				);})}
 			</>
 		); break; case "data": panelList = (<>
-				{userDataPanels.map((panel, i) => {return (
+				{dataPanelsData.map((panel, i) => {return (
 					i<5?<MyDataPanel key={i} index={i} {...panel}/>:null
 				);})}
 			</>
@@ -60,7 +62,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				i<5?<SurveyPanel key={i} index={i} {...panel}/>:null
 			);})}
 		</>
-	); break; case "upcoming": panelList = (<>
+		); break; case "upcoming": panelList = (<>
 				{exampleEvents.map((event, i) => {
 					if (event.signed_up) return (
 						numUpcoming<5?<EventPanel index={i} key={i} upcoming={true} {...event}/>:null

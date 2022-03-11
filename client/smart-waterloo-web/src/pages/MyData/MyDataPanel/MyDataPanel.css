@@ -8,6 +8,7 @@
 	border-radius: 1rem;
 	padding: 0.5rem;
 	min-width: 20rem;
+	max-height: 12rem;
 	cursor: pointer;
 }
 .myDataPanelHeader{
@@ -15,4 +16,8 @@
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
+}
+.myDataPanelGraph{
+	display: flex;
+	overflow: hidden;
 }
