@@ -54,3 +54,58 @@
 	width: 1rem;
 	margin: 0.5rem;
 }
+.createSurveyQuestionSection{
+	display: flex;
+	flex-direction: column;
+}
+.questionTypeMCSection{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+.questionTypeMCSection>div{
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+}
+.questionNumber{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	border: 0.2rem solid black;
+	border-radius: 50%;
+	height: 1rem;
+	width: 1rem;
+	margin: 0.5rem;
+	padding: 0.5rem;
+}
+.choiceNumber{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	border: 0.15rem solid black;
+	border-radius: 50%;
+	height: 0.8rem;
+	width: 0.8rem;
+	margin: 0.5rem;
+	padding: 0.4rem;
+}
+.addQuestionButton{
+	width: 80%;
+	margin: 1rem auto;
+	height: 2rem;
+	font-size: 1.25rem;
+}
+.addChoiceButton{
+	width: 50%;
+	margin: 1rem auto;
+	height: 1.75rem;
+	font-size: 1.25rem;
+}
+.addQuestionButtonSection{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.tabbedSection{
+	margin-left: 3rem;
+}
