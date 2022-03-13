@@ -2,52 +2,50 @@ import bcrypt from "bcrypt";
 import pool from "../database/db";
 import {encrypt} from "./encryption";
 import {userData, defaultUserData} from "../database/userData";
-const postUser = async (params:string[]) => {
+const postUser = async (userParams:string[], userDataParams: string[]) => {
 	let errors:string[] = [];
 	let success = false;
 	let newUser:any = {};
-	let valuesString = "";
-	const numParams = userData.unencryptedKeys.length + userData.encryptedKeys.length*2;
-	for (let i=0; i<numParams; i++) {
-		if (i) valuesString += ", ";
-		valuesString += `$${i+1}`;
+	const numDataParams = userDataParams.length*2;
+	let userDataValuesString = "";
+	for (let i=0; i<numDataParams; i++) {
+		if (i) userDataValuesString += ", ";
+		userDataValuesString += `$${i+1}`;
 	}
 	// let postUser = {...defaultUserData};
-	let queryValues:string[] = [];
-	const queryKeys = [...userData.unencryptedKeys].join(", ");
-	[...userData.unencryptedKeys].forEach((key, i) => {
-		if (key==="password") {
-			const password_hash = bcrypt.hashSync(params[i], 10);
-			if (password_hash=="0") errors.push("invalid hashing");
-			else queryValues.push(password_hash);
-		} else {
-			queryValues.push(params[i]);
-		}
-	});
-	[...userData.encryptedKeys].forEach((key, i) => {
-		let encryptedValue = encrypt(params[i]);
-		queryValues.push(encryptedValue.content, encryptedValue.iv);
-		queryValues.push(key, `${key}_iv`);
+	let userDataQueryValues:string[] = [];
+	let userDataQueryKeys:string[] = [];
+	[...userData.dataKeys].forEach((key, i) => {
+		let encryptedValue = encrypt(userDataParams[i]);
+		userDataQueryValues.push(encryptedValue.content, encryptedValue.iv);
+		userDataQueryKeys.push(key, `${key}_iv`);
 	})
-
-	
-	if (errors.length===0) {
-		console.log("INSERT INTO users ("+ queryKeys +") VALUES("+valuesString+") RETURNING id");
-		try {
-			newUser = await pool.query(
-				"INSERT INTO users ("+ queryKeys +") VALUES("+valuesString+") RETURNING id",
-				[...queryValues]
-			);
-			success = true;
-			newUser = newUser.rows[0].id;
-		} catch (e: any) {
-			if (e.code == 23505) {
-				errors.push(e.detail);
-			} else {
-				errors.push("database error");
-			}
-			console.log(e);
+	const userDataQueryKeysString = userDataQueryKeys.join(", ");
+	try {
+		let newUserDataId = await pool.query(
+			"INSERT INTO user_data ("+ userDataQueryKeysString +") VALUES("+userDataValuesString+") RETURNING id",
+			[...userDataQueryValues]
+		);
+		let userQueryValues:string[] = [];
+		let userQueryKeysString = "userid, password_hash, user_data_id" ;
+		userQueryValues.push(userParams[0]);
+		const password_hash = bcrypt.hashSync(userParams[1], 10);
+		if (password_hash=="0") errors.push("invalid hashing");
+		else userQueryValues.push(password_hash);
+		userQueryValues.push(newUserDataId.rows[0].id.toString());
+		let newUserId = await pool.query(
+			"INSERT INTO users ("+ userQueryKeysString +") VALUES($1, $2, $3) RETURNING id",
+			[...userQueryValues]
+		);
+		newUser = newUserId.rows[0].id;
+		success = true;
+	} catch (e: any) {
+		if (e.code == 23505) {
+			errors.push(e.detail);
+		} else {
+			errors.push("database error");
 		}
+		console.log(e);
 	}
 	return {success: success, errors: errors, newUser: newUser};
 }

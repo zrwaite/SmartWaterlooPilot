@@ -32,9 +32,10 @@ export default class userController {
 	}
 	static async postUser(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success, params, errors} = await getBodyParams(req, [...userData.unencryptedKeys, ...userData.encryptedKeys]);
-		if (success){
-			let postResult = await postUser(params);
+		let {success:userSuccess, params:userParams, errors:userErrors} = await getBodyParams(req, ['userid', 'password']);
+		let {success:userDataSuccess, params:userDataParams, errors:userDataErrors} = await getBodyParams(req, [...userData.dataKeys]);
+		if (userSuccess && userDataSuccess){
+			let postResult = await postUser(userParams, userDataParams);
 			if (postResult.success) {
 				result.status = 201;
 				result.success = true;
@@ -42,7 +43,7 @@ export default class userController {
 					userData: postResult.newUser,
 				}
 			} else postResult.errors.forEach((error) => {result.errors.push(error)});
-		} else errors.forEach((param)=>{result.errors.push("missing "+param)});
+		} else [...userErrors, userDataErrors].forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
 	}
 	static async putUser(req: Request, res: Response) {

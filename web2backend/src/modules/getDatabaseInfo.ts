@@ -1,6 +1,6 @@
 import pool from "../database/db";
 import {decrypt} from "./encryption";
-const encryptedUserKeys = [
+const userDataKeys = [
 	{iv: "nickname_iv", name: "nickname"},
 	{iv: "birth_day_iv", name: "birth_day"},
 	{iv: "birth_month_iv", name: "birth_month"},
@@ -15,7 +15,7 @@ const encryptedUserKeys = [
 	{iv: "postal_code_iv", name: "postal_code"},
 	{iv: "avatar_string_iv", name: "avatar_string"},
 ]
-const defaultUser = {
+const defaultUserData = {
 	nickname:"",
 	birth_day: "",
 	birth_month: "",
@@ -31,7 +31,7 @@ const defaultUser = {
 	avatar_string: "",
 }
 
-type defaultEntry = typeof defaultUser;
+type defaultEntry = typeof defaultUserData;
 const parseRow = (defaultReturn:defaultEntry, encryptedKeys:{iv:string, name:string}[], rows: any[]) => {
 	let result = defaultReturn;
 	encryptedKeys.forEach((pair) => {
@@ -40,7 +40,6 @@ const parseRow = (defaultReturn:defaultEntry, encryptedKeys:{iv:string, name:str
 	return result;
 }
 const getEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, defaultReturn:defaultEntry, encryptedKeys:{iv:string, name:string}[]) => {
-	console.log("hello");
 	let entries:any;
 	let status;
 	let queryParams = "";
@@ -55,7 +54,6 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string, tableNam
 				[idValue]
 			)
 		}
-		console.log(entries.rows);
 		if (entries.rows) {
 			let results = [];
 			for (let i = 0; i<entries.rows.length; i++) {
@@ -72,11 +70,23 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string, tableNam
 	return {status: status, entries: entries, errors: errors};
 }
 const getUser = async (userid:string) => {
-	const {status, entries, errors} = await getEntries(false, "userid", userid, "users", defaultUser, encryptedUserKeys);
-	return {status: status, user: entries[0], errors: errors}
+	let status = 400;
+	let result;
+	let errors;
+	const userDataId = await pool.query(
+		`SELECT user_data_id FROM users WHERE userid = $1 LIMIT 1`,
+		[userid]
+	)
+	if (userDataId.rows[0]) {
+		const {status:userDataStatus, entries, errors:userDataErrors} = await getEntries(false, "id", userDataId.rows[0].user_data_id, "user_data", defaultUserData, userDataKeys);
+		status = userDataStatus;
+		result = entries[0];
+		errors = userDataErrors;
+	} else status = 404;
+	return {status: status, user: result, errors: errors}
 }
 const getUsers = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "users", defaultUser, encryptedUserKeys);
+	const {status, entries, errors} = await getEntries(true, "", "", "user_data", defaultUserData, userDataKeys);
 	return {status: status, users: entries, errors: errors}
 }
 export {getUser, getUsers}

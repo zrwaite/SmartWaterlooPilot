@@ -1,8 +1,10 @@
-const defaultUnencryptedUserKeys = {
+const defaultUser = {
 	userid: "",
-	password: ""
+	password: "",
+	events: [],
+	surveys: []
 }
-const defaultEncryptedUserData = {
+const defaultUserData = {
 	nickname: "",
 	birth_day: "",
 	birth_month: "",
@@ -17,23 +19,12 @@ const defaultEncryptedUserData = {
 	postal_code: "",
 	avatar_string: ""
 }
-const defaultEncryptedUserArrays = {
-	events: [],
-	surveys: []
-}
-const defaultUserData = {
-	...defaultEncryptedUserData,
-	...defaultUnencryptedUserKeys,
-	...defaultEncryptedUserArrays,
-}
-const unencyptedUserKeys = Object.keys(defaultUnencryptedUserKeys) as (keyof typeof defaultUnencryptedUserKeys)[];
-const encryptedUserKeys = Object.keys(defaultEncryptedUserData) as (keyof typeof defaultEncryptedUserData)[];
-const encryptedUserArrays = Object.keys(defaultEncryptedUserArrays) as (keyof typeof defaultEncryptedUserArrays)[];
-const ivUserKeys = encryptedUserKeys.map((key) => key + "_iv");
+const userKeys = Object.keys(defaultUser) as (keyof typeof defaultUser)[];
+const userDataKeys = Object.keys(defaultUserData) as (keyof typeof defaultUserData)[];
+const userDataIVKeys = userDataKeys.map((key) => key + "_iv");
 const userData = {
-	unencryptedKeys: unencyptedUserKeys,
-	encryptedKeys: encryptedUserKeys,
-	ivKeys: ivUserKeys,
-	encryptedArrays: encryptedUserArrays
+	userKeys: userKeys,
+	dataKeys: userDataKeys,
+	ivKeys: userDataIVKeys,
 }
 export {userData, defaultUserData}
