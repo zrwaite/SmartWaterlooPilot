@@ -18,9 +18,6 @@ interface EventData {
 
 interface MatchingEvent {
     "name": string;
-	"text": string;
-	"class": string;
-	"bottomClass": string;
 }
 const EventInfo = (props: MatchingEvent): any => {
     const eventData: EventData[] = exampleEvents;
@@ -37,7 +34,7 @@ const EventInfo = (props: MatchingEvent): any => {
 			<div className="DesktopPanelNoBorder">
 				<p className="lightblue">NEW</p>
 				<p className="lightbluetext">{event.category}</p>
-				<p className="eventTitle">{event.title}</p>
+				<h5 className="eventTitle">{event.title}</h5>
 				<p>{event.organization}</p>
 				<p className="greytext">For Ages {event.age_range}</p>
 				<p className="greytext">{event.start_date} {event.end_date}</p>
