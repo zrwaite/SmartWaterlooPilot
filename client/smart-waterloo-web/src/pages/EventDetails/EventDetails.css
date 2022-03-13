@@ -1,47 +1,19 @@
 p{
 	padding: 0.2rem;
 }
-.eventTitle{
-	font-size: large;
-	font-weight: bold;
-}
-.eventBackButton{
-	display: flex;
-	text-align: "left";
-	/* display: inline-block; */
-}
-.eventImage {
-	display: block;
-	/* margin-left: auto;
-	margin-right: auto; */
-	margin: 0;
-	padding: 0;
-	width: 100%;
-	border-radius: 0.8rem 0.8rem 0 0;
-  }
-
 .greytext{
 	color: grey;
 }
-.DesktopPanelNoPadding{
-	background-color: #F8F8F8;
-	border: 0.3rem solid black;
-	border-radius: 1rem;
-	margin: 0;
-	padding: 0;
-	width: min(90%, 40rem);
-	box-sizing: border-box;
-}
-
-.DesktopPanelNoBorder{
-	background-color: #F8F8F8;
-	border: 0rem solid black;
-	border-radius: 1rem;
-	margin: 1rem 2rem 2rem;
-	padding: 0;
-	width: min(90%, 40rem);
-	box-sizing: border-box;
+.eventTitle{
 	text-align: left;
+}
+.navbarEventDetails{
+	display:flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: white;
+	padding: 1rem;
+	margin: 0 0 0.5rem 0;
 }
 .lightblue{
 	padding: 0.4rem;
@@ -57,7 +29,41 @@ p{
 	display: inline-block;
 	font-weight: bold;
 }
+.eventBackButton{
+	display: flex;
+	text-align: left;
+	/* display: inline-block; */
+}
+.eventImage {
+	display: block;
+	/* margin-left: auto;
+	margin-right: auto; */
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	border-radius: 0.8rem 0.8rem 0 0;
+}
+.DesktopPanelNoPadding{
+	background-color: #F8F8F8;
+	border: 0.3rem solid black;
+	border-radius: 1rem;
+	margin: 0;
+	padding: 0;
+	width: min(90%, 40rem);
+	box-sizing: border-box;
+}
+.DesktopPanelNoBorder{
+	background-color: #F8F8F8;
+	border: 0rem solid black;
+	border-radius: 1rem;
+	margin: 1rem 2rem 2rem;
+	padding: 0;
+	width: min(90%, 40rem);
+	box-sizing: border-box;
+	text-align: left;
+}
 
+/* Buttons */
 .signupButton{
 	display:flex;
 	align-items: center;
@@ -69,6 +75,7 @@ p{
 	text-align: right;
 	border: 0.2rem solid black;
 	transition: color 0.3s, background-color 0.3s;
+	display: inline-block;
 }
 .signupButton:hover, .signupButton:active{
 	cursor: pointer;
@@ -86,6 +93,7 @@ p{
 	text-align: right;
 	border: 0.2rem solid black;
 	transition: color 0.3s, background-color 0.3s;
+	display: inline-block;
 }
 .signupLightBlueButton:hover, .signupLightBlueButton:active{
 	cursor: pointer;
@@ -100,7 +108,25 @@ p{
 	border: 0.2rem solid black;
 	transition: color 0.3s, background-color 0.3s;
 }
-.bottomButton:hover, .blackButton:active{
+.bottomButton:hover, .bottomButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: black;
+}
+.popupButton{
+	/* display:flex; */
+	display: inline;
+	align-items: center;
+	height: 100%;
+	padding-right: 0.5rem;
+	background-color: black;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: right;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+}
+.popupButton:hover, .popupButton:active{
 	cursor: pointer;
 	background-color: white;
 	color: black;
@@ -113,19 +139,43 @@ p{
 	border: 0.2rem solid black;
 	transition: color 0.3s, background-color 0.3s;
 }
-.bottomLightBlueButton:hover, .blackButton:active{
+.bottomLightBlueButton:hover, .bottomLightBlueButto:active{
 	cursor: pointer;
 	background-color: white;
 	color: #4294dc;
 }
-.navbarEventDetails{
+
+/* Popup Panel */
+.popupPanel{
+	position: fixed;
+    left: 40%;
+    top: 20%;
 	display:flex;
 	align-items: center;
-	justify-content: space-between;
 	background-color: white;
+	border: 0.2rem solid black;
+	border-radius: 0.5rem;
+	width: 20%;
+	min-width: 15rem;
+	max-width: 25rem;
+	box-sizing: border-box;
+	justify-content: center;
+} 
+.messagePanel{
+	display:flex;
+	align-items: center;
+	background-color: white;
+	bottom: auto;
+	box-sizing: border-box;
+	justify-content: center;
+} 
+.popupMessage{
+	padding: 0.2rem;
+	display: flex;
 	padding: 1rem;
-	margin: 0 0 0.5rem 0;
 }
+
+/* Others */
 .rightNavEventDetails{
 	display:flex;
 	align-items: center;
@@ -137,44 +187,4 @@ p{
 	display:flex;
 	align-items: center;
 	justify-content: center;
-}
-
-/* Popup style */
-.popup-box {
-	position: fixed;
-	background: #00000050;
-	width: 100%;
-	height: 100vh;
-	top: 0;
-	left: 0;
-  }
-  
-.box {
-	position: relative;
-	width: 70%;
-	margin: 0 auto;
-	height: auto;
-	max-height: 70vh;
-	margin-top: calc(100vh - 85vh - 20px);
-	background: #fff;
-	border-radius: 4px;
-	padding: 20px;
-	border: 1px solid #999;
-	overflow: auto;
-}
-  
-.close-icon {
-	content: 'x';
-	cursor: pointer;
-	position: fixed;
-	right: calc(15% - 30px);
-	top: calc(100vh - 85vh - 33px);
-	background: #ededed;
-	width: 25px;
-	height: 25px;
-	border-radius: 50%;
-	line-height: 20px;
-	text-align: center;
-	border: 1px solid #999;
-	font-size: 20px;
 }
