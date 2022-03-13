@@ -3,6 +3,7 @@ import {response, responseInterface} from "../models/response"; //Created pre-fo
 import {postUser} from "../modules/postDatabaseInfo";
 import {getUser, getUsers} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
+import {userData} from "../database/userData";
 
 
 /* register controller */
@@ -31,12 +32,9 @@ export default class userController {
 	}
 	static async postUser(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success, params, errors} = await getBodyParams(req, ["userid", "password", "nickname"]);
-		const userid = params[0];
-		const password = params[1];
-		const nickname = params[2];
+		let {success, params, errors} = await getBodyParams(req, [...userData.unencryptedKeys, ...userData.encryptedKeys]);
 		if (success){
-			let postResult = await postUser(userid, password, nickname);
+			let postResult = await postUser(params);
 			if (postResult.success) {
 				result.status = 201;
 				result.success = true;

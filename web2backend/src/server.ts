@@ -1,7 +1,6 @@
 import express from "express";
 import cors from "cors";
 import env from "dotenv";
-import path from "path";
 import {response} from "./models/response"; //Created pre-formatted uniform response
 import {Request, Response} from "express"; //Typescript types
 

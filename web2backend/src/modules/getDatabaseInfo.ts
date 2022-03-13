@@ -1,10 +1,34 @@
 import pool from "../database/db";
 import {decrypt} from "./encryption";
 const encryptedUserKeys = [
-	{iv: "nickname_iv", name: "nickname"}
+	{iv: "nickname_iv", name: "nickname"},
+	{iv: "birth_day_iv", name: "birth_day"},
+	{iv: "birth_month_iv", name: "birth_month"},
+	{iv: "birth_year_iv", name: "birth_year"},
+	{iv: "gender_iv", name: "gender"},
+	{iv: "height_iv", name: "height"},
+	{iv: "weight_iv", name: "weight"},
+	{iv: "religion_iv", name: "religion"},
+	{iv: "sexuality_iv", name: "sexuality"},
+	{iv: "race_iv", name: "race"},
+	{iv: "grade_iv", name: "grade"},
+	{iv: "postal_code_iv", name: "postal_code"},
+	{iv: "avatar_string_iv", name: "avatar_string"},
 ]
 const defaultUser = {
-	nickname:""
+	nickname:"",
+	birth_day: "",
+	birth_month: "",
+	birth_year: "",
+	gender: "",
+	height: "",
+	weight: "",
+	religion: "",
+	sexuality: "",
+	race: "",
+	grade: "",
+	postal_code: "",
+	avatar_string: "",
 }
 
 type defaultEntry = typeof defaultUser;
