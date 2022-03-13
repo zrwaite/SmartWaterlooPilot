@@ -179,19 +179,6 @@
         {
             "inputs": [
                 {
-                    "internalType": "address payable",
-                    "name": "_user",
-                    "type": "address"
-                }
-            ],
-            "name": "setUser",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
                     "internalType": "address",
                     "name": "newOwner",
                     "type": "address"
@@ -297,11 +284,6 @@
         {
             "inputs": [
                 {
-                    "internalType": "address",
-                    "name": "",
-                    "type": "address"
-                },
-                {
                     "internalType": "uint256",
                     "name": "",
                     "type": "uint256"
@@ -397,19 +379,6 @@
                     "internalType": "bytes32",
                     "name": "",
                     "type": "bytes32"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [],
-            "name": "user",
-            "outputs": [
-                {
-                    "internalType": "address payable",
-                    "name": "",
-                    "type": "address"
                 }
             ],
             "stateMutability": "view",

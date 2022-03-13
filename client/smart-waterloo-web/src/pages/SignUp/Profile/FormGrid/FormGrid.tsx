@@ -3,7 +3,7 @@ import { genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileF
 import {useEffect, useState} from "react";
 import Select, { ActionMeta } from "react-select";
 import userABI from "../../utils/SmartUser.json"
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 declare var window: any;
 
@@ -26,9 +26,9 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 	});
 
 	//User Information Smart Contract
-	const contractAddress = "0xE51426A3e2e793B740A95073C6598e82fF64A09a";
+	const contractAddress = "0xDe74E890C12076EBf5D9bf38dBC2E8166f835764";
 	const contractABI = userABI.abi;
-	const onSubmit = () => {
+	const onSubmit = async() => {
 		const provider = new ethers.providers.Web3Provider(window.ethereum);
 		const signer = provider.getSigner();
 		const userContract = new ethers.Contract(
@@ -36,14 +36,8 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 			contractABI,
 			signer
 		);
-		
-		console.log(userAddress[0],(props.formData.day + props.formData.month + props.formData.year), props.formData.gender, props.formData.height, props.formData.weight, props.formData.grade, props.formData.postalCode, props.formData.race, props.formData.religion, props.formData.sexuality);
-
-		userContract.addInfo(provider, (props.formData.day + props.formData.month + props.formData.year), props.formData.gender, props.formData.height, props.formData.weight, props.formData.grade, props.formData.postalCode, props.formData.race, props.formData.religion, props.formData.sexuality);
-		// //Just trying to retrieve information from the smart contrsct, so testing using the getTotalUsers function
-		const d = userContract.getInfo(userAddress[0]);
-		console.log(d);
-		// props.updateStep(3);
+		userContract.addInfo(userAddress[0], (props.formData.day + props.formData.month + props.formData.year), props.formData.gender, props.formData.height, props.formData.weight, props.formData.grade, props.formData.postalCode, props.formData.race, props.formData.religion, props.formData.sexuality);
+		props.updateStep(3);
 	};
 
 	return (
