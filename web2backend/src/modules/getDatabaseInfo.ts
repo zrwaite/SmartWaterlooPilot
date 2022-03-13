@@ -1,37 +1,9 @@
 import pool from "../database/db";
 import {decrypt} from "./encryption";
-const userDataKeys = [
-	{iv: "nickname_iv", name: "nickname"},
-	{iv: "birth_day_iv", name: "birth_day"},
-	{iv: "birth_month_iv", name: "birth_month"},
-	{iv: "birth_year_iv", name: "birth_year"},
-	{iv: "gender_iv", name: "gender"},
-	{iv: "height_iv", name: "height"},
-	{iv: "weight_iv", name: "weight"},
-	{iv: "religion_iv", name: "religion"},
-	{iv: "sexuality_iv", name: "sexuality"},
-	{iv: "race_iv", name: "race"},
-	{iv: "grade_iv", name: "grade"},
-	{iv: "postal_code_iv", name: "postal_code"},
-	{iv: "avatar_string_iv", name: "avatar_string"},
-]
-const defaultUserData = {
-	nickname:"",
-	birth_day: "",
-	birth_month: "",
-	birth_year: "",
-	gender: "",
-	height: "",
-	weight: "",
-	religion: "",
-	sexuality: "",
-	race: "",
-	grade: "",
-	postal_code: "",
-	avatar_string: "",
-}
+import {defaultUserData, userDataPairs} from "../database/userData";
+import {defaultOrgData, orgDataPairs} from "../database/orgData";
 
-type defaultEntry = typeof defaultUserData;
+type defaultEntry = typeof defaultUserData|typeof defaultOrgData;
 const parseRow = (defaultReturn:defaultEntry, encryptedKeys:{iv:string, name:string}[], rows: any[]) => {
 	let result = defaultReturn;
 	encryptedKeys.forEach((pair) => {
@@ -43,7 +15,7 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string, tableNam
 	let entries:any;
 	let status;
 	let queryParams = "";
-	let errors = []
+	let errors:string[] = []
 	encryptedKeys.forEach((pair, i) => queryParams += `${i?", ":""}${pair.iv}, ${pair.name}`);
 	try {
 		if (multi) {
@@ -64,29 +36,37 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string, tableNam
 		} else status = 404;
 	} catch (e) {
 		console.log(e)
-		errors.push(e);
+		errors.push("database error");
 		status = 400;
 	}
 	return {status: status, entries: entries, errors: errors};
 }
-const getUser = async (userid:string) => {
+const getAccount = async (userid:string) => {
 	let status = 400;
 	let result;
-	let errors;
-	const userDataId = await pool.query(
-		`SELECT user_data_id FROM users WHERE userid = $1 LIMIT 1`,
+	let errors:string[] = [];
+	const accountData = await pool.query(
+		`SELECT user_data_id, org_data_id, account_type FROM accounts WHERE account_id = $1 LIMIT 1`,
 		[userid]
 	)
-	if (userDataId.rows[0]) {
-		const {status:userDataStatus, entries, errors:userDataErrors} = await getEntries(false, "id", userDataId.rows[0].user_data_id, "user_data", defaultUserData, userDataKeys);
-		status = userDataStatus;
-		result = entries[0];
-		errors = userDataErrors;
+	const accountValues = accountData.rows[0];
+	if (accountValues) {
+		if (accountValues.account_type==="user") {
+			const {status:userDataStatus, entries, errors:userDataErrors} = await getEntries(false, "id", accountValues.user_data_id, "user_data", defaultUserData, userDataPairs);
+			status = userDataStatus;
+			result = entries[0];
+			errors = userDataErrors;
+		} else if (accountValues.account_type==="org") {
+			const {status:orgDataStatus, entries, errors:orgDataErrors} = await getEntries(false, "id", accountValues.org_data_id, "org_data", defaultOrgData, orgDataPairs);
+			status = orgDataStatus;
+			result = entries[0];
+			errors = orgDataErrors;
+		} else errors.push("invalid account type");
 	} else status = 404;
-	return {status: status, user: result, errors: errors}
+	return {status: status, account: result, errors: errors}
 }
 const getUsers = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "user_data", defaultUserData, userDataKeys);
+	const {status, entries, errors} = await getEntries(true, "", "", "user_data", defaultUserData, userDataPairs);
 	return {status: status, users: entries, errors: errors}
 }
-export {getUser, getUsers}
+export {getAccount, getUsers}

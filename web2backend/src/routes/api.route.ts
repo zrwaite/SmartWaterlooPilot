@@ -1,9 +1,9 @@
 import express from 'express';
-import userCtrl from '../api/user';
+import userCtrl from '../api/account';
 const router = express.Router();
 router.route('/user')
-	.get(userCtrl.getUser)
-	.post(userCtrl.postUser)
-	.put(userCtrl.putUser)
-	.delete(userCtrl.deleteUser)
+	.get(userCtrl.getAccount)
+	.post(userCtrl.postAccount)
+	.put(userCtrl.putAccount)
+	.delete(userCtrl.deleteAccount)
 export default router;
