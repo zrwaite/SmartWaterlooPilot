@@ -7,21 +7,15 @@ const postUser = async (accountId:string, password:string, userDataParams: strin
 	let errors:string[] = [];
 	let success = false;
 	let newUser:any = {};
-	const numDataParams = userDataParams.length*2;
 	let userDataValuesString = "";
-	for (let i=0; i<numDataParams; i++) {
+	for (let i=0; i<userDataParams.length; i++) {
 		if (i) userDataValuesString += ", ";
 		userDataValuesString += `$${i+1}`;
 	}
 	// let postUser = {...defaultUserData};
 	let userDataQueryValues:string[] = [];
-	let userDataQueryKeys:string[] = [];
-	[...userData.dataKeys].forEach((key, i) => {
-		let encryptedValue = encrypt(userDataParams[i]);
-		userDataQueryValues.push(encryptedValue.content, encryptedValue.iv);
-		userDataQueryKeys.push(key, `${key}_iv`);
-	})
-	const userDataQueryKeysString = userDataQueryKeys.join(", ");
+	userDataParams.forEach(key => userDataQueryValues.push(encrypt(key)))
+	const userDataQueryKeysString = userData.dataKeys.join(", ");
 	try {
 		let newUserDataId = await pool.query(
 			"INSERT INTO user_data ("+ userDataQueryKeysString +") VALUES("+userDataValuesString+") RETURNING id",
@@ -56,21 +50,15 @@ const postOrg = async (accountId:string, password:string, orgDataParams: string[
 	let errors:string[] = [];
 	let success = false;
 	let newOrg:any = {};
-	const numDataParams = orgDataParams.length*2;
 	let orgDataValuesString = "";
-	for (let i=0; i<numDataParams; i++) {
+	for (let i=0; i<orgDataParams.length; i++) {
 		if (i) orgDataValuesString += ", ";
 		orgDataValuesString += `$${i+1}`;
 	}
-	// let postUser = {...defaultUserData};
+
 	let orgDataQueryValues:string[] = [];
-	let orgDataQueryKeys:string[] = [];
-	[...orgData.dataKeys].forEach((key, i) => {
-		let encryptedValue = encrypt(orgDataParams[i]);
-		orgDataQueryValues.push(encryptedValue.content, encryptedValue.iv);
-		orgDataQueryKeys.push(key, `${key}_iv`);
-	})
-	const orgDataQueryKeysString = orgDataQueryKeys.join(", ");
+	orgDataParams.forEach(key => orgDataQueryValues.push(encrypt(key)))
+	const orgDataQueryKeysString = orgData.dataKeys.join(", ");
 	try {
 		let newUserDataId = await pool.query(
 			"INSERT INTO org_data ("+ orgDataQueryKeysString +") VALUES("+orgDataValuesString+") RETURNING id",

@@ -1,22 +1,14 @@
 import pool from "../database/db";
 import {decrypt} from "./encryption";
-import {defaultUserData, userDataPairs} from "../database/userData";
-import {defaultOrgData, orgDataPairs} from "../database/orgData";
+import {defaultUserData} from "../database/userData";
+import {defaultOrgData} from "../database/orgData";
 
 type defaultEntry = typeof defaultUserData|typeof defaultOrgData;
-const parseRow = (defaultReturn:defaultEntry, encryptedKeys:{iv:string, name:string}[], rows: any[]) => {
-	let result = defaultReturn;
-	encryptedKeys.forEach((pair) => {
-		result[pair.name as keyof typeof defaultReturn] = decrypt({iv: rows[0][pair.iv], content: rows[0][pair.name]})
-	})
-	return result;
-}
-const getEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, defaultReturn:defaultEntry, encryptedKeys:{iv:string, name:string}[]) => {
+const getEncryptedEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, columns:string[]) => {
 	let entries:any;
 	let status;
-	let queryParams = "";
+	let queryParams = columns.join(", ");
 	let errors:string[] = []
-	encryptedKeys.forEach((pair, i) => queryParams += `${i?", ":""}${pair.iv}, ${pair.name}`);
 	try {
 		if (multi) {
 			entries = await pool.query(`SELECT ${queryParams} FROM ${tableName}`)
@@ -27,12 +19,16 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string, tableNam
 			)
 		}
 		if (entries.rows) {
-			let results = [];
-			for (let i = 0; i<entries.rows.length; i++) {
-				results.push(parseRow(defaultReturn, encryptedKeys, entries.rows));
+			let rows = [];
+			for (let i =0; i<entries.rows.length; i++) {
+				let rowObject:any = {};
+				columns.forEach((column) => {
+					rowObject[column] = decrypt(entries.rows[i][column])
+				})
+				rows.push(rowObject);
 			}
+			entries = rows;
 			status = 200;
-			entries = results;
 		} else status = 404;
 	} catch (e) {
 		console.log(e)
@@ -52,12 +48,12 @@ const getAccount = async (userid:string) => {
 	const accountValues = accountData.rows[0];
 	if (accountValues) {
 		if (accountValues.account_type==="user") {
-			const {status:userDataStatus, entries, errors:userDataErrors} = await getEntries(false, "id", accountValues.user_data_id, "user_data", defaultUserData, userDataPairs);
+			const {status:userDataStatus, entries, errors:userDataErrors} = await getEncryptedEntries(false, "id", accountValues.user_data_id, "user_data", Object.keys(defaultUserData));
 			status = userDataStatus;
 			result = entries[0];
 			errors = userDataErrors;
 		} else if (accountValues.account_type==="org") {
-			const {status:orgDataStatus, entries, errors:orgDataErrors} = await getEntries(false, "id", accountValues.org_data_id, "org_data", defaultOrgData, orgDataPairs);
+			const {status:orgDataStatus, entries, errors:orgDataErrors} = await getEncryptedEntries(false, "id", accountValues.org_data_id, "org_data", Object.keys(defaultOrgData));
 			status = orgDataStatus;
 			result = entries[0];
 			errors = orgDataErrors;
@@ -66,7 +62,7 @@ const getAccount = async (userid:string) => {
 	return {status: status, account: result, errors: errors}
 }
 const getUsers = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "user_data", defaultUserData, userDataPairs);
+	const {status, entries, errors} = await getEncryptedEntries(true, "", "", "user_data", Object.keys(defaultUserData));
 	return {status: status, users: entries, errors: errors}
 }
 export {getAccount, getUsers}
