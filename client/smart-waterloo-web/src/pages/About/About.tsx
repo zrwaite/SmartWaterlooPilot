@@ -3,7 +3,6 @@ import "./About.css";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
 // import {Link} from "react-router-dom";
-//Todo change buttons to links
 const About = () => {
 	let {mobile} = useContext(MobileContext);
 	return (

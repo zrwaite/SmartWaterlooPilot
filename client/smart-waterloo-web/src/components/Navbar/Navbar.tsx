@@ -53,7 +53,7 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 							<div className="navbar">
 								<div className="leftNav">
 									<img src={SWRLogo} alt={"SWR Logo"} className={"navbarLogo"}/>
-									<h4 onClick={() => setOrg(!org)}>{org?"Org":"User"}</h4>
+									{/* <h4 onClick={() => setOrg(!org)}>{org?"Org":"User"}</h4> */}
 								</div>
 								<div className="rightNav">
 									{mobile?

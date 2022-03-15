@@ -7,24 +7,27 @@ import { useEffect, useState } from "react";
 import {Html5QrcodeScanner} from "html5-qrcode";
 import Cookies from "universal-cookie";
 import {useContext} from "react";
-import {MobileContext} from "../../App";
+import {MobileContext, IdContext, OrgContext} from "../../App";
 const ScanQR = () => {
 	let {mobile} = useContext(MobileContext);
+	let {setId} = useContext(IdContext);
+	const {org} = useContext(OrgContext);
 	const cookies = new Cookies()
 	cookies.set("back", "/qr");
 	const [functions, setFunctions] = useState({scan: () => {}});
 	const navigate = useNavigate()
 	useEffect(() => {
 		const scanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 }, undefined);
-		const onScanSuccess = (decodedText:any, decodedResult:any) => {
-			alert(`Scan result ${decodedText}`);
-			scanner.clear().catch((error : any) => {
+		const onScanSuccess = async (decodedText:any, decodedResult:any) => {
+			setId(decodedText);
+			await scanner.clear().catch((error : any) => {
 				console.error("Failed to clear html5QrcodeScanner. ", error);
 			});
-			navigate("/signup");
+			if (org) navigate("/signup/org");
+			else navigate("/signup");
 		}
 		setFunctions({scan: () => scanner.render(onScanSuccess, ()=>{})})
-	}, [navigate])
+	}, [navigate, setId, org])
 
 	return (
 		<>

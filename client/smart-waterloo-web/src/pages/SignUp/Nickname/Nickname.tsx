@@ -29,7 +29,7 @@ function Nickname(props: NicknameProps) {
 					<p style={redText}>*Use the real name of the organization that this account is for.</p>:
 					<p style={redText}>*Do not use your real name or the name of someone you know for privacy reasons.</p>
 				}
-				<button style={spacing} onClick={()=>props.submit} className={"blackButton signUpButton"}>Start using "The Project"</button>
+				<button style={spacing} onClick={()=>props.submit()} className={"blackButton signUpButton"}>Start using "The Project"</button>
 			</div>
 			<button onClick={() => props.updateStep(3)} className={"blackButton"}>Back</button>
 		</>

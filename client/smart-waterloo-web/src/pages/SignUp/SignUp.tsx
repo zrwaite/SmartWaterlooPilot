@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { MobileContext, AddressContext} from "../../App";
+import { MobileContext, AddressContext, OrgContext, IdContext} from "../../App";
 import "./SignUp.css";
 import Profile from "./Profile";
 import Landing from "./Landing";
@@ -53,83 +53,72 @@ const defaultSignUpState = {
 
 declare var window: any;
 
-type SignUpState = typeof defaultSignUpState;
-class SignUp extends React.Component<SignUpProps, SignUpState> {
-	constructor(props: SignUpProps) {
-		super(props);
-		SignUp.contextType = AddressContext;
-		this.updateStep = this.updateStep.bind(this);
-		this.state = defaultSignUpState;
-		const cookies = new Cookies();
-		cookies.set("back", "/signup");
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.handleSelectChange = this.handleSelectChange.bind(this);
-		this.childSetState = this.childSetState.bind(this);
-		this.submitForm = this.submitForm.bind(this);
+const SignUp = (props: SignUpProps) => {
+	const {setOrg} = useContext(OrgContext);
+	const {id: qrId} = useContext(IdContext);
+	const {address, setAddress} = useContext(AddressContext);
+	const [state, setState] = useState(defaultSignUpState);
+	const cookies = new Cookies();
+	const navigate = useNavigate();
+	cookies.set("back", "/signup");
+	useEffect(() => {
+		setOrg(props.org);
+	},[props.org, setOrg])
+	const updateStep = (step: number) => {
+		setState({ ...state, step: step });
 	}
-	updateStep(step: number) {
-		this.setState({ ...this.state, step: step });
-	}
-	childSetState(key: keyof typeof defaultSignUpState.formInputs, value: string) {
-		let partialInputs = { ...this.state.formInputs };
+	const childSetState = (key: keyof typeof defaultSignUpState.formInputs, value: string) => {
+		let partialInputs = { ...state.formInputs };
 		partialInputs[key] = value;
-		this.setState({ ...this.state, formInputs: partialInputs });
+		setState({ ...state, formInputs: partialInputs });
 	}
-	handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-		let inputKeys: keyof typeof this.state.formInputs;
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+		let inputKeys: keyof typeof state.formInputs;
 		const name = event.target.name as typeof inputKeys;
-		let partialInput = { ...this.state.formInputs };
+		let partialInput = { ...state.formInputs };
 		partialInput[name] = event.target.value;
-		this.setState({ ...this.state, formInputs: partialInput });
+		setState({ ...state, formInputs: partialInput });
 	}
-	handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
-		let inputKeys: keyof typeof this.state.formInputs;
+	const handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
+		let inputKeys: keyof typeof state.formInputs;
 		const name = actionMeta.name as typeof inputKeys;
-		let partialInput = { ...this.state.formInputs };
+		let partialInput = { ...state.formInputs };
 		partialInput[name] = newValue?.value || "";
-		this.setState({ ...this.state, formInputs: partialInput });
+		setState({ ...state, formInputs: partialInput });
 	}
-	getProfileProps() {
+	const getProfileProps = () => {
 		let profileProps = defaultProfileProps;
 		let profilePropKeys = Object.keys(defaultProfileProps) as [keyof typeof defaultProfileProps];
-		profilePropKeys.forEach(key => profileProps[key] = this.state.formInputs[key]);
+		profilePropKeys.forEach(key => profileProps[key] = state.formInputs[key]);
 		return profileProps;
 	}
-	getNicknameProps() {
+	const getNicknameProps = () => {
 		let nicknameProps = defaultNicknameProps;
 		let nicknamePropKeys = Object.keys(defaultNicknameProps) as [keyof typeof defaultNicknameProps];
-		nicknamePropKeys.forEach(key => nicknameProps[key] = this.state.formInputs[key]);
+		nicknamePropKeys.forEach(key => nicknameProps[key] = state.formInputs[key]);
 		return nicknameProps;
 	}
-	getAvatarProps() {
+	const getAvatarProps = () => {
 		let avatarProps = defaultAvatarProps;
 		let avatarPropKeys = Object.keys(defaultAvatarProps) as [keyof typeof defaultAvatarProps];
-		avatarPropKeys.forEach(key => avatarProps[key] = this.state.formInputs[key]);
+		avatarPropKeys.forEach(key => avatarProps[key] = state.formInputs[key]);
 		return avatarProps;
 	}
-	getVerifiedProps() {
+	const getVerifiedProps = () => {
 		let verifiedProps = defaultVerifiedProps;
 		let avatarPropKeys = Object.keys(defaultVerifiedProps) as [keyof typeof defaultVerifiedProps];
-		avatarPropKeys.forEach(key => verifiedProps[key] = this.state.formInputs[key]);
+		avatarPropKeys.forEach(key => verifiedProps[key] = state.formInputs[key]);
 		return verifiedProps;
 	}
-	submitForm = async() => {
-		// const {org} = useContext(OrgContext);
-		console.log("Working");
-		const [userAddress, setUserAddress] = useState([]);
+	const submitForm = async() => {
 		if (window.ethereum) {
 			await window.ethereum.request({ method: 'eth_requestAccounts' })
-				.then((accounts: []) => setUserAddress(accounts))
+				.then((accounts: []) => setAddress(accounts))
 				.catch((err: any) => console.log(err));
 		}
 		else{
 			console.log("No accounts found!");
 		}
-		/*
-		This uses the global context variable
-		*/
-		let exampleAddress = "0x8484802hjfjlkfadafjk23";
-		this.context.address = exampleAddress;
 
 		//User Information Smart Contract
 		const contractAddress = "0x03AAc327157736eb154b7E8be9eb0B0d4431F96A";
@@ -141,55 +130,62 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 			contractABI,
 			signer
 		);
-		await userContract.addInfo(userAddress[0], (this.state.formInputs.day + this.state.formInputs.month + this.state.formInputs.year), this.state.formInputs.gender, this.state.formInputs.height, this.state.formInputs.weight, this.state.formInputs.grade, this.state.formInputs.postalCode, this.state.formInputs.race, this.state.formInputs.religion, this.state.formInputs.sexuality, this.state.formInputs.nickname)
+		console.log(qrId);
+		await userContract.addInfo(
+			address, 
+			(state.formInputs.day + state.formInputs.month + state.formInputs.year), 
+			state.formInputs.gender, 
+			state.formInputs.height, 
+			state.formInputs.weight, 
+			state.formInputs.grade, 
+			state.formInputs.postalCode, 
+			state.formInputs.race, 
+			state.formInputs.religion, 
+			state.formInputs.sexuality, 
+			state.formInputs.nickname)
 			.then(()=> console.log("Information added successfully"))
 			.catch((err:any)=> console.log(err));
-		console.log("working");
-		const navigate = useNavigate();
 		let path = `/dashboard`;
 		navigate(path);
 	}
 
+	let stepSection: any;
 
-	render() {
-		let stepSection: any;
-
-		const userInputFunctions = {
-			handleParentInputChange: this.handleInputChange,
-			handleParentSelectChange: this.handleSelectChange,
-			updateStep: this.updateStep
-		}
-		switch (this.state.step) {
-			case 0: stepSection = (
-				<Landing updateStep={this.updateStep} />
-			); break; case 1: stepSection = (
-				<MetaMask updateStep={this.updateStep} />
-			); break; case 2: stepSection = (
-				this.props.org ?
-					<Verified {...userInputFunctions} verifiedData={this.getVerifiedProps()} /> :
-					<Profile {...userInputFunctions} formData={this.getProfileProps()} />
-			); break; case 3: stepSection = (
-				<MeetAvatar avatarData={this.getAvatarProps()} updateParentState={this.childSetState} updateStep={this.updateStep} />
-			); break; case 4: stepSection = (
-				<Nickname {...userInputFunctions} org={this.props.org} nicknameData={this.getNicknameProps()} submit={this.submitForm} />
-			); break; default: stepSection = (
-				<h1>Invalid step "{this.state.step}"</h1>
-			);
-		}
-		return (
-			<>
-				<Navbar root={true} />
-				<div className={"PageContainer"}>
-					<MobileContext.Consumer>
-						{({ mobile }) => (<div className={mobile ? "" : "DesktopPanel"}>
-							{this.state.step ? <StepBubbles org={this.props.org} step={this.state.step} /> : null}
-							{stepSection}
-						</div>)}
-					</MobileContext.Consumer>
-				</div>
-			</>
+	const userInputFunctions = {
+		handleParentInputChange: handleInputChange,
+		handleParentSelectChange: handleSelectChange,
+		updateStep: updateStep
+	}
+	switch (state.step) {
+		case 0: stepSection = (
+			<Landing updateStep={updateStep} />
+		); break; case 1: stepSection = (
+			<MetaMask updateStep={updateStep} />
+		); break; case 2: stepSection = (
+			props.org ?
+				<Verified {...userInputFunctions} verifiedData={getVerifiedProps()} /> :
+				<Profile {...userInputFunctions} formData={getProfileProps()} />
+		); break; case 3: stepSection = (
+			<MeetAvatar avatarData={getAvatarProps()} updateParentState={childSetState} updateStep={updateStep} />
+		); break; case 4: stepSection = (
+			<Nickname {...userInputFunctions} org={props.org} nicknameData={getNicknameProps()} submit={submitForm} />
+		); break; default: stepSection = (
+			<h1>Invalid step "{state.step}"</h1>
 		);
 	}
+	return (
+		<>
+			<Navbar root={true} />
+			<div className={"PageContainer"}>
+				<MobileContext.Consumer>
+					{({ mobile }) => (<div className={mobile ? "" : "DesktopPanel"}>
+						{state.step ? <StepBubbles org={props.org} step={state.step} /> : null}
+						{stepSection}
+					</div>)}
+				</MobileContext.Consumer>
+			</div>
+		</>
+	);
 }
 
 export default SignUp;
