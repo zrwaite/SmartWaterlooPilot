@@ -3,6 +3,7 @@ import cors from "cors";
 import env from "dotenv";
 import {response} from "./models/response"; //Created pre-formatted uniform response
 import {Request, Response} from "express"; //Typescript types
+import path from "path";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 
 // routes
+import getFrontend from "./routes/frontend.route";
 import apiRoute from "./routes/api.route";
 
 // api routing
@@ -25,5 +27,7 @@ app.get("/test", (req:Request, res:Response) => {
 	res.status(result.status).json(result); //Return 200 result
 });
 
+app.get("/", getFrontend);
+app.get("/*", getFrontend);
 
 export default app; //Export server for use in index.ts
