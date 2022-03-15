@@ -7,10 +7,8 @@ const defaultOrgData = {
 	business_number: "",
 	avatar_string: "",
 }
-const orgKeys = Object.keys(defaultOrg) as (keyof typeof defaultOrg)[];
-const orgDataKeys = Object.keys(defaultOrgData) as (keyof typeof defaultOrgData)[];
 const orgData = {
-	orgKeys: orgKeys,
-	dataKeys: orgDataKeys,
+	orgKeys: Object.keys(defaultOrg) as (keyof typeof defaultOrg)[],
+	dataKeys: Object.keys(defaultOrgData) as (keyof typeof defaultOrgData)[],
 }
 export {orgData, defaultOrgData}

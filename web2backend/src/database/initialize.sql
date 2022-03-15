@@ -10,6 +10,18 @@ CREATE TABLE IF NOT EXISTS "accounts"(
 	user_data_id INT default null,
 	org_data_id INT default null
 );
+create table if not exists "events"(
+	id serial primary key,
+	name varchar(80),
+	age_group varchar(80),
+	start_date varchar(80),
+	end_date varchar(80),
+	category varchar(80),
+	description varchar(400),
+	owner int,
+	FOREIGN KEY (owner) REFERENCES accounts(account_id),
+	image varchar(80)
+);
 
 create table if not exists "user_data"(
 	id SERIAL PRIMARY KEY,

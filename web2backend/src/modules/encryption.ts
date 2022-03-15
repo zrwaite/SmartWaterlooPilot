@@ -19,4 +19,16 @@ const decrypt = (ecryptedString:string) => {
     return decrpyted.toString();
 };
 
-export {encrypt, decrypt}
+const decryptRows = (rows:any[], columns:string[]) => {
+    let decryptedRows = [];
+    for (let i =0; i<rows.length; i++) {
+        let rowObject:any = {};
+        columns.forEach((column) => {
+            rowObject[column] = decrypt(rows[i][column])
+        })
+        decryptedRows.push(rowObject);
+    }
+    return decryptedRows;
+}
+
+export {encrypt, decrypt, decryptRows}

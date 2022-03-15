@@ -3,6 +3,7 @@ import pool from "../database/db";
 import {encrypt} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
+import {defaultEvent, eventData} from "../database/eventData";
 const postUser = async (accountId:string, password:string, userDataParams: string[]) => {
 	let errors:string[] = [];
 	let success = false;
@@ -89,5 +90,35 @@ const postOrg = async (accountId:string, password:string, orgDataParams: string[
 	return {success: success, errors: errors, newOrg: newOrg};
 }
 
+const postEvent = async (eventParams:string[]) => {
+	let errors:string[] = [];
+	let success = false;
+	let newEvent = {...defaultEvent};
+	let eventDataValuesString = "";
+	for (let i=0; i<eventParams.length; i++) {
+		if (i) eventDataValuesString += ", ";
+		eventDataValuesString += `$${i+1}`;
+	}
+	const eventDataQueryKeysString = eventData.eventKeys.join(", ");
+	try {
+		console.log("INSERT INTO events ("+ eventDataQueryKeysString +") VALUES("+eventDataValuesString+") RETURNING id",);
+		console.log(eventParams);
+		let newEventId = await pool.query(
+			"INSERT INTO events ("+ eventDataQueryKeysString +") VALUES("+eventDataValuesString+") RETURNING id",
+			eventParams
+		);
+		newEvent = newEventId.rows[0].id;
+		success = true;
+	} catch (e: any) {
+		if (e.code == 23505) {
+			errors.push(e.detail);
+		} else {
+			errors.push("database error");
+		}
+		console.log(e);
+	}
+	return {success: success, errors: errors, newEvent: newEvent};
+}
 
-export {postUser, postOrg}
+
+export {postUser, postOrg, postEvent}

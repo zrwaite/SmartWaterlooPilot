@@ -17,10 +17,8 @@ const defaultUserData = {
 	postal_code: "",
 	avatar_string: "",
 }
-const userKeys = Object.keys(defaultUser) as (keyof typeof defaultUser)[];
-const userDataKeys = Object.keys(defaultUserData) as (keyof typeof defaultUserData)[];
 const userData = {
-	userKeys: userKeys,
-	dataKeys: userDataKeys,
+	userKeys: Object.keys(defaultUser) as (keyof typeof defaultUser)[],
+	dataKeys: Object.keys(defaultUserData) as (keyof typeof defaultUserData)[],
 }
 export {userData, defaultUserData}
