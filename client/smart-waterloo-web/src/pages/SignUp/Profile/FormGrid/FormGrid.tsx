@@ -1,17 +1,19 @@
 // import {Link} from "react-router-dom";
-import {genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState} from "./FormGridData";
-// import {useState} from "react";
-import Select, {ActionMeta} from "react-select";
+import { genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState } from "./FormGridData";
+import Select, { ActionMeta } from "react-select";
+
+
 type ProfileFormGridProps = {
 	updateStep: Function,
-	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => void,
-	handleParentSelectChange:  (newValue: null|{ value: string; label: string; }, actionMeta: ActionMeta<{value: string,label: string}>) => void,
+	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void,
+	handleParentSelectChange: (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => void,
 	formData: ProfileFormGridState
 }
-function ProfileFormGrid(props:ProfileFormGridProps) {
-	let redText = {color: "red"};
-	let greyText = {color: "grey"};
-    return (
+function ProfileFormGrid(props: ProfileFormGridProps) {
+	let redText = { color: "red" };
+	let greyText = { color: "grey" };
+
+	return (
 		<>
 			<main>
 				<section className="formGrid">
@@ -23,18 +25,18 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 							Date of Birth<span style={redText}>*</span>
 						</p>
 						<div className="horizontal">
-							<input name="day" id="dayInput" placeholder="DD" type={"text"} value={props.formData.day} onChange={props.handleParentInputChange}/>
+							<input name="day" id="dayInput" placeholder="DD" type={"text"} value={props.formData.day} onChange={props.handleParentInputChange} />
 							<pre> / </pre>
-							<input name="month" id="monthInput" placeholder="MM"  type={"text"} value={props.formData.month} onChange={props.handleParentInputChange}/>
+							<input name="month" id="monthInput" placeholder="MM" type={"text"} value={props.formData.month} onChange={props.handleParentInputChange} />
 							<pre> / </pre>
-							<input name="year" id="yearInput" placeholder="YY"  type={"text"} value={props.formData.year} onChange={props.handleParentInputChange}/>
+							<input name="year" id="yearInput" placeholder="YY" type={"text"} value={props.formData.year} onChange={props.handleParentInputChange} />
 						</div>
 					</div>
 					<div className="formDiv">
 						<p>
 							Gender<span style={redText}>*</span>
 						</p>
-						<Select className={"selectComponent"} defaultInputValue={props.formData.gender} name={"gender"} onChange={props.handleParentSelectChange} options={genderOptions}/>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.gender} name={"gender"} onChange={props.handleParentSelectChange} options={genderOptions} />
 					</div>
 					<div className="formDiv horizontal">
 						<div>
@@ -42,7 +44,7 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 								Height<span style={redText}>*</span>
 							</p>
 							<div className="pill">
-								<input name="height" id="heightInput" placeholder="168" type={"text"} value={props.formData.height} onChange={props.handleParentInputChange}/>
+								<input name="height" id="heightInput" placeholder="168" type={"text"} value={props.formData.height} onChange={props.handleParentInputChange} />
 								<p className="pillText">cm</p>
 							</div>
 						</div>
@@ -51,7 +53,7 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 								Weight<span style={redText}>*</span>
 							</p>
 							<div className="pill">
-								<input name="weight" id="weightInput" placeholder="160" type={"text"} value={props.formData.weight} onChange={props.handleParentInputChange}/>
+								<input name="weight" id="weightInput" placeholder="160" type={"text"} value={props.formData.weight} onChange={props.handleParentInputChange} />
 								<p className="pillText">lbs</p>
 							</div>
 						</div>
@@ -60,19 +62,19 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 						<p>
 							Religion <span style={greyText}>(Optional)</span>
 						</p>
-						<Select className={"selectComponent"} defaultInputValue={props.formData.religion} name={"religion"} onChange={props.handleParentSelectChange} options={religionOptions}/>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.religion} name={"religion"} onChange={props.handleParentSelectChange} options={religionOptions} />
 					</div>
 					<div className="formDiv">
 						<p>
 							Sexuality <span style={greyText}>(Optional)</span>
 						</p>
-						<Select className={"selectComponent"} defaultInputValue={props.formData.sexuality} name={"sexuality"} onChange={props.handleParentSelectChange} options={sexualityOptions}/>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.sexuality} name={"sexuality"} onChange={props.handleParentSelectChange} options={sexualityOptions} />
 					</div>
 					<div className="formDiv">
 						<p>
 							Race <span style={greyText}>(Optional)</span>
 						</p>
-						<Select className={"selectComponent"} defaultInputValue={props.formData.race} name={"race"} onChange={props.handleParentSelectChange} options={raceOptions}/>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.race} name={"race"} onChange={props.handleParentSelectChange} options={raceOptions} />
 					</div>
 					<div className="formDiv horizontal">
 						<div>
@@ -82,7 +84,7 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 							<div className="horizontal">
 								<div className="pill">
 									<p className="pillText">-</p>
-									<input name="grade" id="gradeInput" type={"text"} value={props.formData.grade} onChange={props.handleParentInputChange}/>
+									<input name="grade" id="gradeInput" type={"text"} value={props.formData.grade} onChange={props.handleParentInputChange} />
 									<p className="pillText">+</p>
 								</div>
 							</div>
@@ -91,18 +93,18 @@ function ProfileFormGrid(props:ProfileFormGridProps) {
 							<p>
 								Postal Code<span style={redText}>*</span>
 							</p>
-							<input name="postalCode" id="postalCodeInput" placeholder="M5A" type={"text"} value={props.formData.postalCode} onChange={props.handleParentInputChange}/>
+							<input name="postalCode" id="postalCodeInput" placeholder="M5A" type={"text"} value={props.formData.postalCode} onChange={props.handleParentInputChange} />
 						</div>
 					</div>
 				</section>
 				<div className="formDiv">
-					<button className="blackButton signUpButton" onClick={() => props.updateStep(3)}>
+					<button className="blackButton signUpButton" onClick={()=> props.updateStep(3)}>
 						Continue
 					</button>
 				</div>
 			</main>
 		</>
-    );
+	);
 }
 
 export default ProfileFormGrid;
