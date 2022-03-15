@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
-import { MobileContext } from "../../App";
+import { MobileContext, AddressContext} from "../../App";
 import "./SignUp.css";
 import Profile from "./Profile";
 import Landing from "./Landing";
@@ -57,6 +57,7 @@ type SignUpState = typeof defaultSignUpState;
 class SignUp extends React.Component<SignUpProps, SignUpState> {
 	constructor(props: SignUpProps) {
 		super(props);
+		SignUp.contextType = AddressContext;
 		this.updateStep = this.updateStep.bind(this);
 		this.state = defaultSignUpState;
 		const cookies = new Cookies();
@@ -112,7 +113,6 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 		avatarPropKeys.forEach(key => verifiedProps[key] = this.state.formInputs[key]);
 		return verifiedProps;
 	}
-
 	submitForm = async() => {
 		// const {org} = useContext(OrgContext);
 		console.log("Working");
@@ -125,6 +125,11 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 		else{
 			console.log("No accounts found!");
 		}
+		/*
+		This uses the global context variable
+		*/
+		let exampleAddress = "0x8484802hjfjlkfadafjk23";
+		this.context.address = exampleAddress;
 
 		//User Information Smart Contract
 		const contractAddress = "0x03AAc327157736eb154b7E8be9eb0B0d4431F96A";
