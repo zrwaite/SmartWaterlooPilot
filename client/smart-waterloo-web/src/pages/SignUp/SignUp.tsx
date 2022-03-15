@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import { MobileContext } from "../../App";
 import "./SignUp.css";
@@ -11,7 +11,9 @@ import Verified from "./Verified";
 import StepBubbles from "./StepBubbles";
 import Cookies from "universal-cookie";
 import { ActionMeta } from "react-select";
-
+import userABI from "./utils/SmartUser.json";
+import { ethers } from "ethers";
+import { useNavigate } from "react-router-dom";
 
 type SignUpProps = {
 	org: boolean;
@@ -49,6 +51,7 @@ const defaultSignUpState = {
 	}
 }
 
+declare var window: any;
 
 type SignUpState = typeof defaultSignUpState;
 class SignUp extends React.Component<SignUpProps, SignUpState> {
@@ -61,6 +64,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSelectChange = this.handleSelectChange.bind(this);
 		this.childSetState = this.childSetState.bind(this);
+		this.submitForm = this.submitForm.bind(this);
 	}
 	updateStep(step: number) {
 		this.setState({ ...this.state, step: step });
@@ -109,6 +113,38 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 		return verifiedProps;
 	}
 
+	submitForm = async() => {
+		// const {org} = useContext(OrgContext);
+		console.log("Working");
+		const [userAddress, setUserAddress] = useState([]);
+		if (window.ethereum) {
+			await window.ethereum.request({ method: 'eth_requestAccounts' })
+				.then((accounts: []) => setUserAddress(accounts))
+				.catch((err: any) => console.log(err));
+		}
+		else{
+			console.log("No accounts found!");
+		}
+
+		//User Information Smart Contract
+		const contractAddress = "0x03AAc327157736eb154b7E8be9eb0B0d4431F96A";
+		const contractABI = userABI.abi;
+		const provider = new ethers.providers.Web3Provider(window.ethereum);
+		const signer = provider.getSigner();
+		const userContract = new ethers.Contract(
+			contractAddress,
+			contractABI,
+			signer
+		);
+		await userContract.addInfo(userAddress[0], (this.state.formInputs.day + this.state.formInputs.month + this.state.formInputs.year), this.state.formInputs.gender, this.state.formInputs.height, this.state.formInputs.weight, this.state.formInputs.grade, this.state.formInputs.postalCode, this.state.formInputs.race, this.state.formInputs.religion, this.state.formInputs.sexuality, this.state.formInputs.nickname)
+			.then(()=> console.log("Information added successfully"))
+			.catch((err:any)=> console.log(err));
+		console.log("working");
+		const navigate = useNavigate();
+		let path = `/dashboard`;
+		navigate(path);
+	}
+
 
 	render() {
 		let stepSection: any;
@@ -130,7 +166,7 @@ class SignUp extends React.Component<SignUpProps, SignUpState> {
 			); break; case 3: stepSection = (
 				<MeetAvatar avatarData={this.getAvatarProps()} updateParentState={this.childSetState} updateStep={this.updateStep} />
 			); break; case 4: stepSection = (
-				<Nickname {...userInputFunctions} org={this.props.org} nicknameData={this.getNicknameProps()} />
+				<Nickname {...userInputFunctions} org={this.props.org} nicknameData={this.getNicknameProps()} submit={this.submitForm} />
 			); break; default: stepSection = (
 				<h1>Invalid step "{this.state.step}"</h1>
 			);

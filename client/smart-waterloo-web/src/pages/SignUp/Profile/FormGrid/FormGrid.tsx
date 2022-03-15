@@ -1,11 +1,7 @@
 // import {Link} from "react-router-dom";
 import { genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState } from "./FormGridData";
-import {useEffect, useState} from "react";
 import Select, { ActionMeta } from "react-select";
-import userABI from "../../utils/SmartUser.json"
-import { BigNumber, ethers } from "ethers";
 
-declare var window: any;
 
 type ProfileFormGridProps = {
 	updateStep: Function,
@@ -16,29 +12,6 @@ type ProfileFormGridProps = {
 function ProfileFormGrid(props: ProfileFormGridProps) {
 	let redText = { color: "red" };
 	let greyText = { color: "grey" };
-
-	const [userAddress, setUserAddress] = useState([]);
-	useEffect(() => {
-		if(window.ethereum){
-			window.ethereum.request({ method: 'eth_requestAccounts'})
-			.then((accounts: []) => setUserAddress(accounts));
-		}
-	});
-
-	//User Information Smart Contract
-	const contractAddress = "0xDe74E890C12076EBf5D9bf38dBC2E8166f835764";
-	const contractABI = userABI.abi;
-	const onSubmit = async() => {
-		const provider = new ethers.providers.Web3Provider(window.ethereum);
-		const signer = provider.getSigner();
-		const userContract = new ethers.Contract(
-			contractAddress,
-			contractABI,
-			signer
-		);
-		userContract.addInfo(userAddress[0], (props.formData.day + props.formData.month + props.formData.year), props.formData.gender, props.formData.height, props.formData.weight, props.formData.grade, props.formData.postalCode, props.formData.race, props.formData.religion, props.formData.sexuality);
-		props.updateStep(3);
-	};
 
 	return (
 		<>
@@ -125,7 +98,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 					</div>
 				</section>
 				<div className="formDiv">
-					<button className="blackButton signUpButton" onClick={onSubmit}>
+					<button className="blackButton signUpButton" onClick={()=> props.updateStep(3)}>
 						Continue
 					</button>
 				</div>

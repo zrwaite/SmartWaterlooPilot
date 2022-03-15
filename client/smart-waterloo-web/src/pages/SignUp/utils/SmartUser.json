@@ -51,6 +51,11 @@
                     "internalType": "string",
                     "name": "sexuality",
                     "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "nickname",
+                    "type": "string"
                 }
             ],
             "name": "addInfo",
@@ -124,6 +129,12 @@
                     "indexed": false,
                     "internalType": "string",
                     "name": "sexuality",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "nickname",
                     "type": "string"
                 }
             ],
@@ -263,6 +274,11 @@
                     "internalType": "string",
                     "name": "",
                     "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
                 }
             ],
             "stateMutability": "view",
@@ -339,6 +355,11 @@
                 {
                     "internalType": "string",
                     "name": "sexuality",
+                    "type": "string"
+                },
+                {
+                    "internalType": "string",
+                    "name": "nickname",
                     "type": "string"
                 }
             ],
