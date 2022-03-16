@@ -9,6 +9,8 @@ import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import {exampleUsers, defaultUserData} from "../../data/Users";
 import ClipLoader from "react-spinners/ClipLoader";
+import {getEventsData, getUserData} from "../../data/getData"
+
 
 const Events = () => {
 	const {mobile} = useContext(MobileContext);
@@ -19,33 +21,21 @@ const Events = () => {
 	const navigate = useNavigate();
 	cookies.set("back", "/events");
 	const [userData, setUserData] = useState(defaultUserData);
-	const getUserData = async () => {
-		await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
-		const user = exampleUsers.find(user => user.userId === id);
-		if (!user) {
-			alert("Invalid user!");
-			return;
-		}
-		setUserData({
-			userDataSet: true,
-			nickname: user.nickname,
-			avatarString: user.avatarString
-		})
+	const getSetUserData = async () => {
+		let users = await getUserData(id);
+		if (!users) return;
+		setUserData(users)
 	}
 	const [eventData, setEventData] = useState(defaultEventsData);
-	const getEventData = async () => {
-		await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
-		const events = exampleEvents;
-		if (!events) {
-			alert("Events not found");
-			return;
-		}
+	const getSetEventsData = async () => {
+		let events = await getEventsData();
+		if (!events) return;
 		setEventData({events: events, eventsDataSet: true })
 	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {
-		getEventData();
-		getUserData();
+		getSetEventsData();
+		getSetUserData();
 		setDataCalled(true);
 	}
 	return (

@@ -6,7 +6,9 @@ import "./Surveys.css";
 import {exampleSurveys} from "../../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
-import {exampleUsers, defaultUserData} from "../../data/Users";
+import { defaultUserData} from "../../data/Users";
+import { getUserData} from "../../data/getData"
+
 
 const Surveys = () => {
 	const {mobile} = useContext(MobileContext);
@@ -16,22 +18,14 @@ const Surveys = () => {
 	const navigate = useNavigate();
 
 	const [userData, setUserData] = useState(defaultUserData);
-	const getUserData = async () => {
-		await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
-		const user = exampleUsers.find(user => user.userId === id);
-		if (!user) {
-			alert("Invalid user!");
-			return;
-		}
-		setUserData({
-			userDataSet: true,
-			nickname: user.nickname,
-			avatarString: user.avatarString
-		})
+	const getSetUserData = async () => {
+		let users = await getUserData(id);
+		if (!users) return;
+		setUserData(users)
 	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {
-		getUserData();
+		getSetUserData();
 		setDataCalled(true);
 	}
 

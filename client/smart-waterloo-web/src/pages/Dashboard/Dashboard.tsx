@@ -9,8 +9,9 @@ import DashboardPreview from "./DashboardPreview";
 import Sidebar from "../../components/Sidebar";
 import {useContext, useState} from "react";
 import {MobileContext, OrgContext, AddressContext, IdContext} from "../../App";
-import {exampleUsers, defaultUserData} from "../../data/Users";
-import { exampleEvents, defaultEventsData } from "../../data/Events";
+import { defaultUserData} from "../../data/Users";
+import { defaultEventsData } from "../../data/Events";
+import {getEventsData, getUserData} from "../../data/getData"
 
 
 
@@ -22,33 +23,21 @@ const Dashboard = () => {
 	const cookies = new Cookies();
 	cookies.set("back", "/dashboard");
 	const [userData, setUserData] = useState(defaultUserData);
-	const getUserData = async () => {
-		await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
-		const user = exampleUsers.find(user => user.userId === id);
-		if (!user) {
-			alert("Invalid user!");
-			return;
-		}
-		setUserData({
-			userDataSet: true,
-			nickname: user.nickname,
-			avatarString: user.avatarString
-		})
+	const getSetUserData = async () => {
+		let users = await getUserData(id);
+		if (!users) return;
+		setUserData(users)
 	}
-	const [eventData, setEventData] = useState(defaultEventsData);
-	const getEventData = async () => {
-		await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
-		const events = exampleEvents;
-		if (!events) {
-			alert("Events not found");
-			return;
-		}
+	const [eventsData, setEventData] = useState(defaultEventsData);
+	const getSetEventsData = async () => {
+		let events = await getEventsData();
+		if (!events) return;
 		setEventData({events: events, eventsDataSet: true })
 	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {
-		getUserData();
-		getEventData();
+		getSetEventsData();
+		getSetUserData();
 		setDataCalled(true);
 	}
     return (
@@ -64,10 +53,10 @@ const Dashboard = () => {
 				):<Sidebar {...userData} page="dashboard"/>}
 				<div className={"besideAside"}>
 					<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
-						{org?null:<DashboardPreview {...userData} {...eventData} name="upcoming"/>}
-						<DashboardPreview {...userData} {...eventData} name="data"/>
-						<DashboardPreview {...userData} {...eventData} name="events"/>
-						<DashboardPreview {...userData} {...eventData} name="surveys"/>
+						{org?null:<DashboardPreview {...userData} {...eventsData} name="upcoming"/>}
+						<DashboardPreview {...userData} {...eventsData} name="data"/>
+						<DashboardPreview {...userData} {...eventsData} name="events"/>
+						<DashboardPreview {...userData} {...eventsData} name="surveys"/>
 					</div>
 				</div>
 			</div>

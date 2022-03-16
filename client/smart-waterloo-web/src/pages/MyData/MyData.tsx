@@ -6,7 +6,9 @@ import { userDataPanels, orgDataPanels } from "./MyDataPanel/MyDataPanels";
 import MyDataPanel from "./MyDataPanel";
 import "./MyData.css";
 import Cookies from "universal-cookie";
-import {exampleUsers, defaultUserData} from "../../data/Users";
+import { defaultUserData} from "../../data/Users";
+import { getUserData} from "../../data/getData"
+
 
 const MyData = () => {
 	const {mobile} = useContext(MobileContext);
@@ -18,22 +20,14 @@ const MyData = () => {
 	const dataPanelsData = org?orgDataPanels:userDataPanels;
 
 	const [userData, setUserData] = useState(defaultUserData);
-	const getUserData = async () => {
-		await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
-		const user = exampleUsers.find(user => user.userId === id);
-		if (!user) {
-			alert("Invalid user!");
-			return;
-		}
-		setUserData({
-			userDataSet: true,
-			nickname: user.nickname,
-			avatarString: user.avatarString
-		})
+	const getSetUserData = async () => {
+		let users = await getUserData(id);
+		if (!users) return;
+		setUserData(users)
 	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {
-		getUserData();
+		getSetUserData();
 		setDataCalled(true);
 	}
 	return (
