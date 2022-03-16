@@ -16,6 +16,12 @@ const exampleUsers = [
 		nickname: "John Cena",
 		userId: "020",
 		avatarString: "qwertyui",
+	},
+	{
+		address: "0x12345567890sssas",
+		nickname: "Jimmy Neutron",
+		userId: "023",
+		avatarString: "zxcvbnml",
 	}
 ]
 export {exampleUsers, defaultUserData}

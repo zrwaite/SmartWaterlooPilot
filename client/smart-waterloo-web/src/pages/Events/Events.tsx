@@ -3,11 +3,11 @@ import Navbar from "../../components/Navbar";
 import { MobileContext, OrgContext, IdContext, AddressContext } from "../../App";
 import {useContext, useState} from "react";
 import "./Events.css";
-import { exampleEvents, defaultEventsData } from "../../data/Events";
+import { defaultEventsData } from "../../data/Events";
 import EventPanel from "./EventPanel";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import {exampleUsers, defaultUserData} from "../../data/Users";
+import { defaultUserData} from "../../data/Users";
 import ClipLoader from "react-spinners/ClipLoader";
 import {getEventsData, getUserData} from "../../data/getData"
 

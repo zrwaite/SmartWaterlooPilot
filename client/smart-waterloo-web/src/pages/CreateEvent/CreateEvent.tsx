@@ -40,6 +40,9 @@ const CreateEvent = () => {
 	const complete = Object.values(state.inputs).every(answer => answer!=="");
 	const greyText = {color: "grey"};
 	const link = {cursor: "pointer"};
+	const submitEvent = async () => {
+		console.log(state.inputs);
+	}
 	return (
 		<>
 			<div className={"PageContainer"}>
@@ -96,7 +99,7 @@ const CreateEvent = () => {
 						<textarea name={"description"} className={"questionTextarea createEventTextArea"} value={state.inputs.description} onChange={handleInputChange} />
 					</div>
 					<p>*All fields are required to continue</p>
-					<button className={`createEventButton ${complete?"blackButton":"disabledButton"}`}>Next</button>
+					<button onClick={() => submitEvent()}className={`createEventButton ${complete?"blackButton":"disabledButton"}`}>Next</button>
 				</div>
 			</div>	
 		</>
