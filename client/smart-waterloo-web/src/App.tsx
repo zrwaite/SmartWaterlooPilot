@@ -37,14 +37,14 @@ const AddressContext = React.createContext<{address: string; setAddress: Functio
 	setAddress: () => {}
 });
 const IdContext = React.createContext<{id: string; setId: Function;}>({
-	id: "",
+	id: "069",
 	setId: () => {}
 });
 function App() {
 	const [mobile, setMobile] = useState(false);
 	const [org, setOrg] = useState(true);
 	const [address, setAddress] = useState("");
-	const [id, setId] = useState("");
+	const [id, setId] = useState("069");
 	const mobileValue = {mobile, setMobile};
 	const orgValue = {org, setOrg};
 	const addressValue = {address, setAddress};

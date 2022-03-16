@@ -1,7 +1,7 @@
 import "./MetaMask.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import MetaMaskOnboarding from "@metamask/onboarding";
-
+import { AddressContext } from "../../../App";
 declare const window: any;
 
 type MetaMaskProps = {
@@ -13,6 +13,7 @@ export default function MetaMask(props: MetaMaskProps) {
 	const [buttonText, setButtonText] = useState(ONBOARD_TEXT);
 	const [isDisabled, setDisabled] = useState(false);
 	const [accounts, setAccounts] = useState([""]);
+	const { address, setAddress } = useContext(AddressContext);
 	let onboarding = useRef<MetaMaskOnboarding>();
 	const CONNECT_TEXT = 'Connect MetaMask Wallet';
 	const CONNECTED_TEXT = `${accounts[0].substring(0, 4)} ... ${accounts[0].substring(accounts[0].length - 4)} Connected`;
@@ -45,6 +46,7 @@ export default function MetaMask(props: MetaMaskProps) {
 	useEffect(() => {
 		async function handleNewAccounts(newAccounts: []) {
 			setAccounts(newAccounts);
+			setAddress(accounts[0]);
 		}
 		if (MetaMaskOnboarding.isMetaMaskInstalled()) {
 			window.ethereum
@@ -63,7 +65,10 @@ export default function MetaMask(props: MetaMaskProps) {
 			if (MetaMaskOnboarding.isMetaMaskInstalled()) {
 				window.ethereum
 					.request({ method: 'eth_requestAccounts' })
-					.then((newAccounts: []) => setAccounts(newAccounts))
+					.then((newAccounts: []) => {
+						setAccounts(newAccounts);
+						setAddress(accounts[0]);
+					})
 					.catch((err: any) => {
 						console.log(err);
 					});

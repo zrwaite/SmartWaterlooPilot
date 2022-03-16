@@ -3,11 +3,11 @@ import Navbar from "../../components/Navbar";
 import { MobileContext, OrgContext, IdContext, AddressContext } from "../../App";
 import {useContext, useState} from "react";
 import "./Surveys.css";
-import {exampleSurveys} from "../../data/Surveys";
+import {exampleSurveys} from "../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
-import { defaultUserData} from "../../data/Users";
-import { getUserData} from "../../data/getData"
+import { defaultUserData} from "../data/Users";
+import { getUserData} from "../data/getData"
 
 
 const Surveys = () => {
@@ -19,7 +19,7 @@ const Surveys = () => {
 
 	const [userData, setUserData] = useState(defaultUserData);
 	const getSetUserData = async () => {
-		let users = await getUserData(id);
+		let users = await getUserData();
 		if (!users) return;
 		setUserData(users)
 	}

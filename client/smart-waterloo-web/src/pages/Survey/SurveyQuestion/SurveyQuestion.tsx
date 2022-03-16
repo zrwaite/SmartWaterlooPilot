@@ -1,5 +1,5 @@
 import "./SurveyQuestion.css";
-import {Question} from "../../../data/Surveys"
+import {Question} from "../../data/Surveys"
 interface SurveyQuestionProps extends Question {
 	index: number;
 	setParentAnswer: (arg0: number, arg1: string) => void;

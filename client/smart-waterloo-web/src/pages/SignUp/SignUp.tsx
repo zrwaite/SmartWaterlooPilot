@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { MobileContext, AddressContext, OrgContext, IdContext} from "../../App";
+import { MobileContext, AddressContext, OrgContext, IdContext } from "../../App";
 import "./SignUp.css";
 import Profile from "./Profile";
 import Landing from "./Landing";
@@ -12,8 +12,13 @@ import StepBubbles from "./StepBubbles";
 import Cookies from "universal-cookie";
 import { ActionMeta } from "react-select";
 import userABI from "./utils/SmartUser.json";
+import orgABI from "./utils/SmartOrganisation.json"
+import Web3 from "web3";
+import { AbiItem } from 'web3-utils';
 import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
+
+let web3 = new Web3(Web3.givenProvider);
 
 type SignUpProps = {
 	org: boolean;
@@ -54,16 +59,24 @@ const defaultSignUpState = {
 declare var window: any;
 
 const SignUp = (props: SignUpProps) => {
-	const {setOrg} = useContext(OrgContext);
-	const {id: qrId} = useContext(IdContext);
-	const {address, setAddress} = useContext(AddressContext);
+	const { org, setOrg } = useContext(OrgContext);
+	const { id: qrId } = useContext(IdContext);
+	const { address, setAddress } = useContext(AddressContext);
 	const [state, setState] = useState(defaultSignUpState);
 	const cookies = new Cookies();
 	const navigate = useNavigate();
 	cookies.set("back", "/signup");
-	useEffect(() => {
+	const setAccounts = async () => {
 		setOrg(props.org);
-	},[props.org, setOrg])
+		try {
+			let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+			web3.eth.defaultAccount = accounts[0];
+			return web3.eth.defaultAccount;
+		} catch (err: any) {
+			console.log(err);
+		}
+		return "";
+	}
 	const updateStep = (step: number) => {
 		setState({ ...state, step: step });
 	}
@@ -110,41 +123,47 @@ const SignUp = (props: SignUpProps) => {
 		avatarPropKeys.forEach(key => verifiedProps[key] = state.formInputs[key]);
 		return verifiedProps;
 	}
-	const submitForm = async() => {
-		if (window.ethereum) {
-			await window.ethereum.request({ method: 'eth_requestAccounts' })
-				.then((accounts: []) => setAddress(accounts))
+	const submitForm = async () => {
+		//Setting account wallet with context
+		let returnedAddress = await setAccounts();
+		console.log(web3.eth.defaultAccount);
+		setAddress(returnedAddress);
+		let contractAddress;
+		let contractABI;
+		console.log(address);
+		console.log(org);
+		if (org == false) {
+			//User Information Smart Contract
+			
+			contractAddress = "0x584Bfa8354673eF5f9Ab17a3d041D8E2537b4dD8";
+			contractABI = userABI;
+
+			const userContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
+
+			await userContract.methods.addInfo(
+				web3.eth.defaultAccount,
+				qrId,
+				(state.formInputs.day + state.formInputs.month + state.formInputs.year),
+				state.formInputs.gender,
+				(state.formInputs.height + state.formInputs.weight),
+				state.formInputs.grade,
+				state.formInputs.postalCode,
+				state.formInputs.race,
+				state.formInputs.religion,
+				state.formInputs.sexuality,
+				(state.formInputs.nickname + state.formInputs.avatarString)).send({ from: web3.eth.defaultAccount })
+				.then(() => console.log("Information added successfully"))
 				.catch((err: any) => console.log(err));
 		}
-		else{
-			console.log("No accounts found!");
+		else {
+			contractAddress = "0x2656D9bB68FCB5F56Ebe8CC50C5a2D61c86cB6b0";
+			contractABI = orgABI;
+			const orgContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
+			console.log(orgContract);
+			await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatarString), [""]).send({from: web3.eth.defaultAccount})
+			.then(() => console.log(`Organisation ${state.formInputs.businessNumber} created succesfully`))
+			.catch((err:any) => console.log(err));
 		}
-
-		//User Information Smart Contract
-		const contractAddress = "0x03AAc327157736eb154b7E8be9eb0B0d4431F96A";
-		const contractABI = userABI.abi;
-		const provider = new ethers.providers.Web3Provider(window.ethereum);
-		const signer = provider.getSigner();
-		const userContract = new ethers.Contract(
-			contractAddress,
-			contractABI,
-			signer
-		);
-		console.log(qrId);
-		await userContract.addInfo(
-			address, 
-			(state.formInputs.day + state.formInputs.month + state.formInputs.year), 
-			state.formInputs.gender, 
-			state.formInputs.height, 
-			state.formInputs.weight, 
-			state.formInputs.grade, 
-			state.formInputs.postalCode, 
-			state.formInputs.race, 
-			state.formInputs.religion, 
-			state.formInputs.sexuality, 
-			state.formInputs.nickname)
-			.then(()=> console.log("Information added successfully"))
-			.catch((err:any)=> console.log(err));
 		let path = `/dashboard`;
 		navigate(path);
 	}

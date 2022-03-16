@@ -16,6 +16,7 @@ const randomString = () => {
     for ( var i = 0; i < 8; i++ ) {
       	result += characters.charAt(Math.floor(Math.random() * charactersLength));
    	}
+	console.log(result);
    	return result;
 }
 function MeetAvatar(props:MeetAvatarProps) {

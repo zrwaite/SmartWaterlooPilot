@@ -1,7 +1,7 @@
 import Navbar from "../../components/Navbar";
 import {useState, useContext, useEffect} from "react"
 import { MobileContext } from "../../App";
-import {exampleSurveys, SurveyDataType} from "../../data/Surveys";
+import {exampleSurveys, SurveyDataType} from "../data/Surveys";
 import SurveyLanding from "./SurveyLanding";
 import "./Survey.css";
 import { useParams } from "react-router-dom";

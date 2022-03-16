@@ -10,71 +10,47 @@
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "_user",
+				"name": "organiser",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "uid",
+				"name": "eventName",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "birthdate",
+				"name": "ageGroup",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "gender",
+				"name": "startDate",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "body",
+				"name": "endDate",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "grade",
+				"name": "activityType",
 				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "string",
-				"name": "postalCode",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "race",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "religion",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "sexuality",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "avatarName",
+				"name": "description",
 				"type": "string"
 			}
 		],
-		"name": "InformationAdded",
+		"name": "EventCreated",
 		"type": "event"
 	},
 	{
@@ -139,61 +115,41 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "_user",
+				"name": "organiser",
 				"type": "address"
 			},
 			{
 				"internalType": "string",
-				"name": "uid",
+				"name": "eventName",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "birthdate",
+				"name": "ageGroup",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "gender",
+				"name": "startDate",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "body",
+				"name": "endDate",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "grade",
+				"name": "activityType",
 				"type": "string"
 			},
 			{
 				"internalType": "string",
-				"name": "postalCode",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "race",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "religion",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "sexuality",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "avatarName",
+				"name": "description",
 				"type": "string"
 			}
 		],
-		"name": "addInfo",
+		"name": "createOrgEvent",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
@@ -201,75 +157,47 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "_addr",
-				"type": "address"
-			}
-		],
-		"name": "getInfo",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getTotalUsers",
-		"outputs": [
-			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"name": "events",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "organiser",
+				"type": "address"
+			},
+			{
+				"internalType": "string",
+				"name": "eventName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "ageGroup",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "startDate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "endDate",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "activityType",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "description",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",
@@ -278,13 +206,150 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "eventName",
+				"type": "string"
 			}
 		],
-		"name": "infos",
+		"name": "getAllEventAttendees",
 		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllEvents",
+		"outputs": [
+			{
+				"internalType": "string[]",
+				"name": "eventName",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "ageGroup",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "startDate",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "endDate",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "activityType",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "description",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "orgAddress",
+				"type": "address"
+			}
+		],
+		"name": "getOrgEvents",
+		"outputs": [
+			{
+				"internalType": "string[]",
+				"name": "eventName",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "ageGroup",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "startDate",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "endDate",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "activityType",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "description",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "getUserEvents",
+		"outputs": [
+			{
+				"internalType": "string[]",
+				"name": "eventName",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "ageGroup",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "startDate",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "endDate",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "activityType",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "description",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "address",
 				"name": "_user",
@@ -292,56 +357,13 @@
 			},
 			{
 				"internalType": "string",
-				"name": "uid",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "birthdate",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "gender",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "body",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "grade",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "postalCode",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "race",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "religion",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "sexuality",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "avatarName",
+				"name": "eventName",
 				"type": "string"
 			}
 		],
-		"stateMutability": "view",
+		"name": "newAttendee",
+		"outputs": [],
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{

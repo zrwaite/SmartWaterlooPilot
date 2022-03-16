@@ -3,13 +3,13 @@ import Navbar from "../../components/Navbar";
 import { MobileContext, OrgContext, IdContext, AddressContext } from "../../App";
 import {useContext, useState} from "react";
 import "./Events.css";
-import { exampleEvents, defaultEventsData } from "../../data/Events";
+import { exampleEvents, defaultEventsData } from "../data/Events";
 import EventPanel from "./EventPanel";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import {exampleUsers, defaultUserData} from "../../data/Users";
+import {exampleUsers, defaultUserData} from "../data/Users";
 import ClipLoader from "react-spinners/ClipLoader";
-import {getEventsData, getUserData} from "../../data/getData"
+import {getEventsData, getUserData} from "../data/getData"
 
 
 const Events = () => {
@@ -22,7 +22,7 @@ const Events = () => {
 	cookies.set("back", "/events");
 	const [userData, setUserData] = useState(defaultUserData);
 	const getSetUserData = async () => {
-		let users = await getUserData(id);
+		let users = await getUserData();
 		if (!users) return;
 		setUserData(users)
 	}

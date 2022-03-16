@@ -9,9 +9,9 @@ import DashboardPreview from "./DashboardPreview";
 import Sidebar from "../../components/Sidebar";
 import {useContext, useState} from "react";
 import {MobileContext, OrgContext, AddressContext, IdContext} from "../../App";
-import { defaultUserData} from "../../data/Users";
-import { defaultEventsData } from "../../data/Events";
-import {getEventsData, getUserData} from "../../data/getData"
+import { defaultUserData} from "../data/Users";
+import { defaultEventsData } from "../data/Events";
+import {getEventsData, getUserData} from "../data/getData"
 
 
 
@@ -24,7 +24,7 @@ const Dashboard = () => {
 	cookies.set("back", "/dashboard");
 	const [userData, setUserData] = useState(defaultUserData);
 	const getSetUserData = async () => {
-		let users = await getUserData(id);
+		let users = await getUserData();
 		if (!users) return;
 		setUserData(users)
 	}
