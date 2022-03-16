@@ -1,3 +1,20 @@
+type defaultEventsDataType = {
+	eventsDataSet: boolean;
+	events: {
+		name: string;
+		title: string;
+		organization: string;
+		age_range: string;
+		start_date: string;
+		end_date: string;
+		category: string;
+		signed_up: boolean;
+		description: string;
+		image: string;
+	}[]
+}
+const defaultEventsData: defaultEventsDataType = {eventsDataSet: false, events:[]};
+
 const exampleEvents = [
 	{
 		"name": "basketball-skills",
@@ -37,4 +54,4 @@ const exampleEvents = [
 	}
 ]
 
-export {exampleEvents}
+export {exampleEvents, defaultEventsData}

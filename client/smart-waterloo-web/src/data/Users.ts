@@ -1,5 +1,5 @@
 const defaultUserData = {
-	set: false,
+	userDataSet: false,
 	nickname: "--------",
 	avatarString: ""
 }

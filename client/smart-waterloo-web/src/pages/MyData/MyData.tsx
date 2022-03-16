@@ -26,18 +26,21 @@ const MyData = () => {
 			return;
 		}
 		setUserData({
-			set: true,
+			userDataSet: true,
 			nickname: user.nickname,
 			avatarString: user.avatarString
 		})
 	}
-	if (!userData.set) getUserData();
-
+	const [dataCalled, setDataCalled] = useState(false);
+	if (!dataCalled) {
+		getUserData();
+		setDataCalled(true);
+	}
 	return (
 		<>
 			<Navbar root={true}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar nickname={userData.nickname} avatarString={userData.avatarString} page="data"/>}
+				{mobile?null:<Sidebar {...userData} page="data"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>My Data 📊</h4>

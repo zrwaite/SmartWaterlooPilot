@@ -24,18 +24,22 @@ const Surveys = () => {
 			return;
 		}
 		setUserData({
-			set: true,
+			userDataSet: true,
 			nickname: user.nickname,
 			avatarString: user.avatarString
 		})
 	}
-	if (!userData.set) getUserData();
+	const [dataCalled, setDataCalled] = useState(false);
+	if (!dataCalled) {
+		getUserData();
+		setDataCalled(true);
+	}
 
 	return (
 		<>
 			<Navbar root={true}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar nickname={userData.nickname} avatarString={userData.avatarString} page="surveys"/>}
+				{mobile?null:<Sidebar {...userData} page="surveys"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>Surveys 📝</h4>

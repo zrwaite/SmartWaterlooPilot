@@ -4,6 +4,7 @@ import {topElements, bottomElements} from "./SidebarOptions";
 import {useNavigate} from "react-router-dom";
 interface SidebarProps {
 	page: string;
+	userDataSet:boolean;
 	nickname: string;
 	avatarString: string;
 }

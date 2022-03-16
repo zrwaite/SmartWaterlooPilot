@@ -3,11 +3,12 @@ import Navbar from "../../components/Navbar";
 import { MobileContext, OrgContext, IdContext, AddressContext } from "../../App";
 import {useContext, useState} from "react";
 import "./Events.css";
-import { exampleEvents } from "../../data/Events";
+import { exampleEvents, defaultEventsData } from "../../data/Events";
 import EventPanel from "./EventPanel";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import {exampleUsers, defaultUserData} from "../../data/Users";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const Events = () => {
 	const {mobile} = useContext(MobileContext);
@@ -26,17 +27,32 @@ const Events = () => {
 			return;
 		}
 		setUserData({
-			set: true,
+			userDataSet: true,
 			nickname: user.nickname,
 			avatarString: user.avatarString
 		})
 	}
-	if (!userData.set) getUserData();
+	const [eventData, setEventData] = useState(defaultEventsData);
+	const getEventData = async () => {
+		await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
+		const events = exampleEvents;
+		if (!events) {
+			alert("Events not found");
+			return;
+		}
+		setEventData({events: events, eventsDataSet: true })
+	}
+	const [dataCalled, setDataCalled] = useState(false);
+	if (!dataCalled) {
+		getEventData();
+		getUserData();
+		setDataCalled(true);
+	}
 	return (
 		<>
 			<Navbar root={true}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar nickname={userData.nickname} avatarString={userData.avatarString} page="events"/>}
+				{mobile?null:<Sidebar {...userData} page="events"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>Events 🎟️</h4>
@@ -46,9 +62,13 @@ const Events = () => {
 							{org?<div className={"addEventSection"}>
 								<button onClick={() => navigate("/createevent")} className={"blackButton addEventButton"}>Add Event</button>
 							</div>:null}
-							{exampleEvents.map((event, i) => {return (
-								<EventPanel index={i} key={i} {...event}/>
-							);})}
+							{
+								eventData.eventsDataSet?
+								eventData.events.map((event, i) => {return (
+									<EventPanel index={i} key={i} {...event}/>
+								);}):
+								[1,2,3,4,5].map(() => {return <div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
+							}
 						</div>
 					</div>
 				</div>

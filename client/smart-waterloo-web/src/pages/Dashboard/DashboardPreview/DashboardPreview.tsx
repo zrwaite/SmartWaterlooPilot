@@ -3,13 +3,15 @@ import { MobileContext, OrgContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
-import {exampleEvents} from "../../../data/Events";
+import {exampleEvents, defaultEventsData} from "../../../data/Events";
 import {exampleSurveys} from "../../../data/Surveys"
 import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"
 import SurveyPanel from "../../Surveys/SurveyPanel"
 import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+
 interface DashboardPreviewHeaderProps {
 	name: keyof typeof Data;
 	mobile: boolean
@@ -32,6 +34,8 @@ const DashboardPreviewHeader = (props:DashboardPreviewHeaderProps) => {
 
 interface DashboardPreviewProps {
 	name: keyof typeof Data;
+	events: typeof defaultEventsData.events;
+	eventsDataSet: boolean;
 }
 const DashboardPreview = (props:DashboardPreviewProps) => {
 	const navigate = useNavigate();
@@ -49,9 +53,13 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 	let numUpcoming = 0;
 	switch (props.name) {
 		case "events": panelList = (<> 
-			{exampleEvents.map((event, i) => {return (
-				i<5?<EventPanel key={i} index={i} {...event}/>:null
-			);})}
+			{
+				props.eventsDataSet?
+				props.events.map((event, i) => {return (
+					i<5?<EventPanel key={i} index={i} {...event}/>:null
+				);}):
+				[1,2,3,4,5].map(() => {return <div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
+			}
 			{org?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate("/createevent")} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
 			</div>:null}
