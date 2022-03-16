@@ -1,20 +1,41 @@
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-import { MobileContext, OrgContext } from "../../App";
-import {useContext} from "react";
+import { MobileContext, OrgContext, IdContext, AddressContext } from "../../App";
+import {useContext, useState} from "react";
 import "./Surveys.css";
 import {exampleSurveys} from "../../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
+import {exampleUsers, defaultUserData} from "../../data/Users";
+
 const Surveys = () => {
 	const {mobile} = useContext(MobileContext);
 	const {org} = useContext(OrgContext);
+	const {address} = useContext(AddressContext);
+	const {id} = useContext(IdContext);
 	const navigate = useNavigate();
+
+	const [userData, setUserData] = useState(defaultUserData);
+	const getUserData = async () => {
+		await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
+		const user = exampleUsers.find(user => user.userId === id);
+		if (!user) {
+			alert("Invalid user!");
+			return;
+		}
+		setUserData({
+			set: true,
+			nickname: user.nickname,
+			avatarString: user.avatarString
+		})
+	}
+	if (!userData.set) getUserData();
+
 	return (
 		<>
 			<Navbar root={true}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar page="surveys"/>}
+				{mobile?null:<Sidebar nickname={userData.nickname} avatarString={userData.avatarString} page="surveys"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>Surveys 📝</h4>

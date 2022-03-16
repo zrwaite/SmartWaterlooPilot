@@ -4,6 +4,8 @@ import {topElements, bottomElements} from "./SidebarOptions";
 import {useNavigate} from "react-router-dom";
 interface SidebarProps {
 	page: string;
+	nickname: string;
+	avatarString: string;
 }
 const Sidebar = (props:SidebarProps) => {
 	const navigate = useNavigate()
@@ -14,8 +16,8 @@ const Sidebar = (props:SidebarProps) => {
 	return (
 		<aside className={"sidebarContainer"}>
 			<div className="center sidebarAvatar">
-				<img src={avatarImg} alt="avatarImage"/>
-				<h5>Tyragreenex</h5>
+				<img src={props.avatarString===""?"":`https://avatars.dicebear.com/api/bottts/${props.avatarString}.svg`} alt=""/>
+				<h5>{props.nickname}</h5>
 			</div>
 			<div className="topSidebar">
 				{topElements.map((elem,i) => {

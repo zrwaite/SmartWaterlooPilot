@@ -16,6 +16,8 @@
 .sidebarAvatar>img{
 	border-radius: 50%;
 	border: 0.3rem solid black;
+	width: 8rem;
+	height: 8rem;
 }
 .topSidebar{
 	width: 100%;
