@@ -54,7 +54,7 @@ const CreateEvent = () => {
 		const contractABI = eventABI;
 		const contractAddress = "0xd242a3Fa65b82Aa9C87D3a19C82EA6b5Db78e8EB";
 
-		const eventContract = await new web3.eth.Contract(contractABI as AbiItem[],contractAddress);
+		const eventContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
 
 		await eventContract.methods.createOrgEvent(
 			web3.eth.defaultAccount,
@@ -64,78 +64,77 @@ const CreateEvent = () => {
 			(state.inputs.end_day + state.inputs.end_month + state.inputs.end_year),
 			state.inputs.category,
 			state.inputs.description
-		).send({from:web3.eth.defaultAccount})
-		.then(() => 
-		{
-			console.log(`${state.inputs.name} created successfully`);
-		})
-		.catch((err:any) => console.log(err));
+		).send({ from: web3.eth.defaultAccount })
+			.then(() => {
+				console.log(`${state.inputs.name} created successfully`);
+			})
+			.catch((err: any) => console.log(err));
 
 		let path = `/dashboard`;
 		navigate(path);
 	}
-	}
-	return (
-		<>
-			<div className={"PageContainer"}>
-				<div className={"createNavbar"}>
-					<h6 style={link} onClick={() => navigate("/events")}>Cancel</h6>
-					<h6 style={complete ? link : greyText}>Next</h6>
-				</div>
-				<div className={mobile ? "" : "DesktopPanel"}>
-					<div className={"disclaimer"}>
-						<div className={"infoBubble"}><p>i</p></div>
-						<p>Please make sure information is correct. You will not be able to edit this event once it is published.</p>
-					</div>
-					<h2 className={"createEventHeader"}>Create New Event ✏️</h2>
-					<div className={"formQuestion"}>
-						<p>Name of Event</p>
-						<input name={"name"} className={"createEventInput"} placeholder={"Enter Text"} value={state.inputs.name} onChange={handleInputChange} />
-					</div>
-					<div className={"formQuestion"}>
-						<p>Which age group is this event</p>
-						{["4-6", "4-8", "4-12", "6-12", "8-12"].map((age, i) => {
-							return (
-								<div key={i} className={"mcInputs"}>
-									<input name={"age"} type="radio" value={age} checked={age === state.inputs.age} onChange={handleInputChange} />
-									<p>{age}</p>
-								</div>
-							)
-						})}
-					</div>
-					<div className={"formQuestion"}>
-						<p>Start Date</p>
-						<div className={"singleLineMultiInput"}>
-							<input name={"start_day"} className={"createEventMiniInput"} placeholder={"DD"} value={state.inputs.start_day} onChange={handleInputChange} />
-							<h6>/</h6>
-							<input name={"start_month"} className={"createEventMiniInput"} placeholder={"MM"} value={state.inputs.start_month} onChange={handleInputChange} />
-							<h6>/</h6>
-							<input name={"start_year"} className={"createEventMiniInput"} placeholder={"YY"} value={state.inputs.start_year} onChange={handleInputChange} />
-						</div>
-					</div>
-					<div className={"formQuestion"}>
-						<p>End Date</p>
-						<div className={"singleLineMultiInput"}>
-							<input name={"end_day"} className={"createEventMiniInput"} placeholder={"DD"} value={state.inputs.end_day} onChange={handleInputChange} />
-							<h6>/</h6>
-							<input name={"end_month"} className={"createEventMiniInput"} placeholder={"MM"} value={state.inputs.end_month} onChange={handleInputChange} />
-							<h6>/</h6>
-							<input name={"end_year"} className={"createEventMiniInput"} placeholder={"YY"} value={state.inputs.end_year} onChange={handleInputChange} />
-						</div>
-					</div>
-					<div className="formQuestion">
-						<Select className={"selectComponent"} defaultInputValue={state.inputs.category} name={"category"} onChange={handleSelectChange} options={eventCategories} />
-					</div>
-					<div className={"formQuestion"}>
-						<p>Description</p>
-						<textarea name={"description"} className={"questionTextarea createEventTextArea"} value={state.inputs.description} onChange={handleInputChange} />
-					</div>
-					<p>*All fields are required to continue</p>
-					<button onClick={eventCreation} className={`createEventButton ${complete ? "blackButton" : "disabledButton"}`}>Create Event</button>
-				</div>
+
+return (
+	<>
+		<div className={"PageContainer"}>
+			<div className={"createNavbar"}>
+				<h6 style={link} onClick={() => navigate("/events")}>Cancel</h6>
+				<h6 style={complete ? link : greyText}>Next</h6>
 			</div>
-		</>
-	);
+			<div className={mobile ? "" : "DesktopPanel"}>
+				<div className={"disclaimer"}>
+					<div className={"infoBubble"}><p>i</p></div>
+					<p>Please make sure information is correct. You will not be able to edit this event once it is published.</p>
+				</div>
+				<h2 className={"createEventHeader"}>Create New Event ✏️</h2>
+				<div className={"formQuestion"}>
+					<p>Name of Event</p>
+					<input name={"name"} className={"createEventInput"} placeholder={"Enter Text"} value={state.inputs.name} onChange={handleInputChange} />
+				</div>
+				<div className={"formQuestion"}>
+					<p>Which age group is this event</p>
+					{["4-6", "4-8", "4-12", "6-12", "8-12"].map((age, i) => {
+						return (
+							<div key={i} className={"mcInputs"}>
+								<input name={"age"} type="radio" value={age} checked={age === state.inputs.age} onChange={handleInputChange} />
+								<p>{age}</p>
+							</div>
+						)
+					})}
+				</div>
+				<div className={"formQuestion"}>
+					<p>Start Date</p>
+					<div className={"singleLineMultiInput"}>
+						<input name={"start_day"} className={"createEventMiniInput"} placeholder={"DD"} value={state.inputs.start_day} onChange={handleInputChange} />
+						<h6>/</h6>
+						<input name={"start_month"} className={"createEventMiniInput"} placeholder={"MM"} value={state.inputs.start_month} onChange={handleInputChange} />
+						<h6>/</h6>
+						<input name={"start_year"} className={"createEventMiniInput"} placeholder={"YY"} value={state.inputs.start_year} onChange={handleInputChange} />
+					</div>
+				</div>
+				<div className={"formQuestion"}>
+					<p>End Date</p>
+					<div className={"singleLineMultiInput"}>
+						<input name={"end_day"} className={"createEventMiniInput"} placeholder={"DD"} value={state.inputs.end_day} onChange={handleInputChange} />
+						<h6>/</h6>
+						<input name={"end_month"} className={"createEventMiniInput"} placeholder={"MM"} value={state.inputs.end_month} onChange={handleInputChange} />
+						<h6>/</h6>
+						<input name={"end_year"} className={"createEventMiniInput"} placeholder={"YY"} value={state.inputs.end_year} onChange={handleInputChange} />
+					</div>
+				</div>
+				<div className="formQuestion">
+					<Select className={"selectComponent"} defaultInputValue={state.inputs.category} name={"category"} onChange={handleSelectChange} options={eventCategories} />
+				</div>
+				<div className={"formQuestion"}>
+					<p>Description</p>
+					<textarea name={"description"} className={"questionTextarea createEventTextArea"} value={state.inputs.description} onChange={handleInputChange} />
+				</div>
+				<p>*All fields are required to continue</p>
+				<button onClick={eventCreation} className={`createEventButton ${complete ? "blackButton" : "disabledButton"}`}>Create Event</button>
+			</div>
+		</div>
+	</>
+);
 }
 
 export default CreateEvent;

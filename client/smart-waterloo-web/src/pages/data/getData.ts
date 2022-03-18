@@ -35,6 +35,7 @@ const getUserData = async () => {
     .call()
     .then(() => (org = false))
     .catch(() => (org = true));
+  console.log(org);
   if (org === false) {
     const userData = await userContract.methods.getInfo(userAddress).call();
 
@@ -46,8 +47,8 @@ const getUserData = async () => {
       userDataSet: true,
       // nickname: userData.avatarName,
       // avatarString: user.avatarString
-      nickname: userData[9],
-      avatarString: userData.avatarName,
+      nickname: userData[9].substring(0,userData[9].length-8),
+      avatarString: userData[9].substring(-8),
     };
   } else {
     const orgAddress = userAddress;
@@ -88,12 +89,14 @@ const getEventsData = async () => {
     contractABI as AbiItem[],
     contractAddress
   );
-	console.log(eventContract);
-	const eve = await (eventContract.methods.getAllEvents().call())
-	.then(() => console.log("Things work"))
-	.catch((err:any) => console.log(err));
+  console.log(eventContract);
+  const eve = await eventContract.methods
+    .getAllEvents()
+    .call()
+    .then(() => console.log("Things work"))
+    .catch((err: any) => console.log(err));
 
-	// console.log(eve);
+  // console.log(eve);
   //EDIT TO NOT BE EXAMPLE EVENTS
   exampleEvents.forEach((event) => {
     newEvents.push({
