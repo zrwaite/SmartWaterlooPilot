@@ -45,8 +45,6 @@ const getUserData = async () => {
     }
     return {
       userDataSet: true,
-      // nickname: userData.avatarName,
-      // avatarString: user.avatarString
       nickname: userData[9].substring(0,userData[9].length-8),
       avatarString: userData[9].substring(-8),
     };
@@ -68,10 +66,8 @@ const getUserData = async () => {
     }
     return {
       userDataSet: true,
-      // nickname: userData.avatarName,
-      // avatarString: user.avatarString
-      nickname: userData[2],
-      avatarString: userData.avatarName,
+      nickname: userData[2].substring(0,userData[9].length-8),
+      avatarString: userData[2].substring(-8),
     };
   }
 };
