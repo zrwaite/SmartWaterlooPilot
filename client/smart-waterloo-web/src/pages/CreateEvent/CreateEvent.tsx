@@ -74,7 +74,7 @@ const CreateEvent = () => {
 		let path = `/dashboard`;
 		navigate(path);
 	}
-	}
+	
 	return (
 		<>
 			<div className={"PageContainer"}>
