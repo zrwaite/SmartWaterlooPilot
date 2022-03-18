@@ -4,13 +4,18 @@ import AvatarPNG from "../../images/fullAvatar.png";
 import "./Login.css";
 import Cookies from "universal-cookie";
 import { useContext, useState } from "react";
-import { MobileContext } from "../../App";
+import { MobileContext, OrgContext } from "../../App";
 import { useNavigate } from "react-router-dom";
+import userABI from "../SignUp/utils/SmartUser.json";
+import { AbiItem } from "web3-utils";
+import Web3 from "web3";
 
 declare const window: any;
+let web3 = new Web3(Web3.givenProvider);
 
 const Login = () => {
 	let { mobile } = useContext(MobileContext);
+	let { org, setOrg } = useContext(OrgContext);
 	const cookies = new Cookies();
 	cookies.set("back", "/login");
 	const signIn = "MetaMask Sign-in";
@@ -72,11 +77,19 @@ const Login = () => {
 			setButtonText(connected);
 			//Just a sleep function for it to wait before moving to dashboard
 			(async () => {
-				// Do something before delay
-				console.log('before delay')
-
-				await delay(1800);
-
+				const contractAddress = "0x584Bfa8354673eF5f9Ab17a3d041D8E2537b4dD8";
+				const contractABI = userABI;
+				const userContract = await new web3.eth.Contract(
+					contractABI as AbiItem[],
+					contractAddress
+				);
+				await userContract.methods
+					.getInfo(accounts[0])
+					.call()
+					.then(() => (setOrg(false)))
+					.catch(() => (setOrg(true)));
+				await delay(1500);
+				console.log(org);
 				navigate("/dashboard");
 			})();
 		} catch (error) {

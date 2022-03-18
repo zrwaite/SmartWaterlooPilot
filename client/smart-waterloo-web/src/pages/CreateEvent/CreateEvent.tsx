@@ -54,7 +54,7 @@ const CreateEvent = () => {
 		const contractABI = eventABI;
 		const contractAddress = "0xd242a3Fa65b82Aa9C87D3a19C82EA6b5Db78e8EB";
 
-		const eventContract = await new web3.eth.Contract(contractABI as AbiItem[],contractAddress);
+		const eventContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
 
 		await eventContract.methods.createOrgEvent(
 			web3.eth.defaultAccount,
@@ -64,12 +64,11 @@ const CreateEvent = () => {
 			(state.inputs.end_day + state.inputs.end_month + state.inputs.end_year),
 			state.inputs.category,
 			state.inputs.description
-		).send({from:web3.eth.defaultAccount})
-		.then(() => 
-		{
-			console.log(`${state.inputs.name} created successfully`);
-		})
-		.catch((err:any) => console.log(err));
+		).send({ from: web3.eth.defaultAccount })
+			.then(() => {
+				console.log(`${state.inputs.name} created successfully`);
+			})
+			.catch((err: any) => console.log(err));
 
 		let path = `/dashboard`;
 		navigate(path);
@@ -134,7 +133,7 @@ const CreateEvent = () => {
 					<button onClick={eventCreation} className={`createEventButton ${complete ? "blackButton" : "disabledButton"}`}>Create Event</button>
 				</div>
 			</div>
-		</>
+	</>
 	);
 }
 
