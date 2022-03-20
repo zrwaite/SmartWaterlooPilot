@@ -8,9 +8,11 @@ import "./MyData.css";
 import Cookies from "universal-cookie";
 import { defaultUserData} from "../../data/Users";
 import { getUserData} from "../../data/getData"
+import Settings from "../../components/Settings";
 
 
 const MyData = (props: {org: boolean}) => {
+	const [settingsOpen, setSettingsOpen] = useState(false);
 	const {mobile} = useContext(MobileContext);
 	const {address} = useContext(AddressContext);
 	const {id} = useContext(IdContext);
@@ -32,8 +34,9 @@ const MyData = (props: {org: boolean}) => {
 	return (
 		<>
 			<Navbar root={true}/>
+			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar {...userData} page="data"/>}
+				{mobile?null:<Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="data"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>My Data 📊</h4>

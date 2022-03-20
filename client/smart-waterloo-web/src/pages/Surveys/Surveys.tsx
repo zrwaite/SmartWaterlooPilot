@@ -8,9 +8,12 @@ import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
 import { defaultUserData} from "../../data/Users";
 import { getUserData} from "../../data/getData"
+import Settings from "../../components/Settings";
+
 
 
 const Surveys = (props: {org: boolean}) => {
+	const [settingsOpen, setSettingsOpen] = useState(false);
 	const {mobile} = useContext(MobileContext);
 	const {address} = useContext(AddressContext);
 	const {id} = useContext(IdContext);
@@ -31,8 +34,9 @@ const Surveys = (props: {org: boolean}) => {
 	return (
 		<>
 			<Navbar root={true}/>
+			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar {...userData} page="surveys"/>}
+				{mobile?null:<Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="surveys"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>Surveys 📝</h4>

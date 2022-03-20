@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { defaultUserData } from "../../data/Users";
 import ClipLoader from "react-spinners/ClipLoader";
 import { getEventsData, getUserData } from "../../data/getData"
+import Settings from "../../components/Settings";
 
 
 const Events = (props: {org: boolean}) => {
+	const [settingsOpen, setSettingsOpen] = useState(false);
 	const { mobile } = useContext(MobileContext);
 	let { address } = useContext(AddressContext);
 	let { id } = useContext(IdContext);
@@ -40,8 +42,9 @@ const Events = (props: {org: boolean}) => {
 	return (
 		<>
 			<Navbar root={true} />
+			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile ? "PageContainer" : "asideContainer"}>
-				{mobile ? null : <Sidebar {...userData} page="events" />}
+				{mobile ? null : <Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="events" />}
 				<div className={"besideAside"}>
 					<div className={mobile ? "" : "fullScreenPanel"}>
 						<h4>Events 🎟️</h4>

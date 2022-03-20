@@ -1,0 +1,13 @@
+.settingsModal{
+	display: flex;
+	flex-direction: column;
+}
+.settingsModal>* {
+	width: 100%;
+}
+.settingsModalHeader{
+	display: flex;
+	justify-content: flex-end;
+	margin: 0;
+	margin-bottom: 0.5rem;
+}
