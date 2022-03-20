@@ -5,7 +5,8 @@ import { AddressContext } from "../../../App";
 declare const window: any;
 
 type MetaMaskProps = {
-	updateStep: Function
+	backStep: () => void;
+	nextStep: () => void;
 }
 
 export default function MetaMask(props: MetaMaskProps) {
@@ -89,10 +90,10 @@ export default function MetaMask(props: MetaMaskProps) {
 				<h4>Metamask 🔐</h4>
 				<div className={"MetaMaskButtons"}>
 					<button onClick={onClickOnboard} disabled={isDisabled} className={"blackButton connectMetaMaskButton"}>{buttonText}</button>
-					<button onClick={isDisabled ? () => props.updateStep(2) : () => { }} className={`${isDisabled ? "blackButton" : "disabledButton"} connectMetaMaskButton`}>Continue</button>
+					<button onClick={isDisabled ? props.nextStep : () => { }} className={`${isDisabled ? "blackButton" : "disabledButton"} connectMetaMaskButton`}>Continue</button>
 				</div>
 			</div>
-			<button onClick={() => props.updateStep(0)} className={"blackButton"}>Back</button>
+			<button onClick={props.nextStep} className={"blackButton"}>Back</button>
 		</>
 	);
 }

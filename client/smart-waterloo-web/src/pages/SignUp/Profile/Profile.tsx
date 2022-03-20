@@ -5,7 +5,8 @@ import ProfileFormGrid from "./FormGrid"
 import "./Profile.css";
 
 type ProfileProps = { 
-	updateStep: Function,
+	backStep: () => void,
+	nextStep: () => void,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => void,
 	handleParentSelectChange:  (newValue: null|{ value: string; label: string; }, actionMeta: ActionMeta<{value: string,label: string}>) => void,
 	formData: ProfileFormGridState
@@ -28,7 +29,7 @@ class Profile extends React.Component<ProfileProps, ProfileState> {
 					</p>
 				</header>
 				<ProfileFormGrid {...this.props}/>
-				<button onClick={() => this.props.updateStep(1)} className={"blackButton"}>Back</button>
+				<button onClick={this.props.backStep} className={"blackButton"}>Back</button>
 			</>
 		);
 	}

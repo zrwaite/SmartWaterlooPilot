@@ -1,32 +1,21 @@
 import React, { useContext, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { MobileContext, AddressContext, IdContext } from "../../App";
-import "./SignUp.css";
-import Profile from "./Profile";
+import "./CreateOrg.css";
 import Landing from "./Landing";
-import MeetAvatar from "./MeetAvatar";
-import Nickname from "./Nickname";
-import MetaMask from "./MetaMask";
+import MeetAvatar from "../SignUp/MeetAvatar";
+import Nickname from "../SignUp/Nickname";
+import Verified from "./Verified";
 import StepBubbles from "../../components/StepBubbles";
 import Cookies from "universal-cookie";
 import { ActionMeta } from "react-select";
-import userABI from "./utils/SmartUser.json";
-// import orgABI from "./utils/SmartOrganisation.json"
 import Web3 from "web3";
 import { AbiItem } from 'web3-utils';
 // import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
 
 let web3 = new Web3(Web3.givenProvider);
-const randomString = () => {
-    let result           = '';
-    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for ( let i = 0; i < 8; i++ ) {
-      	result += characters.charAt(Math.floor(Math.random() * characters.length));
-   	}
-   	return result;
-}
-const defaultAvatarString = randomString();
+
 type SignUpProps = {
 };
 const defaultProfileProps = {
@@ -44,13 +33,13 @@ const defaultProfileProps = {
 }
 const defaultNicknameProps = {
 	nickname: "",
-	avatarString: defaultAvatarString
+	avatarString: ""
 }
 const defaultVerifiedProps = {
 	businessNumber: ""
 }
 const defaultAvatarProps = {
-	avatarString: defaultAvatarString
+	avatarString: ""
 }
 const defaultSignUpState = {
 	step: 0,
@@ -103,12 +92,6 @@ const SignUp = (props: SignUpProps) => {
 		partialInput[name] = newValue?.value || "";
 		setState({ ...state, formInputs: partialInput });
 	}
-	const getProfileProps = () => {
-		let profileProps = defaultProfileProps;
-		let profilePropKeys = Object.keys(defaultProfileProps) as [keyof typeof defaultProfileProps];
-		profilePropKeys.forEach(key => profileProps[key] = state.formInputs[key]);
-		return profileProps;
-	}
 	const getNicknameProps = () => {
 		let nicknameProps = defaultNicknameProps;
 		let nicknamePropKeys = Object.keys(defaultNicknameProps) as [keyof typeof defaultNicknameProps];
@@ -121,45 +104,14 @@ const SignUp = (props: SignUpProps) => {
 		avatarPropKeys.forEach(key => avatarProps[key] = state.formInputs[key]);
 		return avatarProps;
 	}
+	const getVerifiedProps = () => {
+		let verifiedProps = defaultVerifiedProps;
+		let avatarPropKeys = Object.keys(defaultVerifiedProps) as [keyof typeof defaultVerifiedProps];
+		avatarPropKeys.forEach(key => verifiedProps[key] = state.formInputs[key]);
+		return verifiedProps;
+	}
 	const submitForm = async () => {
-		//Setting account wallet with context
-		let returnedAddress = await setAccounts();
-		console.log(web3.eth.defaultAccount);
-		setAddress(returnedAddress);
-		let contractAddress;
-		let contractABI;
-		console.log(address);
-			//User Information Smart Contract
-			
-			contractAddress = "0x584Bfa8354673eF5f9Ab17a3d041D8E2537b4dD8";
-			contractABI = userABI;
-
-			const userContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
-
-			await userContract.methods.addInfo(
-				web3.eth.defaultAccount,
-				qrId,
-				(state.formInputs.day + state.formInputs.month + state.formInputs.year),
-				state.formInputs.gender,
-				(state.formInputs.height + state.formInputs.weight),
-				state.formInputs.grade,
-				state.formInputs.postalCode,
-				state.formInputs.race,
-				state.formInputs.religion,
-				state.formInputs.sexuality,
-				(state.formInputs.nickname + state.formInputs.avatarString)).send({ from: web3.eth.defaultAccount })
-				.then(() => console.log("Information added successfully"))
-				.catch((err: any) => console.log(err));
-		// }
-		// else {
-		// 	contractAddress = "0x2656D9bB68FCB5F56Ebe8CC50C5a2D61c86cB6b0";
-		// 	contractABI = orgABI;
-		// 	const orgContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
-		// 	console.log(orgContract);
-		// 	await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatarString), [""]).send({from: web3.eth.defaultAccount})
-		// 	.then(() => console.log(`Organisation ${state.formInputs.businessNumber} created succesfully`))
-		// 	.catch((err:any) => console.log(err));
-		// }
+		
 		let path = `/dashboard`;
 		navigate(path);
 	}
@@ -174,13 +126,11 @@ const SignUp = (props: SignUpProps) => {
 		case 0: stepSection = (
 			<Landing nextStep={() => updateStep(1)} />
 		); break; case 1: stepSection = (
-			<MetaMask backStep={() => updateStep(0)} nextStep={() => updateStep(2)} />
+			<Verified backStep={() => updateStep(0)} nextStep={() => updateStep(2)}{...userInputFunctions} verifiedData={getVerifiedProps()}/>
 		); break; case 2: stepSection = (
-			<Profile backStep={() => updateStep(1)} nextStep={() => updateStep(3)} {...userInputFunctions} formData={getProfileProps()} />
+			<MeetAvatar backStep={() => updateStep(1)} nextStep={() => updateStep(3)} avatarData={getAvatarProps()} updateParentState={childSetState} />
 		); break; case 3: stepSection = (
-			<MeetAvatar backStep={() => updateStep(2)} nextStep={() => updateStep(4)} avatarData={getAvatarProps()} updateParentState={childSetState} />
-		); break; case 4: stepSection = (
-			<Nickname backStep={() => updateStep(3)} {...userInputFunctions} nicknameData={getNicknameProps()} submit={submitForm} />
+			<Nickname backStep={() => updateStep(2)} {...userInputFunctions} nicknameData={getNicknameProps()} submit={submitForm} />
 		); break; default: stepSection = (
 			<h1>Invalid step "{state.step}"</h1>
 		);

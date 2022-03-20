@@ -5,7 +5,8 @@ import "./MeetAvatar.css";
 //Todo change buttons to links
 
 type MeetAvatarProps = { 
-	updateStep: Function,
+	backStep: () => void,
+	nextStep: () => void,
 	updateParentState: Function
 	avatarData: {avatarString:string}
 };
@@ -36,11 +37,11 @@ function MeetAvatar(props:MeetAvatarProps) {
 				<hr/>
 				<div className="buttonContainer">
 					<button style={spacing} onClick={() => generateNewAvatar()} className={"blackButton signUpButton"}>Generate new Avatar</button>
-					<button style={spacing} onClick={() => props.updateStep(4)} className={"blackButton signUpButton"}>Continue with this Avatar</button>
+					<button style={spacing} onClick={props.nextStep} className={"blackButton signUpButton"}>Continue with this Avatar</button>
 				</div>
 				<p>Don't worry, you can always customize later.</p>
 			</div>
-			<button onClick={() => props.updateStep(2)} className={"blackButton"}>Back</button>
+			<button onClick={props.backStep} className={"blackButton"}>Back</button>
 		</>
     );
 }
