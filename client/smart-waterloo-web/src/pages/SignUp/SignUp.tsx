@@ -16,31 +16,25 @@ import Web3 from "web3";
 import { AbiItem } from 'web3-utils';
 // import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
+import { randomString } from "../../modules/randomData";
 
 let web3 = new Web3(Web3.givenProvider);
-const randomString = () => {
-    let result           = '';
-    let characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for ( let i = 0; i < 8; i++ ) {
-      	result += characters.charAt(Math.floor(Math.random() * characters.length));
-   	}
-   	return result;
-}
+
 const defaultAvatarString = randomString();
 type SignUpProps = {
 };
 const defaultProfileProps = {
-	day: "30",
-	month: "09",
-	year: "2002",
-	gender: "Male",
-	height: "173",
-	weight: "132",
-	grade: "14",
-	postalCode: "N2L 3G5",
-	race: "Other",
-	religion: "Other",
-	sexuality: "Other",
+	day: "",
+	month: "",
+	year: "",
+	gender: "",
+	height: "",
+	weight: "",
+	grade: "",
+	postalCode: "",
+	race: "",
+	religion: "",
+	sexuality: "",
 }
 const defaultNicknameProps = {
 	nickname: "",

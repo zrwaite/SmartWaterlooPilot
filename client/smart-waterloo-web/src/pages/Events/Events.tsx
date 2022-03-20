@@ -3,13 +3,13 @@ import Navbar from "../../components/Navbar";
 import { MobileContext, IdContext, AddressContext } from "../../App";
 import { useContext, useState } from "react";
 import "./Events.css";
-import { defaultEventsData } from "../data/Events";
+import { defaultEventsData } from "../../data/Events";
 import EventPanel from "./EventPanel";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import { defaultUserData } from "../data/Users";
+import { defaultUserData } from "../../data/Users";
 import ClipLoader from "react-spinners/ClipLoader";
-import { getEventsData, getUserData } from "../data/getData"
+import { getEventsData, getUserData } from "../../data/getData"
 
 
 const Events = (props: {org: boolean}) => {

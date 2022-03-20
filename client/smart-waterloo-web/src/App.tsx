@@ -16,6 +16,7 @@ import Events from "./pages/Events";
 import Survey from "./pages/Survey";
 import CreateEvent from "./pages/CreateEvent";
 import CreateSurvey from "./pages/CreateSurvey";
+import CreateOrg from "./pages/CreateOrg";
 import EventDetails from "./pages/EventDetails";
 import Surveys from "./pages/Surveys";
 import { useEffect } from 'react';
@@ -89,6 +90,7 @@ function App() {
 							<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
 							<Route path="/createevent" element={<CreateEvent />}></Route>
 							<Route path="/createsurvey" element={<CreateSurvey />}></Route>
+							<Route path="/createorg" element={<CreateOrg />}></Route>
 							<Route path="*" element={<NotFound />}></Route>
 						</Routes>
 					</Router>

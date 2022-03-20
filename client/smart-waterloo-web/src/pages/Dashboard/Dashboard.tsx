@@ -9,9 +9,9 @@ import DashboardPreview from "./DashboardPreview";
 import Sidebar from "../../components/Sidebar";
 import {useContext, useState} from "react";
 import {MobileContext, AddressContext, IdContext} from "../../App";
-import { defaultUserData} from "../data/Users";
-import { defaultEventsData } from "../data/Events";
-import {getEventsData, getUserData} from "../data/getData"
+import { defaultUserData} from "../../data/Users";
+import { defaultEventsData } from "../../data/Events";
+import {getEventsData, getUserData} from "../../data/getData"
 
 
 

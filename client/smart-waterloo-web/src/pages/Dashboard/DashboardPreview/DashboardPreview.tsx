@@ -3,8 +3,8 @@ import { MobileContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
-import {exampleEvents, defaultEventsData} from "../../data/Events";
-import {exampleSurveys} from "../../data/Surveys"
+import {exampleEvents, defaultEventsData} from "../../../data/Events";
+import {exampleSurveys} from "../../../data/Surveys"
 import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"

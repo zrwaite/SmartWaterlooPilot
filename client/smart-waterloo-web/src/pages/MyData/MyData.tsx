@@ -6,8 +6,8 @@ import { userDataPanels, orgDataPanels } from "./MyDataPanel/MyDataPanels";
 import MyDataPanel from "./MyDataPanel";
 import "./MyData.css";
 import Cookies from "universal-cookie";
-import { defaultUserData} from "../data/Users";
-import { getUserData} from "../data/getData"
+import { defaultUserData} from "../../data/Users";
+import { getUserData} from "../../data/getData"
 
 
 const MyData = (props: {org: boolean}) => {

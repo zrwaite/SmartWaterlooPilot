@@ -2,6 +2,8 @@ import Navbar from "../../components/Navbar";
 import "./About.css";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
+import AboutImage1 from "../../images/AboutUs1.png"
+import AboutImage2 from "../../images/AboutUs.png"
 // import {Link} from "react-router-dom";
 const About = () => {
 	let {mobile} = useContext(MobileContext);
@@ -11,15 +13,8 @@ const About = () => {
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanel"}>
 					{mobile?<h6>About</h6>:<h4 className={"AboutHeader"}>About</h4>}
-					<p>
-						Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. 
-						<br/>
-						<br/>
-						Explanation of the project in a brief and simple way. nd simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. nd simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. nd simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. 
-						<br/>
-						<br/>
-						Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. nd simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. 
-					</p>
+					<img className={"aboutUsImage"} src={AboutImage1} alt={"aboutUs"}/>
+					<img className={"aboutUsImage"} src={AboutImage2} alt={"aboutUs"}/>
 				</div>
 			</div>	
 		</>

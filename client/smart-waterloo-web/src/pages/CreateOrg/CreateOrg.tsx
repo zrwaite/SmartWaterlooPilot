@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { MobileContext, AddressContext, IdContext } from "../../App";
+import { MobileContext } from "../../App";
 import "./CreateOrg.css";
 import Landing from "./Landing";
 import MeetAvatar from "../SignUp/MeetAvatar";
@@ -9,67 +9,37 @@ import Verified from "./Verified";
 import StepBubbles from "../../components/StepBubbles";
 import Cookies from "universal-cookie";
 import { ActionMeta } from "react-select";
-import Web3 from "web3";
-import { AbiItem } from 'web3-utils';
-// import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
+import { randomString } from "../../modules/randomData";
 
-let web3 = new Web3(Web3.givenProvider);
-
+const defaultAvatarString = randomString();
 type SignUpProps = {
 };
-const defaultProfileProps = {
-	day: "30",
-	month: "09",
-	year: "2002",
-	gender: "Male",
-	height: "173",
-	weight: "132",
-	grade: "14",
-	postalCode: "N2L 3G5",
-	race: "Other",
-	religion: "Other",
-	sexuality: "Other",
-}
 const defaultNicknameProps = {
 	nickname: "",
-	avatarString: ""
+	avatarString: defaultAvatarString
 }
 const defaultVerifiedProps = {
 	businessNumber: ""
 }
 const defaultAvatarProps = {
-	avatarString: ""
+	avatarString: defaultAvatarString
 }
 const defaultSignUpState = {
 	step: 0,
 	formInputs: {
-		...defaultProfileProps,
 		...defaultNicknameProps,
 		...defaultAvatarProps,
 		...defaultVerifiedProps
 	}
 }
 
-declare var window: any;
-
 const SignUp = (props: SignUpProps) => {
-	const { id: qrId } = useContext(IdContext);
-	const { address, setAddress } = useContext(AddressContext);
 	const [state, setState] = useState(defaultSignUpState);
+	const {mobile} = useContext(MobileContext);
 	const cookies = new Cookies();
 	const navigate = useNavigate();
 	cookies.set("back", "/signup");
-	const setAccounts = async () => {
-		try {
-			let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-			web3.eth.defaultAccount = accounts[0];
-			return web3.eth.defaultAccount;
-		} catch (err: any) {
-			console.log(err);
-		}
-		return "";
-	}
 	const updateStep = (step: number) => {
 		setState({ ...state, step: step });
 	}
@@ -139,12 +109,10 @@ const SignUp = (props: SignUpProps) => {
 		<>
 			<Navbar root={true} />
 			<div className={"PageContainer"}>
-				<MobileContext.Consumer>
-					{({ mobile }) => (<div className={mobile ? "" : "DesktopPanel"}>
-						{state.step ? <StepBubbles steps={["MetaMask", "Profile", "Avatar"]} step={state.step} /> : null}
-						{stepSection}
-					</div>)}
-				</MobileContext.Consumer>
+				{<div className={mobile ? "" : "DesktopPanel"}>
+					{state.step ? <StepBubbles steps={["Verification", "Avatar"]} step={state.step} /> : null}
+					{stepSection}
+				</div>}
 			</div>
 		</>
 	);
