@@ -4,7 +4,7 @@ import AvatarPNG from "../../images/fullAvatar.png";
 import "./Login.css";
 import Cookies from "universal-cookie";
 import { useContext, useState } from "react";
-import { MobileContext, OrgContext } from "../../App";
+import { MobileContext } from "../../App";
 import { useNavigate } from "react-router-dom";
 import userABI from "../SignUp/utils/SmartUser.json";
 import { AbiItem } from "web3-utils";
@@ -15,7 +15,6 @@ let web3 = new Web3(Web3.givenProvider);
 
 const Login = () => {
 	let { mobile } = useContext(MobileContext);
-	let { org, setOrg } = useContext(OrgContext);
 	const cookies = new Cookies();
 	cookies.set("back", "/login");
 	const signIn = "MetaMask Sign-in";
@@ -86,10 +85,9 @@ const Login = () => {
 				await userContract.methods
 					.getInfo(accounts[0])
 					.call()
-					.then(() => (setOrg(false)))
-					.catch(() => (setOrg(true)));
+					// .then(() => (setOrg(false)))
+					// .catch(() => (setOrg(true)));
 				await delay(1500);
-				console.log(org);
 				navigate("/dashboard");
 			})();
 		} catch (error) {

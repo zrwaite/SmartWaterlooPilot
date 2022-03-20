@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { MobileContext, AddressContext, OrgContext, IdContext } from "../../App";
+import { MobileContext, AddressContext, IdContext } from "../../App";
 import "./SignUp.css";
 import Profile from "./Profile";
 import Landing from "./Landing";
@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 let web3 = new Web3(Web3.givenProvider);
 
 type SignUpProps = {
-	org: boolean;
 };
 const defaultProfileProps = {
 	day: "30",
@@ -59,7 +58,6 @@ const defaultSignUpState = {
 declare var window: any;
 
 const SignUp = (props: SignUpProps) => {
-	const { org, setOrg } = useContext(OrgContext);
 	const { id: qrId } = useContext(IdContext);
 	const { address, setAddress } = useContext(AddressContext);
 	const [state, setState] = useState(defaultSignUpState);
@@ -67,7 +65,6 @@ const SignUp = (props: SignUpProps) => {
 	const navigate = useNavigate();
 	cookies.set("back", "/signup");
 	const setAccounts = async () => {
-		setOrg(props.org);
 		try {
 			let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 			web3.eth.defaultAccount = accounts[0];
@@ -131,8 +128,6 @@ const SignUp = (props: SignUpProps) => {
 		let contractAddress;
 		let contractABI;
 		console.log(address);
-		console.log(org);
-		if (org == false) {
 			//User Information Smart Contract
 			
 			contractAddress = "0x584Bfa8354673eF5f9Ab17a3d041D8E2537b4dD8";
@@ -154,16 +149,16 @@ const SignUp = (props: SignUpProps) => {
 				(state.formInputs.nickname + state.formInputs.avatarString)).send({ from: web3.eth.defaultAccount })
 				.then(() => console.log("Information added successfully"))
 				.catch((err: any) => console.log(err));
-		}
-		else {
-			contractAddress = "0x2656D9bB68FCB5F56Ebe8CC50C5a2D61c86cB6b0";
-			contractABI = orgABI;
-			const orgContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
-			console.log(orgContract);
-			await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatarString), [""]).send({from: web3.eth.defaultAccount})
-			.then(() => console.log(`Organisation ${state.formInputs.businessNumber} created succesfully`))
-			.catch((err:any) => console.log(err));
-		}
+		// }
+		// else {
+		// 	contractAddress = "0x2656D9bB68FCB5F56Ebe8CC50C5a2D61c86cB6b0";
+		// 	contractABI = orgABI;
+		// 	const orgContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
+		// 	console.log(orgContract);
+		// 	await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatarString), [""]).send({from: web3.eth.defaultAccount})
+		// 	.then(() => console.log(`Organisation ${state.formInputs.businessNumber} created succesfully`))
+		// 	.catch((err:any) => console.log(err));
+		// }
 		let path = `/dashboard`;
 		navigate(path);
 	}
@@ -181,13 +176,11 @@ const SignUp = (props: SignUpProps) => {
 		); break; case 1: stepSection = (
 			<MetaMask updateStep={updateStep} />
 		); break; case 2: stepSection = (
-			props.org ?
-				<Verified {...userInputFunctions} verifiedData={getVerifiedProps()} /> :
-				<Profile {...userInputFunctions} formData={getProfileProps()} />
+			<Profile {...userInputFunctions} formData={getProfileProps()} />
 		); break; case 3: stepSection = (
 			<MeetAvatar avatarData={getAvatarProps()} updateParentState={childSetState} updateStep={updateStep} />
 		); break; case 4: stepSection = (
-			<Nickname {...userInputFunctions} org={props.org} nicknameData={getNicknameProps()} submit={submitForm} />
+			<Nickname {...userInputFunctions} nicknameData={getNicknameProps()} submit={submitForm} />
 		); break; default: stepSection = (
 			<h1>Invalid step "{state.step}"</h1>
 		);
@@ -198,7 +191,7 @@ const SignUp = (props: SignUpProps) => {
 			<div className={"PageContainer"}>
 				<MobileContext.Consumer>
 					{({ mobile }) => (<div className={mobile ? "" : "DesktopPanel"}>
-						{state.step ? <StepBubbles org={props.org} step={state.step} /> : null}
+						{state.step ? <StepBubbles step={state.step} /> : null}
 						{stepSection}
 					</div>)}
 				</MobileContext.Consumer>

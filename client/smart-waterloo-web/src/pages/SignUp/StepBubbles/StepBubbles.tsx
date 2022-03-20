@@ -4,7 +4,6 @@ import "./StepBubbles.css";
 //Todo change buttons to links
 type StepBubblesProps = {
 	step:number;
-	org: boolean;
 }
 function StepBubbles(props:StepBubblesProps) {
     return (
@@ -18,7 +17,7 @@ function StepBubbles(props:StepBubblesProps) {
 					</div>
 					<div className="bubbleItem">
 						<div className={props.step===2?"bubble":"bubble selectedBubble"}>2</div>
-						<p>{props.org?"Verification":"Profile"}</p>
+						<p>{"Profile"}</p>
 					</div>
 					<div className="bubbleItem">
 						<div className={props.step===3||props.step===4?"bubble":"bubble selectedBubble"}>3</div>

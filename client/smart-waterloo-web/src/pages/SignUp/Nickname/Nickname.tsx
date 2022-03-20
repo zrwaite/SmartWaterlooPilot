@@ -5,7 +5,6 @@ type NicknameProps = {
 	updateStep: Function,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void
 	nicknameData: { nickname: string, avatarString: string };
-	org: boolean;
 	submit: () => void;
 };
 function Nickname(props: NicknameProps) {
@@ -25,9 +24,8 @@ function Nickname(props: NicknameProps) {
 				<hr />
 				<input onChange={props.handleParentInputChange} name="nickname" type="text" className="nicknameInput" id="nicknameInput" placeholder="Enter a nickname" value={props.nicknameData.nickname} />
 				{
-					props.org?
-					<p style={redText}>*Use the real name of the organization that this account is for.</p>:
 					<p style={redText}>*Do not use your real name or the name of someone you know for privacy reasons.</p>
+					// <p style={redText}>*Use the real name of the organization that this account is for.</p>:
 				}
 				<button style={spacing} onClick={()=>props.submit()} className={"blackButton signUpButton"}>Start using "The Project"</button>
 			</div>

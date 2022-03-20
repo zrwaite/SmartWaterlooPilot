@@ -1,6 +1,6 @@
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-import { MobileContext, OrgContext, IdContext, AddressContext } from "../../App";
+import { MobileContext, IdContext, AddressContext } from "../../App";
 import { useContext, useState } from "react";
 import "./Events.css";
 import { defaultEventsData } from "../data/Events";
@@ -12,9 +12,8 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { getEventsData, getUserData } from "../data/getData"
 
 
-const Events = () => {
+const Events = (props: {org: boolean}) => {
 	const { mobile } = useContext(MobileContext);
-	const { org } = useContext(OrgContext);
 	let { address } = useContext(AddressContext);
 	let { id } = useContext(IdContext);
 	const cookies = new Cookies()
@@ -49,7 +48,7 @@ const Events = () => {
 						<hr />
 						<p>A brief description about what the events listed here are and any other info that is required.</p>
 						<div className={"eventGrid"}>
-							{org ? <div className={"addEventSection"}>
+							{props.org ? <div className={"addEventSection"}>
 								<button onClick={() => navigate("/createevent")} className={"blackButton addEventButton"}>Add Event</button>
 							</div> : null}
 							{

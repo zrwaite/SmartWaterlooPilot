@@ -8,16 +8,15 @@ import Cookies from "universal-cookie";
 import DashboardPreview from "./DashboardPreview";
 import Sidebar from "../../components/Sidebar";
 import {useContext, useState} from "react";
-import {MobileContext, OrgContext, AddressContext, IdContext} from "../../App";
+import {MobileContext, AddressContext, IdContext} from "../../App";
 import { defaultUserData} from "../data/Users";
 import { defaultEventsData } from "../data/Events";
 import {getEventsData, getUserData} from "../data/getData"
 
 
 
-const Dashboard = () => {
+const Dashboard = (props: {org: boolean}) => {
 	let {mobile} = useContext(MobileContext);
-	let {org} = useContext(OrgContext);
 	let {address} = useContext(AddressContext);
 	let {id} = useContext(IdContext);
 	const cookies = new Cookies();
@@ -53,10 +52,10 @@ const Dashboard = () => {
 				):<Sidebar {...userData} page="dashboard"/>}
 				<div className={"besideAside"}>
 					<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
-						{org?null:<DashboardPreview {...userData} {...eventsData} name="upcoming"/>}
-						<DashboardPreview {...userData} {...eventsData} name="data"/>
-						<DashboardPreview {...userData} {...eventsData} name="events"/>
-						<DashboardPreview {...userData} {...eventsData} name="surveys"/>
+						{props.org?null:<DashboardPreview {...userData} org={props.org} {...eventsData} name="upcoming"/>}
+						<DashboardPreview {...userData} org={props.org} {...eventsData} name="data"/>
+						<DashboardPreview {...userData} org={props.org} {...eventsData} name="events"/>
+						<DashboardPreview {...userData} org={props.org} {...eventsData} name="surveys"/>
 					</div>
 				</div>
 			</div>

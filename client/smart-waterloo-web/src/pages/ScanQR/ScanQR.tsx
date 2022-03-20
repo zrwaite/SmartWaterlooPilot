@@ -7,15 +7,14 @@ import { useEffect, useState } from "react";
 import {Html5QrcodeScanner} from "html5-qrcode";
 import Cookies from "universal-cookie";
 import {useContext} from "react";
-import {MobileContext, IdContext, OrgContext} from "../../App";
+import {MobileContext, IdContext} from "../../App";
 const ScanQR = () => {
 	let {mobile} = useContext(MobileContext);
 	let {setId} = useContext(IdContext);
-	const {org} = useContext(OrgContext);
-	const cookies = new Cookies()
+	const cookies = new Cookies();
 	cookies.set("back", "/qr");
 	const [functions, setFunctions] = useState({scan: () => {}});
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 	useEffect(() => {
 		const scanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 }, undefined);
 		const onScanSuccess = async (decodedText:any, decodedResult:any) => {
@@ -23,11 +22,12 @@ const ScanQR = () => {
 			await scanner.clear().catch((error : any) => {
 				console.error("Failed to clear html5QrcodeScanner. ", error);
 			});
-			if (org) navigate("/signup/org");
+			let accountExists = false;
+			if (accountExists) navigate("/login");
 			else navigate("/signup");
 		}
 		setFunctions({scan: () => scanner.render(onScanSuccess, ()=>{})})
-	}, [navigate, setId, org])
+	}, [navigate, setId]);
 
 	return (
 		<>

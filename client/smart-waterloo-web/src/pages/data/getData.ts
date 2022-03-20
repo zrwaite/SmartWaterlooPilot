@@ -10,6 +10,10 @@ let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
 const getUserData = async () => {
+  return await getWeb3UserData();
+}
+
+const getWeb3UserData = async () => {
   // let {org} = useContext(OrgContext);
   // await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
   try {

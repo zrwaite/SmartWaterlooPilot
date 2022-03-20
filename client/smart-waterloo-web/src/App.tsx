@@ -28,10 +28,6 @@ const MobileContext = React.createContext<{mobile: boolean; setMobile: Function;
 	mobile: false,
 	setMobile: () => {}
 });
-const OrgContext = React.createContext<{org: boolean; setOrg: Function;}>({
-	org: true,
-	setOrg: () => {}
-});
 const AddressContext = React.createContext<{address: string; setAddress: Function;}>({
 	address: "",
 	setAddress: () => {}
@@ -42,11 +38,9 @@ const IdContext = React.createContext<{id: string; setId: Function;}>({
 });
 function App() {
 	const [mobile, setMobile] = useState(false);
-	const [org, setOrg] = useState(true);
 	const [address, setAddress] = useState("");
 	const [id, setId] = useState("069");
 	const mobileValue = {mobile, setMobile};
-	const orgValue = {org, setOrg};
 	const addressValue = {address, setAddress};
 	const idValue = {id, setId};
 	function updateSizing() {
@@ -71,32 +65,33 @@ function App() {
 		<IdContext.Provider value={idValue}>
 			<AddressContext.Provider value={addressValue}>
 				<MobileContext.Provider value={mobileValue}>
-					<OrgContext.Provider value={orgValue}>	
-						<Router>
-							<Routes>
-								<Route path="/" element={<SplashPage />}></Route>
-								<Route path="/dashboard" element={<Dashboard />}></Route>
-								<Route path="/qr" element={<ScanQR />}></Route>
-								<Route path="/about" element={<About />}></Route>
-								<Route path="/shareddata" element={<SharedData />}></Route>
-								<Route path="/privacy" element={<Privacy />}></Route>
-								<Route path="/login" element={<Login />}></Route>
-								{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
-								<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
-								<Route path="/signup" element={<SignUp org={false} />}></Route>
-								<Route path="/signup/org" element={<SignUp org={true} />}></Route>
-								<Route path="/test" element={<TestPage />}></Route>
-								<Route path="/data" element={<MyData />}></Route>
-								<Route path="/surveys" element={<Surveys />}></Route>
-								<Route path="/survey/:id" element={<Survey />}></Route>
-								<Route path="/events" element={<Events />}></Route>
-								<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
-								{org?<Route path="/createevent" element={<CreateEvent />}></Route>:null}
-								{org?<Route path="/createsurvey" element={<CreateSurvey />}></Route>:null}
-								<Route path="*" element={<NotFound />}></Route>
-							</Routes>
-						</Router>
-					</OrgContext.Provider>
+					<Router>
+						<Routes>
+							<Route path="/" element={<SplashPage />}></Route>
+							<Route path="/dashboard/user" element={<Dashboard org={false} />}></Route>
+							<Route path="/dashboard/org" element={<Dashboard org={true} />}></Route>
+							<Route path="/qr" element={<ScanQR />}></Route>
+							<Route path="/about" element={<About />}></Route>
+							<Route path="/shareddata" element={<SharedData />}></Route>
+							<Route path="/privacy" element={<Privacy />}></Route>
+							<Route path="/login" element={<Login />}></Route>
+							{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
+							<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
+							<Route path="/signup" element={<SignUp />}></Route>
+							<Route path="/test" element={<TestPage />}></Route>
+							<Route path="/data" element={<MyData org={false} />}></Route>
+							<Route path="/data/org" element={<MyData org={true} />}></Route>
+							<Route path="/surveys" element={<Surveys org={false} />}></Route>
+							<Route path="/surveys/org" element={<Surveys org={true} />}></Route>
+							<Route path="/survey/:id" element={<Survey />}></Route>
+							<Route path="/events" element={<Events org={false} />}></Route>
+							<Route path="/events/org" element={<Events org={true} />}></Route>
+							<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
+							<Route path="/createevent" element={<CreateEvent />}></Route>
+							<Route path="/createsurvey" element={<CreateSurvey />}></Route>
+							<Route path="*" element={<NotFound />}></Route>
+						</Routes>
+					</Router>
 				</MobileContext.Provider>
 			</AddressContext.Provider>
 		</IdContext.Provider>
@@ -104,4 +99,4 @@ function App() {
 }
 
 export default App;
-export {MobileContext, OrgContext, AddressContext, IdContext};
+export {MobileContext, AddressContext, IdContext};

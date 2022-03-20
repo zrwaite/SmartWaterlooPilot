@@ -1,6 +1,6 @@
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-import { MobileContext, OrgContext, IdContext, AddressContext } from "../../App";
+import { MobileContext, IdContext, AddressContext } from "../../App";
 import {useContext, useState} from "react";
 import { userDataPanels, orgDataPanels } from "./MyDataPanel/MyDataPanels";
 import MyDataPanel from "./MyDataPanel";
@@ -10,14 +10,13 @@ import { defaultUserData} from "../data/Users";
 import { getUserData} from "../data/getData"
 
 
-const MyData = () => {
+const MyData = (props: {org: boolean}) => {
 	const {mobile} = useContext(MobileContext);
-	const {org} = useContext(OrgContext);
 	const {address} = useContext(AddressContext);
 	const {id} = useContext(IdContext);
 	const cookies = new Cookies();
 	cookies.set("back", "/data");
-	const dataPanelsData = org?orgDataPanels:userDataPanels;
+	const dataPanelsData = props.org?orgDataPanels:userDataPanels;
 
 	const [userData, setUserData] = useState(defaultUserData);
 	const getSetUserData = async () => {
