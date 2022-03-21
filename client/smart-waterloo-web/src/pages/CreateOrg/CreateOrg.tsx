@@ -82,7 +82,7 @@ const SignUp = (props: SignUpProps) => {
 	}
 	const submitForm = async () => {
 		
-		let path = `/dashboard`;
+		let path = `/dashboard/org`;
 		navigate(path);
 	}
 
@@ -100,7 +100,7 @@ const SignUp = (props: SignUpProps) => {
 		); break; case 2: stepSection = (
 			<MeetAvatar backStep={() => updateStep(1)} nextStep={() => updateStep(3)} avatarData={getAvatarProps()} updateParentState={childSetState} />
 		); break; case 3: stepSection = (
-			<Nickname backStep={() => updateStep(2)} {...userInputFunctions} nicknameData={getNicknameProps()} submit={submitForm} />
+			<Nickname org={true} backStep={() => updateStep(2)} {...userInputFunctions} nicknameData={getNicknameProps()} submit={submitForm} />
 		); break; default: stepSection = (
 			<h1>Invalid step "{state.step}"</h1>
 		);

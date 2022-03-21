@@ -14,7 +14,7 @@ function StepBubbles(props:StepBubblesProps) {
 				<div className="bubbles">
 					{props.steps.map((step, i) => {
 						return (
-							<div className="bubbleItem">
+							<div key={i} className="bubbleItem">
 								<div className={props.step===i+1?"bubble":"bubble selectedBubble"}>{i+1}</div>
 								<p>{step}</p>
 							</div>

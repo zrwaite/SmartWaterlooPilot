@@ -22,7 +22,7 @@ const Dashboard = (props: {org: boolean}) => {
 	let {id} = useContext(IdContext);
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const cookies = new Cookies();
-	cookies.set("back", "/dashboard");
+	cookies.set("back", "/dashboard/user");
 	const [userData, setUserData] = useState(defaultUserData);
 	const getSetUserData = async () => {
 		let users = await getUserData();

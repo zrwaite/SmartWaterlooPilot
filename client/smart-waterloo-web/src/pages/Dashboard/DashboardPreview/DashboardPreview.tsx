@@ -58,7 +58,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				props.events.map((event, i) => {return (
 					i<5?<EventPanel key={i} index={i} {...event}/>:null
 				);}):
-				[1,2,3,4,5].map(() => {return <div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
+				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
 			{props.org?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate("/createevent")} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>

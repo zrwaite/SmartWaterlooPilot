@@ -9,8 +9,15 @@ import eventABI from "../pages/SignUp/utils/OrganisationEvents.json";
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
+const USE_WEB3 = false;
+
+
 const getUserData = async () => {
-  return await getWeb3UserData();
+  return USE_WEB3?(await getWeb3UserData()):(await getWeb2UserData());
+}
+
+const getWeb2UserData = async () => {
+
 }
 
 const getWeb3UserData = async () => {
@@ -80,7 +87,10 @@ const getWeb3UserData = async () => {
   }
 };
 const getEventsData = async () => {
-    return getWeb3EventsData();
+    return USE_WEB3?(await getWeb3EventsData()):(await getWeb2EventsData());
+}
+const getWeb2EventsData = async () => {
+
 }
 const getWeb3EventsData = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000)); //Just an artificial delay for mock data

@@ -61,7 +61,7 @@ const Events = (props: {org: boolean}) => {
 											<EventPanel index={i} key={i} {...event} />
 										);
 									}) :
-									[1, 2, 3, 4, 5].map(() => { return <div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
+									[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
 							}
 						</div>
 					</div>

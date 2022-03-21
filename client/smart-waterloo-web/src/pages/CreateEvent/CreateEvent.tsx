@@ -70,7 +70,7 @@ const CreateEvent = () => {
 			})
 			.catch((err: any) => console.log(err));
 
-		let path = `/dashboard`;
+		let path = `/dashboard/org`;
 		navigate(path);
 	}
 	

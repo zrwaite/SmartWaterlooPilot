@@ -154,7 +154,7 @@ const SignUp = (props: SignUpProps) => {
 		// 	.then(() => console.log(`Organisation ${state.formInputs.businessNumber} created succesfully`))
 		// 	.catch((err:any) => console.log(err));
 		// }
-		let path = `/dashboard`;
+		let path = `/dashboard/user`;
 		navigate(path);
 	}
 
@@ -174,7 +174,7 @@ const SignUp = (props: SignUpProps) => {
 		); break; case 3: stepSection = (
 			<MeetAvatar backStep={() => updateStep(2)} nextStep={() => updateStep(4)} avatarData={getAvatarProps()} updateParentState={childSetState} />
 		); break; case 4: stepSection = (
-			<Nickname backStep={() => updateStep(3)} {...userInputFunctions} nicknameData={getNicknameProps()} submit={submitForm} />
+			<Nickname org={false} backStep={() => updateStep(3)} {...userInputFunctions} nicknameData={getNicknameProps()} submit={submitForm} />
 		); break; default: stepSection = (
 			<h1>Invalid step "{state.step}"</h1>
 		);

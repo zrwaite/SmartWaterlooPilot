@@ -88,7 +88,7 @@ const Login = () => {
 					// .then(() => (setOrg(false)))
 					// .catch(() => (setOrg(true)));
 				await delay(1500);
-				navigate("/dashboard");
+				navigate("/dashboard/user");
 			})();
 		} catch (error) {
 			console.log(error);
