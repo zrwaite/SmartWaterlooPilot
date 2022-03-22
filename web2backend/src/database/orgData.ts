@@ -1,14 +1,15 @@
-const defaultOrg = {
-	userid: "",
-	password: "",
-}
-const defaultOrgData = {
+const defaultPostOrg = {
 	nickname: "",
 	business_number: "",
 	avatar_string: "",
+	owner_id: ""
+}
+const defaultOrg = {
+	...defaultPostOrg,
+	nickname: ""
 }
 const orgData = {
 	orgKeys: Object.keys(defaultOrg) as (keyof typeof defaultOrg)[],
-	dataKeys: Object.keys(defaultOrgData) as (keyof typeof defaultOrgData)[],
+	postKeys: Object.keys(defaultPostOrg) as (keyof typeof defaultPostOrg)[],
 }
-export {orgData, defaultOrgData}
+export {orgData, defaultOrg}

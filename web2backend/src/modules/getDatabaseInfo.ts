@@ -1,7 +1,7 @@
 import pool from "../database/db";
 import {decryptRows} from "./encryption";
 import {userData} from "../database/userData";
-import {defaultOrgData} from "../database/orgData";
+import {orgData} from "../database/orgData";
 import {eventData} from "../database/eventData";
 
 const getEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, columns:string[]) => {
@@ -34,29 +34,15 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string, tableNam
 	}
 	return {status: status, entries: entries, errors: errors};
 }
-const getAccount = async (userid:string) => {
-	let status = 400;
+const getUser = async (userid:string) => {
 	let result;
-	let errors:string[] = [];
-	const accountData = await pool.query(
-		`SELECT user_data_id, org_data_id, account_type FROM accounts WHERE account_id = $1 LIMIT 1`,
+	const data = await pool.query(
+		`SELECT user_data_id FROM users WHERE u_id = $1 LIMIT 1`,
 		[userid]
 	)
-	const accountValues = accountData.rows[0];
-	if (accountValues) {
-		if (accountValues.account_type==="user") {
-			const {status:userDataStatus, entries, errors:userDataErrors} = await getEntries(false, "id", accountValues.user_data_id, "user_data",userData.dataKeys);
-			status = userDataStatus;
-			result = decryptRows(entries, userData.dataKeys)[0];
-			errors = userDataErrors;
-		} else if (accountValues.account_type==="org") {
-			const {status:orgDataStatus, entries, errors:orgDataErrors} = await getEntries(false, "id", accountValues.org_data_id, "org_data", Object.keys(defaultOrgData));
-			status = orgDataStatus;
-			result = decryptRows(entries, Object.keys(defaultOrgData))[0];
-			errors = orgDataErrors;
-		} else errors.push("invalid account type");
-	} else status = 404;
-	return {status: status, account: result, errors: errors}
+	const {status, entries, errors} = await getEntries(false, "id", data.rows[0].user_data_id, "user_data", userData.dataKeys);
+	result = decryptRows(entries, userData.dataKeys)[0];
+	return {status: status, user: result, errors: errors}
 }
 const getUsers = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "user_data", userData.dataKeys);
@@ -64,14 +50,26 @@ const getUsers = async () => {
 }
 const getEvent = async (eventId:string) => {
 	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.eventKeys);
-	return {status: status, event: entries[0], errors: errors}
+	return {status: status, event: entries[0], errors: errors};
 }
 const getEvents = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "events", eventData.eventKeys);
-	return {status: status, events: entries, errors: errors}
+	return {status: status, events: entries, errors: errors};
 }
 const getOrgEvents = async (org_id:string) => {
 	const {status, entries, errors} = await getEntries(true, "owner", org_id, "events", eventData.eventKeys);
-	return {status: status, events: entries, errors: errors}
+	return {status: status, events: entries, errors: errors};
 }
-export {getAccount, getUsers, getEvent, getEvents, getOrgEvents}
+const getOrg = async (id:string) => {
+	const {status, entries, errors} = await getEntries(false, "id", id, "orgs", orgData.orgKeys);
+	return {status: status, org: entries[0], errors: errors};
+}
+const getOwnerOrgs = async (ownerId: string) => {
+	const {status, entries, errors} = await getEntries(true, "owner_id", ownerId, "orgs", orgData.orgKeys);
+	return {status: status, orgs: entries[0], errors: errors};
+}
+const getOrgs = async () => {
+	const {status, entries, errors} = await getEntries(true, "", "", "events", orgData.orgKeys);
+	return {status: status, orgs: entries, errors: errors};
+}
+export {getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs}

@@ -1,5 +1,5 @@
 const defaultUser = {
-	userid: "",
+	u_id: "",
 	password: "",
 }
 const defaultUserData = {
