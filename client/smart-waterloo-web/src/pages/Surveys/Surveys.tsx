@@ -1,18 +1,20 @@
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-import { MobileContext, OrgContext, IdContext, AddressContext } from "../../App";
+import { MobileContext, IdContext, AddressContext } from "../../App";
 import {useContext, useState} from "react";
 import "./Surveys.css";
-import {exampleSurveys} from "../data/Surveys";
+import {exampleSurveys} from "../../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
-import { defaultUserData} from "../data/Users";
-import { getUserData} from "../data/getData"
+import { defaultUserData} from "../../data/Users";
+import { getUserData} from "../../data/getData"
+import Settings from "../../components/Settings";
 
 
-const Surveys = () => {
+
+const Surveys = (props: {org: boolean}) => {
+	const [settingsOpen, setSettingsOpen] = useState(false);
 	const {mobile} = useContext(MobileContext);
-	const {org} = useContext(OrgContext);
 	const {address} = useContext(AddressContext);
 	const {id} = useContext(IdContext);
 	const navigate = useNavigate();
@@ -32,15 +34,16 @@ const Surveys = () => {
 	return (
 		<>
 			<Navbar root={true}/>
+			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar {...userData} page="surveys"/>}
+				{mobile?null:<Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="surveys"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>Surveys 📝</h4>
 						<hr/>
 						<p>A brief description about what the surveys listed here are and any other info that is required.</p>
 						<div className={"surveyGrid"}>
-							{org?<div className={"addSurveySection"}>
+							{props.org?<div className={"addSurveySection"}>
 								<button onClick={() => navigate("/createsurvey")}  className={"blackButton addSurveyButton"}>Add Survey</button>
 							</div>:null}
 							{exampleSurveys.map((survey, i) => {return (

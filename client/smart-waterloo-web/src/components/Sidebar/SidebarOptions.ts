@@ -4,7 +4,7 @@ const topElements = [
 	{
 		pageName: "dashboard",
 		title: "Dashboard",
-		link: "/dashboard",
+		link: "/dashboard/user",
 		icon: icons.rightArrow
 	},
 	{

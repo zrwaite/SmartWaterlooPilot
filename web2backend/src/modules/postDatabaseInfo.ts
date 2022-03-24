@@ -4,7 +4,7 @@ import {encrypt} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import {defaultEvent, eventData} from "../database/eventData";
-const postUser = async (accountId:string, password:string, userDataParams: string[]) => {
+const postUser = async (userId:string, password:string, userDataParams: string[]) => {
 	let errors:string[] = [];
 	let success = false;
 	let newUser:any = {};
@@ -23,15 +23,14 @@ const postUser = async (accountId:string, password:string, userDataParams: strin
 			[...userDataQueryValues]
 		);
 		let userQueryValues:string[] = [];
-		let userQueryKeysString = "account_id, password_hash, user_data_id, account_type" ;
-		userQueryValues.push(accountId);
+		let userQueryKeysString = "u_id, password_hash, user_data_id" ;
+		userQueryValues.push(userId);
 		const password_hash = bcrypt.hashSync(password, 10);
 		if (password_hash=="0") errors.push("invalid hashing");
 		else userQueryValues.push(password_hash);
 		userQueryValues.push(newUserDataId.rows[0].id.toString());
-		userQueryValues.push("user")
 		let newUserId = await pool.query(
-			"INSERT INTO accounts ("+ userQueryKeysString +") VALUES($1, $2, $3, $4) RETURNING id",
+			"INSERT INTO users ("+ userQueryKeysString +") VALUES($1, $2, $3) RETURNING id",
 			[...userQueryValues]
 		);
 		newUser = newUserId.rows[0].id;
@@ -47,7 +46,7 @@ const postUser = async (accountId:string, password:string, userDataParams: strin
 	return {success: success, errors: errors, newUser: newUser};
 }
 
-const postOrg = async (accountId:string, password:string, orgDataParams: string[]) => {
+const postOrg = async (orgDataParams: string[]) => {
 	let errors:string[] = [];
 	let success = false;
 	let newOrg:any = {};
@@ -57,30 +56,20 @@ const postOrg = async (accountId:string, password:string, orgDataParams: string[
 		orgDataValuesString += `$${i+1}`;
 	}
 
-	let orgDataQueryValues:string[] = [];
-	orgDataParams.forEach(key => orgDataQueryValues.push(encrypt(key)))
-	const orgDataQueryKeysString = orgData.dataKeys.join(", ");
+	// let orgDataQueryValues:string[] = [...orgDataParams];
+	// orgDataParams.forEach(key => orgDataQueryValues.push(encrypt(key)))
+	const orgDataQueryKeysString = orgData.postKeys.join(", ");
 	try {
-		let newUserDataId = await pool.query(
-			"INSERT INTO org_data ("+ orgDataQueryKeysString +") VALUES("+orgDataValuesString+") RETURNING id",
-			[...orgDataQueryValues]
+		let newOrgDataId = await pool.query(
+			"INSERT INTO orgs ("+ orgDataQueryKeysString +") VALUES("+orgDataValuesString+") RETURNING id",
+			[...orgDataParams]
 		);
-		let orgQueryValues:string[] = [];
-		let orgQueryKeysString = "account_id, password_hash, org_data_id, account_type" ;
-		orgQueryValues.push(accountId);
-		const password_hash = bcrypt.hashSync(password, 10);
-		if (password_hash=="0") errors.push("invalid hashing");
-		else orgQueryValues.push(password_hash);
-		orgQueryValues.push(newUserDataId.rows[0].id.toString());
-		orgQueryValues.push("org")
-		let newOrgId = await pool.query(
-			"INSERT INTO accounts ("+ orgQueryKeysString +") VALUES($1, $2, $3, $4) RETURNING id",
-			[...orgQueryValues]
-		);
-		newOrg = newOrgId.rows[0].id;
+		newOrg = newOrgDataId.rows[0].id;
 		success = true;
 	} catch (e: any) {
 		if (e.code == 23505) {
+			errors.push(e.detail);
+		} else if (e.code == 23503) {
 			errors.push(e.detail);
 		} else {
 			errors.push("database error");

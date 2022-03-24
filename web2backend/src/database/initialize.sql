@@ -1,15 +1,26 @@
--- drop table accounts;
 -- drop table user_data;
--- drop table org_data;
+-- drop table events;
+-- drop table orgs;
+-- drop table users;
 
-CREATE TABLE IF NOT EXISTS "accounts"(
+CREATE TABLE IF NOT EXISTS "users"(
 	id SERIAL PRIMARY KEY,
-	account_id INT UNIQUE,
-	account_type varchar(10),
+	u_id INT UNIQUE,
 	password_hash varchar(80),
-	user_data_id INT default null,
-	org_data_id INT default null
+	user_data_id INT default null
 );
+
+
+create table if not exists "orgs"(
+	id serial primary key,
+	owner_id INT,
+	FOREIGN KEY (owner_id) REFERENCES users(u_id),
+	nickname varchar(100),
+	business_number varchar(100),
+	verified bit default '0',
+	avatar_string varchar(100)
+);
+
 create table if not exists "events"(
 	id serial primary key,
 	name varchar(80),
@@ -18,8 +29,8 @@ create table if not exists "events"(
 	end_date varchar(80),
 	category varchar(80),
 	description varchar(400),
-	owner int,
-	FOREIGN KEY (owner) REFERENCES accounts(account_id),
+	org int,
+	FOREIGN KEY (org) REFERENCES orgs(id),
 	image varchar(80)
 );
 
@@ -39,10 +50,3 @@ create table if not exists "user_data"(
 	postal_code varchar(100),
 	avatar_string varchar(100)
 );
-
-create table if not exists "org_data"(
-	id serial primary key,
-	nickname varchar(100),
-	business_number varchar(100),
-	avatar_string varchar(100)
-)

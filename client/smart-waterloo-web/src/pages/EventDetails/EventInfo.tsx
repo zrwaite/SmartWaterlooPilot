@@ -1,7 +1,7 @@
 import React from 'react';
 import "./EventDetails.css";
 // import eventDataRaw from './EventDetailsData.json';
-import { exampleEvents }  from "../data/Events";
+import { exampleEvents }  from "../../data/Events";
 
 interface EventData {
     "name": string;

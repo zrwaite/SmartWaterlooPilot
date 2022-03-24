@@ -2,11 +2,11 @@ import "./Nickname.css";
 
 
 type NicknameProps = {
-	updateStep: Function,
+	backStep: () => void,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void
 	nicknameData: { nickname: string, avatarString: string };
-	org: boolean;
 	submit: () => void;
+	org: boolean;
 };
 function Nickname(props: NicknameProps) {
 	const spacing = {
@@ -31,7 +31,7 @@ function Nickname(props: NicknameProps) {
 				}
 				<button style={spacing} onClick={()=>props.submit()} className={"blackButton signUpButton"}>Start using "The Project"</button>
 			</div>
-			<button onClick={() => props.updateStep(3)} className={"blackButton"}>Back</button>
+			<button onClick={props.backStep} className={"blackButton"}>Back</button>
 		</>
 	);
 }

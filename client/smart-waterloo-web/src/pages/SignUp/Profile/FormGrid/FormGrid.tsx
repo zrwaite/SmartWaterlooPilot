@@ -4,7 +4,7 @@ import Select, { ActionMeta } from "react-select";
 
 
 type ProfileFormGridProps = {
-	updateStep: Function,
+	nextStep: () => void,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void,
 	handleParentSelectChange: (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => void,
 	formData: ProfileFormGridState
@@ -98,7 +98,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 					</div>
 				</section>
 				<div className="formDiv">
-					<button className="blackButton signUpButton" onClick={()=> props.updateStep(3)}>
+					<button className="blackButton signUpButton" onClick={props.nextStep}>
 						Continue
 					</button>
 				</div>

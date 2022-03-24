@@ -7,6 +7,7 @@ interface SidebarProps {
 	userDataSet:boolean;
 	nickname: string;
 	avatarString: string;
+	openSettings: () => void;
 }
 const Sidebar = (props:SidebarProps) => {
 	const navigate = useNavigate()
@@ -32,8 +33,12 @@ const Sidebar = (props:SidebarProps) => {
 			</div>
 			<div className={"bottomSidebar"}>
 				{bottomElements.map((elem,i) => {
+					let modalFunc = () => {};
+					if (elem.modalName==="settings"){
+						modalFunc = props.openSettings;
+					}
 					return (
-						<div key={i} className={"bottomSidebarElement"} >
+						<div key={i} className={"bottomSidebarElement"} onClick={modalFunc} >
 							<h6>{elem.title}</h6>
 							<img src={elem.icon} alt={elem.title}/>
 						</div>

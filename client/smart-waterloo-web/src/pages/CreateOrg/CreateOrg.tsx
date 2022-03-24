@@ -1,39 +1,20 @@
 import React, { useContext, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { MobileContext, AddressContext, IdContext } from "../../App";
-import "./SignUp.css";
-import Profile from "./Profile";
+import { MobileContext } from "../../App";
+import "./CreateOrg.css";
 import Landing from "./Landing";
-import MeetAvatar from "./MeetAvatar";
-import Nickname from "./Nickname";
-import MetaMask from "./MetaMask";
+import MeetAvatar from "../SignUp/MeetAvatar";
+import Nickname from "../SignUp/Nickname";
+import Verified from "./Verified";
 import StepBubbles from "../../components/StepBubbles";
 import Cookies from "universal-cookie";
 import { ActionMeta } from "react-select";
-
-// import orgABI from "./utils/SmartOrganisation.json"
-// import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
-import { postUser } from "../../data/postData";
-
 
 const defaultAvatarString = randomString();
 type SignUpProps = {
 };
-const defaultProfileProps = {
-	day: "",
-	month: "",
-	year: "",
-	gender: "",
-	height: "",
-	weight: "",
-	grade: "",
-	postalCode: "",
-	race: "",
-	religion: "",
-	sexuality: "",
-}
 const defaultNicknameProps = {
 	nickname: "",
 	avatarString: defaultAvatarString
@@ -47,22 +28,18 @@ const defaultAvatarProps = {
 const defaultSignUpState = {
 	step: 0,
 	formInputs: {
-		...defaultProfileProps,
 		...defaultNicknameProps,
 		...defaultAvatarProps,
 		...defaultVerifiedProps
 	}
 }
 
-
 const SignUp = (props: SignUpProps) => {
-	const { id: qrId } = useContext(IdContext);
-	const { address, setAddress } = useContext(AddressContext);
 	const [state, setState] = useState(defaultSignUpState);
+	const {mobile} = useContext(MobileContext);
 	const cookies = new Cookies();
 	const navigate = useNavigate();
 	cookies.set("back", "/signup");
-	
 	const updateStep = (step: number) => {
 		setState({ ...state, step: step });
 	}
@@ -85,12 +62,6 @@ const SignUp = (props: SignUpProps) => {
 		partialInput[name] = newValue?.value || "";
 		setState({ ...state, formInputs: partialInput });
 	}
-	const getProfileProps = () => {
-		let profileProps = defaultProfileProps;
-		let profilePropKeys = Object.keys(defaultProfileProps) as [keyof typeof defaultProfileProps];
-		profilePropKeys.forEach(key => profileProps[key] = state.formInputs[key]);
-		return profileProps;
-	}
 	const getNicknameProps = () => {
 		let nicknameProps = defaultNicknameProps;
 		let nicknamePropKeys = Object.keys(defaultNicknameProps) as [keyof typeof defaultNicknameProps];
@@ -103,9 +74,15 @@ const SignUp = (props: SignUpProps) => {
 		avatarPropKeys.forEach(key => avatarProps[key] = state.formInputs[key]);
 		return avatarProps;
 	}
+	const getVerifiedProps = () => {
+		let verifiedProps = defaultVerifiedProps;
+		let avatarPropKeys = Object.keys(defaultVerifiedProps) as [keyof typeof defaultVerifiedProps];
+		avatarPropKeys.forEach(key => verifiedProps[key] = state.formInputs[key]);
+		return verifiedProps;
+	}
 	const submitForm = async () => {
-		postUser({...state.formInputs, qrId: qrId});
-		let path = `/dashboard/user`;
+		
+		let path = `/dashboard/org`;
 		navigate(path);
 	}
 
@@ -119,13 +96,11 @@ const SignUp = (props: SignUpProps) => {
 		case 0: stepSection = (
 			<Landing nextStep={() => updateStep(1)} />
 		); break; case 1: stepSection = (
-			<MetaMask backStep={() => updateStep(0)} nextStep={() => updateStep(2)} />
+			<Verified backStep={() => updateStep(0)} nextStep={() => updateStep(2)}{...userInputFunctions} verifiedData={getVerifiedProps()}/>
 		); break; case 2: stepSection = (
-			<Profile backStep={() => updateStep(1)} nextStep={() => updateStep(3)} {...userInputFunctions} formData={getProfileProps()} />
+			<MeetAvatar backStep={() => updateStep(1)} nextStep={() => updateStep(3)} avatarData={getAvatarProps()} updateParentState={childSetState} />
 		); break; case 3: stepSection = (
-			<MeetAvatar backStep={() => updateStep(2)} nextStep={() => updateStep(4)} avatarData={getAvatarProps()} updateParentState={childSetState} />
-		); break; case 4: stepSection = (
-			<Nickname org={false} backStep={() => updateStep(3)} {...userInputFunctions} nicknameData={getNicknameProps()} submit={submitForm} />
+			<Nickname org={true} backStep={() => updateStep(2)} {...userInputFunctions} nicknameData={getNicknameProps()} submit={submitForm} />
 		); break; default: stepSection = (
 			<h1>Invalid step "{state.step}"</h1>
 		);
@@ -134,12 +109,10 @@ const SignUp = (props: SignUpProps) => {
 		<>
 			<Navbar root={true} />
 			<div className={"PageContainer"}>
-				<MobileContext.Consumer>
-					{({ mobile }) => (<div className={mobile ? "" : "DesktopPanel"}>
-						{state.step ? <StepBubbles steps={["MetaMask", "Profile", "Avatar"]} step={state.step} /> : null}
-						{stepSection}
-					</div>)}
-				</MobileContext.Consumer>
+				{<div className={mobile ? "" : "DesktopPanel"}>
+					{state.step ? <StepBubbles steps={["Verification", "Avatar"]} step={state.step} /> : null}
+					{stepSection}
+				</div>}
 			</div>
 		</>
 	);

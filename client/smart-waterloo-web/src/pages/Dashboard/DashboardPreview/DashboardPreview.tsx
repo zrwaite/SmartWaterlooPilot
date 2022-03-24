@@ -1,10 +1,10 @@
 import {useContext} from "react";
-import { MobileContext, OrgContext } from "../../../App";
+import { MobileContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
-import {exampleEvents, defaultEventsData} from "../../data/Events";
-import {exampleSurveys} from "../../data/Surveys"
+import {exampleEvents, defaultEventsData} from "../../../data/Events";
+import {exampleSurveys} from "../../../data/Surveys"
 import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"
@@ -36,14 +36,14 @@ interface DashboardPreviewProps {
 	name: keyof typeof Data;
 	events: typeof defaultEventsData.events;
 	eventsDataSet: boolean;
+	org: boolean;
 }
 const DashboardPreview = (props:DashboardPreviewProps) => {
 	const navigate = useNavigate();
 	const {mobile} = useContext(MobileContext);
-	const {org} = useContext(OrgContext);
 	const color = Data[props.name].color;
 	const linkTo = Data[props.name].link;
-	const dataPanelsData = org?orgDataPanels:userDataPanels;
+	const dataPanelsData = props.org?orgDataPanels:userDataPanels;
 	if (mobile) return (
 		<button onClick={()=> navigate(linkTo)}className={`dashboardLinkSection ${color}`}>
 			<DashboardPreviewHeader mobile={true} name={props.name}/>
@@ -58,9 +58,9 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				props.events.map((event, i) => {return (
 					i<5?<EventPanel key={i} index={i} {...event}/>:null
 				);}):
-				[1,2,3,4,5].map(() => {return <div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
+				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
-			{org?<div className={"dashboardPreviewAddSection"}>
+			{props.org?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate("/createevent")} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
 			</div>:null}
 		</>
@@ -73,7 +73,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			{exampleSurveys.map((panel, i) => {return (
 				i<5?<SurveyPanel key={i} index={i} {...panel}/>:null
 			);})}
-			{org?<div className={"dashboardPreviewAddSection"}>
+			{props.org?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate("/createsurvey")} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
 			</div>:null}
 		</>

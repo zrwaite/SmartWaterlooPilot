@@ -11,13 +11,12 @@ function Landing(props:LandingProps) {
     return (
 		<>
 			<div className={"signUpContainer"}>
-				<h4>Let's get started ✏️</h4>
+				<h4>Create an Organization ✏️</h4>
 				<p>Explanation of what that is. Explanation of what claiming an account means and what can the user do with this account.</p>
 				<div className="QRCardContainer">
-					<img src={QRCard} alt="QRCard" className="QRCardIcon"/>
-					<p style={redText}>Important Notice: In the case of losing your card you will never be able to get your account back.</p>
+					<p style={redText}>Organizations require a valid business number to be verified</p>
 				</div>
-				<button onClick={props.nextStep}className={"blackButton signUpButton"}>Let's get started</button>
+				<button onClick={props.nextStep}className={"blackButton createOrgButton"}>Let's get started</button>
 			</div>
 		</>
     );

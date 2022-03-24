@@ -1,24 +1,16 @@
 // import {Link} from "react-router-dom";
 // import Avatar from "../../../images/fullAvatar.png";
+import { randomString } from "../../../modules/randomData";
 import "./MeetAvatar.css";
 
 //Todo change buttons to links
 
 type MeetAvatarProps = { 
-	updateStep: Function,
+	backStep: () => void,
+	nextStep: () => void,
 	updateParentState: Function
 	avatarData: {avatarString:string}
 };
-const randomString = () => {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for ( var i = 0; i < 8; i++ ) {
-      	result += characters.charAt(Math.floor(Math.random() * charactersLength));
-   	}
-	console.log(result);
-   	return result;
-}
 function MeetAvatar(props:MeetAvatarProps) {
 	const spacing = {
 		margin: "0.5rem 0"
@@ -36,11 +28,11 @@ function MeetAvatar(props:MeetAvatarProps) {
 				<hr/>
 				<div className="buttonContainer">
 					<button style={spacing} onClick={() => generateNewAvatar()} className={"blackButton signUpButton"}>Generate new Avatar</button>
-					<button style={spacing} onClick={() => props.updateStep(4)} className={"blackButton signUpButton"}>Continue with this Avatar</button>
+					<button style={spacing} onClick={props.nextStep} className={"blackButton signUpButton"}>Continue with this Avatar</button>
 				</div>
 				<p>Don't worry, you can always customize later.</p>
 			</div>
-			<button onClick={() => props.updateStep(2)} className={"blackButton"}>Back</button>
+			<button onClick={props.backStep} className={"blackButton"}>Back</button>
 		</>
     );
 }

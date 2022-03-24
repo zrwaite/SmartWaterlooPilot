@@ -1,15 +1,24 @@
-import { exampleUsers } from "./Users";
 import { exampleEvents, defaultEventsData } from "./Events";
-import userABI from "../SignUp/utils/SmartUser.json";
+import userABI from "./utils/SmartUser.json";
 import { AbiItem } from "web3-utils";
 import Web3 from "web3";
-import orgABI from "../SignUp/utils/SmartOrganisation.json";
-import eventABI from "../SignUp/utils/OrganisationEvents.json";
-
+import orgABI from "./utils/SmartOrganisation.json";
+import eventABI from "./utils/OrganisationEvents.json";
+import {USE_WEB3} from "./dataConstants";
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
+
+
 const getUserData = async () => {
+  return USE_WEB3?(await getWeb3UserData()):(await getWeb2UserData());
+}
+
+const getWeb2UserData = async () => {
+
+}
+
+const getWeb3UserData = async () => {
   // let {org} = useContext(OrgContext);
   // await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
   try {
@@ -76,6 +85,12 @@ const getUserData = async () => {
   }
 };
 const getEventsData = async () => {
+    return USE_WEB3?(await getWeb3EventsData()):(await getWeb2EventsData());
+}
+const getWeb2EventsData = async () => {
+
+}
+const getWeb3EventsData = async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
   let newEvents: typeof defaultEventsData.events = [];
   let accounts = await window.ethereum.request({

@@ -1,20 +1,21 @@
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-import { MobileContext, OrgContext, IdContext, AddressContext } from "../../App";
+import { MobileContext, IdContext, AddressContext } from "../../App";
 import { useContext, useState } from "react";
 import "./Events.css";
-import { defaultEventsData } from "../data/Events";
+import { defaultEventsData } from "../../data/Events";
 import EventPanel from "./EventPanel";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import { defaultUserData } from "../data/Users";
+import { defaultUserData } from "../../data/Users";
 import ClipLoader from "react-spinners/ClipLoader";
-import { getEventsData, getUserData } from "../data/getData"
+import { getEventsData, getUserData } from "../../data/getData"
+import Settings from "../../components/Settings";
 
 
-const Events = () => {
+const Events = (props: {org: boolean}) => {
+	const [settingsOpen, setSettingsOpen] = useState(false);
 	const { mobile } = useContext(MobileContext);
-	const { org } = useContext(OrgContext);
 	let { address } = useContext(AddressContext);
 	let { id } = useContext(IdContext);
 	const cookies = new Cookies()
@@ -41,15 +42,16 @@ const Events = () => {
 	return (
 		<>
 			<Navbar root={true} />
+			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile ? "PageContainer" : "asideContainer"}>
-				{mobile ? null : <Sidebar {...userData} page="events" />}
+				{mobile ? null : <Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="events" />}
 				<div className={"besideAside"}>
 					<div className={mobile ? "" : "fullScreenPanel"}>
 						<h4>Events 🎟️</h4>
 						<hr />
 						<p>A brief description about what the events listed here are and any other info that is required.</p>
 						<div className={"eventGrid"}>
-							{org ? <div className={"addEventSection"}>
+							{props.org ? <div className={"addEventSection"}>
 								<button onClick={() => navigate("/createevent")} className={"blackButton addEventButton"}>Add Event</button>
 							</div> : null}
 							{
@@ -59,7 +61,7 @@ const Events = () => {
 											<EventPanel index={i} key={i} {...event} />
 										);
 									}) :
-									[1, 2, 3, 4, 5].map(() => { return <div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
+									[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
 							}
 						</div>
 					</div>
