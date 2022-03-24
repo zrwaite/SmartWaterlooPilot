@@ -2,7 +2,8 @@ const defaultPostOrg = {
 	nickname: "",
 	business_number: "",
 	avatar_string: "",
-	owner_id: ""
+	owner_id: "",
+	verified: ""
 }
 const defaultOrg = {
 	...defaultPostOrg,

@@ -18,9 +18,11 @@ app.use(express.json());
 // routes
 import getFrontend from "./routes/frontend.route";
 import apiRoute from "./routes/api.route";
+import functionRoute from "./routes/function.route";
 
 // api routing
 app.use("/api", apiRoute);
+app.use("/function", functionRoute);
 
 app.get("/test", (req:Request, res:Response) => {
 	let result = new response(200, [], {page: "test"}, true);
