@@ -6,7 +6,7 @@ import Cookies from "universal-cookie";
 import { useContext, useState } from "react";
 import { MobileContext } from "../../App";
 import { useNavigate } from "react-router-dom";
-import userABI from "../SignUp/utils/SmartUser.json";
+import userABI from "../../data/utils/SmartUser.json";
 import { AbiItem } from "web3-utils";
 import Web3 from "web3";
 

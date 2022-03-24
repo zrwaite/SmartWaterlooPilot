@@ -4,12 +4,7 @@ import { MobileContext } from "../../App";
 import { eventCategories } from "./CreateEventData";
 import Select, { ActionMeta } from "react-select";
 import { useNavigate } from "react-router-dom";
-import Web3 from "web3";
-import eventABI from "../SignUp/utils/OrganisationEvents.json";
-import { AbiItem } from 'web3-utils';
-
-let web3 = new Web3(Web3.givenProvider);
-declare var window: any;
+import { postEvent } from "../../data/postData";
 
 //Todo change buttons to links
 const DefaultCreateEventState = {
@@ -49,27 +44,7 @@ const CreateEvent = () => {
 	const link = { cursor: "pointer" };
 
 	const eventCreation = async () => {
-		let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-		web3.eth.defaultAccount = accounts[0];
-		const contractABI = eventABI;
-		const contractAddress = "0xd242a3Fa65b82Aa9C87D3a19C82EA6b5Db78e8EB";
-
-		const eventContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
-
-		await eventContract.methods.createOrgEvent(
-			web3.eth.defaultAccount,
-			state.inputs.name,
-			state.inputs.age,
-			(state.inputs.start_day + state.inputs.start_month + state.inputs.start_year),
-			(state.inputs.end_day + state.inputs.end_month + state.inputs.end_year),
-			state.inputs.category,
-			state.inputs.description
-		).send({ from: web3.eth.defaultAccount })
-			.then(() => {
-				console.log(`${state.inputs.name} created successfully`);
-			})
-			.catch((err: any) => console.log(err));
-
+		postEvent({...state.inputs});
 		let path = `/dashboard/org`;
 		navigate(path);
 	}
