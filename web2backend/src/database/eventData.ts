@@ -1,4 +1,4 @@
-const postEvent = {
+const baseEvent = {
 	org: "",
 	name: "",
 	age_group: "",
@@ -8,17 +8,25 @@ const postEvent = {
 	description: "",
 	image: "",
 }
-const nullableEventParams = {
+const nullableEvent = {
 	linked_survey_id: ""
+}
+const postEvent = {
+	...baseEvent,
+	...nullableEvent,
+}
+const getEventParams = {
+	id: ""
 }
 const defaultEvent = {
 	...postEvent,
-	...nullableEventParams,
+	...getEventParams,
 }
 
 const eventData = {
-	nullableEventKeys: Object.keys(nullableEventParams) as (keyof typeof nullableEventParams)[],
+	nullableEventKeys: Object.keys(nullableEvent) as (keyof typeof nullableEvent)[],
+	baseEventKeys: Object.keys(baseEvent) as (keyof typeof baseEvent)[],
 	postEventKeys: Object.keys(postEvent) as (keyof typeof postEvent)[],
 	allEventKeys: Object.keys(defaultEvent) as (keyof typeof defaultEvent)[],
 }
-export {eventData, defaultEvent}
+export {postEvent, eventData, defaultEvent}

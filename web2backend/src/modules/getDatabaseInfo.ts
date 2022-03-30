@@ -3,6 +3,7 @@ import {decryptRows} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import {eventData} from "../database/eventData";
+import {surveyData} from "../database/surveyData";
 
 const getEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, columns:string[]) => {
 	let entries:any;
@@ -73,7 +74,19 @@ const getOrgs = async () => {
 	return {status: status, orgs: entries, errors: errors};
 }
 const verifyOrgVerification = async (id:string):Promise<boolean> => {
-	const {status, entries, errors} = await getEntries(false, "id", id, "orgs", ["verified"]);
+	const {entries} = await getEntries(false, "id", id, "orgs", ["verified"]);
 	return (entries && entries[0].verified === '1');
 }
-export {getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, verifyOrgVerification}
+const getSurvey = async (surveyId:string) => {
+	const {status, entries, errors} = await getEntries(false, "id", surveyId, "surveys", surveyData.allSurveyKeys);
+	return {status: status, survey: entries[0], errors: errors};
+}
+const getSurveys = async () => {
+	const {status, entries, errors} = await getEntries(true, "", "", "surveys", surveyData.allSurveyKeys);
+	return {status: status, surveys: entries, errors: errors};
+}
+const getOrgSurveys = async (org_id:string) => {
+	const {status, entries, errors} = await getEntries(true, "owner", org_id, "surveys", surveyData.allSurveyKeys);
+	return {status: status, surveys: entries, errors: errors};
+}
+export {getSurvey, getSurveys, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, verifyOrgVerification}

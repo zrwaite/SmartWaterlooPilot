@@ -45,7 +45,7 @@ export default class orgController {
 	}
 	static async postOrg(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success, params, errors} = await getBodyParams(req, [...orgData.postKeys]);
+		let {success, params, errors} = await getBodyParams(req, [...orgData.baseKeys]);
 		if (success) {
 			let {params: nullableParams} = await getBodyParams(req, [...orgData.nullablePostKeys]);
 			let postResult = await postOrg([...params, ...nullableParams]);

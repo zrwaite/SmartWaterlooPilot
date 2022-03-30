@@ -2,9 +2,37 @@ import bcrypt from "bcrypt";
 import pool from "../database/db";
 import {encrypt} from "./encryption";
 import {userData} from "../database/userData";
-import {orgData} from "../database/orgData";
-import {defaultEvent, eventData} from "../database/eventData";
+import {orgData, postOrg as postOrgObj} from "../database/orgData";
+import {defaultEvent, eventData, postEvent as postEventObj} from "../database/eventData";
 import {verifyOrgVerification} from "./getDatabaseInfo";
+
+const postEntry = async (entry: object, tableName:string ) => {
+	let errors: string[] = [];
+	let success = false;
+	let newEntry:object = {};
+	let entryDataValuesString = "";
+	const entryKeys = Object.keys(entry);
+	const entryValues = Object.values(entry);
+	for (let i=0; i<entryKeys.length; i++) {
+		if (i) entryDataValuesString += ", ";
+		entryDataValuesString += `$${i+1}`;
+	}
+	const entryDataQueryString = entryKeys.join(", ");
+	try {
+		let newEntryId = await pool.query(
+			`INSERT INTO ${tableName} (${entryDataQueryString}) VALUES(${entryDataValuesString}) RETURNING id`,
+			entryValues
+		);
+		newEntry = newEntryId.rows[0].id;
+		success = true;
+	} catch (e: any) {
+		if (e.code == 23505|| e.code == 23503) errors.push(e.detail);
+		else errors.push("database error");
+		console.log(e);
+	}
+	return {success: success, errors: errors, newEntry: newEntry};
+}
+
 const postUser = async (userId:string, password:string, userDataParams: string[]) => {
 	let errors:string[] = [];
 	let success = false;
@@ -47,71 +75,22 @@ const postUser = async (userId:string, password:string, userDataParams: string[]
 	return {success: success, errors: errors, newUser: newUser};
 }
 
-const postOrg = async (orgDataParams: string[]) => {
-	let errors:string[] = [];
-	let success = false;
-	let newOrg:any = {};
-	let orgDataValuesString = "";
-	for (let i=0; i<orgDataParams.length; i++) {
-		if (i) orgDataValuesString += ", ";
-		orgDataValuesString += `$${i+1}`;
-	}
 
-	// let orgDataQueryValues:string[] = [...orgDataParams];
-	// orgDataParams.forEach(key => orgDataQueryValues.push(encrypt(key)))
-	const orgDataQueryKeysString = [...orgData.postKeys, ...orgData.nullablePostKeys].join(", ");
-	try {
-		let newOrgDataId = await pool.query(
-			"INSERT INTO orgs ("+ orgDataQueryKeysString +") VALUES("+orgDataValuesString+") RETURNING id",
-			[...orgDataParams]
-		);
-		newOrg = newOrgDataId.rows[0].id;
-		success = true;
-	} catch (e: any) {
-		if (e.code == 23505) {
-			errors.push(e.detail);
-		} else if (e.code == 23503) {
-			errors.push(e.detail);
-		} else {
-			errors.push("database error");
-		}
-		console.log(e);
-	}
-	return {success: success, errors: errors, newOrg: newOrg};
-}
+
 
 const postEvent = async (eventParams:string[]) => {
-	let errors:string[] = [];
-	let success = false;
-	if (!(await verifyOrgVerification(eventParams[0]))) {
-		errors.push("org not verified");
-		return {success: success, errors: errors, newEvent: {}};
-	}
-	let newEvent = {...defaultEvent};
-	let eventDataValuesString = "";
-	for (let i=0; i<eventParams.length; i++) {
-		if (i) eventDataValuesString += ", ";
-		eventDataValuesString += `$${i+1}`;
-	}
-	const eventDataQueryKeysString = eventData.allEventKeys.join(", ");
-	try {
-		console.log("INSERT INTO events ("+ eventDataQueryKeysString +") VALUES("+eventDataValuesString+") RETURNING id",);
-		console.log(eventParams);
-		let newEventId = await pool.query(
-			"INSERT INTO events ("+ eventDataQueryKeysString +") VALUES("+eventDataValuesString+") RETURNING id",
-			eventParams
-		);
-		newEvent = newEventId.rows[0].id;
-		success = true;
-	} catch (e: any) {
-		if (e.code == 23505|| e.code == 23503) {
-			errors.push(e.detail);
-		} else {
-			errors.push("database error");
-		}
-		console.log(e);
-	}
+	if (!(await verifyOrgVerification(eventParams[0]))) return {success: false, errors: ["org not verified"], newEvent: {}};
+	let newPostEventObj = {...postEventObj};
+	for (let i = 0; i<eventParams.length; i++) newPostEventObj[eventData.postEventKeys[i]] = eventParams[i];
+	let {errors, success, newEntry:newEvent} = await postEntry(newPostEventObj, "events");
 	return {success: success, errors: errors, newEvent: newEvent};
+}
+
+const postOrg = async (orgParams:string[]) => {
+	let newPostOrgObj = {...postOrgObj};
+	for (let i = 0; i<orgParams.length; i++) newPostOrgObj[orgData.postKeys[i]] = orgParams[i];
+	let {errors, success, newEntry:newOrg} = await postEntry(newPostOrgObj, "orgs");
+	return {success: success, errors: errors, newOrg: newOrg};
 }
 
 

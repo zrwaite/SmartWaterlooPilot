@@ -44,7 +44,7 @@ export default class eventController {
 	}
 	static async postEvent(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success:eventSuccess, params:eventParams, errors:eventErrors} = await getBodyParams(req, eventData.postEventKeys);
+		let {success:eventSuccess, params:eventParams, errors:eventErrors} = await getBodyParams(req, eventData.baseEventKeys);
 		if (eventSuccess) {
 			let {params: additionalParams} = await getBodyParams(req, eventData.nullableEventKeys);
 			let postResult = await postEvent([...eventParams, ...additionalParams]);
