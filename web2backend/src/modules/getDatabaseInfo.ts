@@ -49,15 +49,15 @@ const getUsers = async () => {
 	return {status: status, users: decryptRows(entries, userData.dataKeys), errors: errors}
 }
 const getEvent = async (eventId:string) => {
-	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.eventKeys);
+	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.allEventKeys);
 	return {status: status, event: entries[0], errors: errors};
 }
 const getEvents = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "events", eventData.eventKeys);
+	const {status, entries, errors} = await getEntries(true, "", "", "events", eventData.allEventKeys);
 	return {status: status, events: entries, errors: errors};
 }
 const getOrgEvents = async (org_id:string) => {
-	const {status, entries, errors} = await getEntries(true, "owner", org_id, "events", eventData.eventKeys);
+	const {status, entries, errors} = await getEntries(true, "owner", org_id, "events", eventData.allEventKeys);
 	return {status: status, events: entries, errors: errors};
 }
 const getOrg = async (id:string) => {
@@ -72,4 +72,8 @@ const getOrgs = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "events", orgData.orgKeys);
 	return {status: status, orgs: entries, errors: errors};
 }
-export {getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs}
+const verifyOrgVerification = async (id:string):Promise<boolean> => {
+	const {status, entries, errors} = await getEntries(false, "id", id, "orgs", ["verified"]);
+	return (entries && entries[0].verified === '1');
+}
+export {getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, verifyOrgVerification}

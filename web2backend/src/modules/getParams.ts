@@ -1,14 +1,15 @@
 const getParams = async (req:any, params:string[], type:string) =>{
 	let success = true;
 	let undefinedParams: string[] = [];
-	let definedParams: any[] = [];
+	let allParams: any[] = [];
 	params.forEach((param) => {
 		if (req[type][param]==undefined) {
 			success = false;	
 			undefinedParams.push(param);
-		} else definedParams.push(req[type][param]);
+		} 
+		allParams.push(req[type][param]);
 	});
-	return {success: success, params: definedParams, errors: undefinedParams};
+	return {success: success, params: allParams, errors: undefinedParams};
 }
 
 const getBodyParams = async (req:any, params:string[]) =>{

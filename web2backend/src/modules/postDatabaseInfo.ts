@@ -4,6 +4,7 @@ import {encrypt} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import {defaultEvent, eventData} from "../database/eventData";
+import {verifyOrgVerification} from "./getDatabaseInfo";
 const postUser = async (userId:string, password:string, userDataParams: string[]) => {
 	let errors:string[] = [];
 	let success = false;
@@ -58,7 +59,7 @@ const postOrg = async (orgDataParams: string[]) => {
 
 	// let orgDataQueryValues:string[] = [...orgDataParams];
 	// orgDataParams.forEach(key => orgDataQueryValues.push(encrypt(key)))
-	const orgDataQueryKeysString = orgData.postKeys.join(", ");
+	const orgDataQueryKeysString = [...orgData.postKeys, ...orgData.nullablePostKeys].join(", ");
 	try {
 		let newOrgDataId = await pool.query(
 			"INSERT INTO orgs ("+ orgDataQueryKeysString +") VALUES("+orgDataValuesString+") RETURNING id",
@@ -82,13 +83,17 @@ const postOrg = async (orgDataParams: string[]) => {
 const postEvent = async (eventParams:string[]) => {
 	let errors:string[] = [];
 	let success = false;
+	if (!(await verifyOrgVerification(eventParams[0]))) {
+		errors.push("org not verified");
+		return {success: success, errors: errors, newEvent: {}};
+	}
 	let newEvent = {...defaultEvent};
 	let eventDataValuesString = "";
 	for (let i=0; i<eventParams.length; i++) {
 		if (i) eventDataValuesString += ", ";
 		eventDataValuesString += `$${i+1}`;
 	}
-	const eventDataQueryKeysString = eventData.eventKeys.join(", ");
+	const eventDataQueryKeysString = eventData.allEventKeys.join(", ");
 	try {
 		console.log("INSERT INTO events ("+ eventDataQueryKeysString +") VALUES("+eventDataValuesString+") RETURNING id",);
 		console.log(eventParams);
@@ -99,7 +104,7 @@ const postEvent = async (eventParams:string[]) => {
 		newEvent = newEventId.rows[0].id;
 		success = true;
 	} catch (e: any) {
-		if (e.code == 23505) {
+		if (e.code == 23505|| e.code == 23503) {
 			errors.push(e.detail);
 		} else {
 			errors.push("database error");
