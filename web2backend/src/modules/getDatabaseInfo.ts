@@ -61,7 +61,7 @@ const getEvents = async () => {
 	return {status: status, events: entries, errors: errors};
 }
 const getOrgEvents = async (org_id:string) => {
-	const {status, entries, errors} = await getEntries(true, "owner", org_id, "events", eventData.allEventKeys);
+	const {status, entries, errors} = await getEntries(true, "org", org_id, "events", eventData.allEventKeys);
 	return {status: status, events: entries, errors: errors};
 }
 const getOrg = async (id:string) => {
@@ -103,7 +103,7 @@ const getSurveys = async () => {
 	return {status: status, surveys: entries, errors: errors};
 }
 const getOrgSurveys = async (org_id:string) => {
-	let {status, entries, errors} = await getEntries(true, "owner", org_id, "surveys", surveyKeys);
+	let {status, entries, errors} = await getEntries(true, "org", org_id, "surveys", surveyKeys);
 	if (status == 200) {
 		for (let i=0; i<entries.length; i++) {
 			let survey = entries[i];
