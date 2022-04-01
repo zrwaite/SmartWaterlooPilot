@@ -3,6 +3,7 @@ import userCtrl from '../api/user';
 import orgCtrl from '../api/org';
 import eventCtrl from '../api/event';
 import surveyCtrl from '../api/survey';
+import questionCtrl from '../api/question';
 const router = express.Router();
 router.route('/user')
 	.get(userCtrl.getUser)
@@ -27,4 +28,10 @@ router.route('/survey')
 	.post(surveyCtrl.postSurvey)
 	.put(surveyCtrl.putSurvey)
 	.delete(surveyCtrl.deleteSurvey)
+
+router.route('/question')
+	.get(questionCtrl.getQuestion)
+	.post(questionCtrl.postQuestion)
+	.put(questionCtrl.putQuestion)
+	.delete(questionCtrl.deleteQuestion)
 export default router;

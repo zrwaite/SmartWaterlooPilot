@@ -118,6 +118,10 @@ const getQuestion = async (questionId:number) => {
 	const {status, entries, errors} = await getEntries(false, "id", questionId.toString(), "questions", questionKeys);
 	return {status: status, question: entries[0], errors: errors};
 }
+const getQuestions = async () => {
+	const {status, entries, errors} = await getEntries(true, "", "", "questions", questionKeys);
+	return {status: status, questions: entries, errors: errors};
+}
 const parseSurvey = async (questionIds: number[]) => {
 	let success = true;
 	let questions = [];
@@ -131,4 +135,4 @@ const parseSurvey = async (questionIds: number[]) => {
 	}
 	return {questions: questions, success: success};
 }
-export {getSurvey, getSurveys, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getSurvey, getSurveys, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}

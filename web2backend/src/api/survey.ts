@@ -17,19 +17,7 @@ export default class surveyController {
 			result.status = getSurveyResponse.status;
 			if (result.status == 200) {
 				result.success = true;
-				let questions = [];
-				let questionIds = getSurveyResponse.survey.questions
-				for (let i=0; i<questionIds.length; i++) {
-					const getQuestionResponse = await getQuestion(questionIds[i]);
-					if (getQuestionResponse.status != 200) {
-						result.success = false;
-						result.errors.push(...getQuestionResponse.errors);
-					} else questions.push(getQuestionResponse.question)
-				}
-				if (result.success) {
-					getSurveyResponse.survey.questions = questions;
-					result.response = getSurveyResponse.survey;
-				}
+				result.response = getSurveyResponse.survey;
 			}
 			else if (result.status == 404) result.errors.push("survey not found");
 			else result.errors.push(...surveyErrors);
