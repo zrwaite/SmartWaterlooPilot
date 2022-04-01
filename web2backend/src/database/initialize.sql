@@ -23,6 +23,7 @@ create table if not exists "orgs"(
 
 create table if not exists "surveys"(
 	id serial primary key,
+	name TEXT,
 	org int,
 	FOREIGN KEY (org) REFERENCES orgs(id),
 	linked bit default '0',
@@ -31,12 +32,12 @@ create table if not exists "surveys"(
 	-- FOREIGN KEY (EACH ELEMENT OF questions) REFERENCES questions(id),
 );
 
--- CREATE TYPE choices AS ENUM ('short', 'long', 'mc', 'check');
+-- CREATE TYPE type_choices AS ENUM ('short', 'long', 'mc', 'check');
 
 create table if not exists "questions"(
 	id serial primary key,
 	prompt TEXT,
-	answer_type choices,
+	answer_type type_choices,
 	choices TEXT[]
 );
 

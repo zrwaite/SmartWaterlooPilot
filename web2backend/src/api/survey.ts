@@ -1,9 +1,10 @@
 import {Request, Response} from "express"; //Typescript types
 import {response, responseInterface} from "../models/response"; //Created pre-formatted uniform response
 import {postSurvey} from "../modules/postDatabaseInfo";
-import {getSurvey, getSurveys, getOrgSurveys} from "../modules/getDatabaseInfo";
-import {getBodyParams, getQueryParams} from "../modules/getParams";
-import {surveyData} from "../database/surveyData";
+import {getSurvey, getSurveys, getOrgSurveys, getQuestion} from "../modules/getDatabaseInfo";
+import {getBodyParams, getParams, getQueryParams} from "../modules/getParams";
+import {surveyKeys, surveyValues, questionValues, questionKeys} from "../database/surveyData";
+import { isQuestionArray, isSurveyArray } from "../modules/typeAssertions";
 
 /* register controller */
 export default class surveyController {
@@ -16,7 +17,19 @@ export default class surveyController {
 			result.status = getSurveyResponse.status;
 			if (result.status == 200) {
 				result.success = true;
-				result.response = getSurveyResponse.survey;
+				let questions = [];
+				let questionIds = getSurveyResponse.survey.questions
+				for (let i=0; i<questionIds.length; i++) {
+					const getQuestionResponse = await getQuestion(questionIds[i]);
+					if (getQuestionResponse.status != 200) {
+						result.success = false;
+						result.errors.push(...getQuestionResponse.errors);
+					} else questions.push(getQuestionResponse.question)
+				}
+				if (result.success) {
+					getSurveyResponse.survey.questions = questions;
+					result.response = getSurveyResponse.survey;
+				}
 			}
 			else if (result.status == 404) result.errors.push("survey not found");
 			else result.errors.push(...surveyErrors);
@@ -44,16 +57,31 @@ export default class surveyController {
 	}
 	static async postSurvey(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success:surveySuccess, params:surveyParams, errors:surveyErrors} = await getBodyParams(req, surveyData.postSurveyKeys);
+		let {success:surveySuccess, params, errors:surveyErrors} = getBodyParams(req, surveyKeys);
 		if (surveySuccess) {
-			let postResult = await postSurvey(surveyParams);
-			if (postResult.success) {
-				result.status = 201;
-				result.success = true;
-				result.response = {
-					surveyData: postResult.newSurvey,
-				}
-			} else postResult.errors.forEach((error) => {result.errors.push(error)});
+			let surveyParams = params as surveyValues;
+			let questions:questionValues[] = [];
+			if (isSurveyArray(params)){
+				surveyParams[3].forEach((question, i) => {
+					let {success:questionSuccess, params: questionParams, errors:questionErrors} = getParams(question, questionKeys);
+					if (questionSuccess)
+					 	if (isQuestionArray(questionParams)) 
+							questions.push(questionParams as questionValues)
+						else result.errors.push(`invalid question at index ${i}`);
+					else questionErrors.forEach(error => result.errors.push(`missing ${error} in question at index ${i}`));
+				});
+				surveyParams[3] = questions;
+			} else result.errors.push(`invalid survey type`);
+			if (result.errors.length === 0){
+				let postResult = await postSurvey(surveyParams);
+				if (postResult.success) {
+					result.status = 201;
+					result.success = true;
+					result.response = {
+						surveyData: postResult.newSurvey,
+					}
+				} else postResult.errors.forEach((error) => {result.errors.push(error)});
+			}
 		} else surveyErrors.forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
 	}

@@ -3,9 +3,9 @@ import {decryptRows} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import {eventData} from "../database/eventData";
-import {surveyData} from "../database/surveyData";
+import {surveyKeys, questionKeys} from "../database/surveyData";
 
-const getEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, columns:string[]) => {
+const getEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, columns: readonly string[]) => {
 	let entries:any;
 	let status;
 	let queryParams = columns.join(", ");
@@ -41,9 +41,12 @@ const getUser = async (userid:string) => {
 		`SELECT user_data_id FROM users WHERE u_id = $1 LIMIT 1`,
 		[userid]
 	)
-	const {status, entries, errors} = await getEntries(false, "id", data.rows[0].user_data_id, "user_data", userData.dataKeys);
-	result = decryptRows(entries, userData.dataKeys)[0];
-	return {status: status, user: result, errors: errors}
+	if (data.rows.length > 0) {
+		const {status, entries, errors} = await getEntries(false, "id", data.rows[0].user_data_id, "user_data", userData.dataKeys);
+		result = decryptRows(entries, userData.dataKeys)[0];
+		return {status: status, user: result, errors: errors}
+	}
+	else return {status: 404, user: result, errors: []};
 }
 const getUsers = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "user_data", userData.dataKeys);
@@ -67,7 +70,7 @@ const getOrg = async (id:string) => {
 }
 const getOwnerOrgs = async (ownerId: string) => {
 	const {status, entries, errors} = await getEntries(true, "owner_id", ownerId, "orgs", orgData.orgKeys);
-	return {status: status, orgs: entries[0], errors: errors};
+	return {status: status, orgs: entries, errors: errors};
 }
 const getOrgs = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "events", orgData.orgKeys);
@@ -75,18 +78,57 @@ const getOrgs = async () => {
 }
 const verifyOrgVerification = async (id:string):Promise<boolean> => {
 	const {entries} = await getEntries(false, "id", id, "orgs", ["verified"]);
-	return (entries && entries[0].verified === '1');
+	return (entries && entries.length>0 && entries[0].verified === '1');
 }
 const getSurvey = async (surveyId:string) => {
-	const {status, entries, errors} = await getEntries(false, "id", surveyId, "surveys", surveyData.allSurveyKeys);
-	return {status: status, survey: entries[0], errors: errors};
+	let {status, entries, errors} = await getEntries(false, "id", surveyId, "surveys", surveyKeys);
+	let survey = entries[0];
+	if (status == 200) {
+		let {questions, success} = await parseSurvey(survey.questions);
+		if (success) survey.questions = questions;
+		else status = 400;
+	}
+	return {status: status, survey: survey, errors: errors};
 }
 const getSurveys = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "surveys", surveyData.allSurveyKeys);
+	let {status, entries, errors} = await getEntries(true, "", "", "surveys", surveyKeys);
+	if (status == 200) {
+		for (let i=0; i<entries.length; i++) {
+			let survey = entries[i];
+			let {questions, success} = await parseSurvey(survey.questions);
+			if (success) survey.questions = questions;
+			else status = 400;
+		}
+	}
 	return {status: status, surveys: entries, errors: errors};
 }
 const getOrgSurveys = async (org_id:string) => {
-	const {status, entries, errors} = await getEntries(true, "owner", org_id, "surveys", surveyData.allSurveyKeys);
+	let {status, entries, errors} = await getEntries(true, "owner", org_id, "surveys", surveyKeys);
+	if (status == 200) {
+		for (let i=0; i<entries.length; i++) {
+			let survey = entries[i];
+			let {questions, success} = await parseSurvey(survey.questions);
+			if (success) survey.questions = questions;
+			else status = 400;
+		}
+	}
 	return {status: status, surveys: entries, errors: errors};
 }
-export {getSurvey, getSurveys, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, verifyOrgVerification}
+const getQuestion = async (questionId:number) => {
+	const {status, entries, errors} = await getEntries(false, "id", questionId.toString(), "questions", questionKeys);
+	return {status: status, question: entries[0], errors: errors};
+}
+const parseSurvey = async (questionIds: number[]) => {
+	let success = true;
+	let questions = [];
+	let errors: string[] = [];
+	for (let i=0; i<questionIds.length; i++) {
+		const getQuestionResponse = await getQuestion(questionIds[i]);
+		if (getQuestionResponse.status != 200) {
+			success = false;
+			errors.push(...getQuestionResponse.errors);
+		} else questions.push(getQuestionResponse.question)
+	}
+	return {questions: questions, success: success};
+}
+export {getSurvey, getSurveys, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
