@@ -3,7 +3,7 @@ import {decryptRows} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import {eventData} from "../database/eventData";
-import {surveyKeys, questionKeys} from "../database/surveyData";
+import {getSurveyKeys, questionKeys} from "../database/surveyData";
 
 const getEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, columns: readonly string[]) => {
 	let entries:any;
@@ -81,7 +81,7 @@ const verifyOrgVerification = async (id:string):Promise<boolean> => {
 	return (entries && entries.length>0 && entries[0].verified === '1');
 }
 const getSurvey = async (surveyId:string) => {
-	let {status, entries, errors} = await getEntries(false, "id", surveyId, "surveys", surveyKeys);
+	let {status, entries, errors} = await getEntries(false, "id", surveyId, "surveys", getSurveyKeys);
 	let survey = entries[0];
 	if (status == 200) {
 		let {questions, success} = await parseSurvey(survey.questions);
@@ -91,7 +91,7 @@ const getSurvey = async (surveyId:string) => {
 	return {status: status, survey: survey, errors: errors};
 }
 const getSurveys = async () => {
-	let {status, entries, errors} = await getEntries(true, "", "", "surveys", surveyKeys);
+	let {status, entries, errors} = await getEntries(true, "", "", "surveys", getSurveyKeys);
 	if (status == 200) {
 		for (let i=0; i<entries.length; i++) {
 			let survey = entries[i];
@@ -103,7 +103,7 @@ const getSurveys = async () => {
 	return {status: status, surveys: entries, errors: errors};
 }
 const getOrgSurveys = async (org_id:string) => {
-	let {status, entries, errors} = await getEntries(true, "org", org_id, "surveys", surveyKeys);
+	let {status, entries, errors} = await getEntries(true, "org", org_id, "surveys", getSurveyKeys);
 	if (status == 200) {
 		for (let i=0; i<entries.length; i++) {
 			let survey = entries[i];
