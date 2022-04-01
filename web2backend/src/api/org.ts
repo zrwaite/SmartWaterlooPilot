@@ -1,9 +1,8 @@
 import {Request, Response} from "express"; //Typescript types
 import {response, responseInterface} from "../models/response"; //Created pre-formatted uniform response
-import {postUser, postOrg} from "../modules/postDatabaseInfo";
+import {postOrg} from "../modules/postDatabaseInfo";
 import {getOrg, getOrgs, getOwnerOrgs} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
-import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
 
 
@@ -46,9 +45,10 @@ export default class orgController {
 	}
 	static async postOrg(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success, params, errors} = await getBodyParams(req, [...orgData.postKeys]);
+		let {success, params, errors} = await getBodyParams(req, [...orgData.baseKeys]);
 		if (success) {
-			let postResult = await postOrg(params);
+			let {params: nullableParams} = await getBodyParams(req, [...orgData.nullablePostKeys]);
+			let postResult = await postOrg([...params, ...nullableParams]);
 			if (postResult.success) {
 				result.status = 201;
 				result.success = true;

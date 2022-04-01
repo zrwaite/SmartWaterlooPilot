@@ -2,8 +2,69 @@ import bcrypt from "bcrypt";
 import pool from "../database/db";
 import {encrypt} from "./encryption";
 import {userData} from "../database/userData";
-import {orgData} from "../database/orgData";
-import {defaultEvent, eventData} from "../database/eventData";
+import {orgData, postOrg as postOrgObj} from "../database/orgData";
+import {eventData, postEvent as postEventObj} from "../database/eventData";
+import {surveyKeys, questionKeys, questionValues, surveyValues, postSurveyValues, postQuestionValues} from "../database/surveyData";
+import {verifyOrgVerification} from "./getDatabaseInfo";
+
+const postEntry = async (entry: object, tableName:string ) => {
+	let errors: string[] = [];
+	let success = false;
+	let newEntry:object = {};
+	let entryDataValuesString = "";
+	const entryKeys = Object.keys(entry);
+	const entryValues = Object.values(entry);
+	for (let i=0; i<entryKeys.length; i++) {
+		if (i) entryDataValuesString += ", ";
+		entryDataValuesString += `$${i+1}`;
+	}
+	const entryDataQueryString = entryKeys.join(", ");
+	try {
+		let newEntryId = await pool.query(
+			`INSERT INTO ${tableName} (${entryDataQueryString}) VALUES(${entryDataValuesString}) RETURNING id`,
+			entryValues
+		);
+		newEntry = newEntryId.rows[0].id;
+		success = true;
+	} catch (e: any) {
+		const knownErrorCodes = ["22P02", "23505", "23503"];
+		if (knownErrorCodes.includes(e.code)) errors.push(e.detail);
+		else errors.push("database error");
+		console.log(e);
+	}
+	return {success: success, errors: errors, newEntry: newEntry};
+}
+type postEntryTypeArrayType = {
+	keys: typeof surveyKeys , values: postSurveyValues
+}|{
+	keys: typeof questionKeys , values: postQuestionValues
+}; 
+const postEntryArrays = async (entry: postEntryTypeArrayType, tableName:string ) => {
+	let errors: string[] = [];
+	let success = false;
+	let newEntry:number = -1;
+	let entryDataValuesString = "";
+	for (let i=0; i<entry.keys.length; i++) {
+		if (i) entryDataValuesString += ", ";
+		entryDataValuesString += `$${i+1}`;
+	}
+	const entryDataQueryString = entry.keys.join(", ");
+	try {
+		let newEntryId = await pool.query(
+			`INSERT INTO ${tableName} (${entryDataQueryString}) VALUES(${entryDataValuesString}) RETURNING id`,
+			entry.values
+		);
+		newEntry = newEntryId.rows[0].id;
+		success = true;
+	} catch (e: any) {
+		const knownErrorCodes = ["23505", "23503"];
+		if (knownErrorCodes.includes(e.code)) errors.push(e.detail);
+		else errors.push("database error");
+		console.log(e);
+	}
+	return {success: success, errors: errors, newEntry: newEntry};
+}
+
 const postUser = async (userId:string, password:string, userDataParams: string[]) => {
 	let errors:string[] = [];
 	let success = false;
@@ -46,68 +107,51 @@ const postUser = async (userId:string, password:string, userDataParams: string[]
 	return {success: success, errors: errors, newUser: newUser};
 }
 
-const postOrg = async (orgDataParams: string[]) => {
-	let errors:string[] = [];
-	let success = false;
-	let newOrg:any = {};
-	let orgDataValuesString = "";
-	for (let i=0; i<orgDataParams.length; i++) {
-		if (i) orgDataValuesString += ", ";
-		orgDataValuesString += `$${i+1}`;
-	}
 
-	// let orgDataQueryValues:string[] = [...orgDataParams];
-	// orgDataParams.forEach(key => orgDataQueryValues.push(encrypt(key)))
-	const orgDataQueryKeysString = orgData.postKeys.join(", ");
-	try {
-		let newOrgDataId = await pool.query(
-			"INSERT INTO orgs ("+ orgDataQueryKeysString +") VALUES("+orgDataValuesString+") RETURNING id",
-			[...orgDataParams]
-		);
-		newOrg = newOrgDataId.rows[0].id;
-		success = true;
-	} catch (e: any) {
-		if (e.code == 23505) {
-			errors.push(e.detail);
-		} else if (e.code == 23503) {
-			errors.push(e.detail);
-		} else {
-			errors.push("database error");
-		}
-		console.log(e);
-	}
-	return {success: success, errors: errors, newOrg: newOrg};
-}
+
 
 const postEvent = async (eventParams:string[]) => {
-	let errors:string[] = [];
-	let success = false;
-	let newEvent = {...defaultEvent};
-	let eventDataValuesString = "";
-	for (let i=0; i<eventParams.length; i++) {
-		if (i) eventDataValuesString += ", ";
-		eventDataValuesString += `$${i+1}`;
-	}
-	const eventDataQueryKeysString = eventData.eventKeys.join(", ");
-	try {
-		console.log("INSERT INTO events ("+ eventDataQueryKeysString +") VALUES("+eventDataValuesString+") RETURNING id",);
-		console.log(eventParams);
-		let newEventId = await pool.query(
-			"INSERT INTO events ("+ eventDataQueryKeysString +") VALUES("+eventDataValuesString+") RETURNING id",
-			eventParams
-		);
-		newEvent = newEventId.rows[0].id;
-		success = true;
-	} catch (e: any) {
-		if (e.code == 23505) {
-			errors.push(e.detail);
-		} else {
-			errors.push("database error");
-		}
-		console.log(e);
-	}
+	if (!(await verifyOrgVerification(eventParams[0]))) return {success: false, errors: ["org not verified"], newEvent: {}};
+	let newPostEventObj = {...postEventObj};
+	for (let i = 0; i<eventParams.length; i++) newPostEventObj[eventData.postEventKeys[i]] = eventParams[i];
+	let {errors, success, newEntry:newEvent} = await postEntry(newPostEventObj, "events");
 	return {success: success, errors: errors, newEvent: newEvent};
 }
 
+const postSurvey = async (surveyParams:(surveyValues)) => {
+	let errors: string[] = [];
+	let success = true;
+	let questionIds = [];
+	if (!(await verifyOrgVerification(surveyParams[0]))) return {success: false, errors: ["org not verified"], newSurvey: {}};
+	for (let i=0; i<surveyParams[3].length; i++) {
+		let {success: questionSuccess, errors: questionErrors, newQuestion: newQuestion} = await postQuestion(surveyParams[3][i])
+		if (questionSuccess) {
+			questionIds.push(newQuestion.toString());
+		} else {
+			errors.push(...questionErrors);
+			success = false;
+			break;
+		}
+	}
+	let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`];
+	if (questionIds.length) postSurveyArray[3] = `{"${questionIds.join("\", \"")}"}`;
+	let {errors:postEntryErrors, success:postEntrySuccess, newEntry:newSurvey} = await postEntryArrays({keys:surveyKeys, values: postSurveyArray}, "surveys");
+	return {success: success && postEntrySuccess, errors: [...errors, ...postEntryErrors], newSurvey: newSurvey};
+}
 
-export {postUser, postOrg, postEvent}
+const postQuestion = async (questionParams:(questionValues)) => {
+	let postQuestionArray:postQuestionValues = [questionParams[0], questionParams[1], `{}`];
+	if (questionParams[2]?.length) postQuestionArray[2] = `{"${questionParams[2]?.join("\", \"")}"}`;
+	let {errors, success, newEntry:newQuestion} = await postEntryArrays({keys:questionKeys, values: postQuestionArray}, "questions");
+	return {success: success, errors: errors, newQuestion: newQuestion};
+}
+
+const postOrg = async (orgParams:string[]) => {
+	let newPostOrgObj = {...postOrgObj};
+	for (let i = 0; i<orgParams.length; i++) newPostOrgObj[orgData.postKeys[i]] = orgParams[i];
+	let {errors, success, newEntry:newOrg} = await postEntry(newPostOrgObj, "orgs");
+	return {success: success, errors: errors, newOrg: newOrg};
+}
+
+
+export {postUser, postOrg, postEvent, postSurvey}

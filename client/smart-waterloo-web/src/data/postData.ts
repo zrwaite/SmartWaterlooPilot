@@ -23,7 +23,7 @@ const postUser = async (inputData:postUserType) => {
 const postEvent = async (inputData:postEventType) => {
 	USE_WEB3?(await postEventWeb2(inputData)):(await postEventWeb3(inputData));
 }
-  
+
 const postEventWeb2 = (inputData:postEventType) => {
 
 }

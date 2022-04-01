@@ -5,7 +5,6 @@ import {getEvent, getEvents, getOrgEvents} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {eventData} from "../database/eventData";
 
-
 /* register controller */
 export default class eventController {
 	static async getEvent(req: Request, res: Response) {
@@ -45,9 +44,10 @@ export default class eventController {
 	}
 	static async postEvent(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success:eventSuccess, params:eventParams, errors:eventErrors} = await getBodyParams(req, eventData.eventKeys);
+		let {success:eventSuccess, params:eventParams, errors:eventErrors} = await getBodyParams(req, eventData.baseEventKeys);
 		if (eventSuccess) {
-			let postResult = await postEvent(eventParams);
+			let {params: additionalParams} = await getBodyParams(req, eventData.nullableEventKeys);
+			let postResult = await postEvent([...eventParams, ...additionalParams]);
 			if (postResult.success) {
 				result.status = 201;
 				result.success = true;

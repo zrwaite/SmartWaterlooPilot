@@ -1,15 +1,15 @@
--- drop table user_data;
 -- drop table events;
+-- drop table surveys;
+-- drop table questions;
+-- drop table user_data;
 -- drop table orgs;
 -- drop table users;
-
 CREATE TABLE IF NOT EXISTS "users"(
 	id SERIAL PRIMARY KEY,
 	u_id INT UNIQUE,
 	password_hash varchar(80),
 	user_data_id INT default null
 );
-
 
 create table if not exists "orgs"(
 	id serial primary key,
@@ -21,18 +21,41 @@ create table if not exists "orgs"(
 	avatar_string varchar(100)
 );
 
+create table if not exists "surveys"(
+	id serial primary key,
+	name TEXT,
+	org int,
+	FOREIGN KEY (org) REFERENCES orgs(id),
+	linked bit default '0',
+	description TEXT,
+	questions integer[]
+	-- FOREIGN KEY (EACH ELEMENT OF questions) REFERENCES questions(id),
+);
+
+-- CREATE TYPE type_choices AS ENUM ('short', 'long', 'mc', 'check');
+
+create table if not exists "questions"(
+	id serial primary key,
+	prompt TEXT,
+	answer_type type_choices,
+	choices TEXT[]
+);
+
 create table if not exists "events"(
 	id serial primary key,
 	name varchar(80),
+	org int,
+	FOREIGN KEY (org) REFERENCES orgs(id),
 	age_group varchar(80),
 	start_date varchar(80),
 	end_date varchar(80),
 	category varchar(80),
-	description varchar(400),
-	org int,
-	FOREIGN KEY (org) REFERENCES orgs(id),
+	description TEXT,
+	linked_survey_id int null,
+	FOREIGN KEY (linked_survey_id) REFERENCES surveys(id),
 	image varchar(80)
 );
+
 
 create table if not exists "user_data"(
 	id SERIAL PRIMARY KEY,
