@@ -12,7 +12,7 @@ env.config();
 // utilities
 // app.use(cors());
 app.use(express.json());
-app.use((req, res, next)=>{console.log("request"); next();});
+// app.use((req, res, next)=>{console.log("request"); next();});
 
 
 // routes

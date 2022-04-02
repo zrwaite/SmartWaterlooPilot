@@ -11,7 +11,7 @@ import {useContext, useState} from "react";
 import {MobileContext, AddressContext, IdContext} from "../../App";
 import { defaultUserData} from "../../data/Users";
 import { defaultEventsData } from "../../data/Events";
-import {getEventsData, getUserData} from "../../data/getData"
+import {getEventsData, getBasicUserData} from "../../data/getData"
 import Settings from "../../components/Settings";
 
 
@@ -25,9 +25,9 @@ const Dashboard = (props: {org: boolean}) => {
 	cookies.set("back", "/dashboard/user");
 	const [userData, setUserData] = useState(defaultUserData);
 	const getSetUserData = async () => {
-		let users = await getUserData();
-		if (!users) return;
-		setUserData(users)
+		let {success, response} = await getBasicUserData();
+		if (!success) alert(JSON.stringify(response));	
+		else setUserData(response);
 	}
 	const [eventsData, setEventData] = useState(defaultEventsData);
 	const getSetEventsData = async () => {
@@ -41,6 +41,7 @@ const Dashboard = (props: {org: boolean}) => {
 		getSetUserData();
 		setDataCalled(true);
 	}
+
 
     return (
 		<>

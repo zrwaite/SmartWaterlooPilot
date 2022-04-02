@@ -15,7 +15,6 @@ const signInController = async (req: Request, res: Response) => {
 		const getUserResult = await getUserHash(userId);
 		result.status = getUserResult.status;
 		const user = getUserResult.user;
-		console.log(user);
 		if (result.status==200) {
 			let passwordCheck = bcrypt.compareSync(password, user.password_hash);
 			if (passwordCheck) {
