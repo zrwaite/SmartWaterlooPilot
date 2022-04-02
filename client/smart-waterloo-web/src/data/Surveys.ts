@@ -1,6 +1,6 @@
 interface Question {
 	prompt: string;
-    type: "short"|"long"|"mc"|"check";
+    answer_type: "short"|"long"|"mc"|"check";
 	choices?: string[]
 }
 type defaultSurveysDataType = {
@@ -9,6 +9,7 @@ type defaultSurveysDataType = {
 }
 const defaultSurveysState: defaultSurveysDataType = {surveysDataSet: false, surveys:[]};
 interface SurveyDataType {
+	id: string;
 	name: string;
 	organization: string;
 	length: string;
@@ -16,6 +17,7 @@ interface SurveyDataType {
 	questions: Question[];
 }
 const defaultSurveysData:SurveyDataType = {
+	id: "",
 	name: "",
 	organization: "",
 	length: "",
@@ -23,67 +25,67 @@ const defaultSurveysData:SurveyDataType = {
 	questions: []
 }
 
-const exampleSurveys:SurveyDataType[] = [
-	{
-		name: "Survey 01",
-		organization: "Kinbrdige Community Association",
-		length: "2-3 mins",
-		completed: true,
-		questions: [
-			{
-				prompt: "How would you rate your experience?",
-				type: "mc",
-				choices: ["Good", "Poor"]
-			}, {
-				prompt: "Tell us about your favorite part of the event.",
-				type: "short"
-			}, {
-				prompt: "Would you recommend this event to a friend, why or why not?",
-				type:"long"
-			}
-		]
-	},
-	{
-		name:"Survey 02",
-		organization: "Fiddlesticks Community Centre",
-		length: "2-3 mins",
-		completed: false,
-		questions: [
-			{
-				prompt: "How would you rate your experience?",
-				type: "mc",
-				choices: ["Great", "Good", "Neutral", "Bad", "Terrible"]
-			}, {
-				prompt: "Tell us about your favorite part of the event and why.",
-				type: "long"
-			}, {
-				prompt: "Would you recommend this event to a friend, why or why not?",
-				type:"long"
-			}
-		]
-	},
-	{
-		name: "Survey 03",
-		organization: "Greenway-Chaplin Community Centre",
-		length: "2-3 mins",
-		completed: false,
-		questions: [
-			{
-				prompt: "What parts of the event did you enjoy?",
-				type: "check",
-				choices: ["Food", "Community", "People", "Activity"]
-			}, {
-				prompt: "What parts of the event did you not enjoy?",
-				type: "check",
-				choices: ["Food", "Community", "People", "Activity"]
-			}, {
-				prompt: "Would you recommend this event to a friend, why or why not?",
-				type:"long"
-			}
-		]
-	}
-]
+// const exampleSurveys:SurveyDataType[] = [
+// 	{
+// 		name: "Survey 01",
+// 		organization: "Kinbrdige Community Association",
+// 		length: "2-3 mins",
+// 		completed: true,
+// 		questions: [
+// 			{
+// 				prompt: "How would you rate your experience?",
+// 				type: "mc",
+// 				choices: ["Good", "Poor"]
+// 			}, {
+// 				prompt: "Tell us about your favorite part of the event.",
+// 				type: "short"
+// 			}, {
+// 				prompt: "Would you recommend this event to a friend, why or why not?",
+// 				type:"long"
+// 			}
+// 		]
+// 	},
+// 	{
+// 		name:"Survey 02",
+// 		organization: "Fiddlesticks Community Centre",
+// 		length: "2-3 mins",
+// 		completed: false,
+// 		questions: [
+// 			{
+// 				prompt: "How would you rate your experience?",
+// 				type: "mc",
+// 				choices: ["Great", "Good", "Neutral", "Bad", "Terrible"]
+// 			}, {
+// 				prompt: "Tell us about your favorite part of the event and why.",
+// 				type: "long"
+// 			}, {
+// 				prompt: "Would you recommend this event to a friend, why or why not?",
+// 				type:"long"
+// 			}
+// 		]
+// 	},
+// 	{
+// 		name: "Survey 03",
+// 		organization: "Greenway-Chaplin Community Centre",
+// 		length: "2-3 mins",
+// 		completed: false,
+// 		questions: [
+// 			{
+// 				prompt: "What parts of the event did you enjoy?",
+// 				type: "check",
+// 				choices: ["Food", "Community", "People", "Activity"]
+// 			}, {
+// 				prompt: "What parts of the event did you not enjoy?",
+// 				type: "check",
+// 				choices: ["Food", "Community", "People", "Activity"]
+// 			}, {
+// 				prompt: "Would you recommend this event to a friend, why or why not?",
+// 				type:"long"
+// 			}
+// 		]
+// 	}
+// ]
 
 
-export {exampleSurveys, defaultSurveysData, defaultSurveysState};
+export { defaultSurveysData, defaultSurveysState};
 export type {SurveyDataType, Question}

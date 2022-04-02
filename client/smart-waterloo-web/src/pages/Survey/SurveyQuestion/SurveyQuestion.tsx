@@ -10,11 +10,11 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 		props.setParentAnswer(props.index, event.target.value);
     }
 	let userInput;
-	if (props.type==="short") {
+	if (props.answer_type==="short") {
 		userInput = <input className={"questionInput"} value={props.answer} onChange={handleInputChange} />
-	} else if (props.type==="long") {
+	} else if (props.answer_type==="long") {
 		userInput = <textarea className={"questionTextarea"} value={props.answer} onChange={handleInputChange} />
-	} else if (props.type==="mc") {
+	} else if (props.answer_type==="mc") {
 		userInput = (
 			<div className={"questionChoices"}>
 				{props.choices?.map((choice, i) => {
@@ -25,7 +25,7 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 				})}
 			</div>
 		)
-	} else if (props.type==="check") {
+	} else if (props.answer_type==="check") {
 		userInput = (
 			<div className={"questionChoices"}>
 				{props.choices?.map((choice, i) => {

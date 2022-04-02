@@ -1,4 +1,4 @@
-import {exampleEvents, defaultEventsData} from "./Events";
+import { defaultEventsData} from "./Events";
 import {defaultSurveysData} from "./Surveys"
 import userABI from "./utils/SmartUser.json";
 import {AbiItem} from "web3-utils";
@@ -6,47 +6,37 @@ import Web3 from "web3";
 import orgABI from "./utils/SmartOrganisation.json";
 import eventABI from "./utils/OrganisationEvents.json";
 import {USE_WEB3} from "./dataConstants";
-import Cookies from "universal-cookie";
-import {httpReq} from "./web2/httpRequest";
 import {defaultAccountData} from "./account";
-const cookies = new Cookies();
+import {web2GetBasicUserData, web2GetSurveysData, getWeb2EventsData, getWeb2EventData, getWeb2SurveyData} from "./web2/web2GetData";
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
-// interface userDataObj {
-// 	nickname: string,
-// 	birth_day: string,
-// 	birth_month: string,
-// 	birth_year: string,
-// 	gender: string,
-// 	height: string,
-// 	weight: string,
-// 	religion: string,
-// 	sexuality: string,
-// 	race: string,
-// 	grade: string,
-// 	postal_code: string,
-// 	avatar_string: string,
-// }
 
 const getBasicUserData = async ():Promise<{success:true, response:typeof defaultAccountData}|{success:false, response: string[]}|any> => {
 	return USE_WEB3 ? (await web3GetBasicUserData()) : (await web2GetBasicUserData());
 };
-
-const web2GetBasicUserData = async () => {
-	let json = await httpReq("/api/user/?user_id=" + cookies.get("userId"))
-	if (json) {
-		let response = JSON.parse(json);
-		if (response.success) {
-			let basicUserData = {...defaultAccountData};
-			basicUserData.avatarString = response.response.avatar_string;
-			basicUserData.nickname = response.response.nickname;
-			return {success: true, response:basicUserData};
-		} else {
-			return {success: false, response:response.errors}
-		}
-	} else return {success: false, response:["request failed"]};
+const getSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
+	return USE_WEB3 ? (await web3GetSurveysData()) : (await web2GetSurveysData());
+}
+const getEventsData = async ():Promise<{success:boolean, events:typeof defaultEventsData.events, errors: string[]}|any> => {
+	return USE_WEB3 ? (await getWeb3EventsData()) : (await getWeb2EventsData());
 };
+const getEventData = async (id:string):Promise<{success:boolean, event:typeof defaultEventsData.events[number]|{}, errors: string[]}|any> => {
+	return USE_WEB3 ? (await getWeb3EventData(id)) : (await getWeb2EventData(id));
+};
+const getSurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurveysData|{}, errors: string[]}|any> => {
+	return USE_WEB3 ? (await getWeb3SurveyData(id)) : (await getWeb2SurveyData(id));
+};
+
+const getWeb3SurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurveysData|{}, errors: string[]}> => {
+	return {success: false, survey: {}, errors: []}
+}
+
+const web3GetSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
+	return {success: false, surveys: [], errors: []}
+}
+
+
 
 const web3GetBasicUserData = async () => {
 	// let {org} = useContext(OrgContext);
@@ -108,53 +98,6 @@ const web3GetBasicUserData = async () => {
 		};
 	}
 };
-const getSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
-	return USE_WEB3 ? (await web3GetSurveysData()) : (await web2GetSurveysData());
-}
-const web2GetSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
-	let json = await httpReq("/api/survey/")
-	if (json) {
-		let response = JSON.parse(json);
-		if (response.success) {
-			return {success: true, surveys:response.response, errors: []};
-		} else {
-			return {success: false, surveys:[], errors: response.errors}
-		}
-	} else return {success: false, surveys: [], errors:["request failed"]};
-}
-const web3GetSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
-	return {success: false, surveys: [], errors: []}
-}
-
-const getEventsData = async ():Promise<{success:boolean, events:typeof defaultEventsData.events, errors: string[]}|any> => {
-	return USE_WEB3 ? (await getWeb3EventsData()) : (await getWeb2EventsData());
-};
-
-const getWeb2EventsData = async () => {
-	let json = await httpReq("/api/event/")
-	if (json) {
-		let response = JSON.parse(json);
-		if (response.success) {
-			return {success: true, events:response.response, errors: []};
-		} else {
-			return {success: false, events:[], errors: response.errors}
-		}
-	} else return {success: false, events: [], errors:["request failed"]};
-};
-const getEventData = async (id:string):Promise<{success:boolean, event:typeof defaultEventsData.events[number]|{}, errors: string[]}|any> => {
-	return USE_WEB3 ? (await getWeb3EventData(id)) : (await getWeb2EventData(id));
-};
-const getWeb2EventData = async (id:string) => {
-	let json = await httpReq("/api/event/?event_id="+id)
-	if (json) {
-		let response = JSON.parse(json);
-		if (response.success) {
-			return {success: true, event:response.response, errors: []};
-		} else {
-			return {success: false, event:{}, errors: response.errors}
-		}
-	} else return {success: false, event: {}, errors:["request failed"]};
-};
 const getWeb3EventData = async (id:string) => {
 
 }
@@ -178,20 +121,20 @@ const getWeb3EventsData = async () => {
 
 	// console.log(eve);
 	//EDIT TO NOT BE EXAMPLE EVENTS
-	exampleEvents.forEach((event) => {
-		newEvents.push({
-			id: event.id,
-			name: event.name,
-			organization: event.organization,
-			age_range: event.age_range,
-			start_date: event.start_date,
-			end_date: event.end_date,
-			category: event.category,
-			signed_up: event.signed_up,
-			description: event.description,
-			image: event.image,
-		});
-	});
+	// exampleEvents.forEach((event) => {
+	// 	newEvents.push({
+	// 		id: event.id,
+	// 		name: event.name,
+	// 		organization: event.organization,
+	// 		age_range: event.age_range,
+	// 		start_date: event.start_date,
+	// 		end_date: event.end_date,
+	// 		category: event.category,
+	// 		signed_up: event.signed_up,
+	// 		description: event.description,
+	// 		image: event.image,
+	// 	});
+	// });
 	if (!newEvents) {
 		alert("Events not found");
 		return undefined;
@@ -199,4 +142,4 @@ const getWeb3EventsData = async () => {
 	return newEvents;
 };
 
-export {getBasicUserData, getEventsData, getEventData, getSurveysData};
+export {getBasicUserData, getEventsData, getEventData, getSurveysData, getSurveyData};

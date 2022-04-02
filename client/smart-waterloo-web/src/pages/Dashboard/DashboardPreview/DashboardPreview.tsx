@@ -3,8 +3,8 @@ import { MobileContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
-import {exampleEvents, defaultEventsData} from "../../../data/Events";
-import {defaultSurveysData, exampleSurveys} from "../../../data/Surveys"
+import { defaultEventsData} from "../../../data/Events";
+import {defaultSurveysData} from "../../../data/Surveys"
 import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"
@@ -83,15 +83,16 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				<button onClick={() => navigate("/createsurvey")} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
 			</div>:null}
 		</>
-		); break; case "upcoming": panelList = (<>
-			{exampleEvents.map((event, i) => {
-				if (event.signed_up) return (
-					numUpcoming<5?<EventPanel index={i} key={i} upcoming={true} {...event}/>:null
-				);
-				else return null;
-			})}
-		</>
-		);
+		); break; 
+		// case "upcoming": panelList = (<>
+		// 	{exampleEvents.map((event, i) => {
+		// 		if (event.signed_up) return (
+		// 			numUpcoming<5?<EventPanel index={i} key={i} upcoming={true} {...event}/>:null
+		// 		);
+		// 		else return null;
+		// 	})}
+		// </>
+		// );
 	}
 	return (
 		<div className={"panel"}>

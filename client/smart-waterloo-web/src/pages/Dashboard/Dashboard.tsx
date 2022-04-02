@@ -69,11 +69,11 @@ const Dashboard = (props: {org: boolean}) => {
 						<h4>Dashboard 📌</h4>
 						<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${accountData.avatarString}.svg`} alt="avatarImage"/>
 						<h5>{accountData.nickname}</h5>
-					</header>	
+					</header>
 				):<Sidebar {...accountData} openSettings={() => setSettingsOpen(true)} page="dashboard"/>}
 				<div className={"besideAside"}> 
 					<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
-						{props.org?null:<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="upcoming"/>}
+						{/* {props.org?null:<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="upcoming"/>} */}
 						<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="data"/>
 						<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="events"/>
 						<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="surveys"/>
