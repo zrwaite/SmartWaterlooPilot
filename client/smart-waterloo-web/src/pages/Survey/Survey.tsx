@@ -9,7 +9,7 @@ import SurveyQuestion from "./SurveyQuestion";
 import Cookies from "universal-cookie";
 
 const defaultSurveyData:SurveyDataType = {
-	title: "Loading...",
+	name: "Loading...",
 	organization: "- - - - - - - - -",
 	length: "? mins",
 	completed: false,
@@ -62,7 +62,7 @@ const Survey = () => {
 			<Navbar root={false}/>
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"surveyPagePanel"}>
-					{mobile?<h4>{surveyData.title}</h4>:<h4 className={"surveyHeader"}>{surveyData.title}</h4>}
+					{mobile?<h4>{surveyData.name}</h4>:<h4 className={"surveyHeader"}>{surveyData.name}</h4>}
 					<p>{surveyData.organization}</p>
 					<p style={greyText}>{surveyData.length} to fill</p>
 					<div className={"surveyForm"}>

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./SurveyPanel.css";
 interface SurveyPanelProps {
-	title: string,
+	name: string,
 	organization: string,
 	length: string,
 	completed: boolean,
@@ -20,7 +20,7 @@ const SurveyPanel = (props: SurveyPanelProps) => {
 				</div>
 				{props.completed?<div style={colorDiv} className={"surveyBubble"}>Complete</div>:<div></div>}
 			</div>
-			<h6>{props.title}</h6>
+			<h6>{props.name}</h6>
 			<p>{props.organization}</p>
 			<p style={greyText}>{props.length} to fill</p>
 		</div>

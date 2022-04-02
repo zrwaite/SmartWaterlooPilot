@@ -1,4 +1,5 @@
 import {exampleEvents, defaultEventsData} from "./Events";
+import {defaultSurveysData} from "./Surveys"
 import userABI from "./utils/SmartUser.json";
 import {AbiItem} from "web3-utils";
 import Web3 from "web3";
@@ -12,21 +13,21 @@ const cookies = new Cookies();
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
-interface userDataObj {
-	nickname: string,
-	birth_day: string,
-	birth_month: string,
-	birth_year: string,
-	gender: string,
-	height: string,
-	weight: string,
-	religion: string,
-	sexuality: string,
-	race: string,
-	grade: string,
-	postal_code: string,
-	avatar_string: string,
-}
+// interface userDataObj {
+// 	nickname: string,
+// 	birth_day: string,
+// 	birth_month: string,
+// 	birth_year: string,
+// 	gender: string,
+// 	height: string,
+// 	weight: string,
+// 	religion: string,
+// 	sexuality: string,
+// 	race: string,
+// 	grade: string,
+// 	postal_code: string,
+// 	avatar_string: string,
+// }
 
 const getBasicUserData = async ():Promise<{success:true, response:typeof defaultUserData}|{success:false, response: string[]}|any> => {
 	return USE_WEB3 ? (await web3GetBasicUserData()) : (await web2GetBasicUserData());
@@ -107,6 +108,24 @@ const web3GetBasicUserData = async () => {
 		};
 	}
 };
+const getSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
+	return USE_WEB3 ? (await web3GetSurveysData()) : (await web2GetSurveysData());
+}
+const web2GetSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
+	let json = await httpReq("/api/survey/")
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) {
+			return {success: true, surveys:response.response, errors: []};
+		} else {
+			return {success: false, surveys:[], errors: response.errors}
+		}
+	} else return {success: false, surveys: [], errors:["request failed"]};
+}
+const web3GetSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
+	return {success: false, surveys: [], errors: []}
+}
+
 const getEventsData = async ():Promise<{success:boolean, events:typeof defaultEventsData.events, errors: string[]}|any> => {
 	return USE_WEB3 ? (await getWeb3EventsData()) : (await getWeb2EventsData());
 };
@@ -180,4 +199,4 @@ const getWeb3EventsData = async () => {
 	return newEvents;
 };
 
-export {getBasicUserData, getEventsData, getEventData};
+export {getBasicUserData, getEventsData, getEventData, getSurveysData};

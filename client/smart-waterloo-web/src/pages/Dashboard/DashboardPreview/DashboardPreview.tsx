@@ -4,7 +4,7 @@ import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
 import {exampleEvents, defaultEventsData} from "../../../data/Events";
-import {exampleSurveys} from "../../../data/Surveys"
+import {defaultSurveysData, exampleSurveys} from "../../../data/Surveys"
 import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"
@@ -36,6 +36,8 @@ interface DashboardPreviewProps {
 	name: keyof typeof Data;
 	events: typeof defaultEventsData.events;
 	eventsDataSet: boolean;
+	surveys: typeof defaultSurveysData[]
+	surveysDataSet: boolean;
 	org: boolean;
 }
 const DashboardPreview = (props:DashboardPreviewProps) => {
@@ -70,9 +72,13 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			);})}
 		</>
 		);break; case "surveys": panelList = (<>
-			{exampleSurveys.map((panel, i) => {return (
-				i<5?<SurveyPanel key={i} index={i} {...panel}/>:null
-			);})}
+			{
+				props.surveysDataSet?
+				props.surveys.map((survey, i) => {return (
+					i<5?<SurveyPanel key={i} index={i} {...survey}/>:null
+				);}):
+				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
+			} 
 			{props.org?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate("/createsurvey")} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
 			</div>:null}

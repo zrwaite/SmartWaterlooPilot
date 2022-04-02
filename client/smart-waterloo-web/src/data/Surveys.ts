@@ -3,17 +3,29 @@ interface Question {
     type: "short"|"long"|"mc"|"check";
 	choices?: string[]
 }
+type defaultSurveysDataType = {
+	surveysDataSet: boolean;
+	surveys: SurveyDataType[]
+}
+const defaultSurveysState: defaultSurveysDataType = {surveysDataSet: false, surveys:[]};
 interface SurveyDataType {
-	title: string;
+	name: string;
 	organization: string;
 	length: string;
 	completed: boolean;
 	questions: Question[];
 }
+const defaultSurveysData:SurveyDataType = {
+	name: "",
+	organization: "",
+	length: "",
+	completed: false,
+	questions: []
+}
 
 const exampleSurveys:SurveyDataType[] = [
 	{
-		title: "Survey 01",
+		name: "Survey 01",
 		organization: "Kinbrdige Community Association",
 		length: "2-3 mins",
 		completed: true,
@@ -32,7 +44,7 @@ const exampleSurveys:SurveyDataType[] = [
 		]
 	},
 	{
-		title:"Survey 02",
+		name:"Survey 02",
 		organization: "Fiddlesticks Community Centre",
 		length: "2-3 mins",
 		completed: false,
@@ -51,7 +63,7 @@ const exampleSurveys:SurveyDataType[] = [
 		]
 	},
 	{
-		title: "Survey 03",
+		name: "Survey 03",
 		organization: "Greenway-Chaplin Community Centre",
 		length: "2-3 mins",
 		completed: false,
@@ -73,5 +85,5 @@ const exampleSurveys:SurveyDataType[] = [
 ]
 
 
-export {exampleSurveys};
+export {exampleSurveys, defaultSurveysData, defaultSurveysState};
 export type {SurveyDataType, Question}

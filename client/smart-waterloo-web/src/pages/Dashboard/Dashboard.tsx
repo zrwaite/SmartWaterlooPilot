@@ -11,8 +11,9 @@ import {useContext, useState} from "react";
 import {MobileContext, AddressContext, IdContext} from "../../App";
 import { defaultUserData} from "../../data/Users";
 import { defaultEventsData } from "../../data/Events";
-import {getEventsData, getBasicUserData} from "../../data/getData"
+import {getEventsData, getBasicUserData, getSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
+import { defaultSurveysData, defaultSurveysState } from "../../data/Surveys";
 
 
 
@@ -35,10 +36,17 @@ const Dashboard = (props: {org: boolean}) => {
 		if (!success) alert(JSON.stringify(errors));
 		else setEventData({events: events, eventsDataSet: true })
 	}
+	const [surveysData, setSurveyData] = useState(defaultSurveysState);
+	const getSetSurveysData = async () => {
+		let {success, surveys, errors} = await getSurveysData();
+		if (!success) alert(JSON.stringify(errors));
+		else setSurveyData({surveys: surveys, surveysDataSet: true })
+	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {
 		getSetEventsData();
 		getSetUserData();
+		getSetSurveysData();
 		setDataCalled(true);
 	}
 
@@ -56,10 +64,10 @@ const Dashboard = (props: {org: boolean}) => {
 				):<Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="dashboard"/>}
 				<div className={"besideAside"}> 
 					<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
-						{props.org?null:<DashboardPreview {...userData} org={props.org} {...eventsData} name="upcoming"/>}
-						<DashboardPreview {...userData} org={props.org} {...eventsData} name="data"/>
-						<DashboardPreview {...userData} org={props.org} {...eventsData} name="events"/>
-						<DashboardPreview {...userData} org={props.org} {...eventsData} name="surveys"/>
+						{props.org?null:<DashboardPreview {...userData} org={props.org} {...eventsData} {...surveysData} name="upcoming"/>}
+						<DashboardPreview {...userData} org={props.org} {...eventsData} {...surveysData} name="data"/>
+						<DashboardPreview {...userData} org={props.org} {...eventsData} {...surveysData} name="events"/>
+						<DashboardPreview {...userData} org={props.org} {...eventsData} {...surveysData} name="surveys"/>
 					</div>
 				</div>
 			</div>

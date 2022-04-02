@@ -3,12 +3,13 @@ import Navbar from "../../components/Navbar";
 import { MobileContext, IdContext, AddressContext } from "../../App";
 import {useContext, useState} from "react";
 import "./Surveys.css";
-import {exampleSurveys} from "../../data/Surveys";
+import {defaultSurveysState, exampleSurveys} from "../../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
 import { defaultUserData} from "../../data/Users";
-import { getBasicUserData} from "../../data/getData"
+import { getBasicUserData, getSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
+import { ClipLoader } from "react-spinners";
 
 
 
@@ -25,9 +26,16 @@ const Surveys = (props: {org: boolean}) => {
 		if (!success) alert(JSON.stringify(response));	
 		else setUserData(response);
 	}
+	const [surveysData, setSurveyData] = useState(defaultSurveysState);
+	const getSetSurveysData = async () => {
+		let {success, surveys, errors} = await getSurveysData();
+		if (!success) alert(JSON.stringify(errors));
+		else setSurveyData({surveys: surveys, surveysDataSet: true })
+	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {
 		getSetUserData();
+		getSetSurveysData();
 		setDataCalled(true);
 	}
 
@@ -46,9 +54,13 @@ const Surveys = (props: {org: boolean}) => {
 							{props.org?<div className={"addSurveySection"}>
 								<button onClick={() => navigate("/createsurvey")}  className={"blackButton addSurveyButton"}>Add Survey</button>
 							</div>:null}
-							{exampleSurveys.map((survey, i) => {return (
-								<SurveyPanel index={i} key={i} {...survey}/>
-							);})}
+							{
+								surveysData.surveysDataSet?(
+									surveysData.surveys.map((survey, i) => {return (
+										<SurveyPanel index={i} key={i} {...survey}/>
+									);})
+								):[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
+							}
 						</div>
 					</div>
 				</div>
