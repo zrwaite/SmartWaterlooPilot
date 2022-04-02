@@ -22,7 +22,9 @@
 }
 .bubblesLine{
 	position:relative;
-	top: 1.9rem;
+	top: 1.5rem;
+	width: calc(100% - 4rem);
+	margin: auto;
 	border: 0.2rem solid black;
 }
 .bubbleItem{
@@ -30,5 +32,4 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	background-color: var(--bgcolor);
 }

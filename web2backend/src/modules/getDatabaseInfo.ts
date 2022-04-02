@@ -50,7 +50,6 @@ const getUser = async (userid:string) => {
 }
 const getUserHash = async (userId:string) => {
 	const {status, entries, errors} = await getEntries(false, "u_id", userId, "users", ["password_hash"]);
-	console.log(status, entries, errors);
 	return {status: status, user: entries[0], errors: errors};
 }
 const getUsers = async () => {

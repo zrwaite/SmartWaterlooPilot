@@ -3,29 +3,31 @@ import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
 import { AbiItem } from 'web3-utils';
 import eventABI from "./utils/OrganisationEvents.json";
-
+import Cookies from "universal-cookie";
+import {httpReq} from "./web2/httpRequest";
+const cookies = new Cookies();
 
 interface postUserType {
 	day:string, month:string, year:string,
 	gender:string, height:string, weight:string,
 	qrId:string, grade:string, postalCode:string,
 	race:string, religion:string, sexuality:string,
-	nickname:string, avatarString:string
+	nickname:string, avatarString:string, password:string
 }
 
 
 
 
 const postUser = async (inputData:postUserType) => {
-	USE_WEB3?(await postUserWeb2(inputData)):(await postUserWeb3(inputData));
+	return USE_WEB3?(await postUserWeb3(inputData)):(await postUserWeb2(inputData));
 }
 
 const postEvent = async (inputData:postEventType) => {
 	USE_WEB3?(await postEventWeb2(inputData)):(await postEventWeb3(inputData));
 }
 
-const postEventWeb2 = (inputData:postEventType) => {
-
+const postEventWeb2 = async (inputData:postEventType):Promise<string[]> => {
+	return [];
 }
 
 interface postEventType {
@@ -59,9 +61,38 @@ const postEventWeb3 = async (inputData:postEventType) => {
 
 }
 
-const postUserWeb2 = async (inputData:postUserType) => {
-
+const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
+	let json = await httpReq("/api/user/", "POST", {
+		user_id: inputData.qrId,
+		password: inputData.password,
+		nickname: inputData.nickname,
+		birth_day: inputData.day,
+		birth_month: inputData.month,
+		birth_year: inputData.year,
+		gender: inputData.gender,
+		height: inputData.height,
+		weight: inputData.weight,
+		religion: inputData.religion,
+		sexuality: inputData.sexuality,
+		race: inputData.race,
+		grade: inputData.grade,
+		postal_code: inputData.postalCode,
+		avatar_string: inputData.avatarString,
+	})
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) {
+			cookies.set("token", response.response.token);
+			cookies.set("userId", inputData.qrId,);
+		} else {
+			return response.errors;
+		}
+		//else if (response.errors.length > 0)
+		return [];
+	} else return ["request failed"];
 }
+
+
 declare var window: any;
 let web3 = new Web3(Web3.givenProvider);
 
