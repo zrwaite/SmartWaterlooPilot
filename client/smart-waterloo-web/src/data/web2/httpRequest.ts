@@ -1,4 +1,4 @@
-const baseURL = "https://packages-matching-overall-running.trycloudflare.com";
+const baseURL = "https://golf-cet-allowed-reserves.trycloudflare.com";
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
     url = baseURL + url;
@@ -14,7 +14,7 @@ const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
             response = await fetch(url, {
                 method: method, // *GET, POST, PUT, DELETE, etc.
                 cache: 'no-cache',
-                // mode: 'same-origin',
+                // mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },

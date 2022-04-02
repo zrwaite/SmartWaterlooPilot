@@ -2,6 +2,11 @@ import {USE_WEB3} from "./dataConstants";
 import Cookies from "universal-cookie";
 import {httpReq} from "./web2/httpRequest";
 const cookies = new Cookies();
+const defaultAccountData = {
+	accountDataSet: false,
+	nickname: "--------",
+	avatarString: ""
+}
 
 const isSignedIn = ():boolean => {
 	return USE_WEB3?web3IsSignedIn():web2IsSignedIn()
@@ -60,4 +65,4 @@ const web2Login = async (id:string, password:string):Promise<any[]> => {
 	} else return ["request failed"];
 }
 
-export {isSignedIn, onCardScan, web2Login};
+export {isSignedIn, onCardScan, web2Login, defaultAccountData};

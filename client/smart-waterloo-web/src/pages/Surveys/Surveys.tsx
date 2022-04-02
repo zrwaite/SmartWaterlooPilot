@@ -6,7 +6,7 @@ import "./Surveys.css";
 import {defaultSurveysState, exampleSurveys} from "../../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
-import { defaultUserData} from "../../data/Users";
+import { defaultAccountData} from "../../data/account";
 import { getBasicUserData, getSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
 import { ClipLoader } from "react-spinners";
@@ -20,11 +20,11 @@ const Surveys = (props: {org: boolean}) => {
 	const {id} = useContext(IdContext);
 	const navigate = useNavigate();
 
-	const [userData, setUserData] = useState(defaultUserData);
+	const [accountData, setAccountData] = useState(defaultAccountData);
 	const getSetUserData = async () => {
 		let {success, response} = await getBasicUserData();
 		if (!success) alert(JSON.stringify(response));	
-		else setUserData(response);
+		else setAccountData(response);
 	}
 	const [surveysData, setSurveyData] = useState(defaultSurveysState);
 	const getSetSurveysData = async () => {
@@ -44,7 +44,7 @@ const Surveys = (props: {org: boolean}) => {
 			<Navbar root={true}/>
 			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="surveys"/>}
+				{mobile?null:<Sidebar {...accountData} openSettings={() => setSettingsOpen(true)} page="surveys"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>Surveys 📝</h4>

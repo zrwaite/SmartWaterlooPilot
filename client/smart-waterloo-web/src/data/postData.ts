@@ -15,7 +15,35 @@ interface postUserType {
 	nickname:string, avatarString:string, password:string
 }
 
+interface postOrgType {
+	avatarString:string, 
+	nickname: string, 
+	businessNumber: string
+}
+type postOrgReturn = {success:boolean, errors: string[], orgId:string}
 
+const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
+	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));
+}
+const postOrgWeb3 = async (inputData:postOrgType):Promise<postOrgReturn> => {
+	return {success: false, errors: ["not implemented"], orgId: ""};
+}
+const postOrgWeb2 = async (inputData:postOrgType):Promise<postOrgReturn> => {
+	let json = await httpReq("/api/org/", "POST", {
+		owner_id: cookies.get("userId"),
+		business_number: inputData.businessNumber,
+		nickname: inputData.nickname,
+		avatar_string: inputData.avatarString,
+	})
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) {
+			return {success: true, errors: [], orgId: response.response.orgData}
+		} else {
+			return {success: false, errors: response.errors, orgId: ""}
+		}
+	} else return {success: false, errors: ["request failed"], orgId: ""};;
+}
 
 
 const postUser = async (inputData:postUserType) => {
@@ -150,4 +178,4 @@ let contractABI;
 
 }
 
-export {postUser, postEvent}
+export {postUser, postEvent, postOrg}

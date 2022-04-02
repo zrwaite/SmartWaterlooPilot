@@ -6,7 +6,7 @@ import { userDataPanels, orgDataPanels } from "./MyDataPanel/MyDataPanels";
 import MyDataPanel from "./MyDataPanel";
 import "./MyData.css";
 import Cookies from "universal-cookie";
-import { defaultUserData} from "../../data/Users";
+import { defaultAccountData} from "../../data/account";
 import { getBasicUserData} from "../../data/getData"
 import Settings from "../../components/Settings";
 
@@ -20,11 +20,11 @@ const MyData = (props: {org: boolean}) => {
 	cookies.set("back", "/data");
 	const dataPanelsData = props.org?orgDataPanels:userDataPanels;
 
-	const [userData, setUserData] = useState(defaultUserData);
+	const [accountData, setAccountData] = useState(defaultAccountData);
 	const getSetUserData = async () => {
 		let {success, response} = await getBasicUserData();
 		if (!success) alert(JSON.stringify(response));	
-		else setUserData(response);
+		else setAccountData(response);
 	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {
@@ -36,7 +36,7 @@ const MyData = (props: {org: boolean}) => {
 			<Navbar root={true}/>
 			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="data"/>}
+				{mobile?null:<Sidebar {...accountData} openSettings={() => setSettingsOpen(true)} page="data"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>My Data 📊</h4>

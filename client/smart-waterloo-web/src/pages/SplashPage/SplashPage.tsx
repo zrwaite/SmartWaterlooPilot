@@ -10,7 +10,7 @@ function SplashPage() {
 	const cookies = new Cookies();
 	cookies.set("back", "/");
 	const navigate = useNavigate();
-	const signedIn = isSignedIn()
+	const signedIn = isSignedIn();
     return (
 		<>
 			<Navbar root={true}/>

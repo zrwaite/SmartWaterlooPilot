@@ -7,7 +7,7 @@ import { defaultEventsData } from "../../data/Events";
 import EventPanel from "./EventPanel";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import { defaultUserData } from "../../data/Users";
+import { defaultAccountData } from "../../data/account";
 import ClipLoader from "react-spinners/ClipLoader";
 import { getEventsData, getBasicUserData } from "../../data/getData"
 import Settings from "../../components/Settings";
@@ -21,11 +21,11 @@ const Events = (props: {org: boolean}) => {
 	const cookies = new Cookies()
 	const navigate = useNavigate();
 	cookies.set("back", "/events");
-	const [userData, setUserData] = useState(defaultUserData);
+	const [accountData, setAccountData] = useState(defaultAccountData);
 	const getSetUserData = async () => {
 		let {success, response} = await getBasicUserData();
 		if (!success) alert(JSON.stringify(response));	
-		else setUserData(response);
+		else setAccountData(response);
 	}
 	const [eventData, setEventData] = useState(defaultEventsData);
 	const getSetEventsData = async () => {
@@ -44,7 +44,7 @@ const Events = (props: {org: boolean}) => {
 			<Navbar root={true} />
 			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile ? "PageContainer" : "asideContainer"}>
-				{mobile ? null : <Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="events" />}
+				{mobile ? null : <Sidebar {...accountData} openSettings={() => setSettingsOpen(true)} page="events" />}
 				<div className={"besideAside"}>
 					<div className={mobile ? "" : "fullScreenPanel"}>
 						<h4>Events 🎟️</h4>

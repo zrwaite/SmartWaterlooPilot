@@ -1,10 +1,9 @@
 import "./Sidebar.css"
-import avatarImg from "../../images/avatar.png"
 import {topElements, bottomElements} from "./SidebarOptions"; 
 import {useNavigate} from "react-router-dom";
 interface SidebarProps {
 	page: string;
-	userDataSet:boolean;
+	accountDataSet:boolean;
 	nickname: string;
 	avatarString: string;
 	openSettings: () => void;

@@ -70,7 +70,7 @@ function App() {
 						<Routes>
 							<Route path="/" element={<SplashPage />}></Route>
 							<Route path="/dashboard/user" element={<Dashboard org={false} />}></Route>
-							<Route path="/dashboard/org" element={<Dashboard org={true} />}></Route>
+							<Route path="/dashboard/org/:orgId" element={<Dashboard org={true} />}></Route>
 							<Route path="/qr" element={<ScanQR />}></Route>
 							<Route path="/about" element={<About />}></Route>
 							<Route path="/shareddata" element={<SharedData />}></Route>

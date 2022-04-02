@@ -8,7 +8,7 @@ import eventABI from "./utils/OrganisationEvents.json";
 import {USE_WEB3} from "./dataConstants";
 import Cookies from "universal-cookie";
 import {httpReq} from "./web2/httpRequest";
-import {defaultUserData} from "./Users";
+import {defaultAccountData} from "./account";
 const cookies = new Cookies();
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
@@ -29,7 +29,7 @@ declare var window: any;
 // 	avatar_string: string,
 // }
 
-const getBasicUserData = async ():Promise<{success:true, response:typeof defaultUserData}|{success:false, response: string[]}|any> => {
+const getBasicUserData = async ():Promise<{success:true, response:typeof defaultAccountData}|{success:false, response: string[]}|any> => {
 	return USE_WEB3 ? (await web3GetBasicUserData()) : (await web2GetBasicUserData());
 };
 
@@ -38,7 +38,7 @@ const web2GetBasicUserData = async () => {
 	if (json) {
 		let response = JSON.parse(json);
 		if (response.success) {
-			let basicUserData = {...defaultUserData};
+			let basicUserData = {...defaultAccountData};
 			basicUserData.avatarString = response.response.avatar_string;
 			basicUserData.nickname = response.response.nickname;
 			return {success: true, response:basicUserData};
