@@ -7,7 +7,7 @@ import {exampleSurveys} from "../../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
 import { defaultUserData} from "../../data/Users";
-import { getUserData} from "../../data/getData"
+import { getBasicUserData} from "../../data/getData"
 import Settings from "../../components/Settings";
 
 
@@ -21,9 +21,9 @@ const Surveys = (props: {org: boolean}) => {
 
 	const [userData, setUserData] = useState(defaultUserData);
 	const getSetUserData = async () => {
-		let users = await getUserData();
-		if (!users) return;
-		setUserData(users)
+		let {success, response} = await getBasicUserData();
+		if (!success) alert(JSON.stringify(response));	
+		else setUserData(response);
 	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {

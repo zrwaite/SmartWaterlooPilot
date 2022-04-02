@@ -9,7 +9,7 @@ import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { defaultUserData } from "../../data/Users";
 import ClipLoader from "react-spinners/ClipLoader";
-import { getEventsData, getUserData } from "../../data/getData"
+import { getEventsData, getBasicUserData } from "../../data/getData"
 import Settings from "../../components/Settings";
 
 
@@ -23,15 +23,15 @@ const Events = (props: {org: boolean}) => {
 	cookies.set("back", "/events");
 	const [userData, setUserData] = useState(defaultUserData);
 	const getSetUserData = async () => {
-		let users = await getUserData();
-		if (!users) return;
-		setUserData(users);
+		let {success, response} = await getBasicUserData();
+		if (!success) alert(JSON.stringify(response));	
+		else setUserData(response);
 	}
 	const [eventData, setEventData] = useState(defaultEventsData);
 	const getSetEventsData = async () => {
-		let events = await getEventsData();
-		if (!events) return;
-		setEventData({ events: events, eventsDataSet: true })
+		let {events, success, errors} = await getEventsData();
+		if (!success) alert(JSON.stringify(errors));
+		else setEventData({ events: events, eventsDataSet: true })
 	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {

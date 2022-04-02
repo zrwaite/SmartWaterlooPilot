@@ -87,7 +87,7 @@ function App() {
 							<Route path="/survey/:id" element={<Survey />}></Route>
 							<Route path="/events" element={<Events org={false} />}></Route>
 							<Route path="/events/org" element={<Events org={true} />}></Route>
-							<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
+							<Route path="/eventdetails/:id" element={<EventDetails />}></Route>
 							<Route path="/createevent" element={<CreateEvent />}></Route>
 							<Route path="/createsurvey" element={<CreateSurvey />}></Route>
 							<Route path="/createorg" element={<CreateOrg />}></Route>

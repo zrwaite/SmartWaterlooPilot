@@ -31,9 +31,9 @@ const Dashboard = (props: {org: boolean}) => {
 	}
 	const [eventsData, setEventData] = useState(defaultEventsData);
 	const getSetEventsData = async () => {
-		let events = await getEventsData();
-		if (!events) return;
-		setEventData({events: events, eventsDataSet: true })
+		let {success, events, errors} = await getEventsData();
+		if (!success) alert(JSON.stringify(errors));
+		else setEventData({events: events, eventsDataSet: true })
 	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {
@@ -41,7 +41,6 @@ const Dashboard = (props: {org: boolean}) => {
 		getSetUserData();
 		setDataCalled(true);
 	}
-
 
     return (
 		<>

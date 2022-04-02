@@ -1,4 +1,4 @@
-const baseURL = "https://pretty-version-majority-temp.trycloudflare.com";
+const baseURL = "https://smart-waterloo-region.herokuapp.com";
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
     url = baseURL + url;

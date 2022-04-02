@@ -107,10 +107,38 @@ const web3GetBasicUserData = async () => {
 		};
 	}
 };
-const getEventsData = async () => {
-	return USE_WEB3 ? await getWeb3EventsData() : await getWeb2EventsData();
+const getEventsData = async ():Promise<{success:boolean, events:typeof defaultEventsData.events, errors: string[]}|any> => {
+	return USE_WEB3 ? (await getWeb3EventsData()) : (await getWeb2EventsData());
 };
-const getWeb2EventsData = async () => {};
+
+const getWeb2EventsData = async () => {
+	let json = await httpReq("/api/event/")
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) {
+			return {success: true, events:response.response, errors: []};
+		} else {
+			return {success: false, events:[], errors: response.errors}
+		}
+	} else return {success: false, events: [], errors:["request failed"]};
+};
+const getEventData = async (id:string):Promise<{success:boolean, event:typeof defaultEventsData.events[number]|{}, errors: string[]}|any> => {
+	return USE_WEB3 ? (await getWeb3EventData(id)) : (await getWeb2EventData(id));
+};
+const getWeb2EventData = async (id:string) => {
+	let json = await httpReq("/api/event/?event_id="+id)
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) {
+			return {success: true, event:response.response, errors: []};
+		} else {
+			return {success: false, event:{}, errors: response.errors}
+		}
+	} else return {success: false, event: {}, errors:["request failed"]};
+};
+const getWeb3EventData = async (id:string) => {
+
+}
 const getWeb3EventsData = async () => {
 	await new Promise((resolve) => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
 	let newEvents: typeof defaultEventsData.events = [];
@@ -133,8 +161,8 @@ const getWeb3EventsData = async () => {
 	//EDIT TO NOT BE EXAMPLE EVENTS
 	exampleEvents.forEach((event) => {
 		newEvents.push({
+			id: event.id,
 			name: event.name,
-			title: event.title,
 			organization: event.organization,
 			age_range: event.age_range,
 			start_date: event.start_date,
@@ -152,4 +180,4 @@ const getWeb3EventsData = async () => {
 	return newEvents;
 };
 
-export {getBasicUserData, getEventsData};
+export {getBasicUserData, getEventsData, getEventData};

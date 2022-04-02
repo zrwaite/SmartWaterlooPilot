@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./EventPanel.css";
 interface EventPanelProps {
-	title: string,
+	id: string,
 	organization: string,
 	age_range: string,
 	start_date:string,
@@ -30,7 +30,7 @@ const EventPanel = (props: EventPanelProps) => {
 				</div>
 				{props.signed_up?<div  style={colorDiv} className={"eventBubble"}>Signed Up</div>:<div></div>}
 			</div>
-			<h6>{props.title}</h6>
+			<h6>{props.name}</h6>
 			<p>{props.organization}</p>
 			<p style={greyText}>For Ages {props.age_range}</p>
 			<p style={greyText}>{props.start_date} {props.end_date}</p>

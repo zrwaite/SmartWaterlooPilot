@@ -1,8 +1,8 @@
 type defaultEventsDataType = {
 	eventsDataSet: boolean;
 	events: {
+		id: string;
 		name: string;
-		title: string;
 		organization: string;
 		age_range: string;
 		start_date: string;
@@ -14,11 +14,23 @@ type defaultEventsDataType = {
 	}[]
 }
 const defaultEventsData: defaultEventsDataType = {eventsDataSet: false, events:[]};
+const defaultEvent = {
+	id: "",
+	name: "",
+	organization: "",
+	age_range: "",
+	start_date: "",
+	end_date: "",
+	category: "",
+	signed_up: false,
+	description: "",
+	image: "",
+}
 
 const exampleEvents = [
 	{
-		"name": "basketball-skills",
-		"title": "Basketball Skills",
+		"id": "basketball-skills",
+		"name": "Basketball Skills",
 		"organization": "Kinbrdige Community Association",
 		"age_range": "8-12",
 		"start_date": "March 15 2022",
@@ -29,8 +41,8 @@ const exampleEvents = [
 		"image": "/images/event_basketball_skills.jpg"
 	},
 	{
-		"name": "afterschool-program",
-		"title": "Afterschool Program",
+		"id": "afterschool-program",
+		"name": "Afterschool Program",
 		"organization": "Fiddlesticks Community Centre",
 		"age_range": "6-12",
 		"start_date": "September 6 2021",
@@ -41,8 +53,8 @@ const exampleEvents = [
 		"image": "/images/event_afterschool_program.jpg"
 	},
 	{
-		"name": "march-break-camp",
-		"title": "March Break Camp",
+		"id": "march-break-camp",
+		"name": "March Break Camp",
 		"organization": "Greenway-Chaplin Community Centre",
 		"age_range": "4-12",
 		"start_date": "March 9 2022",
@@ -54,4 +66,4 @@ const exampleEvents = [
 	}
 ]
 
-export {exampleEvents, defaultEventsData}
+export {exampleEvents, defaultEvent, defaultEventsData}
