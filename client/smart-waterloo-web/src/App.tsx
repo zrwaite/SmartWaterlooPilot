@@ -34,13 +34,13 @@ const AddressContext = React.createContext<{address: string; setAddress: Functio
 	setAddress: () => {}
 });
 const IdContext = React.createContext<{id: string; setId: Function;}>({
-	id: "069",
+	id: "",
 	setId: () => {}
 });
 function App() {
 	const [mobile, setMobile] = useState(false);
 	const [address, setAddress] = useState("");
-	const [id, setId] = useState("069");
+	const [id, setId] = useState("");
 	const mobileValue = {mobile, setMobile};
 	const addressValue = {address, setAddress};
 	const idValue = {id, setId};

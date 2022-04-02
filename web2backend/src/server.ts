@@ -1,9 +1,8 @@
 import express from "express";
-import cors from "cors";
+// import cors from "cors";
 import env from "dotenv";
 import {response} from "./models/response"; //Created pre-formatted uniform response
 import {Request, Response} from "express"; //Typescript types
-import path from "path";
 
 const app = express();
 
@@ -11,8 +10,9 @@ const app = express();
 env.config();
 
 // utilities
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
+app.use((req, res, next)=>{console.log("request"); next();});
 
 
 // routes
