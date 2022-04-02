@@ -3,9 +3,7 @@ import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
 import { AbiItem } from 'web3-utils';
 import eventABI from "./utils/OrganisationEvents.json";
-import Cookies from "universal-cookie";
-import {httpReq} from "./web2/httpRequest";
-const cookies = new Cookies();
+import {postEventWeb2, postOrgWeb2, postUserWeb2} from "./web2/web2PostData";
 
 interface postUserType {
 	day:string, month:string, year:string,
@@ -14,7 +12,12 @@ interface postUserType {
 	race:string, religion:string, sexuality:string,
 	nickname:string, avatarString:string, password:string
 }
-
+interface postEventType {
+	name:string, age:string, 
+	start_day:string, start_month:string, start_year:string,
+	end_day:string, end_month:string, end_year:string,
+	category:string, description: string
+}
 interface postOrgType {
 	avatarString:string, 
 	nickname: string, 
@@ -25,46 +28,17 @@ type postOrgReturn = {success:boolean, errors: string[], orgId:string}
 const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));
 }
-const postOrgWeb3 = async (inputData:postOrgType):Promise<postOrgReturn> => {
-	return {success: false, errors: ["not implemented"], orgId: ""};
-}
-const postOrgWeb2 = async (inputData:postOrgType):Promise<postOrgReturn> => {
-	let json = await httpReq("/api/org/", "POST", {
-		owner_id: cookies.get("userId"),
-		business_number: inputData.businessNumber,
-		nickname: inputData.nickname,
-		avatar_string: inputData.avatarString,
-	})
-	if (json) {
-		let response = JSON.parse(json);
-		if (response.success) {
-			return {success: true, errors: [], orgId: response.response.orgData}
-		} else {
-			return {success: false, errors: response.errors, orgId: ""}
-		}
-	} else return {success: false, errors: ["request failed"], orgId: ""};;
-}
-
-
 const postUser = async (inputData:postUserType) => {
 	return USE_WEB3?(await postUserWeb3(inputData)):(await postUserWeb2(inputData));
 }
-
 const postEvent = async (inputData:postEventType) => {
-	USE_WEB3?(await postEventWeb2(inputData)):(await postEventWeb3(inputData));
+	return USE_WEB3?(await postEventWeb2(inputData)):(await postEventWeb3(inputData));
 }
 
-const postEventWeb2 = async (inputData:postEventType):Promise<string[]> => {
-	return [];
-}
 
-interface postEventType {
-	name:string, age:string, 
-	start_day:string, start_month:string, start_year:string,
-	end_day:string, end_month:string, end_year:string,
-	category:string, description: string
+const postOrgWeb3 = async (inputData:postOrgType):Promise<postOrgReturn> => {
+	return {success: false, errors: ["not implemented"], orgId: ""};
 }
-
 const postEventWeb3 = async (inputData:postEventType) => {
 	let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 	web3.eth.defaultAccount = accounts[0];
@@ -88,38 +62,6 @@ const postEventWeb3 = async (inputData:postEventType) => {
 		.catch((err: any) => console.log(err));
 
 }
-
-const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
-	let json = await httpReq("/api/user/", "POST", {
-		user_id: inputData.qrId,
-		password: inputData.password,
-		nickname: inputData.nickname,
-		birth_day: inputData.day,
-		birth_month: inputData.month,
-		birth_year: inputData.year,
-		gender: inputData.gender,
-		height: inputData.height,
-		weight: inputData.weight,
-		religion: inputData.religion,
-		sexuality: inputData.sexuality,
-		race: inputData.race,
-		grade: inputData.grade,
-		postal_code: inputData.postalCode,
-		avatar_string: inputData.avatarString,
-	})
-	if (json) {
-		let response = JSON.parse(json);
-		if (response.success) {
-			cookies.set("token", response.response.token);
-			cookies.set("userId", inputData.qrId,);
-		} else {
-			return response.errors;
-		}
-		//else if (response.errors.length > 0)
-		return [];
-	} else return ["request failed"];
-}
-
 
 declare var window: any;
 let web3 = new Web3(Web3.givenProvider);
@@ -179,3 +121,5 @@ let contractABI;
 }
 
 export {postUser, postEvent, postOrg}
+
+export type {postUserType, postEventType, postOrgType, postOrgReturn}

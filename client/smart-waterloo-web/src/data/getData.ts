@@ -7,7 +7,8 @@ import orgABI from "./utils/SmartOrganisation.json";
 import eventABI from "./utils/OrganisationEvents.json";
 import {USE_WEB3} from "./dataConstants";
 import {defaultAccountData} from "./account";
-import {web2GetBasicUserData, web2GetSurveysData, getWeb2EventsData, getWeb2EventData, getWeb2SurveyData} from "./web2/web2GetData";
+import {web2GetUserOrgs, web2GetBasicUserData, web2GetSurveysData, getWeb2EventsData, getWeb2EventData, getWeb2SurveyData} from "./web2/web2GetData";
+import {defaultOrg} from "./orgs";
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
@@ -27,6 +28,19 @@ const getEventData = async (id:string):Promise<{success:boolean, event:typeof de
 const getSurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurveysData|{}, errors: string[]}|any> => {
 	return USE_WEB3 ? (await getWeb3SurveyData(id)) : (await getWeb2SurveyData(id));
 };
+const getUserOrgs = async (id:string):Promise<{success:boolean, orgs: (typeof defaultOrg)[], errors:string[]}> => {
+	return USE_WEB3 ? (await web3GetUserOrgs(id)) : (await web2GetUserOrgs(id));
+}
+
+const web3GetUserOrgs = async (id:string):Promise<{success:boolean, orgs: typeof defaultOrg[], errors:string[]}> => {
+	return {success: false, orgs: [], errors: ["not implemented"]};
+}
+
+
+
+
+
+
 
 const getWeb3SurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurveysData|{}, errors: string[]}> => {
 	return {success: false, survey: {}, errors: []}
@@ -99,7 +113,6 @@ const web3GetBasicUserData = async () => {
 	}
 };
 const getWeb3EventData = async (id:string) => {
-
 }
 const getWeb3EventsData = async () => {
 	await new Promise((resolve) => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
@@ -142,4 +155,4 @@ const getWeb3EventsData = async () => {
 	return newEvents;
 };
 
-export {getBasicUserData, getEventsData, getEventData, getSurveysData, getSurveyData};
+export {getUserOrgs, getBasicUserData, getEventsData, getEventData, getSurveysData, getSurveyData};

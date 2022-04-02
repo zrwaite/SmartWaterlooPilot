@@ -52,7 +52,7 @@ const Survey = () => {
 	if (!dataCalled) {
 		getSetSurveyData();
 		setDataCalled(true);
-	}
+	} 
 
 	if (answers.length !== surveyData.survey.questions.length) {
 		const newAnswers = [];

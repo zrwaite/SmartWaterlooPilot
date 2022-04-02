@@ -1,12 +1,14 @@
 import "./Sidebar.css"
 import {topElements, bottomElements} from "./SidebarOptions"; 
 import {useNavigate} from "react-router-dom";
+import {defaultOrg} from "../../data/orgs";
 interface SidebarProps {
 	page: string;
 	accountDataSet:boolean;
 	nickname: string;
 	avatarString: string;
 	openSettings: () => void;
+	orgs: (typeof defaultOrg)[];
 }
 const Sidebar = (props:SidebarProps) => {
 	const navigate = useNavigate()

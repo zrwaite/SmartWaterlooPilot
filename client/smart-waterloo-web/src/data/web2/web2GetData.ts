@@ -3,6 +3,7 @@ import Cookies from "universal-cookie";
 import {defaultAccountData} from "../account";
 import {defaultEventsData} from "../Events";
 import {defaultSurveysData} from "../Surveys"
+import {defaultOrg} from "../orgs";
 const cookies = new Cookies();
 
 const web2GetBasicUserData = async () => {
@@ -64,6 +65,16 @@ const getWeb2EventData = async (id:string):Promise<{success:boolean, event:typeo
 			return {success: false, event:{}, errors: response.errors}
 		}
 	} else return {success: false, event: {}, errors:["request failed"]};
-};
+}; 
 
-export {web2GetBasicUserData, web2GetSurveysData, getWeb2EventsData, getWeb2EventData, getWeb2SurveyData};
+const web2GetUserOrgs = async (id:string):Promise<{success:boolean, orgs: typeof defaultOrg[], errors:string[]}> => {
+	let json = await httpReq("/api/org/?owner_id="+id)
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) return {success: true, orgs:response.response, errors: []};
+		else return {success: false, orgs:[], errors: response.errors}
+	} else return {success: false, orgs: [], errors:["request failed"]};
+}
+
+
+export {web2GetBasicUserData, web2GetUserOrgs, web2GetSurveysData, getWeb2EventsData, getWeb2EventData, getWeb2SurveyData};

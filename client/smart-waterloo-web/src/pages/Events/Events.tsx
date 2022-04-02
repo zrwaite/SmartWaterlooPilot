@@ -9,34 +9,42 @@ import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { defaultAccountData } from "../../data/account";
 import ClipLoader from "react-spinners/ClipLoader";
-import { getEventsData, getBasicUserData } from "../../data/getData"
+import { getEventsData, getBasicUserData, getUserOrgs } from "../../data/getData"
 import Settings from "../../components/Settings";
+import { defaultOrgsState } from "../../data/orgs";
 
 
 const Events = (props: {org: boolean}) => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
+	const [orgsData, setOrgsData] = useState(defaultOrgsState);
+	const [accountData, setAccountData] = useState(defaultAccountData);
+	const [eventData, setEventData] = useState(defaultEventsData);
+	const [dataCalled, setDataCalled] = useState(false);
 	const { mobile } = useContext(MobileContext);
 	let { address } = useContext(AddressContext);
 	let { id } = useContext(IdContext);
 	const cookies = new Cookies()
 	const navigate = useNavigate();
 	cookies.set("back", "/events");
-	const [accountData, setAccountData] = useState(defaultAccountData);
 	const getSetUserData = async () => {
 		let {success, response} = await getBasicUserData();
 		if (!success) alert(JSON.stringify(response));	
 		else setAccountData(response);
 	}
-	const [eventData, setEventData] = useState(defaultEventsData);
 	const getSetEventsData = async () => {
 		let {events, success, errors} = await getEventsData();
 		if (!success) alert(JSON.stringify(errors));
 		else setEventData({ events: events, eventsDataSet: true })
 	}
-	const [dataCalled, setDataCalled] = useState(false);
+	const getSetOrgsData = async () => {
+		let {success, orgs, errors} = await getUserOrgs(cookies.get("userId"));
+		if (!success) alert(JSON.stringify(errors));
+		else setOrgsData({orgs: orgs, set: true })
+	}
 	if (!dataCalled) {
 		getSetEventsData();
 		getSetUserData();
+		getSetOrgsData();
 		setDataCalled(true);
 	}
 	return (
@@ -44,7 +52,7 @@ const Events = (props: {org: boolean}) => {
 			<Navbar root={true} />
 			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile ? "PageContainer" : "asideContainer"}>
-				{mobile ? null : <Sidebar {...accountData} openSettings={() => setSettingsOpen(true)} page="events" />}
+				{mobile ? null : <Sidebar orgs={orgsData.orgs} {...accountData} openSettings={() => setSettingsOpen(true)} page={"events"} />}
 				<div className={"besideAside"}>
 					<div className={mobile ? "" : "fullScreenPanel"}>
 						<h4>Events 🎟️</h4>

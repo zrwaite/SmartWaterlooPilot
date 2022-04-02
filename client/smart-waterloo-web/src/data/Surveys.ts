@@ -25,6 +25,20 @@ const defaultSurveysData:SurveyDataType = {
 	questions: []
 }
 
+export { defaultSurveysData, defaultSurveysState};
+export type {SurveyDataType, Question}
+
+
+
+
+
+
+
+
+
+
+
+
 // const exampleSurveys:SurveyDataType[] = [
 // 	{
 // 		name: "Survey 01",
@@ -85,7 +99,3 @@ const defaultSurveysData:SurveyDataType = {
 // 		]
 // 	}
 // ]
-
-
-export { defaultSurveysData, defaultSurveysState};
-export type {SurveyDataType, Question}

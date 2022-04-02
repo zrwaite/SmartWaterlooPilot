@@ -10,24 +10,25 @@ import Sidebar from "../../components/Sidebar";
 import {useContext, useState} from "react";
 import {MobileContext, AddressContext, IdContext} from "../../App";
 import { defaultEventsData } from "../../data/Events";
-import {getEventsData, getBasicUserData, getSurveysData} from "../../data/getData"
+import {getUserOrgs, getEventsData, getBasicUserData, getSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
 import { defaultSurveysData, defaultSurveysState } from "../../data/Surveys";
 import { useNavigate, useParams } from "react-router-dom";
 import { isSignedIn, defaultAccountData } from "../../data/account";
 import NotFound from "../NotFound";
+import { defaultOrgsState } from "../../data/orgs";
 
 
 
 const Dashboard = (props: {org: boolean}) => {
 	const [eventsData, setEventData] = useState(defaultEventsData);
 	const [surveysData, setSurveyData] = useState(defaultSurveysState);
+	const [orgsData, setOrgsData] = useState(defaultOrgsState);
 	const [dataCalled, setDataCalled] = useState(false);
 	const [accountData, setAccountData] = useState(defaultAccountData);
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	let {mobile} = useContext(MobileContext);
 	let {address} = useContext(AddressContext);
-	let {id} = useContext(IdContext);
 	const { orgId } = useParams();
 	const navigate = useNavigate();
 	if (!isSignedIn()) {
@@ -53,12 +54,19 @@ const Dashboard = (props: {org: boolean}) => {
 		if (!success) alert(JSON.stringify(errors));
 		else setSurveyData({surveys: surveys, surveysDataSet: true })
 	}
+	const getSetOrgsData = async () => {
+		let {success, orgs, errors} = await getUserOrgs(cookies.get("userId"));
+		if (!success) alert(JSON.stringify(errors));
+		else setOrgsData({orgs: orgs, set: true })
+	}
 	if (!dataCalled) {
 		getSetEventsData();
 		getSetUserData();
 		getSetSurveysData();
+		getSetOrgsData();
 		setDataCalled(true);
 	}
+	console.log(orgsData.orgs);
     return (
 		<>
 			<Navbar root={true}/>
@@ -70,7 +78,7 @@ const Dashboard = (props: {org: boolean}) => {
 						<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${accountData.avatarString}.svg`} alt="avatarImage"/>
 						<h5>{accountData.nickname}</h5>
 					</header>
-				):<Sidebar {...accountData} openSettings={() => setSettingsOpen(true)} page="dashboard"/>}
+				):<Sidebar {...accountData} orgs={orgsData.orgs} openSettings={() => setSettingsOpen(true)} page="dashboard"/>}
 				<div className={"besideAside"}> 
 					<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
 						{/* {props.org?null:<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="upcoming"/>} */}

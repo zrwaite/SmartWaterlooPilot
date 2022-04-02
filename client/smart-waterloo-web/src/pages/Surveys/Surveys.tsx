@@ -7,35 +7,45 @@ import {defaultSurveysState} from "../../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
 import { defaultAccountData} from "../../data/account";
-import { getBasicUserData, getSurveysData} from "../../data/getData"
+import { getBasicUserData, getSurveysData, getUserOrgs} from "../../data/getData"
 import Settings from "../../components/Settings";
 import { ClipLoader } from "react-spinners";
+import { defaultOrgsState } from "../../data/orgs";
+import Cookies from "universal-cookie";
 
 
 
 const Surveys = (props: {org: boolean}) => {
 	const [settingsOpen, setSettingsOpen] = useState(false);
+	const [orgsData, setOrgsData] = useState(defaultOrgsState);
+	const [accountData, setAccountData] = useState(defaultAccountData);
+	const [surveysData, setSurveyData] = useState(defaultSurveysState);
+	const [dataCalled, setDataCalled] = useState(false);
 	const {mobile} = useContext(MobileContext);
 	const {address} = useContext(AddressContext);
 	const {id} = useContext(IdContext);
 	const navigate = useNavigate();
+	const cookies = new Cookies()
 
-	const [accountData, setAccountData] = useState(defaultAccountData);
 	const getSetUserData = async () => {
 		let {success, response} = await getBasicUserData();
 		if (!success) alert(JSON.stringify(response));	
 		else setAccountData(response);
 	}
-	const [surveysData, setSurveyData] = useState(defaultSurveysState);
 	const getSetSurveysData = async () => {
 		let {success, surveys, errors} = await getSurveysData();
 		if (!success) alert(JSON.stringify(errors));
 		else setSurveyData({surveys: surveys, surveysDataSet: true })
 	}
-	const [dataCalled, setDataCalled] = useState(false);
+	const getSetOrgsData = async () => {
+		let {success, orgs, errors} = await getUserOrgs(cookies.get("userId"));
+		if (!success) alert(JSON.stringify(errors));
+		else setOrgsData({orgs: orgs, set: true })
+	}
 	if (!dataCalled) {
 		getSetUserData();
 		getSetSurveysData();
+		getSetOrgsData();
 		setDataCalled(true);
 	}
 
@@ -44,7 +54,7 @@ const Surveys = (props: {org: boolean}) => {
 			<Navbar root={true}/>
 			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar {...accountData} openSettings={() => setSettingsOpen(true)} page="surveys"/>}
+				{mobile?null:<Sidebar orgs={orgsData.orgs} {...accountData} openSettings={() => setSettingsOpen(true)} page="surveys"/>}
 				<div className={"besideAside"}>
 					<div className={mobile? "":"fullScreenPanel"}>
 						<h4>Surveys 📝</h4>
