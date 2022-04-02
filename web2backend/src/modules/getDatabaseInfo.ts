@@ -24,7 +24,7 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string, tableNam
 				[idValue]
 			)
 		}
-		if (entries.rows) {
+		if (entries.rows && entries.rows.length) {
 			entries = entries.rows;
 			status = 200;
 		} else status = 404;
@@ -47,6 +47,11 @@ const getUser = async (userid:string) => {
 		return {status: status, user: result, errors: errors}
 	}
 	else return {status: 404, user: result, errors: []};
+}
+const getUserHash = async (userId:string) => {
+	const {status, entries, errors} = await getEntries(false, "u_id", userId, "users", ["password_hash"]);
+	console.log(status, entries, errors);
+	return {status: status, user: entries[0], errors: errors};
 }
 const getUsers = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "user_data", userData.dataKeys);
@@ -135,4 +140,4 @@ const parseSurvey = async (questionIds: number[]) => {
 	}
 	return {questions: questions, success: success};
 }
-export {getSurvey, getSurveys, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
