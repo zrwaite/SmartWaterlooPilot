@@ -14,14 +14,19 @@ export default class userController {
 		let {success, params, errors} = await getQueryParams(req, ["user_id"]);
 		if (success) {
 			const userId = params[0];
-			const getUserResponse = await getUser(userId);
-			result.status = getUserResponse.status;
-			if (result.status == 200) {
-				result.success = true;
-				result.response = getUserResponse.user;
+			if (!isNaN(userId)) {
+				const getUserResponse = await getUser(userId);
+				result.status = getUserResponse.status;
+				if (result.status == 200) {
+					result.success = true;
+					result.response = getUserResponse.user;
+				}
+				else if (result.status == 404) result.errors.push("user not found");
+				else result.errors.push(...errors);
+			} else { 
+				result.errors.push("invalid user_id");
+				result.status = 404;
 			}
-			else if (result.status == 404) result.errors.push("user not found");
-			else result.errors.push(...errors);
 		} else {
 			//Development only
 			const getUserResponse = await getUsers();

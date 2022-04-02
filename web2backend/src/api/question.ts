@@ -12,14 +12,19 @@ export default class questionController {
 		let {success:questionSuccess, params:questionParams, errors:questionErrors} = await getQueryParams(req, ["question_id"]);
 		if (questionSuccess) {
 			const questionId = questionParams[0];
-			const getQuestionResponse = await getQuestion(questionId);
-			result.status = getQuestionResponse.status;
-			if (result.status == 200) {
-				result.success = true;
-				result.response = getQuestionResponse.question;
+			if (!isNaN(questionId)){
+				const getQuestionResponse = await getQuestion(questionId);
+				result.status = getQuestionResponse.status;
+				if (result.status == 200) {
+					result.success = true;
+					result.response = getQuestionResponse.question;
+				}
+				else if (result.status == 404) result.errors.push("question not found");
+				else result.errors.push(...questionErrors);
+			} else {
+				result.errors.push("invalid question_id");
+				result.status = 404;
 			}
-			else if (result.status == 404) result.errors.push("question not found");
-			else result.errors.push(...questionErrors);
 		} else {
 			const allQuestions = await getQuestions();
 			result.response = allQuestions.questions;

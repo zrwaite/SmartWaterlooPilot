@@ -13,26 +13,37 @@ export default class surveyController {
 		let {success:surveySuccess, params:surveyParams, errors:surveyErrors} = await getQueryParams(req, ["survey_id"]);
 		if (surveySuccess) {
 			const surveyId = surveyParams[0];
-			const getSurveyResponse = await getSurvey(surveyId);
-			result.status = getSurveyResponse.status;
-			if (result.status == 200) {
-				result.success = true;
-				result.response = getSurveyResponse.survey;
+			if (!isNaN(surveyId)) {
+				const getSurveyResponse = await getSurvey(surveyId);
+				result.status = getSurveyResponse.status;
+				if (result.status == 200) {
+					result.success = true;
+					result.response = getSurveyResponse.survey;
+				}
+				else if (result.status == 404) result.errors.push("survey not found");
+				else result.errors.push(...surveyErrors);
+			} else {
+				result.errors.push("invalid survey_id");
+				result.status = 404;
 			}
-			else if (result.status == 404) result.errors.push("survey not found");
-			else result.errors.push(...surveyErrors);
 		} else {
 			let {success:orgSurveySuccess, params:orgSurveyParams, errors:orgSurveyErrors} = await getQueryParams(req, ["org_id"]);
 			if (orgSurveySuccess) {
 				const orgId = orgSurveyParams[0];
-				const getSurveyResponse = await getOrgSurveys(orgId);
-				result.status = getSurveyResponse.status;
-				if (result.status == 200) {
-					result.success = true;
-					result.response = getSurveyResponse.surveys;
+				if (!isNaN(orgId)) {
+					const getSurveyResponse = await getOrgSurveys(orgId);
+					result.status = getSurveyResponse.status;
+					if (result.status == 200) {
+						result.success = true;
+						result.response = getSurveyResponse.surveys;
+					}
+					else if (result.status == 404) result.errors.push("surveys not found");
+					else result.errors.push(...orgSurveyErrors);
+				} else {
+					result.errors.push("invalid survey_id");
+					result.status = 404;
 				}
-				else if (result.status == 404) result.errors.push("surveys not found");
-				else result.errors.push(...orgSurveyErrors);
+				
 			} else {
 				const allSurveys = await getSurveys();
 				result.response = allSurveys.surveys;

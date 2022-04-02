@@ -13,26 +13,36 @@ export default class orgController {
 		let {success, params, errors} = await getQueryParams(req, ["id"]);
 		if (success) {
 			const orgId = params[0];
-			const getOrgResponse = await getOrg(orgId);
-			result.status = getOrgResponse.status;
-			if (result.status == 200) {
-				result.success = true;
-				result.response = getOrgResponse.org;
+			if (!isNaN(orgId)){
+				const getOrgResponse = await getOrg(orgId);
+				result.status = getOrgResponse.status;
+				if (result.status == 200) {
+					result.success = true;
+					result.response = getOrgResponse.org;
+				}
+				else if (result.status == 404) result.errors.push("org not found");
+				else result.errors.push(...errors);
+			} else {
+				result.errors.push("invalid id");
+				result.status = 404;
 			}
-			else if (result.status == 404) result.errors.push("org not found");
-			else result.errors.push(...errors);
 		} else {
 			let {success, params, errors} = await getQueryParams(req, ["owner_id"]);
 			if (success) {
 				const ownerId = params[0];
-				const getOrgResponse = await getOwnerOrgs(ownerId);
-				result.status = getOrgResponse.status;
-				if (result.status == 200) {
-					result.success = true;
-					result.response = getOrgResponse.orgs;
+				if (!isNaN(ownerId)){
+					const getOrgResponse = await getOwnerOrgs(ownerId);
+					result.status = getOrgResponse.status;
+					if (result.status == 200) {
+						result.success = true;
+						result.response = getOrgResponse.orgs;
+					}
+					else if (result.status == 404) result.errors.push("orgs not found");
+					else result.errors.push(...errors);
+				} else {
+					result.errors.push("invalid owner_id");
+					result.status = 404;
 				}
-				else if (result.status == 404) result.errors.push("orgs not found");
-				else result.errors.push(...errors);
 			} else {
 				//Development only
 				const getOrgResponse = await getOrgs();

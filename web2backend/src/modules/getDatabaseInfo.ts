@@ -5,7 +5,7 @@ import {orgData} from "../database/orgData";
 import {eventData} from "../database/eventData";
 import {getSurveyKeys, questionKeys} from "../database/surveyData";
 
-const getEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, columns: readonly string[]) => {
+const getEntries = async (multi: boolean, idKey:string, idValue:string|number, tableName: string, columns: readonly string[]) => {
 	let entries:any;
 	let status;
 	let queryParams = columns.join(", ");
@@ -56,7 +56,7 @@ const getUsers = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "user_data", userData.dataKeys);
 	return {status: status, users: decryptRows(entries, userData.dataKeys), errors: errors}
 }
-const getEvent = async (eventId:string) => {
+const getEvent = async (eventId:number) => {
 	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.allEventKeys);
 	return {status: status, event: entries.length?entries[0]:{}, errors: errors};
 }
