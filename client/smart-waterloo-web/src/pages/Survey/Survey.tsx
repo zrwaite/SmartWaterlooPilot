@@ -9,6 +9,7 @@ import SurveyQuestion from "./SurveyQuestion";
 // import Cookies from "universal-cookie";
 import { getSurveyData } from "../../data/getData";
 import NotFound from "../NotFound";
+import { submitSurvey } from "../../data/postData";
 
 const defaultSurveyData:SurveyDataType = {
 	id: "",
@@ -63,6 +64,11 @@ const Survey = () => {
 		return <SurveyQuestion key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
 	})
 	const complete = answers.every(answer => answer!=="");
+	const trySubmitSurvey = async () => {
+		let {success, errors} = await submitSurvey(surveyData.survey.questions, answers);
+		// if (success) navigate(`/eventdetails/${eventId}`);
+		// else alert(JSON.stringify(errors));
+	}
 	if (notFound || !id) return <NotFound />
 	return (
 		<>
@@ -78,7 +84,7 @@ const Survey = () => {
 					{progress?(
 						<div className={"surveyForm"}>
 							{questions}
-							<button className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Done</button>
+							<button onClick={complete?trySubmitSurvey:()=>{}} className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>
 						</div>
 						):<SurveyLanding setParentProgress={childSetProgress}/>}
 				</div>

@@ -1,7 +1,8 @@
 interface Question {
 	prompt: string;
     answer_type: "short"|"long"|"mc"|"check";
-	choices?: string[]
+	choices?: string[];
+	id: string;
 }
 interface postSurveyType {
 	name: string;
@@ -30,10 +31,10 @@ const defaultSurveysState: {
 } = {set: false, surveys:[]};
 
 type postSurveyReturn = {success:boolean, errors: string[], surveyId:string}
-
+type submitSurveyReturn = {success: boolean, errors: string[]}
 
 export { defaultSurvey, defaultSurveysState};
-export type {Question, SurveyDataType, postSurveyType, postSurveyReturn};
+export type {Question, SurveyDataType, postSurveyType, postSurveyReturn, submitSurveyReturn};
 
 
 
