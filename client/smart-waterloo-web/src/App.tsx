@@ -22,6 +22,7 @@ import Surveys from "./pages/Surveys";
 import { useEffect } from 'react';
 import "./styles/styles.css";
 import {mobileWidth} from "./constants";
+import AccountParent from "./pages/AccountParent";
 import React, {useState} from "react";
 
 
@@ -80,15 +81,15 @@ function App() {
 							<Route path="/login" element={<Login />}></Route>
 							<Route path="/createorg" element={<CreateOrg />}></Route>
 
-							<Route path="/dashboard/user" element={<Dashboard org={false} />}></Route>
-							<Route path="/data/user" element={<MyData org={false} />}></Route>
-							<Route path="/surveys/user" element={<Surveys org={false} />}></Route>
-							<Route path="/events/user" element={<Events org={false} />}></Route>
+							<Route path="/dashboard/user" element={<AccountParent page={"dashboard"} org={false} />}></Route>
+							<Route path="/data/user" element={<AccountParent page={"data"} org={false} />}></Route>
+							<Route path="/surveys/user" element={<AccountParent page={"surveys"} org={false} />}></Route>
+							<Route path="/events/user" element={<AccountParent page={"events"} org={false} />}></Route>
 
-							<Route path="/dashboard/org/:orgId" element={<Dashboard org={true} />}></Route>
-							<Route path="/data/org/:orgId" element={<MyData org={true} />}></Route>
-							<Route path="/surveys/org/:orgId" element={<Surveys org={true} />}></Route>
-							<Route path="/events/org/:orgId" element={<Events org={true} />}></Route>
+							<Route path="/dashboard/org/:orgId" element={<AccountParent page={"dashboard"} org={true} />}></Route>
+							<Route path="/data/org/:orgId" element={<AccountParent page={"data"} org={true} />}></Route>
+							<Route path="/surveys/org/:orgId" element={<AccountParent page={"surveys"} org={true} />}></Route>
+							<Route path="/events/org/:orgId" element={<AccountParent page={"events"} org={true} />}></Route>
 
 							<Route path="/survey/:id" element={<Survey />}></Route>
 							<Route path="/eventdetails/:id" element={<EventDetails />}></Route>
