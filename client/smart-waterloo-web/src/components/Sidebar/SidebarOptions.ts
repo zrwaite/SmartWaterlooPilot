@@ -4,27 +4,27 @@ const topElements = [
 	{
 		pageName: "dashboard",
 		title: "Dashboard",
-		link: "/dashboard/user",
+		link: "/dashboard/",
 		icon: icons.rightArrow
 	},
 	{
 		pageName: "data",
 		title: "My Data",
-		link: "/data",
+		link: "/data/",
 		icon: icons.rightArrow
 
 	},
 	{
 		pageName: "events",
 		title: "Events",
-		link: "/events",
+		link: "/events/",
 		icon: icons.rightArrow
 
 	},
 	{
 		pageName: "surveys",
 		title: "Surveys",
-		link: "/surveys",
+		link: "/surveys/",
 		icon: icons.rightArrow
 
 	}

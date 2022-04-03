@@ -1,17 +1,18 @@
 import Sidebar from "../../components/Sidebar";
 import Navbar from "../../components/Navbar";
-import { MobileContext, IdContext, AddressContext } from "../../App";
+import { MobileContext } from "../../App";
 import { useContext, useState } from "react";
 import "./Events.css";
 import { defaultEventsData } from "../../data/Events";
 import EventPanel from "./EventPanel";
 import Cookies from "universal-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { defaultAccountData } from "../../data/account";
 import ClipLoader from "react-spinners/ClipLoader";
 import { getEventsData, getBasicUserData, getUserOrgs } from "../../data/getData"
 import Settings from "../../components/Settings";
 import { defaultOrgsState } from "../../data/orgs";
+import OrgsModal from "../../components/OrgsModal";
 
 
 const Events = (props: {org: boolean}) => {
@@ -20,12 +21,14 @@ const Events = (props: {org: boolean}) => {
 	const [accountData, setAccountData] = useState(defaultAccountData);
 	const [eventData, setEventData] = useState(defaultEventsData);
 	const [dataCalled, setDataCalled] = useState(false);
+	const [orgsModalOpen, setOrgsModalOpen] = useState(false);
+
 	const { mobile } = useContext(MobileContext);
-	let { address } = useContext(AddressContext);
-	let { id } = useContext(IdContext);
+	// let { address } = useContext(AddressContext);
+	let {orgId} = useParams();
 	const cookies = new Cookies()
 	const navigate = useNavigate();
-	cookies.set("back", "/events");
+	cookies.set("back", `/events/${props.org?`org/${orgId}`:"user"}`);
 	const getSetUserData = async () => {
 		let {success, response} = await getBasicUserData();
 		if (!success) alert(JSON.stringify(response));	
@@ -49,10 +52,11 @@ const Events = (props: {org: boolean}) => {
 	}
 	return (
 		<>
-			<Navbar root={true} />
+			<Navbar root={true} org={props.org} orgId={orgId} orgs={orgsData.orgs} signedIn={true}/>
 			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
+			<OrgsModal orgs={orgsData.orgs} open={orgsModalOpen} closeModal={() => setOrgsModalOpen(false)}/>
 			<div className={mobile ? "PageContainer" : "asideContainer"}>
-				{mobile ? null : <Sidebar orgs={orgsData.orgs} {...accountData} openSettings={() => setSettingsOpen(true)} page={"events"} />}
+				{mobile ? null : <Sidebar org={props.org} orgId={orgId} orgs={orgsData.orgs} {...accountData} openOrgsModal={() => setOrgsModalOpen(true)} openSettings={() => setSettingsOpen(true)} page={"events"} />}
 				<div className={"besideAside"}>
 					<div className={mobile ? "" : "fullScreenPanel"}>
 						<h4>Events 🎟️</h4>

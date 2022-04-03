@@ -1,18 +1,18 @@
 import ticketImg from "../../../images/ticket.png";
 import dataImg from "../../../images/data.png";
 import clipboardImg from "../../../images/clipboard.png";
-import calenderImg from "../../../images/calender.png";
+// import calenderImg from "../../../images/calender.png";
 
 const DashboardPreviewData =  {
-	upcoming: {
-		title: "Upcoming Events",
-		short: "Events you are going to",
-		long: "See the events that are coming up for you.",
-		icon: calenderImg,
-		iconName: "calendar",
-		color: "pink",
-		link: "/events"
-	},
+	// upcoming: {
+	// 	title: "Upcoming Events",
+	// 	short: "Events you are going to",
+	// 	long: "See the events that are coming up for you.",
+	// 	icon: calenderImg,
+	// 	iconName: "calendar",
+	// 	color: "pink",
+	// 	link: "/events/"
+	// },
 	events: {
 		title: "Events",
 		short: "See events list",
@@ -20,7 +20,7 @@ const DashboardPreviewData =  {
 		icon: ticketImg,
 		iconName: "ticket",
 		color: "blue",
-		link: "/events"
+		link: "/events/"
 	},
 	data: {
 		title: "My Data", 
@@ -29,7 +29,7 @@ const DashboardPreviewData =  {
 		icon: dataImg,
 		iconName: "data",
 		color: "purple",
-		link: "/data"
+		link: "/data/"
 	},
 	surveys: {
 		title: "Surveys",
@@ -38,7 +38,7 @@ const DashboardPreviewData =  {
 		icon: clipboardImg,
 		iconName: "clipboard",
 		color: "green",
-		link: "/surveys"
+		link: "/surveys/"
 	}
 }
 export default DashboardPreviewData;

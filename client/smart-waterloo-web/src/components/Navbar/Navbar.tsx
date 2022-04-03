@@ -10,11 +10,27 @@ import {Link} from "react-router-dom";
 import {MobileContext} from "../../App";
 import MobileNavItem from "./MobileNavItem";
 import SWRLogo from "../../images/SWRLogo.png"
+import { defaultOrg } from "../../data/orgs";
 
 
 type NavbarProps = {
-	root:boolean;
-};
+	root:false;
+	org?: boolean;
+	orgs?: typeof defaultOrg[];
+	orgId?: string|undefined;
+}|{
+	root: true;
+	org?: boolean;
+	orgs?: typeof defaultOrg[];
+	orgId?: string|undefined;
+	signedIn: false;
+}|{
+	root: true;
+	org: boolean;
+	orgs: typeof defaultOrg[];
+	orgId: string|undefined;
+	signedIn: true;
+}
 type NavbarState = { open: boolean };
 class Navbar extends React.Component<NavbarProps, NavbarState> {
 	customStyles = {
@@ -26,6 +42,7 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 			transform: "translateX(-50%)",
 		},
 	};
+	allNavItems = primaryNavItems
 	constructor(props:NavbarProps) {
 		super(props);
 		this.state = {
@@ -34,6 +51,10 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 		Modal.setAppElement("#root");
 		this.openModal = this.openModal.bind(this);
 		this.closeModal = this.closeModal.bind(this);
+		if (this.props.root && this.props.signedIn) {
+			this.allNavItems = [...primaryNavItems, ...primarySidebarItems];
+		}
+
 	}
 
 	openModal() {
@@ -69,10 +90,16 @@ class Navbar extends React.Component<NavbarProps, NavbarState> {
 								<div className="navModalHeader">
 									<img className="h4 imageButton" onClick={this.closeModal} src={icons.close} alt="close"></img>
 								</div>
+								{primaryNavItems.map((item,i) => 
+									<MobileNavItem {...item} i={i} key={i}/>
+								)}
 								{
-									[...primaryNavItems, ...primarySidebarItems].map((item,i) => 
-										<MobileNavItem {...item} i={i} key={i}/>
+									(this.props.root && this.props.signedIn) && 
+									primarySidebarItems.map((item,i) => 
+										<MobileNavItem {...item} link={`${item.link}${this.props.org?`org/${this.props.orgId}`:"user"}`} i={1} key={i}/>
 									)
+									// 	this.allNavItems = [...primaryNavItems, ...primarySidebarItems];
+									// 
 								}
 							</div>
 						</Modal>

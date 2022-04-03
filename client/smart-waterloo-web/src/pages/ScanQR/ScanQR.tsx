@@ -35,7 +35,7 @@ const ScanQR = () => {
 
 	return (
 		<>
-			<Navbar root={true}/>
+			<Navbar signedIn={false} root={true}/>
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanel"}>
 					<div className={"QRInfoPanel"}>

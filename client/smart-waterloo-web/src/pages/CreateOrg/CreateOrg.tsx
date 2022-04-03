@@ -111,7 +111,7 @@ const SignUp = (props: SignUpProps) => {
 	}
 	return (
 		<>
-			<Navbar root={true} />
+			<Navbar root={false} />
 			<div className={"PageContainer"}>
 				{<div className={mobile ? "" : "DesktopPanel"}>
 					{state.step ? <StepBubbles steps={["Verification", "Avatar"]} step={state.step} /> : null}

@@ -12,12 +12,12 @@ import {MobileContext, AddressContext, IdContext} from "../../App";
 import { defaultEventsData } from "../../data/Events";
 import {getUserOrgs, getEventsData, getBasicUserData, getSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
-import { defaultSurveysData, defaultSurveysState } from "../../data/Surveys";
+import { defaultSurveysState } from "../../data/Surveys";
 import { useNavigate, useParams } from "react-router-dom";
 import { isSignedIn, defaultAccountData } from "../../data/account";
-import NotFound from "../NotFound";
+// import NotFound from "../NotFound";
 import { defaultOrgsState } from "../../data/orgs";
-
+import OrgsModal from "../../components/OrgsModal";
 
 
 const Dashboard = (props: {org: boolean}) => {
@@ -27,6 +27,7 @@ const Dashboard = (props: {org: boolean}) => {
 	const [dataCalled, setDataCalled] = useState(false);
 	const [accountData, setAccountData] = useState(defaultAccountData);
 	const [settingsOpen, setSettingsOpen] = useState(false);
+	const [orgsModalOpen, setOrgsModalOpen] = useState(false);
 	let {mobile} = useContext(MobileContext);
 	let {address} = useContext(AddressContext);
 	const { orgId } = useParams();
@@ -38,7 +39,7 @@ const Dashboard = (props: {org: boolean}) => {
 	}
 	
 	const cookies = new Cookies();
-	cookies.set("back", "/dashboard/user");
+	cookies.set("back", `/dashboard/${props.org?`org/${orgId}`:"user"}`);
 	const getSetUserData = async () => {
 		let {success, response} = await getBasicUserData();
 		if (!success) alert(JSON.stringify(response));	
@@ -68,8 +69,9 @@ const Dashboard = (props: {org: boolean}) => {
 	}
     return (
 		<>
-			<Navbar root={true}/>
+			<Navbar root={true} org={props.org} orgId={orgId} orgs={orgsData.orgs} signedIn={true}/>
 			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
+			<OrgsModal orgs={orgsData.orgs} open={orgsModalOpen} closeModal={() => setOrgsModalOpen(false)}/>
 			<div className={mobile?"dashboardContainerMobile":"asideContainer"}>
 				{mobile?(
 					<header className="center">
@@ -77,13 +79,13 @@ const Dashboard = (props: {org: boolean}) => {
 						<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${accountData.avatarString}.svg`} alt="avatarImage"/>
 						<h5>{accountData.nickname}</h5>
 					</header>
-				):<Sidebar {...accountData} orgs={orgsData.orgs} openSettings={() => setSettingsOpen(true)} page="dashboard"/>}
+				):<Sidebar org={props.org} orgId={orgId} orgs={orgsData.orgs} {...accountData}  openOrgsModal={() => setOrgsModalOpen(true)} openSettings={() => setSettingsOpen(true)} page="dashboard"/>}
 				<div className={"besideAside"}> 
 					<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
 						{/* {props.org?null:<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="upcoming"/>} */}
-						<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="data"/>
-						<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="events"/>
-						<DashboardPreview {...accountData} org={props.org} {...eventsData} {...surveysData} name="surveys"/>
+						<DashboardPreview orgId={orgId} {...accountData} org={props.org} {...eventsData} {...surveysData} name="data"/>
+						<DashboardPreview orgId={orgId} {...accountData} org={props.org} {...eventsData} {...surveysData} name="events"/>
+						<DashboardPreview orgId={orgId} {...accountData} org={props.org} {...eventsData} {...surveysData} name="surveys"/>
 					</div>
 				</div>
 			</div>

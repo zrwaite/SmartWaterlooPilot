@@ -13,7 +13,7 @@ function SplashPage() {
 	const signedIn = isSignedIn();
     return (
 		<>
-			<Navbar root={true}/>
+			<Navbar signedIn={false} root={true}/>
 			<section className="splashPage">
 				<img src={SWRLogo} alt={"SWR Logo"} className="splashPageLogo"/>
 				<h3>Data Playground Pilot</h3>

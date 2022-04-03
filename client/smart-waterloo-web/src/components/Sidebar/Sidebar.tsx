@@ -3,11 +3,14 @@ import {topElements, bottomElements, orgElements} from "./SidebarOptions";
 import {useNavigate} from "react-router-dom";
 import {defaultOrg} from "../../data/orgs";
 interface SidebarProps {
+	org: boolean;
+	orgId: string|undefined;
 	page: string;
 	accountDataSet:boolean;
 	nickname: string;
 	avatarString: string;
 	openSettings: () => void;
+	openOrgsModal: ()=>void;
 	orgs: (typeof defaultOrg)[];
 }
 const Sidebar = (props:SidebarProps) => {
@@ -26,7 +29,7 @@ const Sidebar = (props:SidebarProps) => {
 			<div className="topSidebar">
 				{topElements.map((elem,i) => {
 					return (
-						<div key={i} onClick={()=>navigate(elem.link)} className={"topSidebarElement"} style={elem.pageName===props.page?selectedElement:{}}>
+						<div key={i} onClick={()=>navigate(`${elem.link}${props.org?`org/${props.orgId}`:"user"}`)} className={"topSidebarElement"} style={elem.pageName===props.page?selectedElement:{}}>
 							<h6>{elem.title}</h6>
 							<img src={elem.icon} alt={elem.title}/>
 						</div>
@@ -38,6 +41,8 @@ const Sidebar = (props:SidebarProps) => {
 					let action = ()=>{};
 					if (elem.modalName==="settings"){
 						action = props.openSettings;
+					} else if (elem.modalName==="orgs"){
+						action = props.openOrgsModal;
 					}
 					return (
 						<div key={i} className={"bottomSidebarElement"} onClick={action} >

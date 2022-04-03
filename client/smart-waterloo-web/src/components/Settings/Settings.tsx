@@ -23,7 +23,7 @@ const Settings = (props: settingsProps) => {
 	};
 	const logoutRedirect = () => {
 		logout();
-		navigate("/");
+		window.location.href="/";
 	}
 	return (
 		<Modal isOpen={props.open} onRequestClose={props.closeModal} style={customStyles} contentLabel="Example Modal">

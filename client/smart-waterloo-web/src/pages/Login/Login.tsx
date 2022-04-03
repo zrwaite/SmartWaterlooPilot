@@ -119,7 +119,7 @@ const Login = () => {
 
 	return (
 		<>
-			<Navbar root={true} />
+			<Navbar root={true} signedIn={false}/>
 			<div className={"PageContainer"}>
 				<img src={AvatarPNG} alt="avatar" className={"avatarImage"} />
 				<div className={mobile ? "loginFormMobile" : "loginFormDesktop DesktopPanel"}>

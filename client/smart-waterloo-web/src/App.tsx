@@ -69,29 +69,36 @@ function App() {
 					<Router>
 						<Routes>
 							<Route path="/" element={<SplashPage />}></Route>
-							<Route path="/dashboard/user" element={<Dashboard org={false} />}></Route>
-							<Route path="/dashboard/org/:orgId" element={<Dashboard org={true} />}></Route>
 							<Route path="/qr" element={<ScanQR />}></Route>
+
 							<Route path="/about" element={<About />}></Route>
 							<Route path="/shareddata" element={<SharedData />}></Route>
 							<Route path="/privacy" element={<Privacy />}></Route>
-							<Route path="/login" element={<Login />}></Route>
-							{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
 							<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
+							
 							<Route path="/signup" element={<SignUp />}></Route>
-							<Route path="/test" element={<TestPage />}></Route>
-							<Route path="/data" element={<MyData org={false} />}></Route>
-							<Route path="/data/org" element={<MyData org={true} />}></Route>
-							<Route path="/surveys" element={<Surveys org={false} />}></Route>
-							<Route path="/surveys/org" element={<Surveys org={true} />}></Route>
+							<Route path="/login" element={<Login />}></Route>
+							<Route path="/createorg" element={<CreateOrg />}></Route>
+
+							<Route path="/dashboard/user" element={<Dashboard org={false} />}></Route>
+							<Route path="/data/user" element={<MyData org={false} />}></Route>
+							<Route path="/surveys/user" element={<Surveys org={false} />}></Route>
+							<Route path="/events/user" element={<Events org={false} />}></Route>
+
+							<Route path="/dashboard/org/:orgId" element={<Dashboard org={true} />}></Route>
+							<Route path="/data/org/:orgId" element={<MyData org={true} />}></Route>
+							<Route path="/surveys/org/:orgId" element={<Surveys org={true} />}></Route>
+							<Route path="/events/org/:orgId" element={<Events org={true} />}></Route>
+
 							<Route path="/survey/:id" element={<Survey />}></Route>
-							<Route path="/events" element={<Events org={false} />}></Route>
-							<Route path="/events/org" element={<Events org={true} />}></Route>
 							<Route path="/eventdetails/:id" element={<EventDetails />}></Route>
+
 							<Route path="/createevent" element={<CreateEvent />}></Route>
 							<Route path="/createsurvey" element={<CreateSurvey />}></Route>
-							<Route path="/createorg" element={<CreateOrg />}></Route>
+
+							<Route path="/test" element={<TestPage />}></Route>
 							<Route path="*" element={<NotFound />}></Route>
+							{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
 						</Routes>
 					</Router>
 				</MobileContext.Provider>

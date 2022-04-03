@@ -153,7 +153,7 @@ const SignUp = (props: SignUpProps) => {
 	}
 	return (
 		<>
-			<Navbar root={true} />
+			<Navbar signedIn={false} root={true}/>
 			<div className={"PageContainer"}>
 				<MobileContext.Consumer>
 					{({ mobile }) => (<div className={mobile ? "" : "DesktopPanel"}>

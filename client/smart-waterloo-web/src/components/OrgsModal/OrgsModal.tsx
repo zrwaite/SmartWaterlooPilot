@@ -1,19 +1,18 @@
 
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
+import { defaultOrg } from "../../data/orgs";
 import {icons} from "../../images/icons";
-import "./Orgs.css";
+import "./OrgsModal.css";
 
 interface orgsProps {
 	open: boolean;
 	closeModal: () => void;
+	orgs: typeof defaultOrg[];
 }
 
 const OrgsModal = (props: orgsProps) => {
 	const navigate = useNavigate();
-	const logout = () => {
-		console.log("IMPLEMENT LOGOUT");
-	}
 	const customStyles = {
 		content: {
 			width: '80%',
@@ -31,8 +30,16 @@ const OrgsModal = (props: orgsProps) => {
 					<img className="h4 imageButton" onClick={props.closeModal} src={icons.close} alt="close"></img>
 				</div>
 				<div>
-					<button className={"blackButton orgsButton"} onClick={logout}>Logout</button>
-					<button className={"blackButton orgsButton"} onClick={() => navigate("/createorg")}>Create Organization</button>
+					{
+						props.orgs.map((org, i) => {
+							return (
+								<div key={i} className={"orgPreview"}>
+									<h3>"{org.nickname}" | ID:{org.id}</h3>
+									<button className={"blackButton orgsModalButton"} onClick={() => {navigate(`/dashboard/org/${org.id}`); props.closeModal();}}>Open "{org.nickname}"</button>
+								</div>
+							);
+						})
+					}
 				</div>
 			</div>
 		</Modal>

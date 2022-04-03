@@ -39,12 +39,13 @@ interface DashboardPreviewProps {
 	surveys: typeof defaultSurveysData[]
 	surveysDataSet: boolean;
 	org: boolean;
+	orgId: string|undefined;
 }
 const DashboardPreview = (props:DashboardPreviewProps) => {
 	const navigate = useNavigate();
 	const {mobile} = useContext(MobileContext);
 	const color = Data[props.name].color;
-	const linkTo = Data[props.name].link;
+	const linkTo = `${Data[props.name].link}${props.org?`org/${props.orgId}`:"user"}`;
 	const dataPanelsData = props.org?orgDataPanels:userDataPanels;
 	if (mobile) return (
 		<button onClick={()=> navigate(linkTo)}className={`dashboardLinkSection ${color}`}>
