@@ -26,15 +26,9 @@ interface AccountParentProps {
 const AccountParent = (props:AccountParentProps) => {
 	const [prevOrgId, setPrevOrgId] = useState<string|undefined>("");
 	const [orgsData, setOrgsData] = useState(defaultOrgsState);
-
-	/* USER STATES */
 	const [eventsData, setEventData] = useState(defaultEventsState);
 	const [surveysData, setSurveyData] = useState(defaultSurveysState);
 	const [accountData, setAccountData] = useState(defaultAccountState);
-
-	/* ORG STATES */
-	const [orgEventsData, setOrgEventData] = useState(defaultEventsState);
-	const [orgSurveysData, setOrgSurveyData] = useState(defaultSurveysState);
 	const [verified, setVerified] = useState(false);
 
 	const [dataCalled, setDataCalled] = useState(false);
@@ -85,6 +79,8 @@ const AccountParent = (props:AccountParentProps) => {
 				account: {avatarString: org.avatar_string, nickname: org.nickname}, 
 				set: true
 			});
+			setVerified(Boolean(org.verified));
+			console.log(Boolean(org.verified));
 		}
 		else console.error("invalid userData response");
 	}
@@ -120,7 +116,8 @@ const AccountParent = (props:AccountParentProps) => {
 		accountData: accountData,
 		surveysData: surveysData,
 		orgsData: orgsData,
-		org: props.org
+		org: props.org,
+		verified: verified
 	}
 
 	return (
@@ -156,7 +153,8 @@ interface AccountChildProps {
 	surveysData: typeof defaultSurveysState,
 	orgsData: typeof defaultOrgsState,
 	accountData: typeof defaultAccountState
-	org: boolean
+	org: boolean,
+	verified: boolean
 }
 export type {AccountChildProps}
 

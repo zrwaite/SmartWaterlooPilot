@@ -12,7 +12,6 @@ const Surveys = (props: AccountChildProps) => {
 	const navigate = useNavigate();
 	const cookies = new Cookies();
 	cookies.set("back", "/surveys");
-
 	return (
 		<div className={"besideAside"}>
 			<div className={mobile? "":"fullScreenPanel"}>
@@ -20,7 +19,7 @@ const Surveys = (props: AccountChildProps) => {
 				<hr/>
 				<p>A brief description about what the surveys listed here are and any other info that is required.</p>
 				<div className={"surveyGrid"}>
-					{props.org?<div className={"addSurveySection"}>
+					{props.org && props.verified ?<div className={"addSurveySection"}>
 						<button onClick={() => navigate("/createsurvey")}  className={"blackButton addSurveyButton"}>Add Survey</button>
 					</div>:null}
 					{

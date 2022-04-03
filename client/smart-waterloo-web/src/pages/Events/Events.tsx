@@ -20,7 +20,7 @@ const Events = (props: AccountChildProps) => {
 				<hr />
 				<p>A brief description about what the events listed here are and any other info that is required.</p>
 				<div className={"eventGrid"}>
-					{props.org ? <div className={"addEventSection"}>
+					{props.org && props.verified ? <div className={"addEventSection"}>
 						<button onClick={() => navigate("/createevent")} className={"blackButton addEventButton"}>Add Event</button>
 					</div> : null}
 					{

@@ -23,6 +23,7 @@ const Dashboard = (props: AccountChildProps) => {
 		surveysSet:props.surveysData.set,
 		org:props.org ,
 		orgId:orgId,
+		verified: props.verified
 	}
     return (
 		<>

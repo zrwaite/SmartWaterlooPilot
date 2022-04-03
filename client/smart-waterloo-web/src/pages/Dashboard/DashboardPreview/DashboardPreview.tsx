@@ -40,6 +40,7 @@ interface DashboardPreviewProps {
 	surveysSet: boolean;
 	org: boolean;
 	orgId: string|undefined;
+	verified: boolean;
 }
 const DashboardPreview = (props:DashboardPreviewProps) => {
 	const navigate = useNavigate();
@@ -62,7 +63,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
-			{props.org?<div className={"dashboardPreviewAddSection"}>
+			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate("/createevent")} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
 			</div>:null}
 		</>
@@ -79,7 +80,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			} 
-			{props.org?<div className={"dashboardPreviewAddSection"}>
+			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate("/createsurvey")} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
 			</div>:null}
 		</>
