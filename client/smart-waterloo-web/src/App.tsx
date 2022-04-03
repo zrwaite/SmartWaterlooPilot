@@ -90,8 +90,8 @@ function App() {
 							<Route path="/survey/:id" element={<Survey />}></Route>
 							<Route path="/eventdetails/:id" element={<EventDetails />}></Route>
 
-							<Route path="/createevent" element={<CreateEvent />}></Route>
-							<Route path="/createsurvey" element={<CreateSurvey />}></Route>
+							<Route path="/createevent/:orgId" element={<CreateEvent />}></Route>
+							<Route path="/createsurvey/:orgId" element={<CreateSurvey />}></Route>
 
 							<Route path="/test" element={<TestPage />}></Route>
 							<Route path="*" element={<NotFound />}></Route>

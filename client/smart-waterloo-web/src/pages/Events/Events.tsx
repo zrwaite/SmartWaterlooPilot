@@ -21,7 +21,7 @@ const Events = (props: AccountChildProps) => {
 				<p>A brief description about what the events listed here are and any other info that is required.</p>
 				<div className={"eventGrid"}>
 					{props.org && props.verified ? <div className={"addEventSection"}>
-						<button onClick={() => navigate("/createevent")} className={"blackButton addEventButton"}>Add Event</button>
+						<button onClick={() => navigate(`/createevent/${props.orgId}`)} className={"blackButton addEventButton"}>Add Event</button>
 					</div> : null}
 					{
 						props.eventsData.set ?
@@ -29,7 +29,7 @@ const Events = (props: AccountChildProps) => {
 								return (
 									<EventPanel index={i} key={i} {...event} />
 								);
-							}) :
+							}):
 							[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
 					}
 				</div>

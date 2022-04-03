@@ -64,7 +64,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
 			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
-				<button onClick={() => navigate("/createevent")} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
+				<button onClick={() => navigate(`/createevent/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
 			</div>:null}
 		</>
 		); break; case "data": panelList = (<>
@@ -81,7 +81,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			} 
 			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
-				<button onClick={() => navigate("/createsurvey")} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
+				<button onClick={() => navigate(`/createsurvey/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
 			</div>:null}
 		</>
 		); break; 

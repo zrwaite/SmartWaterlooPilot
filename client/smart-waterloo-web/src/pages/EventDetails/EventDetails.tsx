@@ -21,6 +21,7 @@ import {
 import Modal from "react-modal";
 import { defaultEvent } from '../../data/types/events';
 import { getEventData } from '../../data/getData';
+import Cookies from 'universal-cookie';
 
 Modal.setAppElement("#root");
 
@@ -56,6 +57,7 @@ const EventsDetails = () => {
 	function closeModal() {
 		setIsOpen(false);
 	}
+	const cookies = new Cookies();
 
 	return (
 		<>
@@ -74,7 +76,7 @@ const EventsDetails = () => {
 			</Modal>	
 			<div className='navbarEventDetails'>
 				<div className='leftNavEventDetail'>
-					<div onClick={() => navigate("../Events")} className="eventBackButton">
+					<div onClick={() => navigate(cookies.get("back"))} className="eventBackButton">
 						<img src={icons.leftArrow} alt="Events" className="h5"/>
 						<p className="eventBackButton">Events</p>
 					</div>					

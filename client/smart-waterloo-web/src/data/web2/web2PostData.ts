@@ -1,11 +1,28 @@
 import Cookies from "universal-cookie";
 import {httpReq} from "./httpRequest";
-import {postUserType, postEventType, postOrgType, postOrgReturn} from "../postData";
+import {postUserType, postEventType, postOrgType, postOrgReturn, postEventReturn} from "../postData";
 
 const cookies = new Cookies();
 
-const postEventWeb2 = async (inputData:postEventType):Promise<string[]> => {
-	return [];
+const postEventWeb2 = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
+	let json = await httpReq("/api/event/", "POST", {
+		org: id,
+		name: inputData.name,
+		age_group: inputData.age,
+		start_date: inputData.start_day+"/"+inputData.start_month+"/"+inputData.start_year,
+		end_date: inputData.end_day+"/"+inputData.end_month+"/"+inputData.end_year,
+		category: inputData.category,
+		description: inputData.description,
+		image: "1",
+	})
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) {
+			return {success: true, errors: [], eventId: response.response.eventData}
+		} else {
+			return {success: false, errors: response.errors, eventId: ""}
+		}
+	} else return {success: false, errors: ["request failed"], eventId: ""};;
 }
 const postOrgWeb2 = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	let json = await httpReq("/api/org/", "POST", {
@@ -17,11 +34,11 @@ const postOrgWeb2 = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	if (json) {
 		let response = JSON.parse(json);
 		if (response.success) {
-			return {success: true, errors: [], orgId: response.response.orgData}
+			return {success: true, errors: [], orgId: response.response.orgData};
 		} else {
-			return {success: false, errors: response.errors, orgId: ""}
+			return {success: false, errors: response.errors, orgId: ""};
 		}
-	} else return {success: false, errors: ["request failed"], orgId: ""};;
+	} else return {success: false, errors: ["request failed"], orgId: ""};
 }
 const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 	let json = await httpReq("/api/user/", "POST", {

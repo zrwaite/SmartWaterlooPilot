@@ -4,5 +4,6 @@ const eventCategories = [
 	{ value: "After School", label: "After School"},
 	{ value: "Camp", label: "Camp"},
 	{ value: "Club", label: "Club"},
+	{ value: "Other", label: "Other"},
 ]
 export {eventCategories}

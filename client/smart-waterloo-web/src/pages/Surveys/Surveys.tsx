@@ -20,7 +20,7 @@ const Surveys = (props: AccountChildProps) => {
 				<p>A brief description about what the surveys listed here are and any other info that is required.</p>
 				<div className={"surveyGrid"}>
 					{props.org && props.verified ?<div className={"addSurveySection"}>
-						<button onClick={() => navigate("/createsurvey")}  className={"blackButton addSurveyButton"}>Add Survey</button>
+						<button onClick={() => navigate(`/createsurvey/${props.orgId}`)}  className={"blackButton addSurveyButton"}>Add Survey</button>
 					</div>:null}
 					{
 						props.surveysData.set?(

@@ -117,6 +117,7 @@ const AccountParent = (props:AccountParentProps) => {
 		surveysData: surveysData,
 		orgsData: orgsData,
 		org: props.org,
+		orgId: orgId,
 		verified: verified
 	}
 
@@ -154,6 +155,7 @@ interface AccountChildProps {
 	orgsData: typeof defaultOrgsState,
 	accountData: typeof defaultAccountState
 	org: boolean,
+	orgId: string|undefined,
 	verified: boolean
 }
 export type {AccountChildProps}

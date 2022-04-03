@@ -24,6 +24,7 @@ interface postOrgType {
 	businessNumber: string
 }
 type postOrgReturn = {success:boolean, errors: string[], orgId:string}
+type postEventReturn = {success:boolean, errors: string[], eventId:string}
 
 const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));
@@ -31,15 +32,15 @@ const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 const postUser = async (inputData:postUserType) => {
 	return USE_WEB3?(await postUserWeb3(inputData)):(await postUserWeb2(inputData));
 }
-const postEvent = async (inputData:postEventType) => {
-	return USE_WEB3?(await postEventWeb2(inputData)):(await postEventWeb3(inputData));
+const postEvent = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
+	return USE_WEB3?(await postEventWeb3(id, inputData)):(await postEventWeb2(id, inputData));
 }
 
 
 const postOrgWeb3 = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return {success: false, errors: ["not implemented"], orgId: ""};
 }
-const postEventWeb3 = async (inputData:postEventType) => {
+const postEventWeb3 = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
 	let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 	web3.eth.defaultAccount = accounts[0];
 	const contractABI = eventABI;
@@ -60,7 +61,7 @@ const postEventWeb3 = async (inputData:postEventType) => {
 			console.log(`${inputData.name} created successfully`);
 		})
 		.catch((err: any) => console.log(err));
-
+	return {success: false, errors: ["function not yet implemented"], eventId: "-1"}
 }
 
 declare var window: any;
@@ -122,4 +123,4 @@ let contractABI;
 
 export {postUser, postEvent, postOrg}
 
-export type {postUserType, postEventType, postOrgType, postOrgReturn}
+export type {postUserType, postEventType, postOrgType, postOrgReturn, postEventReturn}
