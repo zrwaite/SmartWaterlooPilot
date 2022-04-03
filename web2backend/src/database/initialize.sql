@@ -34,7 +34,8 @@ create table if not exists "orgs"(
 	nickname varchar(100),
 	business_number varchar(100),
 	verified bit default '0',
-	avatar_string varchar(100)
+	avatar_string varchar(100),
+	members int[]
 );
 
 create table if not exists "surveys"(

@@ -13,7 +13,8 @@ const postOrg = {
 }
 const getOrgParams = {
 	nickname: "",
-	id: ""
+	id: "",
+	members: []
 }
 const defaultOrg = {
 	...postOrg,
