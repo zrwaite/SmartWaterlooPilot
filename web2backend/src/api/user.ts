@@ -38,22 +38,17 @@ export default class userController {
 	}
 	static async postUser(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success, params, errors} = await getBodyParams(req, ['user_id', 'password']);
-		if (success) {
-			const userId = params[0];
-			const password = params[1];
-			let {success:userDataSuccess, params:userDataParams, errors:userDataErrors} = await getBodyParams(req, [...userData.dataKeys]);
-			if (userDataSuccess){
-				let postResult = await postUser(userId, password, userDataParams);
-				if (postResult.success) {
-					result.status = 201;
-					result.success = true;
-					result.response = {
-						userData: postResult.newUser,
-					}
-				} else postResult.errors.forEach((error) => {result.errors.push(error)});
-			} else userDataErrors.forEach((param)=>{result.errors.push("missing "+param)});
-		} else errors.forEach((param)=>{result.errors.push("missing "+param)});
+		let {success:baseSuccess, params:baseParams, errors:baseErrors} = await getBodyParams(req, ["password", ...userData.baseKeys]);
+		if (baseSuccess) {
+			const password = baseParams.shift();
+			let {params:nullableParams} = await getBodyParams(req, [...userData.nullableKeys]);
+			let postResult = await postUser(password, [...baseParams, ...nullableParams]);
+			if (postResult.success) {
+				result.status = 201;
+				result.success = true;
+				result.response = {userData: postResult.newUser}
+			} else postResult.errors.forEach((error) => {result.errors.push(error)});
+		} else baseErrors.forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
 	}
 	static async putUser(req: Request, res: Response) {

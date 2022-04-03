@@ -1,9 +1,8 @@
 import pool from "../database/db";
-import {decryptRows} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import {eventData} from "../database/eventData";
-import {answerKeys, getQuestionKeys, getSurveyKeys, questionKeys} from "../database/surveyData";
+import {answerKeys, getQuestionKeys, getSurveyKeys} from "../database/surveyData";
 
 const getEntries = async (multi: boolean, idKey:string, idValue:string|number, tableName: string, columns: readonly string[]) => {
 	let entries:any;
@@ -36,25 +35,16 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string|number, t
 	return {status: status, entries: entries, errors: errors};
 }
 const getUser = async (userid:string) => {
-	let result;
-	const data = await pool.query(
-		`SELECT user_data_id FROM users WHERE u_id = $1 LIMIT 1`,
-		[userid]
-	)
-	if (data.rows.length > 0) {
-		const {status, entries, errors} = await getEntries(false, "id", data.rows[0].user_data_id, "user_data", userData.dataKeys);
-		result = decryptRows(entries, userData.dataKeys)[0];
-		return {status: status, user: result, errors: errors}
-	}
-	else return {status: 404, user: result, errors: []};
+	const {status, entries, errors} = await getEntries(false, "user_id", userid, "users", userData.getKeys);;
+	return {status: status, user: entries.length?entries[0]:{}, errors: errors}
 }
 const getUserHash = async (userId:string) => {
-	const {status, entries, errors} = await getEntries(false, "u_id", userId, "users", ["password_hash"]);
+	const {status, entries, errors} = await getEntries(false, "user_id", userId, "users", ["password_hash"]);
 	return {status: status, user: entries.length?entries[0]:{}, errors: errors};
 }
 const getUsers = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "user_data", userData.dataKeys);
-	return {status: status, users: decryptRows(entries, userData.dataKeys), errors: errors}
+	const {status, entries, errors} = await getEntries(true, "", "", "users", userData.getKeys);
+	return {status: status, users: entries, errors: errors}
 }
 const getEvent = async (eventId:number) => {
 	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.allEventKeys);

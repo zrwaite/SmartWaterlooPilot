@@ -5,7 +5,7 @@ const updateAnswersArray = async (userId:number, answerId:number) => {
 	let status = 400;
 	try {
 		result = await pool.query(
-			"UPDATE users SET answers = array_append(answers, $1) WHERE u_id = $2",
+			"UPDATE users SET answers = array_append(answers, $1) WHERE user_id = $2",
 			[answerId, userId]
 		);
 		if (result && result.rowCount) status = 201;
