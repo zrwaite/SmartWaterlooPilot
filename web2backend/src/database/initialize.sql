@@ -21,7 +21,10 @@ CREATE TABLE IF NOT EXISTS "users"(
 	grade varchar(100),
 	postal_code varchar(100),
 	avatar_string varchar(100),
-	answers integer[]
+	answers integer[],
+	events integer[],
+	surveys integer[],
+	orgs text[]
 );
 
 create table if not exists "orgs"(
@@ -31,7 +34,8 @@ create table if not exists "orgs"(
 	nickname varchar(100),
 	business_number varchar(100),
 	verified bit default '0',
-	avatar_string varchar(100)
+	avatar_string varchar(100),
+	members int[]
 );
 
 create table if not exists "surveys"(
@@ -73,5 +77,6 @@ create table if not exists "events"(
 	description TEXT,
 	linked_survey_id int null,
 	FOREIGN KEY (linked_survey_id) REFERENCES surveys(id),
-	image varchar(80)
+	image varchar(80),
+	attendees int default 0
 );

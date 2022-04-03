@@ -22,7 +22,10 @@ const postUser = {
 }
 const getUser = {
 	...postUser,
-	answers: []
+	answers: [],
+	events: [],
+	surveys: [],
+	orgs: []
 }
 const userData = {
 	baseKeys: Object.keys(baseUser) as (keyof typeof baseUser)[],

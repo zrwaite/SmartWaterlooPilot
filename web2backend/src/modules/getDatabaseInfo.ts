@@ -34,6 +34,30 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string|number, t
 	}
 	return {status: status, entries: entries, errors: errors};
 }
+
+
+const getUserOrgs = async (userId: number) => {
+	let status = 400;
+	let orgs:any;
+	let errors = [];
+	try {
+		orgs = await pool.query(
+			`SELECT ${orgData.orgKeys} FROM "orgs" WHERE "owner_id" = $1 OR $1=ANY(members)`,
+			[userId]
+		)
+		if (orgs.rows && orgs.rows.length) {
+			orgs = orgs.rows;
+			status = 200;
+		} else status = 404;
+	} catch (e) {
+		console.log(e)
+		errors.push("database error");
+		status = 400;
+	}
+	// const {status, entries, errors} = await getEntries(true, "owner_id", ownerId, "orgs", orgData.orgKeys);
+	return {status: status, orgs: orgs, errors: errors};
+}
+
 const getUser = async (userid:string) => {
 	const {status, entries, errors} = await getEntries(false, "user_id", userid, "users", userData.getKeys);;
 	return {status: status, user: entries.length?entries[0]:{}, errors: errors}
@@ -67,7 +91,7 @@ const getOwnerOrgs = async (ownerId: string) => {
 	return {status: status, orgs: entries, errors: errors};
 }
 const getOrgs = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "events", orgData.orgKeys);
+	const {status, entries, errors} = await getEntries(true, "", "", "orgs", orgData.orgKeys);
 	return {status: status, orgs: entries, errors: errors};
 }
 const verifyOrgVerification = async (id:string):Promise<boolean> => {
@@ -137,4 +161,4 @@ const getQuestionAnswers = async (questionId: string) => {
 	const {status, entries, errors} = await getEntries(true, "question_id", questionId, "answers", answerKeys);
 	return {status: status, answers: entries, errors: errors};
 }
-export {getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getUserOrgs, getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
