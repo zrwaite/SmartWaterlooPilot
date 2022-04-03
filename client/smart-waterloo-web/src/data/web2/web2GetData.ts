@@ -72,6 +72,7 @@ const web2GetUserOrgs = async (id:string):Promise<{success:boolean, orgs: typeof
 	if (json) {
 		let response = JSON.parse(json);
 		if (response.success) return {success: true, orgs:response.response, errors: []};
+		else if (response.status === 404) return {success: true, orgs:[], errors: []};
 		else return {success: false, orgs:[], errors: response.errors}
 	} else return {success: false, orgs: [], errors:["request failed"]};
 }

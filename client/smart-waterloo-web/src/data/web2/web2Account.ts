@@ -2,10 +2,14 @@ import Cookies from "universal-cookie";
 import {httpReq} from "./httpRequest";
 const cookies = new Cookies();
 
-const web2IsSignedIn = ():boolean => {
-	if (cookies.get("token") && cookies.get("userId")) return true;
+const web2logout = () => {
 	cookies.remove("token");
 	cookies.remove("userId");
+}
+
+const web2IsSignedIn = ():boolean => {
+	if (cookies.get("token") && cookies.get("userId")) return true;
+	web2logout();
 	return false;
 }
 
@@ -43,4 +47,4 @@ const web2Login = async (id:string, password:string):Promise<any[]> => {
 	} else return ["request failed"];
 }
 
-export {web2Login, web2onCardScan, web2IsSignedIn}
+export {web2logout, web2Login, web2onCardScan, web2IsSignedIn}

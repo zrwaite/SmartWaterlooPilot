@@ -30,19 +30,20 @@ const topElements = [
 	}
 ]
 
+const orgElements = [
+	{
+		modalName: "orgs",
+		title: "Orgs",
+		icon: icons.group
+	},
+]
+
 const bottomElements = [
 	{
 		modalName: "settings",
 		title: "Settings",
-		action:() => {},
 		icon: icons.settings
-	},
-	{
-		modalName: "logout",
-		title: "Logout",
-		action: () => {},
-		icon: icons.logout
 	}
 ]
 
-export {topElements, bottomElements}
+export {topElements, orgElements, bottomElements}

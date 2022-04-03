@@ -1,5 +1,5 @@
 import {USE_WEB3} from "./dataConstants";
-import {web2Login, web2onCardScan, web2IsSignedIn} from "./web2/web2Account";
+import {web2Login, web2onCardScan, web2IsSignedIn, web2logout} from "./web2/web2Account";
 
 const defaultAccountData = {
 	accountDataSet: false,
@@ -13,12 +13,15 @@ const isSignedIn = ():boolean => {
 const onCardScan = async (userId: string):Promise<boolean> => {
 	return USE_WEB3?(await web3onCardScan(userId)):(await web2onCardScan(userId));
 }
+const logout = () => {
+	USE_WEB3?web3logout():web2logout();
+}
 
 
 
 
 
-
+const web3logout = () => {};
 const web3IsSignedIn = (): boolean => {
 	return false;
 }
@@ -28,4 +31,4 @@ const web3onCardScan = async (userId: string):Promise<boolean> => {
 }
 
 
-export {isSignedIn, onCardScan, web2Login, defaultAccountData};
+export {logout, isSignedIn, onCardScan, web2Login, defaultAccountData};

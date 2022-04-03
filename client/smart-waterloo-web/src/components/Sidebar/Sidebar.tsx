@@ -1,5 +1,5 @@
 import "./Sidebar.css"
-import {topElements, bottomElements} from "./SidebarOptions"; 
+import {topElements, bottomElements, orgElements} from "./SidebarOptions"; 
 import {useNavigate} from "react-router-dom";
 import {defaultOrg} from "../../data/orgs";
 interface SidebarProps {
@@ -16,6 +16,7 @@ const Sidebar = (props:SidebarProps) => {
 		backgroundColor: "black",
 		color: "white"
 	}
+	const allBottomElements = props.orgs.length?[...orgElements, ...bottomElements]:bottomElements;
 	return (
 		<aside className={"sidebarContainer"}>
 			<div className="center sidebarAvatar">
@@ -33,13 +34,13 @@ const Sidebar = (props:SidebarProps) => {
 				})}
 			</div>
 			<div className={"bottomSidebar"}>
-				{bottomElements.map((elem,i) => {
-					let modalFunc = () => {};
+				{allBottomElements.map((elem,i) => {
+					let action = ()=>{};
 					if (elem.modalName==="settings"){
-						modalFunc = props.openSettings;
+						action = props.openSettings;
 					}
 					return (
-						<div key={i} className={"bottomSidebarElement"} onClick={modalFunc} >
+						<div key={i} className={"bottomSidebarElement"} onClick={action} >
 							<h6>{elem.title}</h6>
 							<img src={elem.icon} alt={elem.title}/>
 						</div>

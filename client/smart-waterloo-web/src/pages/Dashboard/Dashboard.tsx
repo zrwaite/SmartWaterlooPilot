@@ -66,7 +66,6 @@ const Dashboard = (props: {org: boolean}) => {
 		getSetOrgsData();
 		setDataCalled(true);
 	}
-	console.log(orgsData.orgs);
     return (
 		<>
 			<Navbar root={true}/>

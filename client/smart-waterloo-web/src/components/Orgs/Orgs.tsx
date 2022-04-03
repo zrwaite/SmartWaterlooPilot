@@ -2,16 +2,18 @@
 import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import {icons} from "../../images/icons";
-import "./Settings.css";
-import {logout} from "../../data/account";
+import "./Orgs.css";
 
-interface settingsProps {
+interface orgsProps {
 	open: boolean;
 	closeModal: () => void;
 }
 
-const Settings = (props: settingsProps) => {
+const OrgsModal = (props: orgsProps) => {
 	const navigate = useNavigate();
+	const logout = () => {
+		console.log("IMPLEMENT LOGOUT");
+	}
 	const customStyles = {
 		content: {
 			width: '80%',
@@ -21,24 +23,20 @@ const Settings = (props: settingsProps) => {
 			transform: "translateX(-50%)",
 		},
 	};
-	const logoutRedirect = () => {
-		logout();
-		navigate("/");
-	}
 	return (
 		<Modal isOpen={props.open} onRequestClose={props.closeModal} style={customStyles} contentLabel="Example Modal">
-			<div className="settingsModal">
-				<div className="settingsModalHeader">
-					<h2>Settings</h2>
+			<div className="orgsModal">
+				<div className="orgsModalHeader">
+					<h2>Orgs</h2>
 					<img className="h4 imageButton" onClick={props.closeModal} src={icons.close} alt="close"></img>
 				</div>
 				<div>
-					<button className={"blackButton settingsButton"} onClick={logoutRedirect}>Logout</button>
-					<button className={"blackButton settingsButton"} onClick={() => navigate("/createorg")}>Create Organization</button>
+					<button className={"blackButton orgsButton"} onClick={logout}>Logout</button>
+					<button className={"blackButton orgsButton"} onClick={() => navigate("/createorg")}>Create Organization</button>
 				</div>
 			</div>
 		</Modal>
 	)
 }
 
-export default Settings;
+export default OrgsModal;
