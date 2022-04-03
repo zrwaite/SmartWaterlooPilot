@@ -21,7 +21,10 @@ CREATE TABLE IF NOT EXISTS "users"(
 	grade varchar(100),
 	postal_code varchar(100),
 	avatar_string varchar(100),
-	answers integer[]
+	answers integer[],
+	events integer[],
+	surveys integer[],
+	orgs text[]
 );
 
 create table if not exists "orgs"(

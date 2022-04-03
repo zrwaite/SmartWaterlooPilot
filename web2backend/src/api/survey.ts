@@ -46,9 +46,11 @@ export default class surveyController {
 				
 			} else {
 				const allSurveys = await getSurveys();
-				result.response = allSurveys.surveys;
 				result.status = allSurveys.status;
-				result.success = true;
+				if (result.status === 200) {
+					result.response = allSurveys.surveys;
+					result.success = true;
+				}
 			}
 		}
 		// errors.forEach((error) => result.errors.push(error));

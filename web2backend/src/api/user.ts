@@ -3,6 +3,7 @@ import {response, responseInterface} from "../models/response"; //Created pre-fo
 import {postUser} from "../modules/postDatabaseInfo";
 import {getUser, getUsers} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
+import {addUserEvent, addUserSurvey} from "../modules/putDatabaseInfo";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
 
@@ -53,6 +54,23 @@ export default class userController {
 	}
 	static async putUser(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
+		let {success:eventSuccess, params:eventParams, errors:eventErrors} = await getBodyParams(req, ["event_id", "user_id"]);
+		if (eventSuccess) {
+			let putResult = await addUserEvent(eventParams[0], eventParams[1]);
+			result.status = putResult.status;
+			if (result.status == 201) {
+				result.success = true;
+			} else result.errors.push("put database error");
+		} else {
+			let {success:surveySuccess, params:surveyParams, errors:surveyErrors} = await getBodyParams(req, ["survey_id", "user_id"]);
+			if (surveySuccess) {
+				let putResult = await addUserSurvey(surveyParams[0], surveyParams[1]);
+				result.status = putResult.status;
+				if (result.status == 201) {
+					result.success = true;
+				} else result.errors.push("put database error");
+			} else result.errors.push("missing survey_id and event_id");
+		}
 		//Put request code
 		res.status(result.status).json(result); //Return whatever result remains
 	}
