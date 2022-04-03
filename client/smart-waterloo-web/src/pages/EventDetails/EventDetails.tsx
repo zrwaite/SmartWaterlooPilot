@@ -3,21 +3,13 @@ import {icons} from "../../images/icons";
 import {event_images} from "../../images/eventimages";
 import img_party_popper from "../../images/emoji-party-popper.png"
 // import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
 import { MobileContext } from "../../App";
 import {useContext} from "react";
 import "./EventDetails.css";
 import EventInfo from "./EventInfo";
 import ClipLoader from "react-spinners/ClipLoader";
 import NotFound from "../NotFound";
-import {
-	BrowserRouter as Router,
-	Link,
-	Route,
-	Routes,
-	useParams,
-	useNavigate,
-  } from "react-router-dom";
+import {useParams,useNavigate,} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultEvent } from '../../data/types/events';
 import { getEventData } from '../../data/getData';
@@ -40,7 +32,10 @@ const EventsDetails = () => {
 	const getSetEventData = async () => {
 		if (!id) return;
 		let {event, success, errors} = await getEventData(id);
-		if (!success) setNotFound(true);
+		if (!success) {
+			setNotFound(true);
+			console.error(errors);
+		}
 		else setEventData({ event: event, eventDataSet: true })
 	}
 	const [dataCalled, setDataCalled] = useState(false);

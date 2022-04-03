@@ -96,7 +96,7 @@ const AccountParent = (props:AccountParentProps) => {
 	}
 
 
-	if (!dataCalled || prevOrgId!=orgId) {
+	if (!dataCalled || prevOrgId!==orgId) {
 		getSetOrgsData();
 		if (props.org){
 			getSetOrgData();

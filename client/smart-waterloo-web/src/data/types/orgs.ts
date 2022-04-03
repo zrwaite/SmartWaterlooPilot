@@ -12,4 +12,12 @@ const defaultOrgsState:{orgs: typeof defaultOrg[], set: boolean} = {
 	set: false
 }
 
+interface postOrgType {
+	avatarString:string, 
+	nickname: string, 
+	businessNumber: string
+}
+type postOrgReturn = {success:boolean, errors: string[], orgId:string}
+
 export {defaultOrg, defaultOrgsState};
+export type {postOrgType, postOrgReturn}

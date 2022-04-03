@@ -4,29 +4,10 @@ import userABI from "./utils/SmartUser.json";
 import { AbiItem } from 'web3-utils';
 import eventABI from "./utils/OrganisationEvents.json";
 import {postEventWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey} from "./web2/web2PostData";
-import { postSurveyType } from "./types/surveys";
-
-interface postUserType {
-	day:string, month:string, year:string,
-	gender:string, height:string, weight:string,
-	qrId:string, grade:string, postalCode:string,
-	race:string, religion:string, sexuality:string,
-	nickname:string, avatarString:string, password:string
-}
-interface postEventType {
-	name:string, age:string, 
-	start_day:string, start_month:string, start_year:string,
-	end_day:string, end_month:string, end_year:string,
-	category:string, description: string
-}
-interface postOrgType {
-	avatarString:string, 
-	nickname: string, 
-	businessNumber: string
-}
-type postOrgReturn = {success:boolean, errors: string[], orgId:string}
-type postEventReturn = {success:boolean, errors: string[], eventId:string}
-type postSurveyReturn = {success:boolean, errors: string[], surveyId:string}
+import { postSurveyReturn, postSurveyType } from "./types/surveys";
+import { postOrgReturn, postOrgType } from "./types/orgs";
+import { postEventReturn, postEventType } from "./types/events";
+import { postUserType } from "./types/account";
 
 const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));

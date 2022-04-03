@@ -29,11 +29,11 @@ const defaultSurveysState: {
 	surveys: SurveyDataType[]
 } = {set: false, surveys:[]};
 
-
+type postSurveyReturn = {success:boolean, errors: string[], surveyId:string}
 
 
 export { defaultSurvey, defaultSurveysState};
-export type {Question, SurveyDataType, postSurveyType};
+export type {Question, SurveyDataType, postSurveyType, postSurveyReturn};
 
 
 
