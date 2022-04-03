@@ -50,19 +50,25 @@ export default class answerController {
 	}
 	static async postAnswer(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success:answerSuccess, params, errors:answerErrors} = getBodyParams(req, ["user_id", ...answerKeys]);
+		let {success:answerSuccess, params, errors:answerErrors} = getBodyParams(req, ["user_id", "link", ...answerKeys]);
 		if (answerSuccess) {
 			let userId = params[0];
-			let answer = params[1];
-			let questionId = params[2];
+			let link = params[1];
+			let answer = params[2];
+			let questionId = params[3];
 			let postResult = await postAnswer(answer, questionId);
 			if (postResult.success) {
-				let putResult = await updateAnswersArray(userId, postResult.newAnswer)
-				if (putResult.status === 201) {
+				if (link) {
+					let putResult = await updateAnswersArray(userId, postResult.newAnswer)
+					if (putResult.status === 201) {
+						result.status = 201;
+						result.success = true;
+						result.response = {answerData: postResult.newAnswer}
+					} else result.errors.push("database put error");
+				} else {
 					result.status = 201;
 					result.success = true;
-					result.response = {answerData: postResult.newAnswer}
-				} else result.errors.push("database put error");
+				}
 			} else result.errors.push(...postResult.errors);
 			// let answerParams = params as answerValues;
 			// let answers:answerValues[] = [];
