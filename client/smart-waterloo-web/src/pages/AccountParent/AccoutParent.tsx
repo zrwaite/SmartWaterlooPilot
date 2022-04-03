@@ -5,7 +5,7 @@ import Sidebar from "../../components/Sidebar";
 import {useContext, useState} from "react";
 import {MobileContext} from "../../App";
 import { defaultEventsState } from "../../data/types/events";
-import {getUserOrgs, getEventsData, getBasicUserData, getSurveysData, getBasicOrgData} from "../../data/getData"
+import {getUserOrgs, getEventsData, getBasicUserData, getSurveysData, getBasicOrgData, getOrgEventsData, getOrgSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
 import { defaultSurveysState } from "../../data/types/surveys";
 import { useNavigate, useParams } from "react-router-dom";
@@ -24,10 +24,12 @@ interface AccountParentProps {
 }
 
 const AccountParent = (props:AccountParentProps) => {
+	const [prevOrgId, setPrevOrgId] = useState<string|undefined>("");
+	const [orgsData, setOrgsData] = useState(defaultOrgsState);
+
 	/* USER STATES */
 	const [eventsData, setEventData] = useState(defaultEventsState);
 	const [surveysData, setSurveyData] = useState(defaultSurveysState);
-	const [orgsData, setOrgsData] = useState(defaultOrgsState);
 	const [accountData, setAccountData] = useState(defaultAccountState);
 
 	/* ORG STATES */
@@ -51,6 +53,12 @@ const AccountParent = (props:AccountParentProps) => {
 		return <></>;
 	}
 
+	const getSetOrgsData = async () => {
+		let {success, orgs, errors} = await getUserOrgs(cookies.get("userId"));
+		if (!success) alert(JSON.stringify(errors));
+		else setOrgsData({orgs: orgs, set: true })
+	}
+
 	/* USER FUNCTIONS */
 	const getSetUserData = async () => {
 		let {success, userData, errors} = await getBasicUserData();
@@ -68,27 +76,43 @@ const AccountParent = (props:AccountParentProps) => {
 		if (!success) alert(JSON.stringify(errors));
 		else setSurveyData({surveys: surveys, set: true })
 	}
-	const getSetOrgsData = async () => {
-		let {success, orgs, errors} = await getUserOrgs(cookies.get("userId"));
-		if (!success) alert(JSON.stringify(errors));
-		else setOrgsData({orgs: orgs, set: true })
-	}
 	/* ORG FUNCTIONS */
-	// const getSetOrgData = async () => {
-	// 	let {success, org, errors} = await getBasicOrgData(orgId);
-	// 	if (!success) alert(JSON.stringify(errors));
-	// 	else accountData({org: org, set: true })
-	// }
-	if (!dataCalled) {
-		if (props.org){
+	const getSetOrgData = async () => {
+		let {success, org, errors} = await getBasicOrgData(orgId);
+		if (!success) alert(JSON.stringify(errors));
+		else if ('nickname' in org) {
+			setAccountData({
+				account: {avatarString: org.avatar_string, nickname: org.nickname}, 
+				set: true
+			});
+		}
+		else console.error("invalid userData response");
+	}
+	const getSetOrgEventsData = async () => {
+		let {success, events, errors} = await getOrgEventsData(orgId);
+		if (!success) alert(JSON.stringify(errors));
+		else setEventData({events: events, set: true })
+	}
+	const getSetOrgSurveysData = async () => {
+		let {success, surveys, errors} = await getOrgSurveysData(orgId);
+		if (!success) alert(JSON.stringify(errors));
+		else setSurveyData({surveys: surveys, set: true })
+	}
 
+
+	if (!dataCalled || prevOrgId!=orgId) {
+		getSetOrgsData();
+		if (props.org){
+			getSetOrgData();
+			getSetOrgEventsData();
+			getSetOrgSurveysData();
 		} else {
 			getSetEventsData();
 			getSetUserData();
 			getSetSurveysData();
-			getSetOrgsData();
 		}
 		setDataCalled(true);
+		setPrevOrgId(orgId);
 	}
 
 	const allDataObj = {
