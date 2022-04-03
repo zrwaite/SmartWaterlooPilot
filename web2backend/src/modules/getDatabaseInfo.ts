@@ -3,7 +3,7 @@ import {decryptRows} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import {eventData} from "../database/eventData";
-import {getSurveyKeys, questionKeys} from "../database/surveyData";
+import {answerKeys, getQuestionKeys, getSurveyKeys, questionKeys} from "../database/surveyData";
 
 const getEntries = async (multi: boolean, idKey:string, idValue:string|number, tableName: string, columns: readonly string[]) => {
 	let entries:any;
@@ -119,11 +119,11 @@ const getOrgSurveys = async (org_id:string) => {
 	return {status: status, surveys: entries, errors: errors};
 }
 const getQuestion = async (questionId:number) => {
-	const {status, entries, errors} = await getEntries(false, "id", questionId.toString(), "questions", questionKeys);
+	const {status, entries, errors} = await getEntries(false, "id", questionId.toString(), "questions", getQuestionKeys);
 	return {status: status, question: entries.length?entries[0]:{}, errors: errors};
 }
 const getQuestions = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "questions", questionKeys);
+	const {status, entries, errors} = await getEntries(true, "", "", "questions", getQuestionKeys);
 	return {status: status, questions: entries, errors: errors};
 }
 const parseSurvey = async (questionIds: number[]) => {
@@ -139,4 +139,12 @@ const parseSurvey = async (questionIds: number[]) => {
 	}
 	return {questions: questions, success: success};
 }
-export {getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+const getAnswer = async (id:string) => {
+	const {status, entries, errors} = await getEntries(false, "id", id, "answers", answerKeys);
+	return {status: status, answer: entries.length?entries[0]:{}, errors: errors};
+}
+const getQuestionAnswers = async (questionId: string) => {
+	const {status, entries, errors} = await getEntries(true, "question_id", questionId, "answers", answerKeys);
+	return {status: status, answers: entries, errors: errors};
+}
+export {getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}

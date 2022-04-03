@@ -4,7 +4,7 @@ import {encrypt} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData, postOrg as postOrgObj} from "../database/orgData";
 import {eventData, postEvent as postEventObj} from "../database/eventData";
-import {surveyKeys, questionKeys, questionValues, surveyValues, postSurveyValues, postQuestionValues} from "../database/surveyData";
+import {surveyKeys, questionKeys, questionValues, surveyValues, postSurveyValues, postQuestionValues, answerKeys, answerValues} from "../database/surveyData";
 import {verifyOrgVerification} from "./getDatabaseInfo";
 
 const postEntry = async (entry: object, tableName:string ) => {
@@ -38,7 +38,9 @@ type postEntryTypeArrayType = {
 	keys: typeof surveyKeys , values: postSurveyValues
 }|{
 	keys: typeof questionKeys , values: postQuestionValues
-}; 
+}|{
+	keys: typeof answerKeys, values: answerValues	
+}
 const postEntryArrays = async (entry: postEntryTypeArrayType, tableName:string ) => {
 	let errors: string[] = [];
 	let success = false;
@@ -145,6 +147,12 @@ const postQuestion = async (questionParams:(questionValues)) => {
 	let {errors, success, newEntry:newQuestion} = await postEntryArrays({keys:questionKeys, values: postQuestionArray}, "questions");
 	return {success: success, errors: errors, newQuestion: newQuestion};
 }
+const postAnswer = async (answer:string, question_id:number) => {
+	let postAnswerArray:answerValues = [answer, question_id];
+	// if (answerParams[2]?.length) postAnswerArray[2] = `{"${answerParams[2]?.join("\", \"")}"}`;
+	let {errors, success, newEntry:newAnswer} = await postEntryArrays({keys:answerKeys, values: postAnswerArray}, "answers");
+	return {success: success, errors: errors, newAnswer: newAnswer};
+}
 
 const postOrg = async (orgParams:string[]) => {
 	let newPostOrgObj = {...postOrgObj};
@@ -154,4 +162,4 @@ const postOrg = async (orgParams:string[]) => {
 }
 
 
-export {postUser, postOrg, postEvent, postSurvey}
+export {postAnswer, postUser, postOrg, postEvent, postSurvey}

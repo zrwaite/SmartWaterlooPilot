@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS "users"(
 	id SERIAL PRIMARY KEY,
 	u_id INT UNIQUE,
 	password_hash varchar(80),
-	user_data_id INT default null
+	user_data_id INT default null,
+	answers integer[]
 );
 
 create table if not exists "orgs"(
@@ -39,6 +40,13 @@ create table if not exists "questions"(
 	prompt TEXT,
 	answer_type type_choices,
 	choices TEXT[]
+);
+
+create table if not exists "answers"(
+	id serial primary key,
+	answer TEXT,
+	question_id int,
+	FOREIGN KEY (question_id) REFERENCES questions(id)
 );
 
 create table if not exists "events"(

@@ -1,6 +1,7 @@
 const defaultUser = {
 	u_id: "",
 	password: "",
+	answers: []
 }
 const defaultUserData = {
 	nickname:"",

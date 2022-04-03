@@ -1,9 +1,7 @@
 import {Request, Response} from "express"; //Typescript types
 import {response, responseInterface} from "../models/response"; //Created pre-formatted uniform response
 import {getQuestion, getQuestions} from "../modules/getDatabaseInfo";
-import {getBodyParams, getParams, getQueryParams} from "../modules/getParams";
-import {questionValues, questionKeys} from "../database/surveyData";
-import { isQuestionArray } from "../modules/typeAssertions";
+import {getQueryParams} from "../modules/getParams";
 
 /* register controller */
 export default class questionController {
