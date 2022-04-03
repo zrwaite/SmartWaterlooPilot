@@ -12,7 +12,7 @@ import { postUserType } from "./types/account";
 const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));
 }
-const postUser = async (inputData:postUserType) => {
+const postUser = async (inputData:postUserType):Promise<string[]> => {
 	return USE_WEB3?(await postUserWeb3(inputData)):(await postUserWeb2(inputData));
 }
 const postEvent = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
@@ -124,7 +124,7 @@ let contractABI;
 // 	.then(() => console.log(`Organisation ${state.formInputs.businessNumber} created succesfully`))
 // 	.catch((err:any) => console.log(err));
 // }
-
+	return ["not implemented"]
 }
 
 export {submitSurvey, postSurvey, postUser, postEvent, postOrg}

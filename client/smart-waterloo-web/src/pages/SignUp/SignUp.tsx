@@ -117,9 +117,13 @@ const SignUp = (props: SignUpProps) => {
 		return avatarProps;
 	}
 	const submitForm = async () => {
-		postUser({...state.formInputs, qrId: qrId});
-		let path = `/dashboard/user`;
-		navigate(path);
+		let errors = await postUser({...state.formInputs, qrId: qrId});
+		if (errors.length) {
+			console.log(errors);
+		} else {
+			let path = `/dashboard/user`;
+			navigate(path);
+		}
 	}
 
 	let stepSection: any;
