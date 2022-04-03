@@ -11,6 +11,7 @@ import Cookies from "universal-cookie";
 import { ActionMeta } from "react-select";
 import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
+import { postOrg } from "../../data/postData";
 
 const defaultAvatarString = randomString();
 type SignUpProps = {
@@ -81,9 +82,12 @@ const SignUp = (props: SignUpProps) => {
 		return verifiedProps;
 	}
 	const submitForm = async () => {
-		
-		let path = `/dashboard/org`;
-		navigate(path);
+		let {success, errors, orgId} = await postOrg({...state.formInputs});
+		if (success) {
+			navigate(`/dashboard/org/${orgId}`);
+		} else {
+			alert("Something went wrong" + JSON.stringify(errors));
+		}
 	}
 
 	let stepSection: any;
@@ -107,7 +111,7 @@ const SignUp = (props: SignUpProps) => {
 	}
 	return (
 		<>
-			<Navbar root={true} />
+			<Navbar root={false} />
 			<div className={"PageContainer"}>
 				{<div className={mobile ? "" : "DesktopPanel"}>
 					{state.step ? <StepBubbles steps={["Verification", "Avatar"]} step={state.step} /> : null}

@@ -1,13 +1,17 @@
 import "./Sidebar.css"
-import avatarImg from "../../images/avatar.png"
-import {topElements, bottomElements} from "./SidebarOptions"; 
+import {topElements, bottomElements, orgElements} from "./SidebarOptions"; 
 import {useNavigate} from "react-router-dom";
+import {defaultOrg} from "../../data/types/orgs";
 interface SidebarProps {
+	org: boolean;
+	orgId: string|undefined;
 	page: string;
-	userDataSet:boolean;
+	accountSet:boolean;
 	nickname: string;
 	avatarString: string;
 	openSettings: () => void;
+	openOrgsModal: ()=>void;
+	orgs: (typeof defaultOrg)[];
 }
 const Sidebar = (props:SidebarProps) => {
 	const navigate = useNavigate()
@@ -15,6 +19,7 @@ const Sidebar = (props:SidebarProps) => {
 		backgroundColor: "black",
 		color: "white"
 	}
+	const allBottomElements = props.orgs.length?[...orgElements, ...bottomElements]:bottomElements;
 	return (
 		<aside className={"sidebarContainer"}>
 			<div className="center sidebarAvatar">
@@ -24,7 +29,7 @@ const Sidebar = (props:SidebarProps) => {
 			<div className="topSidebar">
 				{topElements.map((elem,i) => {
 					return (
-						<div key={i} onClick={()=>navigate(elem.link)} className={"topSidebarElement"} style={elem.pageName===props.page?selectedElement:{}}>
+						<div key={i} onClick={()=>navigate(`${elem.link}${props.org?`org/${props.orgId}`:"user"}`)} className={"topSidebarElement"} style={elem.pageName===props.page?selectedElement:{}}>
 							<h6>{elem.title}</h6>
 							<img src={elem.icon} alt={elem.title}/>
 						</div>
@@ -32,13 +37,15 @@ const Sidebar = (props:SidebarProps) => {
 				})}
 			</div>
 			<div className={"bottomSidebar"}>
-				{bottomElements.map((elem,i) => {
-					let modalFunc = () => {};
+				{allBottomElements.map((elem,i) => {
+					let action = ()=>{};
 					if (elem.modalName==="settings"){
-						modalFunc = props.openSettings;
+						action = props.openSettings;
+					} else if (elem.modalName==="orgs"){
+						action = props.openOrgsModal;
 					}
 					return (
-						<div key={i} className={"bottomSidebarElement"} onClick={modalFunc} >
+						<div key={i} className={"bottomSidebarElement"} onClick={action} >
 							<h6>{elem.title}</h6>
 							<img src={elem.icon} alt={elem.title}/>
 						</div>

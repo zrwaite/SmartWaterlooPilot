@@ -12,7 +12,16 @@ type ProfileFormGridProps = {
 function ProfileFormGrid(props: ProfileFormGridProps) {
 	let redText = { color: "red" };
 	let greyText = { color: "grey" };
-
+	let canContinue = (
+		props.formData.day !== "" &&
+		props.formData.month !== "" &&
+		props.formData.year !== "" &&
+		props.formData.gender !== "" &&
+		props.formData.height !== "" &&
+		props.formData.weight !== "" &&
+		props.formData.grade !== "" &&
+		props.formData.postalCode !== ""
+	);
 	return (
 		<>
 			<main>
@@ -98,7 +107,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 					</div>
 				</section>
 				<div className="formDiv">
-					<button className="blackButton signUpButton" onClick={props.nextStep}>
+					<button className={`${canContinue?"blackButton":"disabledButton"} signUpButton`} onClick={canContinue?props.nextStep:()=>{}}>
 						Continue
 					</button>
 				</div>

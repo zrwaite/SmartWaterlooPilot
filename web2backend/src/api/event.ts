@@ -12,14 +12,19 @@ export default class eventController {
 		let {success:eventSuccess, params:eventParams, errors:eventErrors} = await getQueryParams(req, ["event_id"]);
 		if (eventSuccess) {
 			const eventId = eventParams[0];
-			const getEventResponse = await getEvent(eventId);
-			result.status = getEventResponse.status;
-			if (result.status == 200) {
-				result.success = true;
-				result.response = getEventResponse.event;
+			if (!isNaN(eventId)){
+				const getEventResponse = await getEvent(eventId);
+				result.status = getEventResponse.status;
+				if (result.status == 200) {
+					result.success = true;
+					result.response = getEventResponse.event;
+				}
+				else if (result.status == 404) result.errors.push("event not found");
+				else result.errors.push(...eventErrors);
+			} else {
+				result.errors.push("invalid event_id");
+				result.status = 404;
 			}
-			else if (result.status == 404) result.errors.push("event not found");
-			else result.errors.push(...eventErrors);
 		} else {
 			let {success:orgEventSuccess, params:orgEventParams, errors:orgEventErrors} = await getQueryParams(req, ["org_id"]);
 			if (orgEventSuccess) {
@@ -34,9 +39,11 @@ export default class eventController {
 				else result.errors.push(...orgEventErrors);
 			} else {
 				const allEvents = await getEvents();
-				result.response = allEvents.events;
 				result.status = allEvents.status;
-				result.success = true;
+				if (allEvents.status === 200) {
+					result.response = allEvents.events;
+					result.success = true;
+				}
 			}
 		}
 		// errors.forEach((error) => result.errors.push(error));

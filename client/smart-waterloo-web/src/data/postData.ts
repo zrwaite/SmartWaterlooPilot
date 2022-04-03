@@ -3,39 +3,32 @@ import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
 import { AbiItem } from 'web3-utils';
 import eventABI from "./utils/OrganisationEvents.json";
+import {postEventWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey} from "./web2/web2PostData";
+import { postSurveyReturn, postSurveyType } from "./types/surveys";
+import { postOrgReturn, postOrgType } from "./types/orgs";
+import { postEventReturn, postEventType } from "./types/events";
+import { postUserType } from "./types/account";
 
-
-interface postUserType {
-	day:string, month:string, year:string,
-	gender:string, height:string, weight:string,
-	qrId:string, grade:string, postalCode:string,
-	race:string, religion:string, sexuality:string,
-	nickname:string, avatarString:string
+const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
+	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));
 }
-
-
-
-
 const postUser = async (inputData:postUserType) => {
-	USE_WEB3?(await postUserWeb2(inputData)):(await postUserWeb3(inputData));
+	return USE_WEB3?(await postUserWeb3(inputData)):(await postUserWeb2(inputData));
+}
+const postEvent = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
+	return USE_WEB3?(await postEventWeb3(id, inputData)):(await postEventWeb2(id, inputData));
+}
+const postSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
+	return USE_WEB3?(await web3PostSurvey(id, inputData)):(await web2PostSurvey(id, inputData));
 }
 
-const postEvent = async (inputData:postEventType) => {
-	USE_WEB3?(await postEventWeb2(inputData)):(await postEventWeb3(inputData));
+const web3PostSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
+	return {success: false, errors: ["not implemented"], surveyId: ""};
 }
-
-const postEventWeb2 = (inputData:postEventType) => {
-
+const postOrgWeb3 = async (inputData:postOrgType):Promise<postOrgReturn> => {
+	return {success: false, errors: ["not implemented"], orgId: ""};
 }
-
-interface postEventType {
-	name:string, age:string, 
-	start_day:string, start_month:string, start_year:string,
-	end_day:string, end_month:string, end_year:string,
-	category:string, description: string
-}
-
-const postEventWeb3 = async (inputData:postEventType) => {
+const postEventWeb3 = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
 	let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 	web3.eth.defaultAccount = accounts[0];
 	const contractABI = eventABI;
@@ -56,12 +49,9 @@ const postEventWeb3 = async (inputData:postEventType) => {
 			console.log(`${inputData.name} created successfully`);
 		})
 		.catch((err: any) => console.log(err));
-
+	return {success: false, errors: ["function not yet implemented"], eventId: "-1"}
 }
 
-const postUserWeb2 = async (inputData:postUserType) => {
-
-}
 declare var window: any;
 let web3 = new Web3(Web3.givenProvider);
 
@@ -119,4 +109,6 @@ let contractABI;
 
 }
 
-export {postUser, postEvent}
+export {postSurvey, postUser, postEvent, postOrg}
+
+export type {postSurveyReturn, postUserType, postEventType, postOrgType, postOrgReturn, postEventReturn}

@@ -1,11 +1,10 @@
 import React from 'react';
 import "./EventDetails.css";
 // import eventDataRaw from './EventDetailsData.json';
-import { exampleEvents }  from "../../data/Events";
 
 interface EventData {
     "name": string;
-    "title": string;
+    "id": string;
     "organization": string;
     "age_range": string;
     "start_date": string;
@@ -15,17 +14,7 @@ interface EventData {
     "description": string;
     "image": string;
 }
-
-interface MatchingEvent {
-    "name": string;
-}
-const EventInfo = (props: MatchingEvent): any => {
-    const eventData: EventData[] = exampleEvents;
-
-    const event = eventData.find( event => event.name === props.name);
-
-    if (!event) return (<p>Event {props.name} not found</p>);
-
+const EventInfo = (props: EventData): any => {
 	return (
 		<>
 			{/* <div className={"eventDetails"}>
@@ -33,13 +22,13 @@ const EventInfo = (props: MatchingEvent): any => {
 			</div> */}
 			<div className="DesktopPanelNoBorder">
 				<p className="lightblue">NEW</p>
-				<p className="lightbluetext">{event.category}</p>
-				<h5 className="eventTitle">{event.title}</h5>
-				<p>{event.organization}</p>
-				<p className="greytext">For Ages {event.age_range}</p>
-				<p className="greytext">{event.start_date} {event.end_date}</p>
+				<p className="lightbluetext">{props.category}</p>
+				<h5 className="eventTitle">{props.name}</h5>
+				<p>{props.organization}</p>
+				<p className="greytext">For Ages {props.age_range}</p>
+				<p className="greytext">{props.start_date} {props.end_date}</p>
 				<br></br>
-				<p >{event.description}</p>
+				<p >{props.description}</p>
 			</div>
 		</>
 	)

@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { MobileContext } from "../../App";
 import { eventCategories } from "./CreateEventData";
 import Select, { ActionMeta } from "react-select";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { postEvent } from "../../data/postData";
 
 //Todo change buttons to links
@@ -24,6 +24,7 @@ const DefaultCreateEventState = {
 const CreateEvent = () => {
 	const navigate = useNavigate();
 	let { mobile } = useContext(MobileContext);
+	let {orgId} = useParams();
 	const [state, setState] = useState(DefaultCreateEventState)
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
 		let inputKeys: keyof typeof state.inputs;
@@ -44,9 +45,11 @@ const CreateEvent = () => {
 	const link = { cursor: "pointer" };
 
 	const eventCreation = async () => {
-		postEvent({...state.inputs});
-		let path = `/dashboard/org`;
-		navigate(path);
+		if (orgId) {
+			let {success, errors, eventId} = await postEvent(orgId, {...state.inputs});
+			if (success) navigate(`/eventdetails/${eventId}`);
+			else alert(JSON.stringify(errors));
+		}
 	}
 	
 	return (
@@ -98,6 +101,7 @@ const CreateEvent = () => {
 						</div>
 					</div>
 					<div className="formQuestion">
+						<p>Category</p>
 						<Select className={"selectComponent"} defaultInputValue={state.inputs.category} name={"category"} onChange={handleSelectChange} options={eventCategories} />
 					</div>
 					<div className={"formQuestion"}>

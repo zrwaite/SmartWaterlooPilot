@@ -1,4 +1,4 @@
-const baseURL = "localhost:8006";
+const baseURL = "https://cadillac-floors-pee-amounts.trycloudflare.com";
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
     url = baseURL + url;
@@ -14,7 +14,7 @@ const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
             response = await fetch(url, {
                 method: method, // *GET, POST, PUT, DELETE, etc.
                 cache: 'no-cache',
-                // mode: 'same-origin',
+                // mode: 'no-cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },

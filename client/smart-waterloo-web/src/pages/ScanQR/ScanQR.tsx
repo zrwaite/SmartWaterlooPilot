@@ -8,6 +8,7 @@ import {Html5QrcodeScanner} from "html5-qrcode";
 import Cookies from "universal-cookie";
 import {useContext} from "react";
 import {MobileContext, IdContext} from "../../App";
+import {onCardScan} from "../../data/account";
 const ScanQR = () => {
 	let {mobile} = useContext(MobileContext);
 	let {setId} = useContext(IdContext);
@@ -22,16 +23,19 @@ const ScanQR = () => {
 			await scanner.clear().catch((error : any) => {
 				console.error("Failed to clear html5QrcodeScanner. ", error);
 			});
-			let accountExists = false;
-			if (accountExists) navigate("/login");
-			else navigate("/signup");
+			let scannedId = parseInt(decodedText);
+			if (typeof decodedText === "string" && scannedId>0 && scannedId<10000) {
+				let accountExists = await onCardScan(decodedText);
+				if (accountExists) navigate("/login");
+				else navigate("/signup");
+			} else alert("invalid qr code");
 		}
 		setFunctions({scan: () => scanner.render(onScanSuccess, ()=>{})})
 	}, [navigate, setId]);
 
 	return (
 		<>
-			<Navbar root={true}/>
+			<Navbar signedIn={false} root={true}/>
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanel"}>
 					<div className={"QRInfoPanel"}>

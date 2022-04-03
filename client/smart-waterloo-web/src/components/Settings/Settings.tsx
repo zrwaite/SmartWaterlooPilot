@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import {icons} from "../../images/icons";
 import "./Settings.css";
+import {logout} from "../../data/account";
 
 interface settingsProps {
 	open: boolean;
@@ -11,9 +12,6 @@ interface settingsProps {
 
 const Settings = (props: settingsProps) => {
 	const navigate = useNavigate();
-	const logout = () => {
-		console.log("IMPLEMENT LOGOUT");
-	}
 	const customStyles = {
 		content: {
 			width: '80%',
@@ -23,6 +21,10 @@ const Settings = (props: settingsProps) => {
 			transform: "translateX(-50%)",
 		},
 	};
+	const logoutRedirect = () => {
+		logout();
+		window.location.href="/";
+	}
 	return (
 		<Modal isOpen={props.open} onRequestClose={props.closeModal} style={customStyles} contentLabel="Example Modal">
 			<div className="settingsModal">
@@ -31,7 +33,7 @@ const Settings = (props: settingsProps) => {
 					<img className="h4 imageButton" onClick={props.closeModal} src={icons.close} alt="close"></img>
 				</div>
 				<div>
-					<button className={"blackButton settingsButton"} onClick={logout}>Logout</button>
+					<button className={"blackButton settingsButton"} onClick={logoutRedirect}>Logout</button>
 					<button className={"blackButton settingsButton"} onClick={() => navigate("/createorg")}>Create Organization</button>
 				</div>
 			</div>

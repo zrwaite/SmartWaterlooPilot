@@ -5,7 +5,7 @@ import {orgData} from "../database/orgData";
 import {eventData} from "../database/eventData";
 import {getSurveyKeys, questionKeys} from "../database/surveyData";
 
-const getEntries = async (multi: boolean, idKey:string, idValue:string, tableName: string, columns: readonly string[]) => {
+const getEntries = async (multi: boolean, idKey:string, idValue:string|number, tableName: string, columns: readonly string[]) => {
 	let entries:any;
 	let status;
 	let queryParams = columns.join(", ");
@@ -24,7 +24,7 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string, tableNam
 				[idValue]
 			)
 		}
-		if (entries.rows) {
+		if (entries.rows && entries.rows.length) {
 			entries = entries.rows;
 			status = 200;
 		} else status = 404;
@@ -48,13 +48,17 @@ const getUser = async (userid:string) => {
 	}
 	else return {status: 404, user: result, errors: []};
 }
+const getUserHash = async (userId:string) => {
+	const {status, entries, errors} = await getEntries(false, "u_id", userId, "users", ["password_hash"]);
+	return {status: status, user: entries.length?entries[0]:{}, errors: errors};
+}
 const getUsers = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "user_data", userData.dataKeys);
 	return {status: status, users: decryptRows(entries, userData.dataKeys), errors: errors}
 }
-const getEvent = async (eventId:string) => {
+const getEvent = async (eventId:number) => {
 	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.allEventKeys);
-	return {status: status, event: entries[0], errors: errors};
+	return {status: status, event: entries.length?entries[0]:{}, errors: errors};
 }
 const getEvents = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "events", eventData.allEventKeys);
@@ -66,7 +70,7 @@ const getOrgEvents = async (org_id:string) => {
 }
 const getOrg = async (id:string) => {
 	const {status, entries, errors} = await getEntries(false, "id", id, "orgs", orgData.orgKeys);
-	return {status: status, org: entries[0], errors: errors};
+	return {status: status, org: entries.length?entries[0]:{}, errors: errors};
 }
 const getOwnerOrgs = async (ownerId: string) => {
 	const {status, entries, errors} = await getEntries(true, "owner_id", ownerId, "orgs", orgData.orgKeys);
@@ -82,7 +86,7 @@ const verifyOrgVerification = async (id:string):Promise<boolean> => {
 }
 const getSurvey = async (surveyId:string) => {
 	let {status, entries, errors} = await getEntries(false, "id", surveyId, "surveys", getSurveyKeys);
-	let survey = entries[0];
+	let survey = entries.length?entries[0]:{};
 	if (status == 200) {
 		let {questions, success} = await parseSurvey(survey.questions);
 		if (success) survey.questions = questions;
@@ -116,7 +120,7 @@ const getOrgSurveys = async (org_id:string) => {
 }
 const getQuestion = async (questionId:number) => {
 	const {status, entries, errors} = await getEntries(false, "id", questionId.toString(), "questions", questionKeys);
-	return {status: status, question: entries[0], errors: errors};
+	return {status: status, question: entries.length?entries[0]:{}, errors: errors};
 }
 const getQuestions = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "questions", questionKeys);
@@ -135,4 +139,4 @@ const parseSurvey = async (questionIds: number[]) => {
 	}
 	return {questions: questions, success: success};
 }
-export {getSurvey, getSurveys, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}

@@ -1,12 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { MobileContext, AddressContext, IdContext } from "../../App";
+import { MobileContext, IdContext } from "../../App";
 import "./SignUp.css";
 import Profile from "./Profile";
 import Landing from "./Landing";
 import MeetAvatar from "./MeetAvatar";
 import Nickname from "./Nickname";
 import MetaMask from "./MetaMask";
+import Password from "./Password";
 import StepBubbles from "../../components/StepBubbles";
 import Cookies from "universal-cookie";
 import { ActionMeta } from "react-select";
@@ -16,6 +17,7 @@ import { ActionMeta } from "react-select";
 import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
 import { postUser } from "../../data/postData";
+import {USE_WEB3} from "../../data/dataConstants";
 
 
 const defaultAvatarString = randomString();
@@ -34,6 +36,10 @@ const defaultProfileProps = {
 	religion: "",
 	sexuality: "",
 }
+const defaultPasswordProps = {
+	password: "",
+	password2: ""
+}
 const defaultNicknameProps = {
 	nickname: "",
 	avatarString: defaultAvatarString
@@ -50,14 +56,15 @@ const defaultSignUpState = {
 		...defaultProfileProps,
 		...defaultNicknameProps,
 		...defaultAvatarProps,
-		...defaultVerifiedProps
+		...defaultVerifiedProps,
+		...defaultPasswordProps
 	}
 }
 
 
 const SignUp = (props: SignUpProps) => {
 	const { id: qrId } = useContext(IdContext);
-	const { address, setAddress } = useContext(AddressContext);
+	// const { address, setAddress } = useContext(AddressContext);
 	const [state, setState] = useState(defaultSignUpState);
 	const cookies = new Cookies();
 	const navigate = useNavigate();
@@ -97,6 +104,12 @@ const SignUp = (props: SignUpProps) => {
 		nicknamePropKeys.forEach(key => nicknameProps[key] = state.formInputs[key]);
 		return nicknameProps;
 	}
+	const getPasswordProps = () => {
+		let passwordProps = defaultPasswordProps;
+		let passwordPropKeys = Object.keys(defaultPasswordProps) as [keyof typeof defaultPasswordProps];
+		passwordPropKeys.forEach(key => passwordProps[key] = state.formInputs[key]);
+		return passwordProps;
+	}
 	const getAvatarProps = () => {
 		let avatarProps = defaultAvatarProps;
 		let avatarPropKeys = Object.keys(defaultAvatarProps) as [keyof typeof defaultAvatarProps];
@@ -115,11 +128,19 @@ const SignUp = (props: SignUpProps) => {
 		handleParentInputChange: handleInputChange,
 		handleParentSelectChange: handleSelectChange,
 	}
+
+	useEffect(() => {
+		if (!USE_WEB3) {
+			if (qrId==="") navigate("/qr");
+		}
+	});
+
 	switch (state.step) {
 		case 0: stepSection = (
 			<Landing nextStep={() => updateStep(1)} />
 		); break; case 1: stepSection = (
-			<MetaMask backStep={() => updateStep(0)} nextStep={() => updateStep(2)} />
+			USE_WEB3?<MetaMask backStep={() => updateStep(0)} nextStep={() => updateStep(2)} />:
+			<Password {...userInputFunctions} backStep={() => updateStep(0)} nextStep={() => updateStep(2)} passwordData={getPasswordProps()}/>
 		); break; case 2: stepSection = (
 			<Profile backStep={() => updateStep(1)} nextStep={() => updateStep(3)} {...userInputFunctions} formData={getProfileProps()} />
 		); break; case 3: stepSection = (
@@ -132,11 +153,11 @@ const SignUp = (props: SignUpProps) => {
 	}
 	return (
 		<>
-			<Navbar root={true} />
+			<Navbar signedIn={false} root={true}/>
 			<div className={"PageContainer"}>
 				<MobileContext.Consumer>
 					{({ mobile }) => (<div className={mobile ? "" : "DesktopPanel"}>
-						{state.step ? <StepBubbles steps={["MetaMask", "Profile", "Avatar"]} step={state.step} /> : null}
+						{state.step ? <StepBubbles steps={[USE_WEB3?"MetaMask":"Password", "Profile", "Avatar"]} step={state.step} /> : null}
 						{stepSection}
 					</div>)}
 				</MobileContext.Consumer>

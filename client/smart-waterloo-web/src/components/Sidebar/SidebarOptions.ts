@@ -4,45 +4,46 @@ const topElements = [
 	{
 		pageName: "dashboard",
 		title: "Dashboard",
-		link: "/dashboard/user",
+		link: "/dashboard/",
 		icon: icons.rightArrow
 	},
 	{
 		pageName: "data",
 		title: "My Data",
-		link: "/data",
+		link: "/data/",
 		icon: icons.rightArrow
 
 	},
 	{
 		pageName: "events",
 		title: "Events",
-		link: "/events",
+		link: "/events/",
 		icon: icons.rightArrow
 
 	},
 	{
 		pageName: "surveys",
 		title: "Surveys",
-		link: "/surveys",
+		link: "/surveys/",
 		icon: icons.rightArrow
 
 	}
+]
+
+const orgElements = [
+	{
+		modalName: "orgs",
+		title: "Orgs",
+		icon: icons.group
+	},
 ]
 
 const bottomElements = [
 	{
 		modalName: "settings",
 		title: "Settings",
-		action:() => {},
 		icon: icons.settings
-	},
-	{
-		modalName: "logout",
-		title: "Logout",
-		action: () => {},
-		icon: icons.logout
 	}
 ]
 
-export {topElements, bottomElements}
+export {topElements, orgElements, bottomElements}

@@ -3,8 +3,8 @@ import { MobileContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
-import {exampleEvents, defaultEventsData} from "../../../data/Events";
-import {exampleSurveys} from "../../../data/Surveys"
+import { defaultEvent } from "../../../data/types/events";
+import {defaultSurvey} from "../../../data/types/surveys"
 import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"
@@ -34,15 +34,19 @@ const DashboardPreviewHeader = (props:DashboardPreviewHeaderProps) => {
 
 interface DashboardPreviewProps {
 	name: keyof typeof Data;
-	events: typeof defaultEventsData.events;
-	eventsDataSet: boolean;
+	events: typeof defaultEvent[];
+	eventsSet: boolean;
+	surveys: typeof defaultSurvey[]
+	surveysSet: boolean;
 	org: boolean;
+	orgId: string|undefined;
+	verified: boolean;
 }
 const DashboardPreview = (props:DashboardPreviewProps) => {
 	const navigate = useNavigate();
 	const {mobile} = useContext(MobileContext);
 	const color = Data[props.name].color;
-	const linkTo = Data[props.name].link;
+	const linkTo = `${Data[props.name].link}${props.org?`org/${props.orgId}`:"user"}`;
 	const dataPanelsData = props.org?orgDataPanels:userDataPanels;
 	if (mobile) return (
 		<button onClick={()=> navigate(linkTo)}className={`dashboardLinkSection ${color}`}>
@@ -50,18 +54,17 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 		</button>
 	);
 	let panelList;
-	let numUpcoming = 0;
 	switch (props.name) {
 		case "events": panelList = (<> 
 			{
-				props.eventsDataSet?
+				props.eventsSet?
 				props.events.map((event, i) => {return (
 					i<5?<EventPanel key={i} index={i} {...event}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
-			{props.org?<div className={"dashboardPreviewAddSection"}>
-				<button onClick={() => navigate("/createevent")} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
+			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
+				<button onClick={() => navigate(`/createevent/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
 			</div>:null}
 		</>
 		); break; case "data": panelList = (<>
@@ -70,22 +73,27 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			);})}
 		</>
 		);break; case "surveys": panelList = (<>
-			{exampleSurveys.map((panel, i) => {return (
-				i<5?<SurveyPanel key={i} index={i} {...panel}/>:null
-			);})}
-			{props.org?<div className={"dashboardPreviewAddSection"}>
-				<button onClick={() => navigate("/createsurvey")} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
+			{
+				props.surveysSet?
+				props.surveys.map((survey, i) => {return (
+					i<5?<SurveyPanel key={i} index={i} {...survey}/>:null
+				);}):
+				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
+			} 
+			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
+				<button onClick={() => navigate(`/createsurvey/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
 			</div>:null}
 		</>
-		); break; case "upcoming": panelList = (<>
-			{exampleEvents.map((event, i) => {
-				if (event.signed_up) return (
-					numUpcoming<5?<EventPanel index={i} key={i} upcoming={true} {...event}/>:null
-				);
-				else return null;
-			})}
-		</>
-		);
+		); break; 
+		// case "upcoming": panelList = (<>
+		// 	{exampleEvents.map((event, i) => {
+		// 		if (event.signed_up) return (
+		// 			numUpcoming<5?<EventPanel index={i} key={i} upcoming={true} {...event}/>:null
+		// 		);
+		// 		else return null;
+		// 	})}
+		// </>
+		// );
 	}
 	return (
 		<div className={"panel"}>
