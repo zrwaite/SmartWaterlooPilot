@@ -1,8 +1,5 @@
-const defaultUser = {
-	u_id: "",
-	password: "",
-}
-const defaultUserData = {
+const baseUser = {
+	user_id: "",
 	nickname:"",
 	birth_day: "",
 	birth_month: "",
@@ -10,15 +7,27 @@ const defaultUserData = {
 	gender: "",
 	height: "",
 	weight: "",
-	religion: "",
-	sexuality: "",
-	race: "",
 	grade: "",
 	postal_code: "",
 	avatar_string: "",
 }
-const userData = {
-	userKeys: Object.keys(defaultUser) as (keyof typeof defaultUser)[],
-	dataKeys: Object.keys(defaultUserData) as (keyof typeof defaultUserData)[],
+const nullableUser = {
+	religion: "",
+	sexuality: "",
+	race: "",
 }
-export {userData, defaultUserData}
+const postUser = {
+	...baseUser,
+	...nullableUser
+}
+const getUser = {
+	...postUser,
+	answers: []
+}
+const userData = {
+	baseKeys: Object.keys(baseUser) as (keyof typeof baseUser)[],
+	nullableKeys: Object.keys(nullableUser) as (keyof typeof nullableUser)[],
+	postKeys: Object.keys(postUser) as (keyof typeof postUser)[],
+	getKeys: Object.keys(getUser) as (keyof typeof getUser)[],
+}
+export {userData, postUser}

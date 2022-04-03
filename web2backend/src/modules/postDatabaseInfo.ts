@@ -1,10 +1,9 @@
 import bcrypt from "bcrypt";
 import pool from "../database/db";
-import {encrypt} from "./encryption";
 import {userData} from "../database/userData";
 import {orgData, postOrg as postOrgObj} from "../database/orgData";
 import {eventData, postEvent as postEventObj} from "../database/eventData";
-import {surveyKeys, questionKeys, questionValues, surveyValues, postSurveyValues, postQuestionValues} from "../database/surveyData";
+import {surveyKeys, questionKeys, questionValues, surveyValues, postSurveyValues, postQuestionValues, answerKeys, answerValues} from "../database/surveyData";
 import {verifyOrgVerification} from "./getDatabaseInfo";
 
 const postEntry = async (entry: object, tableName:string ) => {
@@ -38,7 +37,9 @@ type postEntryTypeArrayType = {
 	keys: typeof surveyKeys , values: postSurveyValues
 }|{
 	keys: typeof questionKeys , values: postQuestionValues
-}; 
+}|{
+	keys: typeof answerKeys, values: answerValues	
+}
 const postEntryArrays = async (entry: postEntryTypeArrayType, tableName:string ) => {
 	let errors: string[] = [];
 	let success = false;
@@ -65,44 +66,35 @@ const postEntryArrays = async (entry: postEntryTypeArrayType, tableName:string )
 	return {success: success, errors: errors, newEntry: newEntry};
 }
 
-const postUser = async (userId:string, password:string, userDataParams: string[]) => {
+const postUser = async (password:string, userParams: string[]) => {
 	let errors:string[] = [];
 	let success = false;
 	let newUser:any = {};
-	let userDataValuesString = "";
-	for (let i=0; i<userDataParams.length; i++) {
-		if (i) userDataValuesString += ", ";
-		userDataValuesString += `$${i+1}`;
+	let userValuesString = "";
+	for (let i=0; i<userParams.length+1; i++) {
+		if (i) userValuesString += ", ";
+		userValuesString += `$${i+1}`;
 	}
-	// let postUser = {...defaultUserData};
-	let userDataQueryValues:string[] = [];
-	userDataParams.forEach(key => userDataQueryValues.push(encrypt(key)))
-	const userDataQueryKeysString = userData.dataKeys.join(", ");
-	try {
-		let newUserDataId = await pool.query(
-			"INSERT INTO user_data ("+ userDataQueryKeysString +") VALUES("+userDataValuesString+") RETURNING id",
-			[...userDataQueryValues]
-		);
-		let userQueryValues:string[] = [];
-		let userQueryKeysString = "u_id, password_hash, user_data_id" ;
-		userQueryValues.push(userId);
-		const password_hash = bcrypt.hashSync(password, 10);
-		if (password_hash=="0") errors.push("invalid hashing");
-		else userQueryValues.push(password_hash);
-		userQueryValues.push(newUserDataId.rows[0].id.toString());
-		let newUserId = await pool.query(
-			"INSERT INTO users ("+ userQueryKeysString +") VALUES($1, $2, $3) RETURNING id",
-			[...userQueryValues]
-		);
-		newUser = newUserId.rows[0].id;
-		success = true;
-	} catch (e: any) {
-		if (e.code == 23505) {
-			errors.push(e.detail);
-		} else {
-			errors.push("database error");
+	const userQueryKeysString = ["password_hash", ...userData.postKeys].join(", ");
+	const password_hash = bcrypt.hashSync(password, 10);
+	if (password_hash=="0") errors.push("invalid hashing");
+	else {
+		const userQueryValues = [password_hash, ...userParams];
+		try {
+			let newUserId = await pool.query(
+				"INSERT INTO users ("+ userQueryKeysString +") VALUES("+userValuesString+") RETURNING id",
+				[...userQueryValues]
+			);
+			newUser = newUserId.rows[0].id;
+			success = true;
+		} catch (e: any) {
+			if (e.code == 23505) {
+				errors.push(e.detail);
+			} else {
+				errors.push("database error");
+			}
+			console.log(e);
 		}
-		console.log(e);
 	}
 	return {success: success, errors: errors, newUser: newUser};
 }
@@ -145,6 +137,12 @@ const postQuestion = async (questionParams:(questionValues)) => {
 	let {errors, success, newEntry:newQuestion} = await postEntryArrays({keys:questionKeys, values: postQuestionArray}, "questions");
 	return {success: success, errors: errors, newQuestion: newQuestion};
 }
+const postAnswer = async (answer:string, question_id:number) => {
+	let postAnswerArray:answerValues = [answer, question_id];
+	// if (answerParams[2]?.length) postAnswerArray[2] = `{"${answerParams[2]?.join("\", \"")}"}`;
+	let {errors, success, newEntry:newAnswer} = await postEntryArrays({keys:answerKeys, values: postAnswerArray}, "answers");
+	return {success: success, errors: errors, newAnswer: newAnswer};
+}
 
 const postOrg = async (orgParams:string[]) => {
 	let newPostOrgObj = {...postOrgObj};
@@ -154,4 +152,4 @@ const postOrg = async (orgParams:string[]) => {
 }
 
 
-export {postUser, postOrg, postEvent, postSurvey}
+export {postAnswer, postUser, postOrg, postEvent, postSurvey}
