@@ -1,8 +1,26 @@
 import Cookies from "universal-cookie";
 import {httpReq} from "./httpRequest";
-import {postUserType, postEventType, postOrgType, postOrgReturn, postEventReturn} from "../postData";
+import {postUserType, postEventType, postOrgType, postOrgReturn, postEventReturn, postSurveyReturn} from "../postData";
+import { postSurveyType } from "../types/surveys";
 
 const cookies = new Cookies();
+
+const web2PostSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
+	let json = await httpReq("/api/survey/", "POST", {
+		org: id,
+		name: inputData.name,
+		description: inputData.description,
+		questions: inputData.questions
+	})
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) {
+			return {success: true, errors: [], surveyId: response.response.surveyData}
+		} else {
+			return {success: false, errors: response.errors, surveyId: ""}
+		}
+	} else return {success: false, errors: ["request failed"], surveyId: ""};
+}
 
 const postEventWeb2 = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
 	let json = await httpReq("/api/event/", "POST", {
@@ -22,7 +40,7 @@ const postEventWeb2 = async (id:string, inputData:postEventType):Promise<postEve
 		} else {
 			return {success: false, errors: response.errors, eventId: ""}
 		}
-	} else return {success: false, errors: ["request failed"], eventId: ""};;
+	} else return {success: false, errors: ["request failed"], eventId: ""};
 }
 const postOrgWeb2 = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	let json = await httpReq("/api/org/", "POST", {
@@ -71,4 +89,4 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 	} else return ["request failed"];
 }
 
-export {postEventWeb2, postOrgWeb2, postUserWeb2};
+export {web2PostSurvey, postEventWeb2, postOrgWeb2, postUserWeb2};

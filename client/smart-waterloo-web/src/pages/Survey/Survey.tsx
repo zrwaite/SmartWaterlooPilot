@@ -6,7 +6,7 @@ import SurveyLanding from "./SurveyLanding";
 import "./Survey.css";
 import { useParams } from "react-router-dom";
 import SurveyQuestion from "./SurveyQuestion";
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 import { getSurveyData } from "../../data/getData";
 import NotFound from "../NotFound";
 
@@ -14,14 +14,15 @@ const defaultSurveyData:SurveyDataType = {
 	id: "",
 	name: "Loading...",
 	organization: "- - - - - - - - -",
+	description: "- - - - - - - - -",
 	length: "? mins",
 	completed: false,
 	questions: []
 }
 const defaultAnswers:string[] = [];
 const Survey = () => {
-	const cookies = new Cookies()
-	cookies.set("back", "/surveys");
+	// const cookies = new Cookies()
+	// cookies.set("back", "/surveys/");
 	const { id } = useParams<"id">();
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);

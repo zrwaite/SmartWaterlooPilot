@@ -11,7 +11,7 @@ const Surveys = (props: AccountChildProps) => {
 	// const {address} = useContext(AddressContext);
 	const navigate = useNavigate();
 	const cookies = new Cookies();
-	cookies.set("back", "/surveys");
+	cookies.set("back", `/dashboard/${props.org?`org/${props.orgId}`:"user"}`);
 	return (
 		<div className={"besideAside"}>
 			<div className={mobile? "":"fullScreenPanel"}>

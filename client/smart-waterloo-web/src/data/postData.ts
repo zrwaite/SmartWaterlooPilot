@@ -3,7 +3,8 @@ import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
 import { AbiItem } from 'web3-utils';
 import eventABI from "./utils/OrganisationEvents.json";
-import {postEventWeb2, postOrgWeb2, postUserWeb2} from "./web2/web2PostData";
+import {postEventWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey} from "./web2/web2PostData";
+import { postSurveyType } from "./types/surveys";
 
 interface postUserType {
 	day:string, month:string, year:string,
@@ -25,6 +26,7 @@ interface postOrgType {
 }
 type postOrgReturn = {success:boolean, errors: string[], orgId:string}
 type postEventReturn = {success:boolean, errors: string[], eventId:string}
+type postSurveyReturn = {success:boolean, errors: string[], surveyId:string}
 
 const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));
@@ -35,8 +37,13 @@ const postUser = async (inputData:postUserType) => {
 const postEvent = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
 	return USE_WEB3?(await postEventWeb3(id, inputData)):(await postEventWeb2(id, inputData));
 }
+const postSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
+	return USE_WEB3?(await web3PostSurvey(id, inputData)):(await web2PostSurvey(id, inputData));
+}
 
-
+const web3PostSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
+	return {success: false, errors: ["not implemented"], surveyId: ""};
+}
 const postOrgWeb3 = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return {success: false, errors: ["not implemented"], orgId: ""};
 }
@@ -121,6 +128,6 @@ let contractABI;
 
 }
 
-export {postUser, postEvent, postOrg}
+export {postSurvey, postUser, postEvent, postOrg}
 
-export type {postUserType, postEventType, postOrgType, postOrgReturn, postEventReturn}
+export type {postSurveyReturn, postUserType, postEventType, postOrgType, postOrgReturn, postEventReturn}

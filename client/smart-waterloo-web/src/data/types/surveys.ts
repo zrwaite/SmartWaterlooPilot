@@ -3,19 +3,23 @@ interface Question {
     answer_type: "short"|"long"|"mc"|"check";
 	choices?: string[]
 }
-interface SurveyDataType {
-	id: string;
+interface postSurveyType {
 	name: string;
-	organization: string;
+	description: string;
+	questions: Question[];
+}
+interface SurveyDataType extends postSurveyType {
+	id: string;
 	length: string;
 	completed: boolean;
-	questions: Question[];
+	organization: string;
 }
 const defaultSurvey:SurveyDataType = {
 	id: "",
 	name: "",
 	organization: "",
 	length: "",
+	description: "",
 	completed: false,
 	questions: []
 }
@@ -27,8 +31,9 @@ const defaultSurveysState: {
 
 
 
+
 export { defaultSurvey, defaultSurveysState};
-export type {Question, SurveyDataType};
+export type {Question, SurveyDataType, postSurveyType};
 
 
 
