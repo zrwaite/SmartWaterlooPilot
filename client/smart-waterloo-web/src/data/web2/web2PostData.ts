@@ -1,9 +1,25 @@
 import Cookies from "universal-cookie";
 import {httpReq} from "./httpRequest";
-import {postUserType, postEventType, postOrgType, postOrgReturn, postEventReturn, postSurveyReturn} from "../postData";
+import {postUserType} from "../types/account";
+import {postEventType, postEventReturn} from "../types/events"
+import { postSurveyReturn} from "../types/surveys"
+import { postOrgType, postOrgReturn} from "../types/orgs"
 import { postSurveyType } from "../types/surveys";
 
 const cookies = new Cookies();
+
+const web2PostAnswer = async (questionId: string, answer: string):Promise<string[]> => {
+	let json = await httpReq("/api/answer/", "POST", {
+		user_id: cookies.get("userId"),
+		answer: answer,
+		question_id: questionId,
+	})
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) return []
+		else return ["server failure"]
+	} else return ["request failure"];
+}
 
 const web2PostSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
 	let json = await httpReq("/api/survey/", "POST", {
@@ -89,4 +105,4 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 	} else return ["request failed"];
 }
 
-export {web2PostSurvey, postEventWeb2, postOrgWeb2, postUserWeb2};
+export {web2PostAnswer, web2PostSurvey, postEventWeb2, postOrgWeb2, postUserWeb2};

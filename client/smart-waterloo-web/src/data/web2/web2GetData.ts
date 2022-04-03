@@ -26,6 +26,7 @@ const web2GetSurveysData = async ():Promise<{success:boolean, surveys:typeof def
 	if (json) {
 		let response = JSON.parse(json);
 		if (response.success) return {success: true, surveys:response.response, errors: []};
+		else if (response.status === 404) return {success: true, surveys:[], errors: []};
 		else return {success: false, surveys:[], errors: response.errors}
 	} else return {success: false, surveys: [], errors:["request failed"]};
 }
@@ -45,6 +46,7 @@ const web2GetEventsData = async ():Promise<{success:boolean, events:typeof defau
 	if (json) {
 		let response = JSON.parse(json);
 		if (response.success) return {success: true, events:response.response, errors: []};
+		else if (response.status === 404) return {success: true, events:[], errors: []};
 		else return {success: false, events:[], errors: response.errors}
 	} else return {success: false, events: [], errors:["request failed"]};
 };

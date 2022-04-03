@@ -3,8 +3,8 @@ import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
 import { AbiItem } from 'web3-utils';
 import eventABI from "./utils/OrganisationEvents.json";
-import {postEventWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey} from "./web2/web2PostData";
-import { postSurveyReturn, postSurveyType } from "./types/surveys";
+import {postEventWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey, web2PostAnswer} from "./web2/web2PostData";
+import { postSurveyReturn, postSurveyType, Question, submitSurveyReturn} from "./types/surveys";
 import { postOrgReturn, postOrgType } from "./types/orgs";
 import { postEventReturn, postEventType } from "./types/events";
 import { postUserType } from "./types/account";
@@ -21,6 +21,24 @@ const postEvent = async (id:string, inputData:postEventType):Promise<postEventRe
 const postSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
 	return USE_WEB3?(await web3PostSurvey(id, inputData)):(await web2PostSurvey(id, inputData));
 }
+const submitSurvey = async (questions: Question[], answers: string[]):Promise<submitSurveyReturn> => {
+	if (questions.length !== answers.length) return {success: false, errors: ["invalid answers"]};
+	questions.forEach((question, i) => {
+		if (question.choices?.length && !question.choices.includes(answers[i])) return {success: false, errors: ["invalid answer "+answers[i]]};
+	});
+	for (let i=0; i<questions.length; i++) {
+		let postAnswerErrors = await postAnswer(questions[i].id, answers[i])
+		if (postAnswerErrors.length) return {success: false, errors: postAnswerErrors};
+	}
+	return {success: true, errors: []};
+}
+const postAnswer = async (questionId: string, answer: string):Promise<string[]> => {
+	return USE_WEB3?(await web3PostAnswer(questionId, answer)):(await web2PostAnswer(questionId, answer)); 
+}
+const web3PostAnswer = async (questionId: string, answer: string):Promise<string[]> => {
+	return ["function not implemented"];
+}
+
 
 const web3PostSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
 	return {success: false, errors: ["not implemented"], surveyId: ""};
@@ -109,6 +127,4 @@ let contractABI;
 
 }
 
-export {postSurvey, postUser, postEvent, postOrg}
-
-export type {postSurveyReturn, postUserType, postEventType, postOrgType, postOrgReturn, postEventReturn}
+export {submitSurvey, postSurvey, postUser, postEvent, postOrg}

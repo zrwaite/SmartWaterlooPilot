@@ -10,6 +10,7 @@ import { postSurvey } from "../../data/postData";
 
 
 interface Question {
+	id: string;
 	prompt: string;
     answer_type: "short"|"long"|"mc"|"check";
 	choices: string[];
@@ -56,6 +57,7 @@ const CreateSurvey = () => {
 	const addQuestion = () => {
 		let previousQuestions = [...questionInputs];
 		previousQuestions.push({
+			id: "",
 			prompt: "",
 			answer_type: "short",
 			choices: []
