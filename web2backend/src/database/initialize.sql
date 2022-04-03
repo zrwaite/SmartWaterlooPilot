@@ -77,5 +77,6 @@ create table if not exists "events"(
 	description TEXT,
 	linked_survey_id int null,
 	FOREIGN KEY (linked_survey_id) REFERENCES surveys(id),
-	image varchar(80)
+	image varchar(80),
+	attendees int default 0
 );

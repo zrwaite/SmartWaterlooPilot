@@ -16,7 +16,8 @@ const postEvent = {
 	...nullableEvent,
 }
 const getEventParams = {
-	id: ""
+	id: "",
+	attendees: ""
 }
 const defaultEvent = {
 	...postEvent,

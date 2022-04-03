@@ -16,6 +16,16 @@ const addOrgMember = async (orgId:number, userId: number) => {
 	}
 	return {status: status, result: result};
 }
+const incrementEvent = async (eventId: number) => {
+	try {
+		pool.query(
+			"UPDATE events SET attendees = attendees + 1 WHERE id = $1",
+			[eventId]
+		);
+	} catch (e) {
+		console.log(e);
+	}
+}
 
 const addUserEvent = async (eventId:number, userId: number) => {
 	let result;
@@ -25,7 +35,10 @@ const addUserEvent = async (eventId:number, userId: number) => {
 			"UPDATE users SET events = array_append(events, $1) WHERE user_id = $2",
 			[eventId, userId]
 		);
-		if (result && result.rowCount) status = 201;
+		if (result && result.rowCount) {
+			status = 201;
+			incrementEvent(eventId);
+		}
 		else status = 404;
 	} catch (e) {
 		status = 400;
