@@ -1,4 +1,4 @@
-const baseURL = "https://golf-cet-allowed-reserves.trycloudflare.com";
+const baseURL = "https://cadillac-floors-pee-amounts.trycloudflare.com";
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
     url = baseURL + url;

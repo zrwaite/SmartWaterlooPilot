@@ -24,7 +24,7 @@ const Events = (props: AccountChildProps) => {
 						<button onClick={() => navigate("/createevent")} className={"blackButton addEventButton"}>Add Event</button>
 					</div> : null}
 					{
-						props.eventsData.eventsDataSet ?
+						props.eventsData.set ?
 							props.eventsData.events.map((event, i) => {
 								return (
 									<EventPanel index={i} key={i} {...event} />

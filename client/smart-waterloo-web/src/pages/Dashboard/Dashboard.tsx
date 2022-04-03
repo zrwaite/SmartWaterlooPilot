@@ -15,21 +15,30 @@ const Dashboard = (props: AccountChildProps) => {
 	const { orgId } = useParams();
 	const cookies = new Cookies();
 	cookies.set("back", `/dashboard/${props.org?`org/${orgId}`:"user"}`);
+	const dashboardPreviewData = {
+		...props.accountData.account,
+		...props.eventsData,
+		...props.surveysData, 
+		eventsSet:props.eventsData.set,
+		surveysSet:props.surveysData.set,
+		org:props.org ,
+		orgId:orgId,
+	}
     return (
 		<>
 			{mobile&&(
 				<header className="center">
 					<h4>Dashboard 📌</h4>
-					<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${props.accountData.avatarString}.svg`} alt="avatarImage"/>
-					<h5>{props.accountData.nickname}</h5>
+					<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatarString}.svg`} alt="avatarImage"/>
+					<h5>{props.accountData.account.nickname}</h5>
 				</header>
 			)}
 			<div className={"besideAside"}> 
 				<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
 					{/* {props.org?null:<DashboardPreview {...prop.accountData} org={props.org} {...eventsData} {...surveysData} name="upcoming"/>} */}
-					<DashboardPreview orgId={orgId} {...props.accountData} org={props.org} {...props.eventsData} {...props.surveysData} name="data"/>
-					<DashboardPreview orgId={orgId} {...props.accountData} org={props.org} {...props.eventsData} {...props.surveysData} name="events"/>
-					<DashboardPreview orgId={orgId} {...props.accountData} org={props.org} {...props.eventsData} {...props.surveysData} name="surveys"/>
+					<DashboardPreview {...dashboardPreviewData} name="data"/>
+					<DashboardPreview {...dashboardPreviewData} name="events"/>
+					<DashboardPreview {...dashboardPreviewData} name="surveys"/>
 				</div>
 			</div>
 		</>

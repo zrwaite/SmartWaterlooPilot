@@ -1,12 +1,12 @@
 import "./Sidebar.css"
 import {topElements, bottomElements, orgElements} from "./SidebarOptions"; 
 import {useNavigate} from "react-router-dom";
-import {defaultOrg} from "../../data/orgs";
+import {defaultOrg} from "../../data/types/orgs";
 interface SidebarProps {
 	org: boolean;
 	orgId: string|undefined;
 	page: string;
-	accountDataSet:boolean;
+	accountSet:boolean;
 	nickname: string;
 	avatarString: string;
 	openSettings: () => void;

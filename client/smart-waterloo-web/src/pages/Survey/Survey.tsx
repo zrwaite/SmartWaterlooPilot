@@ -1,7 +1,7 @@
 import Navbar from "../../components/Navbar";
-import {useState, useContext, useEffect} from "react"
+import {useState, useContext} from "react"
 import { MobileContext } from "../../App";
-import { SurveyDataType} from "../../data/Surveys";
+import { SurveyDataType } from "../../data/types/surveys";
 import SurveyLanding from "./SurveyLanding";
 import "./Survey.css";
 import { useParams } from "react-router-dom";
@@ -25,7 +25,6 @@ const Survey = () => {
 	const { id } = useParams<"id">();
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
-	const [loaded, setLoaded] = useState(false);
 	const [answers, setAnswers] = useState(defaultAnswers);
 	const greyText = {color: "grey"};
 	const childSetProgress = (newVal: boolean) => {

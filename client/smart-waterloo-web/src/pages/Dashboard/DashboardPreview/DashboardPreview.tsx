@@ -3,8 +3,8 @@ import { MobileContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
-import { defaultEventsData} from "../../../data/Events";
-import {defaultSurveysData} from "../../../data/Surveys"
+import { defaultEvent } from "../../../data/types/events";
+import {defaultSurvey} from "../../../data/types/surveys"
 import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
 import EventPanel from "../../Events/EventPanel"
@@ -34,10 +34,10 @@ const DashboardPreviewHeader = (props:DashboardPreviewHeaderProps) => {
 
 interface DashboardPreviewProps {
 	name: keyof typeof Data;
-	events: typeof defaultEventsData.events;
-	eventsDataSet: boolean;
-	surveys: typeof defaultSurveysData[]
-	surveysDataSet: boolean;
+	events: typeof defaultEvent[];
+	eventsSet: boolean;
+	surveys: typeof defaultSurvey[]
+	surveysSet: boolean;
 	org: boolean;
 	orgId: string|undefined;
 }
@@ -53,11 +53,10 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 		</button>
 	);
 	let panelList;
-	let numUpcoming = 0;
 	switch (props.name) {
 		case "events": panelList = (<> 
 			{
-				props.eventsDataSet?
+				props.eventsSet?
 				props.events.map((event, i) => {return (
 					i<5?<EventPanel key={i} index={i} {...event}/>:null
 				);}):
@@ -74,7 +73,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 		</>
 		);break; case "surveys": panelList = (<>
 			{
-				props.surveysDataSet?
+				props.surveysSet?
 				props.surveys.map((survey, i) => {return (
 					i<5?<SurveyPanel key={i} index={i} {...survey}/>:null
 				);}):

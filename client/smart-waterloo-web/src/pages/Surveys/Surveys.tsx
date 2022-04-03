@@ -24,7 +24,7 @@ const Surveys = (props: AccountChildProps) => {
 						<button onClick={() => navigate("/createsurvey")}  className={"blackButton addSurveyButton"}>Add Survey</button>
 					</div>:null}
 					{
-						props.surveysData.surveysDataSet?(
+						props.surveysData.set?(
 							props.surveysData.surveys.map((survey, i) => {return (
 								<SurveyPanel index={i} key={i} {...survey}/>
 							);})

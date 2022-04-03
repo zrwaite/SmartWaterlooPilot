@@ -10,7 +10,7 @@ import {Link} from "react-router-dom";
 import {MobileContext} from "../../App";
 import MobileNavItem from "./MobileNavItem";
 import SWRLogo from "../../images/SWRLogo.png"
-import { defaultOrg } from "../../data/orgs";
+import { defaultOrg } from "../../data/types/orgs";
 
 
 type NavbarProps = {

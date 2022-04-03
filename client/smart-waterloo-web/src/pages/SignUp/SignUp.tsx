@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
-import { MobileContext, AddressContext, IdContext } from "../../App";
+import { MobileContext, IdContext } from "../../App";
 import "./SignUp.css";
 import Profile from "./Profile";
 import Landing from "./Landing";

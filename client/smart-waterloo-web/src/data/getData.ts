@@ -1,58 +1,63 @@
-import { defaultEventsData} from "./Events";
-import {defaultSurveysData} from "./Surveys"
+import { defaultEvent} from "./types/events";
+import {defaultSurvey} from "./types/surveys"
 import userABI from "./utils/SmartUser.json";
 import {AbiItem} from "web3-utils";
 import Web3 from "web3";
 import orgABI from "./utils/SmartOrganisation.json";
 import eventABI from "./utils/OrganisationEvents.json";
 import {USE_WEB3} from "./dataConstants";
-import {defaultAccountData} from "./account";
-import {web2GetUserOrgs, web2GetBasicUserData, web2GetSurveysData, getWeb2EventsData, getWeb2EventData, getWeb2SurveyData} from "./web2/web2GetData";
-import {defaultOrg} from "./orgs";
+import {defaultAccount} from "./types/account";
+import {web2GetUserOrgs, web2GetBasicUserData, web2GetSurveysData, web2GetBasicOrgData, getWeb2EventsData, getWeb2EventData, getWeb2SurveyData} from "./web2/web2GetData";
+import {defaultOrg} from "./types/orgs";
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
 
-const getBasicUserData = async ():Promise<{success:true, response:typeof defaultAccountData}|{success:false, response: string[]}|any> => {
+const getBasicUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}> => {
 	return USE_WEB3 ? (await web3GetBasicUserData()) : (await web2GetBasicUserData());
 };
-const getSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
+const getSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {
 	return USE_WEB3 ? (await web3GetSurveysData()) : (await web2GetSurveysData());
 }
-const getEventsData = async ():Promise<{success:boolean, events:typeof defaultEventsData.events, errors: string[]}|any> => {
+const getEventsData = async ():Promise<{success:boolean, events:typeof defaultEvent[], errors: string[]}|any> => {
 	return USE_WEB3 ? (await getWeb3EventsData()) : (await getWeb2EventsData());
 };
-const getEventData = async (id:string):Promise<{success:boolean, event:typeof defaultEventsData.events[number]|{}, errors: string[]}|any> => {
+const getEventData = async (id:string):Promise<{success:boolean, event:typeof defaultEvent|{}, errors: string[]}|any> => {
 	return USE_WEB3 ? (await getWeb3EventData(id)) : (await getWeb2EventData(id));
 };
-const getSurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurveysData|{}, errors: string[]}|any> => {
+const getSurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurvey|{}, errors: string[]}|any> => {
 	return USE_WEB3 ? (await getWeb3SurveyData(id)) : (await getWeb2SurveyData(id));
 };
 const getUserOrgs = async (id:string):Promise<{success:boolean, orgs: (typeof defaultOrg)[], errors:string[]}> => {
 	return USE_WEB3 ? (await web3GetUserOrgs(id)) : (await web2GetUserOrgs(id));
+}
+const getBasicOrgData = async (id:string|undefined):Promise<{success:boolean, org: typeof defaultOrg|{}, errors:string[]}> => {
+	return USE_WEB3 ? (await web3GetBasicOrgData(id)) : (await web2GetBasicOrgData(id));
+}
+
+
+
+const web3GetBasicOrgData = async (id:string|undefined):Promise<{success:boolean, org: typeof defaultOrg|{}, errors:string[]}> => {
+	return {success: false, org: {}, errors: ["not implemented"]};
 }
 
 const web3GetUserOrgs = async (id:string):Promise<{success:boolean, orgs: typeof defaultOrg[], errors:string[]}> => {
 	return {success: false, orgs: [], errors: ["not implemented"]};
 }
 
-
-
-
-
-
-
-const getWeb3SurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurveysData|{}, errors: string[]}> => {
+const getWeb3SurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurvey|{}, errors: string[]}> => {
 	return {success: false, survey: {}, errors: []}
 }
 
-const web3GetSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurveysData[], errors: string[]}> => {
+const web3GetSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {
 	return {success: false, surveys: [], errors: []}
 }
 
 
 
-const web3GetBasicUserData = async () => {
+const web3GetBasicUserData = async ()
+:Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}|any> => {
+	return {success:false, userData:{}, errors:[]}
 	// let {org} = useContext(OrgContext);
 	// await new Promise(resolve => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
 	try {
@@ -116,7 +121,7 @@ const getWeb3EventData = async (id:string) => {
 }
 const getWeb3EventsData = async () => {
 	await new Promise((resolve) => setTimeout(resolve, 1000)); //Just an artificial delay for mock data
-	let newEvents: typeof defaultEventsData.events = [];
+	let newEvents: typeof defaultEvent[] = [];
 	let accounts = await window.ethereum.request({
 		method: "eth_requestAccounts",
 	});
@@ -155,4 +160,4 @@ const getWeb3EventsData = async () => {
 	return newEvents;
 };
 
-export {getUserOrgs, getBasicUserData, getEventsData, getEventData, getSurveysData, getSurveyData};
+export {getBasicOrgData, getUserOrgs, getBasicUserData, getEventsData, getEventData, getSurveysData, getSurveyData};

@@ -19,7 +19,7 @@ import {
 	useNavigate,
   } from "react-router-dom";
 import Modal from "react-modal";
-import { defaultEvent } from '../../data/Events';
+import { defaultEvent } from '../../data/types/events';
 import { getEventData } from '../../data/getData';
 
 Modal.setAppElement("#root");

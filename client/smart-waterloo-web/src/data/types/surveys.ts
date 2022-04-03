@@ -3,11 +3,6 @@ interface Question {
     answer_type: "short"|"long"|"mc"|"check";
 	choices?: string[]
 }
-type defaultSurveysDataType = {
-	surveysDataSet: boolean;
-	surveys: SurveyDataType[]
-}
-const defaultSurveysState: defaultSurveysDataType = {surveysDataSet: false, surveys:[]};
 interface SurveyDataType {
 	id: string;
 	name: string;
@@ -16,7 +11,7 @@ interface SurveyDataType {
 	completed: boolean;
 	questions: Question[];
 }
-const defaultSurveysData:SurveyDataType = {
+const defaultSurvey:SurveyDataType = {
 	id: "",
 	name: "",
 	organization: "",
@@ -25,8 +20,15 @@ const defaultSurveysData:SurveyDataType = {
 	questions: []
 }
 
-export { defaultSurveysData, defaultSurveysState};
-export type {SurveyDataType, Question}
+const defaultSurveysState: {
+	set: boolean;
+	surveys: SurveyDataType[]
+} = {set: false, surveys:[]};
+
+
+
+export { defaultSurvey, defaultSurveysState};
+export type {Question, SurveyDataType};
 
 
 
