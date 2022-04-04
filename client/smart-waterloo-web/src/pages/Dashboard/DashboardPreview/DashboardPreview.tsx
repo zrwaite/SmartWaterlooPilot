@@ -76,6 +76,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			{
 				props.surveysSet?
 				props.surveys.map((survey, i) => {
+					console.log(props.account.surveys);
 					const surveyCompleted = props.account.surveys.includes(parseInt(survey.id));
 					return (
 					i<5?<SurveyPanel completed={surveyCompleted} numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} key={i} index={i} {...survey}/>:null

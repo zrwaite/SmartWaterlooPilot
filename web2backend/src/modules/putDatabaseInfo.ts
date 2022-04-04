@@ -1,4 +1,6 @@
+import { unchangedTextChangeRange } from "typescript";
 import pool from "../database/db";
+import { getEventOrg, getSurveyOrg } from "./getDatabaseInfo";
 const foundOrgMembers = async (orgId:number, userId: number) => {
 	try {
 		let result:any = await pool.query(
@@ -49,21 +51,28 @@ const incrementEvent = async (eventId: number) => {
 const addUserEvent = async (eventId:number, userId: number) => {
 	let result;
 	let status = 400;
-	try {
-		result = await pool.query(
-			"UPDATE users SET events = array_append(events, $1) WHERE user_id = $2",
-			[eventId, userId]
-		);
-		if (result && result.rowCount) {
-			status = 201;
-			incrementEvent(eventId);
+	let errors: string[] = [];
+	let {orgNickname, errors: nicknameErrors} = await getEventOrg(eventId);
+	if (orgNickname!=="") {
+		try {
+			result = await pool.query(
+				"UPDATE users SET events = array_append(events, $1), orgs = array_append(orgs, $2) WHERE user_id = $3",
+				[eventId, orgNickname, userId]
+			);
+			if (result && result.rowCount) {
+				status = 201;
+				incrementEvent(eventId);
+			}
+			else status = 404;
+		} catch (e) {
+			status = 400;
+			console.log(e);
+			errors.push("database error");
 		}
-		else status = 404;
-	} catch (e) {
-		status = 400;
-		console.log(e);
+	} else {
+		errors.push(...nicknameErrors)
 	}
-	return {status: status, result: result};
+	return {status: status, result: result, errors: errors};
 }
 
 const addUserOrg = async (orgName:string, userId: number) => {
@@ -86,18 +95,25 @@ const addUserOrg = async (orgName:string, userId: number) => {
 const addUserSurvey = async (surveyId:number, userId: number) => {
 	let result;
 	let status = 400;
-	try {
-		result = await pool.query(
-			"UPDATE users SET surveys = array_append(surveys, $1) WHERE user_id = $2",
-			[surveyId, userId]
-		);
-		if (result && result.rowCount) status = 201;
-		else status = 404;
-	} catch (e) {
-		status = 400;
-		console.log(e);
+	let errors: string[] = [];
+	let {orgNickname, errors:nicknameErrors} = await getSurveyOrg(surveyId);
+	if (orgNickname!=="") {
+		try {
+			result = await pool.query(
+				"UPDATE users SET surveys = array_append(surveys, $1), orgs = array_append(orgs, $2) WHERE user_id = $3",
+				[surveyId, orgNickname, userId]
+			);
+			if (result && result.rowCount) status = 201;
+			else status = 404;
+		} catch (e) {
+			status = 400;
+			console.log(e);
+			errors.push("database error");
+		}
+	} else {
+		errors.push(...nicknameErrors)
 	}
-	return {status: status, result: result};
+	return {status: status, result: result, errors: errors};
 }
 
 const updateAnswersArray = async (userId:number, answerId:number) => {

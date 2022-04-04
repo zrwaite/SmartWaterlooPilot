@@ -6,6 +6,15 @@ import {defaultAnswer, defaultSurvey} from "../types/surveys"
 import {defaultOrg} from "../types/orgs";
 const cookies = new Cookies();
 
+interface apitype {
+	success: boolean;
+	status: number;
+	errors: string[];
+}
+interface getUserDataResponse extends apitype{
+	response: typeof defaultAccount;
+}
+
 const web2GetAnswersData = async (id:string|undefined):Promise<{success:boolean, answers: typeof defaultAnswer[], errors:string[]}> => {
 	let json = await httpReq("/api/answer/?question_id="+id)
 	if (json) {
@@ -19,8 +28,17 @@ const web2GetAnswersData = async (id:string|undefined):Promise<{success:boolean,
 const web2GetUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}> => {
 	let json = await httpReq("/api/user/?user_id=" + cookies.get("userId"))
 	if (json) {
-		let response = JSON.parse(json);
+		let response = JSON.parse(json) as getUserDataResponse;
 		if (response.success) {
+			response.response.surveys = response.response.surveys.filter((item, pos) => {
+				return response.response.surveys.indexOf(item) === pos;
+			})
+			response.response.events = response.response.events.filter((item, pos) => {
+				return response.response.events.indexOf(item) === pos;
+			})
+			response.response.orgs = response.response.orgs.filter((item, pos) => {
+				return response.response.orgs.indexOf(item) === pos;
+			})
 			return {success: true, userData:response.response, errors: []};
 		} else {
 			return {success: false, userData:{}, errors: response.errors}
