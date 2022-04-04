@@ -59,7 +59,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			{
 				props.eventsSet?
 				props.events.map((event, i) => {return (
-					i<5?<EventPanel key={i} index={i} {...event}/>:null
+					i<5?<EventPanel isOrg={props.org} orgId={props.orgId} key={i} index={i} {...event}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
@@ -76,7 +76,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			{
 				props.surveysSet?
 				props.surveys.map((survey, i) => {return (
-					i<5?<SurveyPanel key={i} index={i} {...survey}/>:null
+					i<5?<SurveyPanel numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} key={i} index={i} {...survey}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			} 

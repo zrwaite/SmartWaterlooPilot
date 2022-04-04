@@ -3,10 +3,11 @@ import "./SurveyPanel.css";
 interface SurveyPanelProps {
 	id:string,
 	name: string,
-	organization: string,
-	length: string,
+	numQuestions: number,
 	completed: boolean,
 	index: number,
+	orgId: string|undefined,
+	isOrg: boolean;
 }
 
 const SurveyPanel = (props: SurveyPanelProps) => {
@@ -14,7 +15,7 @@ const SurveyPanel = (props: SurveyPanelProps) => {
 	const greyText = {color: "#848484"};
 	const navigate = useNavigate();
 	return (
-		<div onClick={() => navigate(`/survey/${props.id}`)} className={`surveyPanel ${props.completed?"activeSurveyPanel":""}`}>
+		<div onClick={() => navigate(`/survey/${props.id}/${props.isOrg?`org/${props.orgId}`:"user"}`)} className={`surveyPanel ${props.completed?"activeSurveyPanel":""}`}>
 			<div className="surveyPanelHeader">
 				<div>
 					<p style={colorDiv} className={"surveyBubble"}>New</p>
@@ -22,8 +23,7 @@ const SurveyPanel = (props: SurveyPanelProps) => {
 				{props.completed?<div style={colorDiv} className={"surveyBubble"}>Complete</div>:<div></div>}
 			</div>
 			<h6>{props.name}</h6>
-			<p>{props.organization}</p>
-			<p style={greyText}>{props.length} to fill</p>
+			<p style={greyText}>{props.numQuestions} questions</p>
 		</div>
 	)
 }	

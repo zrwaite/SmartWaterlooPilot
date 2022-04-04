@@ -14,17 +14,17 @@ import { submitSurvey } from "../../data/postData";
 const defaultSurveyData:SurveyDataType = {
 	id: "",
 	name: "Loading...",
-	organization: "- - - - - - - - -",
+	org: "- - - - - - - - -",
 	description: "- - - - - - - - -",
 	length: "? mins",
 	completed: false,
 	questions: []
 }
 const defaultAnswers:string[] = [];
-const Survey = () => {
+const Survey = (props: {org:boolean}) => {
 	// const cookies = new Cookies()
 	// cookies.set("back", "/surveys/");
-	const { id } = useParams<"id">();
+	const { id, orgId } = useParams();
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
 	const [answers, setAnswers] = useState(defaultAnswers);
@@ -76,7 +76,7 @@ const Survey = () => {
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"surveyPagePanel"}>
 					{mobile?<h4>{surveyData.survey.name}</h4>:<h4 className={"surveyHeader"}>{surveyData.survey.name}</h4>}
-					<p>{surveyData.survey.organization}</p>
+					<p>{surveyData.survey.org}</p>
 					<p style={greyText}>{surveyData.survey.questions.length} questions</p>
 					<div className={"surveyForm"}>
 						

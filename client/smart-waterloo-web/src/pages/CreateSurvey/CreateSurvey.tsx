@@ -84,7 +84,7 @@ const CreateSurvey = () => {
 	const tryPostSurvey = async () => {
 		if (orgId) {
 			let {success, errors, surveyId} = await postSurvey(orgId, {name: standardInputs.name, description: standardInputs.description, questions: questionInputs}) 
-			if (success) navigate(`/survey/${surveyId}`);
+			if (success) navigate(`/survey/${surveyId}/org/${orgId}`);
 			else alert(JSON.stringify(errors));
 		}
 	}

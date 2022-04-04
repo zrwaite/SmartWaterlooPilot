@@ -17,10 +17,10 @@ import Cookies from 'universal-cookie';
 
 Modal.setAppElement("#root");
 
-const EventsDetails = () => {
+const EventsDetails = (props: {org:boolean}) => {
 	let {mobile} = useContext(MobileContext);
 	const navigate = useNavigate();
-	const { id } = useParams();
+	const { id, orgId} = useParams();
 	const [buttonText, setText] = React.useState("Sign Up");
 	const [signupButtonClass, setClass] = React.useState("signupButton");
 	const [bottomButtonClass, setBottomClass] = React.useState("bottomButton");
@@ -92,13 +92,13 @@ const EventsDetails = () => {
 								<img src={event_images.basketball_skills} alt={eventData.event.name} className="eventImage" />
 							</div>
 							<EventInfo {...eventData.event} />
-							<div className="DesktopPanelNoBorder">
+							{props.org?null:(<div className="DesktopPanelNoBorder">
 								<p className={bottomButtonClass} onClick={() => { 
 								openModal()
 								setText("Signed Up ✓") 
 								setClass("signupLightBlueButton")
 								setBottomClass("bottomLightBlueButton") }}>{buttonText}</p>
-							</div>
+							</div>)}
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>
 						)

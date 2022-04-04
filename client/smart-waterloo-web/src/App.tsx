@@ -87,8 +87,10 @@ function App() {
 							<Route path="/surveys/org/:orgId" element={<AccountParent page={"surveys"} org={true} />}></Route>
 							<Route path="/events/org/:orgId" element={<AccountParent page={"events"} org={true} />}></Route>
 
-							<Route path="/survey/:id" element={<Survey />}></Route>
-							<Route path="/eventdetails/:id" element={<EventDetails />}></Route>
+							<Route path="/survey/:id/user" element={<Survey org={false} />}></Route>
+							<Route path="/survey/:id/org/:orgId" element={<Survey org={true} />}></Route>
+							<Route path="/eventdetails/:id/user" element={<EventDetails org={false} />}></Route>
+							<Route path="/eventdetails/:id/org/:orgId" element={<EventDetails org={true} />}></Route>
 
 							<Route path="/createevent/:orgId" element={<CreateEvent />}></Route>
 							<Route path="/createsurvey/:orgId" element={<CreateSurvey />}></Route>

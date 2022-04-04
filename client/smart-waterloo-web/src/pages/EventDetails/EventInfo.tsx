@@ -5,7 +5,7 @@ import "./EventDetails.css";
 interface EventData {
     "name": string;
     "id": string;
-    "organization": string;
+    "org": string;
     "age_range": string;
     "start_date": string;
     "end_date": string;
@@ -13,6 +13,7 @@ interface EventData {
     "signed_up": boolean;
     "description": string;
     "image": string;
+	attendees: string;
 }
 const EventInfo = (props: EventData): any => {
 	return (
@@ -24,11 +25,11 @@ const EventInfo = (props: EventData): any => {
 				<p className="lightblue">NEW</p>
 				<p className="lightbluetext">{props.category}</p>
 				<h5 className="eventTitle">{props.name}</h5>
-				<p>{props.organization}</p>
 				<p className="greytext">For Ages {props.age_range}</p>
 				<p className="greytext">{props.start_date} {props.end_date}</p>
 				<br></br>
 				<p >{props.description}</p>
+				<p>Signed Up: {props.attendees}</p>
 			</div>
 		</>
 	)

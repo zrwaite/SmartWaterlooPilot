@@ -13,12 +13,12 @@ interface SurveyDataType extends postSurveyType {
 	id: string;
 	length: string;
 	completed: boolean;
-	organization: string;
+	org: string;
 }
 const defaultSurvey:SurveyDataType = {
 	id: "",
 	name: "",
-	organization: "",
+	org: "",
 	length: "",
 	description: "",
 	completed: false,
@@ -50,7 +50,7 @@ export type {Question, SurveyDataType, postSurveyType, postSurveyReturn, submitS
 // const exampleSurveys:SurveyDataType[] = [
 // 	{
 // 		name: "Survey 01",
-// 		organization: "Kinbrdige Community Association",
+// 		org: "Kinbrdige Community Association",
 // 		length: "2-3 mins",
 // 		completed: true,
 // 		questions: [
@@ -69,7 +69,7 @@ export type {Question, SurveyDataType, postSurveyType, postSurveyReturn, submitS
 // 	},
 // 	{
 // 		name:"Survey 02",
-// 		organization: "Fiddlesticks Community Centre",
+// 		org: "Fiddlesticks Community Centre",
 // 		length: "2-3 mins",
 // 		completed: false,
 // 		questions: [
@@ -88,7 +88,7 @@ export type {Question, SurveyDataType, postSurveyType, postSurveyReturn, submitS
 // 	},
 // 	{
 // 		name: "Survey 03",
-// 		organization: "Greenway-Chaplin Community Centre",
+// 		org: "Greenway-Chaplin Community Centre",
 // 		length: "2-3 mins",
 // 		completed: false,
 // 		questions: [

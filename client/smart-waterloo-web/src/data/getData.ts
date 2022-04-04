@@ -155,7 +155,7 @@ const web3GetEventsData = async () => {
 	// 	newEvents.push({
 	// 		id: event.id,
 	// 		name: event.name,
-	// 		organization: event.organization,
+	// 		org: event.org,
 	// 		age_range: event.age_range,
 	// 		start_date: event.start_date,
 	// 		end_date: event.end_date,
