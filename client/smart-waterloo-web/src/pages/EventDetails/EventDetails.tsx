@@ -12,8 +12,10 @@ import NotFound from "../NotFound";
 import {useParams,useNavigate,} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultEvent } from '../../data/types/events';
-import { getEventData } from '../../data/getData';
+import { getBasicUserData, getEventData } from '../../data/getData';
 import Cookies from 'universal-cookie';
+import { defaultAccountState } from '../../data/types/account';
+import { addEventtoUser } from '../../data/addData';
 
 Modal.setAppElement("#root");
 
@@ -21,9 +23,10 @@ const EventsDetails = (props: {org:boolean}) => {
 	let {mobile} = useContext(MobileContext);
 	const navigate = useNavigate();
 	const { id, orgId} = useParams();
-	const [buttonText, setText] = React.useState("Sign Up");
-	const [signupButtonClass, setClass] = React.useState("signupButton");
-	const [bottomButtonClass, setBottomClass] = React.useState("bottomButton");
+	const [buttonText, setText] = useState("Sign Up");
+	const [signupButtonClass, setClass] = useState("signupButton");
+	const [bottomButtonClass, setBottomClass] = useState("bottomButton");
+	const [accountData, setAccountData] = useState(defaultAccountState);
 	const [isOpen, setIsOpen] = React.useState(false);
 
 	// const event = eventDataRaw.find(event => event.id === id);
@@ -38,11 +41,14 @@ const EventsDetails = (props: {org:boolean}) => {
 		}
 		else setEventData({ event: event, eventDataSet: true })
 	}
-	const [dataCalled, setDataCalled] = useState(false);
-	if (!dataCalled) {
-		getSetEventData();
-		setDataCalled(true);
+	const getSetUserData = async () => {
+		let {success, userData, errors} = await getBasicUserData();
+		if (!success && errors.length) alert(JSON.stringify(errors));	
+		else if ('nickname' in userData) setAccountData({account: userData, set: true});
+		else console.error("invalid userData response");
 	}
+	const [dataCalled, setDataCalled] = useState(false);
+	
 	if (notFound || !id) return <NotFound />
 
 	function openModal() {
@@ -53,6 +59,29 @@ const EventsDetails = (props: {org:boolean}) => {
 		setIsOpen(false);
 	}
 	const cookies = new Cookies();
+	const signedUp = accountData.account.events.includes(parseInt(eventData.event.id));
+	const trySignUp = async () => {
+		if (!signedUp) {
+			let {success, errors} = await addEventtoUser(cookies.get("userId"), eventData.event.id)
+			if (success) {
+				openModal();
+				setText("Signed Up ✓");
+				setClass("signupLightBlueButton");
+				setBottomClass("bottomLightBlueButton");
+			} else alert(JSON.stringify(errors));
+		}
+	}
+	if (accountData.set && eventData.eventDataSet && signedUp && buttonText!=="Signed Up ✓" && signupButtonClass!=="signupLightBlueButton" && bottomButtonClass!=="bottomLightBlueButton") {
+		setText("Signed Up ✓");
+		setClass("signupLightBlueButton");
+		setBottomClass("bottomLightBlueButton");
+	}
+
+	if (!dataCalled) {
+		getSetEventData();
+		getSetUserData();
+		setDataCalled(true);
+	}
 
 	return (
 		<>
@@ -77,11 +106,7 @@ const EventsDetails = (props: {org:boolean}) => {
 					</div>					
 				</div>
 				<div>
-					<p className={signupButtonClass} onClick={() => { 
-					openModal()
-					setText("Signed Up ✓") 
-					setClass("signupLightBlueButton")
-					setBottomClass("bottomLightBlueButton") }}>{buttonText}</p>
+					<p className={signupButtonClass} onClick={trySignUp}>{buttonText}</p>
 				</div>		
 			</div>
 			<div className={"PageContainer"}>
@@ -93,11 +118,7 @@ const EventsDetails = (props: {org:boolean}) => {
 							</div>
 							<EventInfo {...eventData.event} />
 							{props.org?null:(<div className="DesktopPanelNoBorder">
-								<p className={bottomButtonClass} onClick={() => { 
-								openModal()
-								setText("Signed Up ✓") 
-								setClass("signupLightBlueButton")
-								setBottomClass("bottomLightBlueButton") }}>{buttonText}</p>
+								<p className={bottomButtonClass} onClick={trySignUp}>{buttonText}</p>
 							</div>)}
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>

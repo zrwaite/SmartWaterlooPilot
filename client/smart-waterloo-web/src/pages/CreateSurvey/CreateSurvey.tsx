@@ -6,6 +6,7 @@ import {MobileContext} from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
 import {useState} from "react";
 import { postSurvey } from "../../data/postData";
+import Cookies from "universal-cookie";
 //Todo change buttons to links
 
 
@@ -25,6 +26,7 @@ const CreateSurvey = () => {
 	const navigate = useNavigate();
 	let {mobile} = useContext(MobileContext);
 	let {orgId} = useParams();
+	const cookies = new Cookies();
 	const [standardInputs, setStandardInputs] = useState(DefaultStandardInput);
 	const [questionInputs, setQuestionInputs] = useState(DefaultQuestionArray);
 	const handleStandardInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -92,7 +94,7 @@ const CreateSurvey = () => {
 		<>
 			<div className={"PageContainer"}>
 				<div className={"createNavbar"}>
-					<h6 style={link} onClick={() => navigate("/surveys")}>Cancel</h6>	
+					<h6 style={link} onClick={() => navigate(cookies.get("back"))}>Cancel</h6>	
 					<h6 style={greyText}>Next</h6>
 				</div>
 				<div className={mobile? "":"DesktopPanel"}>

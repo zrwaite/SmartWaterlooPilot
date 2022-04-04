@@ -5,6 +5,7 @@ import { eventCategories } from "./CreateEventData";
 import Select, { ActionMeta } from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import { postEvent } from "../../data/postData";
+import Cookies from "universal-cookie"
 
 //Todo change buttons to links
 const DefaultCreateEventState = {
@@ -24,6 +25,7 @@ const DefaultCreateEventState = {
 const CreateEvent = () => {
 	const navigate = useNavigate();
 	let { mobile } = useContext(MobileContext);
+	const cookies = new Cookies();
 	let {orgId} = useParams();
 	const [state, setState] = useState(DefaultCreateEventState)
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -47,7 +49,7 @@ const CreateEvent = () => {
 	const eventCreation = async () => {
 		if (orgId) {
 			let {success, errors, eventId} = await postEvent(orgId, {...state.inputs});
-			if (success) navigate(`/eventdetails/${eventId}`);
+			if (success) navigate(`/eventdetails/${eventId}/org/${orgId}`);
 			else alert(JSON.stringify(errors));
 		}
 	}
@@ -56,7 +58,7 @@ const CreateEvent = () => {
 		<>
 			<div className={"PageContainer"}>
 				<div className={"createNavbar"}>
-					<h6 style={link} onClick={() => navigate("/events")}>Cancel</h6>
+					<h6 style={link} onClick={() => navigate(cookies.get('back'))}>Cancel</h6>
 					<h6 style={complete ? link : greyText}>Next</h6>
 				</div>
 				<div className={mobile ? "" : "DesktopPanel"}>

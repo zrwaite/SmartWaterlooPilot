@@ -12,14 +12,20 @@ const SurveyLanding = (props: SurveyLandingProps) => {
 		<>
 			<p>{props.description}</p>
 			{
-				props.set&&(props.completed?<div className={"completedSurveyBubble"}>
-					<p>Complete</p>
-				</div>:
-				((props.org&&props.owner)||(!props.org))
-					&&<button onClick={() => props.setParentProgress(true)} 
-					className={"blackButton beginSurveyButton"}>
-						{props.owner?"View Results":"Begin Survey"}
-					</button>)
+				props.set&&(
+					props.org?(
+						props.owner&&
+						<button onClick={() => props.setParentProgress(true)} className={"blackButton beginSurveyButton"}>{props.owner?"View Results":"Begin Survey"}</button>
+					):(
+						props.completed?(
+							<div className={"completedSurveyBubble"}>
+								<p>Complete</p>
+							</div>
+						):(
+							<button onClick={() => props.setParentProgress(true)} className={"blackButton beginSurveyButton"}>{props.owner?"View Results":"Begin Survey"}</button>
+						)
+					)
+				)
 			}
 		</>
 	)

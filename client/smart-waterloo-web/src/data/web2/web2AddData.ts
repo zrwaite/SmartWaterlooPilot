@@ -33,4 +33,20 @@ const web2AddSurveytoUser = async (userId: string, surveyId: string):Promise<suc
 	} else return {success: false, errors: ["request failed"]};
 }
 
-export {web2AddUserToOrg, web2AddSurveytoUser}
+const web2AddEventtoUser = async (userId: string, eventId: string):Promise<successErrorsReturn> => {
+	let json = await httpReq("/api/user/", "PUT", {
+		event_id: eventId,
+		user_id: userId
+	})
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) {
+			console.log(response.response);
+			return {success: true, errors: []}
+		} else {
+			return {success: false, errors: response.errors}
+		}
+	} else return {success: false, errors: ["request failed"]};
+}
+
+export {web2AddUserToOrg, web2AddSurveytoUser, web2AddEventtoUser}
