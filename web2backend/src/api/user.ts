@@ -6,6 +6,7 @@ import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {addUserEvent, addUserSurvey, addUserOrg} from "../modules/putDatabaseInfo";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
+import { createToken } from "../auth/tokenFunctions";
 
 
 /* register controller */
@@ -47,7 +48,8 @@ export default class userController {
 			if (postResult.success) {
 				result.status = 201;
 				result.success = true;
-				result.response = {userData: postResult.newUser}
+				let token = createToken({user_id: baseParams[0], authorized: true})
+				result.response = {userData: postResult.newUser, token: token}
 			} else postResult.errors.forEach((error) => {result.errors.push(error)});
 		} else baseErrors.forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
