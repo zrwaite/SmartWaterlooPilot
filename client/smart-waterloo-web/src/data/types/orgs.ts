@@ -19,6 +19,7 @@ interface postOrgType {
 	businessNumber: string
 }
 type postOrgReturn = {success:boolean, errors: string[], orgId:string}
+type addMemberReturn = {success:boolean, errors: string[]}
 
 export {defaultOrg, defaultOrgsState};
-export type {postOrgType, postOrgReturn}
+export type {postOrgType, postOrgReturn, addMemberReturn}

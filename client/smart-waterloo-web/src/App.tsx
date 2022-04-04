@@ -20,6 +20,7 @@ import "./styles/styles.css";
 import {mobileWidth} from "./constants";
 import AccountParent from "./pages/AccountParent";
 import React, {useState} from "react";
+import AddOrgMember from "./pages/AddOrgMember";
 
 
 const MobileContext = React.createContext<{mobile: boolean; setMobile: Function;}>({
@@ -94,6 +95,7 @@ function App() {
 
 							<Route path="/createevent/:orgId" element={<CreateEvent />}></Route>
 							<Route path="/createsurvey/:orgId" element={<CreateSurvey />}></Route>
+							<Route path="/addorgmember/:orgId" element={<AddOrgMember />}></Route>
 
 							<Route path="/test" element={<TestPage />}></Route>
 							<Route path="*" element={<NotFound />}></Route>

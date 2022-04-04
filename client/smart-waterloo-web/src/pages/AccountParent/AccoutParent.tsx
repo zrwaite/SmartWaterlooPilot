@@ -129,7 +129,7 @@ const AccountParent = (props:AccountParentProps) => {
 	return (
 		<>
 			<Navbar root={true} org={props.org} orgId={orgId} orgs={orgsData.orgs} signedIn={true}/>
-			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
+			<Settings org={props.org} orgId={orgId} open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<OrgsModal org={props.org&&orgId?orgId:false} orgs={orgsData.orgs} open={orgsModalOpen} closeModal={() => setOrgsModalOpen(false)}/>
 			<div className={mobile?"dashboardContainerMobile":"asideContainer"}>
 				{mobile ? null : 

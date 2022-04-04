@@ -1,0 +1,18 @@
+.scanCardButton{
+	height: 3rem;
+	font-size: 2rem;
+	width: min(80%, 20rem);
+}
+.qrCodePNG{
+	height: auto;
+	width: min(80%, 20rem);
+}
+.avatarImg{
+	height: 5rem;
+	width: auto;
+}
+.QRInfoPanel{
+	display: flex;
+	flex-direction: column;
+	align-items: var(--defaultTextAlign);
+}
