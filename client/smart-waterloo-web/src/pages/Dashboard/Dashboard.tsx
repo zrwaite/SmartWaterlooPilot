@@ -3,7 +3,7 @@ import "./Dashboard.css";
 
 //Todo change buttons to links
 // import settingsIcon from "../../images/settings.svg";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import DashboardPreview from "./DashboardPreview";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
@@ -13,7 +13,6 @@ import {AccountChildProps} from "../AccountParent"
 const Dashboard = (props: AccountChildProps) => {
 	let {mobile} = useContext(MobileContext);
 	const { orgId } = useParams();
-	const cookies = new Cookies();
 	cookies.set("back", `/dashboard/${props.org?`org/${orgId}`:"user"}`);
 	const dashboardPreviewData = {
 		...props.accountData,

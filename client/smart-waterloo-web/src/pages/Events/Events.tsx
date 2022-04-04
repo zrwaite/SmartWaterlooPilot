@@ -2,7 +2,7 @@ import { MobileContext } from "../../App";
 import { useContext } from "react";
 import "./Events.css";
 import EventPanel from "./EventPanel";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import { useNavigate, useParams } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import {AccountChildProps} from "../AccountParent"
@@ -10,7 +10,6 @@ const Events = (props: AccountChildProps) => {
 	const { mobile } = useContext(MobileContext);
 	// let { address } = useContext(AddressContext);
 	let {orgId} = useParams();
-	const cookies = new Cookies()
 	const navigate = useNavigate();
 	cookies.set("back", `/events/${props.org?`org/${orgId}`:"user"}`);
 	return (

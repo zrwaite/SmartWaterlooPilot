@@ -1,12 +1,11 @@
 import { MobileContext } from "../../App";
 import {useContext} from "react";
 import "./MyData.css";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import {AccountChildProps} from "../AccountParent"
 import DataPanels from "./DataPanels/DataPanels";
 const MyData = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
-	const cookies = new Cookies();
 	cookies.set("back", `/data/${props.org?`org/${props.orgId}`:"user"}`);
 	return (
 		<div className={"besideAside"}>

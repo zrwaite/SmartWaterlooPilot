@@ -1,4 +1,5 @@
-const baseURL = "https://prevention-closest-kevin-editions.trycloudflare.com";
+import cookies from "../../modules/cookies"
+const baseURL = "https://paradise-constructed-stereo-smoking.trycloudflare.com";
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
     url = baseURL + url;
@@ -6,16 +7,22 @@ const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
         console.error("invalid method");
         return false;
     }
+    let headers = {}
+    if (cookies.get("token")) headers = {Authorization: "Bearer "+ cookies.get("token")}
     try {
         let response;
         if (method === "GET") {
-            response = await fetch(url, {cache: 'no-cache'});
+            response = await fetch(url, {
+                cache: 'no-cache',
+                headers: headers
+            });
         } else {
             response = await fetch(url, {
                 method: method, // *GET, POST, PUT, DELETE, etc.
                 cache: 'no-cache',
                 // mode: 'no-cors',
                 headers: {
+                    ...headers,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(params) // body data type must match "Content-Type" header

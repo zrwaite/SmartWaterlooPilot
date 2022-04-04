@@ -4,13 +4,12 @@ import "./Surveys.css";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import {AccountChildProps} from "../AccountParent"
 const Surveys = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
 	// const {address} = useContext(AddressContext);
 	const navigate = useNavigate();
-	const cookies = new Cookies();
 	cookies.set("back", `/dashboard/${props.org?`org/${props.orgId}`:"user"}`);
 	
 

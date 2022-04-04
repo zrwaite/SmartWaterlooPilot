@@ -6,7 +6,6 @@ import SurveyLanding from "./SurveyLanding";
 import "./Survey.css";
 import { useNavigate, useParams } from "react-router-dom";
 import SurveyQuestion from "./SurveyQuestion";
-// import Cookies from "universal-cookie";
 import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";
 import { AccountChildProps } from "../AccountParent";
@@ -23,7 +22,6 @@ const defaultAnswers:string[] = [];
 const Survey = (props: AccountChildProps) => {
 	// const cookies = new Cookies()
 	// cookies.set("back", "/surveys/");
-	const navigate = useNavigate();
 	const { id, orgId } = useParams();
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);

@@ -2,12 +2,11 @@
 import Navbar from "../../components/Navbar";
 import SWRLogo from "../../images/SWRLogo.png"
 import "./SplashPage.css";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import { useNavigate } from "react-router-dom";
 import {isSignedIn} from "../../data/account";
 //Todo change buttons to links
 function SplashPage() {
-	const cookies = new Cookies();
 	cookies.set("back", "/");
 	const navigate = useNavigate();
 	const signedIn = isSignedIn();

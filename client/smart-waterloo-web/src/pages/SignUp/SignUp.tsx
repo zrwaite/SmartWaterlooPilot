@@ -9,7 +9,7 @@ import Nickname from "./Nickname";
 import MetaMask from "./MetaMask";
 import Password from "./Password";
 import StepBubbles from "../../components/StepBubbles";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import { ActionMeta } from "react-select";
 
 // import orgABI from "./utils/SmartOrganisation.json"
@@ -66,7 +66,6 @@ const SignUp = (props: SignUpProps) => {
 	const { id: qrId } = useContext(IdContext);
 	// const { address, setAddress } = useContext(AddressContext);
 	const [state, setState] = useState(defaultSignUpState);
-	const cookies = new Cookies();
 	const navigate = useNavigate();
 	cookies.set("back", "/signup");
 	

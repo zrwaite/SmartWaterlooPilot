@@ -5,6 +5,7 @@ import {getOrg, getOrgs, getUserOrgs} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {addOrgMember} from "../modules/putDatabaseInfo";
 import {orgData} from "../database/orgData";
+import { getToken, verifyOrgMember, verifyUser } from "../auth/tokenFunctions";
 
 
 /* register controller */
@@ -56,29 +57,38 @@ export default class orgController {
 	}
 	static async postOrg(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success, params, errors} = await getBodyParams(req, [...orgData.baseKeys]);
+		let {success, params, errors} = await getBodyParams(req, ["owner_id"]);
 		if (success) {
-			let {params: nullableParams} = await getBodyParams(req, [...orgData.nullablePostKeys]);
-			let postResult = await postOrg([...params, ...nullableParams]);
-			if (postResult.success) {
-				result.status = 201;
-				result.success = true;
-				result.response = {
-					orgData: postResult.newOrg,
-				}
-			} else postResult.errors.forEach((error) => {result.errors.push(error)});
-		} else errors.forEach((param)=>{result.errors.push("missing "+param)});
+			let {success: tokenSuccess, error: tokenError } = await verifyUser(params[0], getToken(req.headers));
+			if (tokenSuccess) {
+				let {success:orgSuccess, params:orgParams, errors:orgErrors} = await getBodyParams(req, [...orgData.baseKeys]);
+				if (orgSuccess) {
+					let {params: nullableParams} = await getBodyParams(req, [...orgData.nullablePostKeys]);
+					let postResult = await postOrg([...orgParams, ...nullableParams]);
+					if (postResult.success) {
+						result.status = 201;
+						result.success = true;
+						result.response = {
+							orgData: postResult.newOrg,
+						}
+					} else postResult.errors.forEach((error) => {result.errors.push(error)});
+				} else orgErrors.forEach((param)=>{result.errors.push("missing "+param)});
+			} else result.errors.push(tokenError);
+		} else result.errors.push("missing owner_id");
 		res.status(result.status).json(result); //Return whatever result remains
 	}
 	static async putOrg(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
 		let {success:userSuccess, params:userParams, errors:userErrors} = await getBodyParams(req, ["org_id", "user_id"]);
 		if (userSuccess) {
-			let putResult = await addOrgMember(userParams[0], userParams[1]);
-			result.status = putResult.status;
-			if (result.status == 201) {
-				result.success = true;
-			} else result.errors.push(...putResult.errors);
+			let {success: tokenSuccess, error: tokenError } = await verifyOrgMember(userParams[0], getToken(req.headers));
+			if (tokenSuccess) {
+				let putResult = await addOrgMember(userParams[0], userParams[1]);
+				result.status = putResult.status;
+				if (result.status == 201) {
+					result.success = true;
+				} else result.errors.push(...putResult.errors);
+			} else result.errors.push(tokenError);
 		} else userErrors.forEach((error) => result.errors.push("missing "+error));
 		//Put request code
 		res.status(result.status).json(result); //Return whatever result remains

@@ -5,6 +5,7 @@ import {getSurvey, getSurveys, getOrgSurveys, getQuestion} from "../modules/getD
 import {getBodyParams, getParams, getQueryParams} from "../modules/getParams";
 import {surveyKeys, surveyValues, questionValues, questionKeys} from "../database/surveyData";
 import { isQuestionArray, isSurveyArray } from "../modules/typeAssertions";
+import { getToken, verifyOrgMember } from "../auth/tokenFunctions";
 
 /* register controller */
 export default class surveyController {
@@ -60,29 +61,33 @@ export default class surveyController {
 		let result:responseInterface = new response(); //Create new standardized response
 		let {success:surveySuccess, params, errors:surveyErrors} = getBodyParams(req, surveyKeys);
 		if (surveySuccess) {
-			let surveyParams = params as surveyValues;
-			let questions:questionValues[] = [];
-			if (isSurveyArray(params)){
-				surveyParams[3].forEach((question, i) => {
-					let {success:questionSuccess, params: questionParams, errors:questionErrors} = getParams(question, questionKeys);
-					if (questionSuccess)
-					 	if (isQuestionArray(questionParams)) 
-							questions.push(questionParams as questionValues)
-						else result.errors.push(`invalid question at index ${i}`);
-					else questionErrors.forEach(error => result.errors.push(`missing ${error} in question at index ${i}`));
-				});
-				surveyParams[3] = questions;
-			} else result.errors.push(`invalid survey type`);
-			if (result.errors.length === 0){
-				let postResult = await postSurvey(surveyParams);
-				if (postResult.success) {
-					result.status = 201;
-					result.success = true;
-					result.response = {
-						surveyData: postResult.newSurvey,
-					}
-				} else postResult.errors.forEach((error) => {result.errors.push(error)});
-			}
+			let orgId = params[0];
+			let {success: tokenSuccess, error: tokenError} = await verifyOrgMember(orgId, getToken(req.headers));
+			if (tokenSuccess ){
+				let surveyParams = params as surveyValues;
+				let questions:questionValues[] = [];
+				if (isSurveyArray(params)){
+					surveyParams[3].forEach((question, i) => {
+						let {success:questionSuccess, params: questionParams, errors:questionErrors} = getParams(question, questionKeys);
+						if (questionSuccess)
+							 if (isQuestionArray(questionParams)) 
+								questions.push(questionParams as questionValues)
+							else result.errors.push(`invalid question at index ${i}`);
+						else questionErrors.forEach(error => result.errors.push(`missing ${error} in question at index ${i}`));
+					});
+					surveyParams[3] = questions;
+				} else result.errors.push(`invalid survey type`);
+				if (result.errors.length === 0){
+					let postResult = await postSurvey(surveyParams);
+					if (postResult.success) {
+						result.status = 201;
+						result.success = true;
+						result.response = {
+							surveyData: postResult.newSurvey,
+						}
+					} else postResult.errors.forEach((error) => {result.errors.push(error)});
+				}
+			} else result.errors.push(tokenError)
 		} else surveyErrors.forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
 	}

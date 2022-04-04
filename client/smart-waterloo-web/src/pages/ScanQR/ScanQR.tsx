@@ -5,14 +5,13 @@ import QRMobilePNG from "../../images/QRMobile.png";
 import "./ScanQR.css";
 import { useEffect, useState } from "react";
 import {Html5QrcodeScanner} from "html5-qrcode";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import {useContext} from "react";
 import {MobileContext, IdContext} from "../../App";
 import {accountExists} from "../../data/account";
 const ScanQR = () => {
 	let {mobile} = useContext(MobileContext);
 	let {setId} = useContext(IdContext);
-	const cookies = new Cookies();
 	cookies.set("back", "/qr");
 	const [functions, setFunctions] = useState({scan: () => {}});
 	const navigate = useNavigate();

@@ -5,7 +5,7 @@ import { eventCategories } from "./CreateEventData";
 import Select, { ActionMeta } from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import { postEvent } from "../../data/postData";
-import Cookies from "universal-cookie"
+import cookies from "../../modules/cookies";
 
 //Todo change buttons to links
 const DefaultCreateEventState = {
@@ -25,7 +25,6 @@ const DefaultCreateEventState = {
 const CreateEvent = () => {
 	const navigate = useNavigate();
 	let { mobile } = useContext(MobileContext);
-	const cookies = new Cookies();
 	let {orgId} = useParams();
 	const [state, setState] = useState(DefaultCreateEventState)
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {

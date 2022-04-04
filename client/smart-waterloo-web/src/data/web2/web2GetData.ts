@@ -1,10 +1,10 @@
 import {httpReq} from "./httpRequest";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import {defaultAccount} from "../types/account";
 import {defaultEvent} from "../types/events";
 import {defaultAnswer, defaultSurvey} from "../types/surveys"
 import {defaultOrg} from "../types/orgs";
-const cookies = new Cookies();
+
 
 interface apitype {
 	success: boolean;

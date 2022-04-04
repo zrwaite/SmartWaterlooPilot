@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import {icons} from "../../../images/icons";
-import Cookies from "universal-cookie";
+import cookies from "../../../modules/cookies";
 import "./BackNav.css";
 
 const BackNav = () => {
-	const cookies = new Cookies()
 	const navigate = useNavigate();
 	return (
 		<div onClick={() => navigate(cookies.get("back")||"/")} className="backButton">

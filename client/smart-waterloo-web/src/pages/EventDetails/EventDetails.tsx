@@ -12,7 +12,7 @@ import NotFound from "../NotFound";
 import {useParams,useNavigate,} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultEvent } from '../../data/types/events';
-import Cookies from 'universal-cookie';
+import cookies from "../../modules/cookies";
 import { addEventtoUser } from '../../data/addData';
 import { AccountChildProps } from '../AccountParent';
 
@@ -44,7 +44,6 @@ const EventsDetails = (props: AccountChildProps) => {
 	function closeModal() {
 		setIsOpen(false);
 	}
-	const cookies = new Cookies();
 	const signedUp = props.accountData.account.events.includes(parseInt(eventData.event.id));
 	const trySignUp = async () => {
 		if (!signedUp) {

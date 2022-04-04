@@ -4,6 +4,7 @@ import {postEvent} from "../modules/postDatabaseInfo";
 import {getEvent, getEvents, getOrgEvents} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {eventData} from "../database/eventData";
+import {verifyOrgMember, getToken} from "../auth/tokenFunctions";
 
 /* register controller */
 export default class eventController {
@@ -53,15 +54,19 @@ export default class eventController {
 		let result:responseInterface = new response(); //Create new standardized response
 		let {success:eventSuccess, params:eventParams, errors:eventErrors} = await getBodyParams(req, eventData.baseEventKeys);
 		if (eventSuccess) {
-			let {params: additionalParams} = await getBodyParams(req, eventData.nullableEventKeys);
-			let postResult = await postEvent([...eventParams, ...additionalParams]);
-			if (postResult.success) {
-				result.status = 201;
-				result.success = true;
-				result.response = {
-					eventData: postResult.newEvent,
-				}
-			} else postResult.errors.forEach((error) => {result.errors.push(error)});
+			let orgId = eventParams[0];
+			let {success: tokenSuccess, error: tokenError} = await verifyOrgMember(orgId, getToken(req.headers));
+			if (tokenSuccess ){
+				let {params: additionalParams} = await getBodyParams(req, eventData.nullableEventKeys);
+				let postResult = await postEvent([...eventParams, ...additionalParams]);
+				if (postResult.success) {
+					result.status = 201;
+					result.success = true;
+					result.response = {
+						eventData: postResult.newEvent,
+					}
+				} else postResult.errors.forEach((error) => {result.errors.push(error)});
+			} else result.errors.push(tokenError);
 		} else eventErrors.forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
 	}

@@ -9,8 +9,7 @@ import { postOrgReturn, postOrgType } from "./types/orgs";
 import { postEventReturn, postEventType } from "./types/events";
 import { postUserType } from "./types/account";
 import { addSurveytoUser } from "./addData";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
+import cookies from "../modules/cookies";
 
 const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));

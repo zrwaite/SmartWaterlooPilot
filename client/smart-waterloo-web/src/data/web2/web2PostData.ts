@@ -1,12 +1,10 @@
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import {httpReq} from "./httpRequest";
 import {postUserType} from "../types/account";
 import {postEventType, postEventReturn} from "../types/events"
 import { postSurveyReturn} from "../types/surveys"
 import { postOrgType, postOrgReturn} from "../types/orgs"
 import { postSurveyType } from "../types/surveys";
-
-const cookies = new Cookies();
 
 const web2PostAnswer = async (questionId: string, answer: string):Promise<string[]> => {
 	let json = await httpReq("/api/answer/", "POST", {

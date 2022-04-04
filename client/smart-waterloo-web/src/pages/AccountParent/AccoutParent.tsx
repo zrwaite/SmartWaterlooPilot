@@ -1,7 +1,6 @@
 import "./AccountParent.css";
-import Cookies from "universal-cookie";
-import {useContext, useState} from "react";
-import {MobileContext} from "../../App";
+import cookies from "../../modules/cookies";
+import { useState} from "react";
 import { defaultEventsState } from "../../data/types/events";
 import {getUserOrgs, getEventsData, getUserData, getSurveysData, getBasicOrgData, getOrgEventsData, getOrgSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
@@ -38,8 +37,6 @@ const AccountParent = (props:AccountParentProps) => {
 	const [orgsModalOpen, setOrgsModalOpen] = useState(false);
 	const { orgId } = useParams();
 	const navigate = useNavigate();
-
-	const cookies = new Cookies();
 
 	if (!isSignedIn()) {
 		window.location.href= "/";

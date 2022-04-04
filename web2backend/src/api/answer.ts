@@ -5,6 +5,7 @@ import {getAnswer, getQuestionAnswers} from "../modules/getDatabaseInfo";
 import {updateAnswersArray} from "../modules/putDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {answerKeys} from "../database/surveyData";
+import { getToken, verifyUser } from "../auth/tokenFunctions";
 
 /* register controller */
 export default class answerController {
@@ -56,33 +57,23 @@ export default class answerController {
 			let link = params[1];
 			let answer = params[2];
 			let questionId = params[3];
-			let postResult = await postAnswer(answer, questionId);
-			if (postResult.success) {
-				if (link) {
-					let putResult = await updateAnswersArray(userId, postResult.newAnswer)
-					if (putResult.status === 201) {
+			let {success: tokenSuccess, error: tokenError } = await verifyUser(params[0], getToken(req.headers));
+			if (tokenSuccess) {
+				let postResult = await postAnswer(answer, questionId);
+				if (postResult.success) {
+					if (link) {
+						let putResult = await updateAnswersArray(userId, postResult.newAnswer)
+						if (putResult.status === 201) {
+							result.status = 201;
+							result.success = true;
+							result.response = {answerData: postResult.newAnswer}
+						} else result.errors.push("database put error");
+					} else {
 						result.status = 201;
 						result.success = true;
-						result.response = {answerData: postResult.newAnswer}
-					} else result.errors.push("database put error");
-				} else {
-					result.status = 201;
-					result.success = true;
-				}
-			} else result.errors.push(...postResult.errors);
-			// let answerParams = params as answerValues;
-			// let answers:answerValues[] = [];
-			// if (isAnswerArray(params)){
-			// 	answerParams[3].forEach((question, i) => {
-			// 		let {success:questionSuccess, params: questionParams, errors:questionErrors} = getParams(question, questionKeys);
-			// 		if (questionSuccess)
-			// 		 	if (isQuestionArray(questionParams)) 
-			// 				questions.push(questionParams as questionValues)
-			// 			else result.errors.push(`invalid question at index ${i}`);
-			// 		else questionErrors.forEach(error => result.errors.push(`missing ${error} in question at index ${i}`));
-			// 	});
-			// 	answerParams[3] = questions;
-			// } else result.errors.push(`invalid answer type`);
+					}
+				} else result.errors.push(...postResult.errors);
+			} else result.errors.push(tokenError)
 		} else answerErrors.forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
 	}

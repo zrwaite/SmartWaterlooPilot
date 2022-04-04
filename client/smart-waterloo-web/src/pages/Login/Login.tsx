@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import AvatarPNG from "../../images/fullAvatar.png";
 import "./Login.css";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import { useContext, useState } from "react";
 import { IdContext, MobileContext } from "../../App";
 import { useNavigate, Link } from "react-router-dom";
@@ -18,7 +18,6 @@ let web3 = new Web3(Web3.givenProvider);
 const Login = () => {
 	let { mobile } = useContext(MobileContext);
 	let { id } = useContext(IdContext);
-	const cookies = new Cookies();
 	cookies.set("back", "/login");
 	const signIn = "MetaMask Sign-in";
 	const [currentUser, setCurrentUser] = useState("Tyragreenex");

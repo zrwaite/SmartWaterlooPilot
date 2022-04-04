@@ -7,7 +7,7 @@ import MeetAvatar from "../SignUp/MeetAvatar";
 import Nickname from "../SignUp/Nickname";
 import Verified from "./Verified";
 import StepBubbles from "../../components/StepBubbles";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import { ActionMeta } from "react-select";
 import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
@@ -38,7 +38,6 @@ const defaultSignUpState = {
 const SignUp = (props: SignUpProps) => {
 	const [state, setState] = useState(defaultSignUpState);
 	const {mobile} = useContext(MobileContext);
-	const cookies = new Cookies();
 	const navigate = useNavigate();
 	cookies.set("back", "/signup");
 	const updateStep = (step: number) => {

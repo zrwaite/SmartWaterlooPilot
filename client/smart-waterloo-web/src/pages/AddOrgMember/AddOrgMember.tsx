@@ -5,7 +5,6 @@ import QRMobilePNG from "../../images/QRMobile.png";
 import "./AddOrgMember.css";
 import { useEffect, useState } from "react";
 import {Html5QrcodeScanner} from "html5-qrcode";
-import Cookies from "universal-cookie";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
 import {accountExists} from "../../data/account";

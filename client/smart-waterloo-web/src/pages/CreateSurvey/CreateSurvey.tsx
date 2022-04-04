@@ -6,7 +6,7 @@ import {MobileContext} from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
 import {useState} from "react";
 import { postSurvey } from "../../data/postData";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 //Todo change buttons to links
 
 
@@ -26,7 +26,6 @@ const CreateSurvey = () => {
 	const navigate = useNavigate();
 	let {mobile} = useContext(MobileContext);
 	let {orgId} = useParams();
-	const cookies = new Cookies();
 	const [standardInputs, setStandardInputs] = useState(DefaultStandardInput);
 	const [questionInputs, setQuestionInputs] = useState(DefaultQuestionArray);
 	const handleStandardInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>) => {
