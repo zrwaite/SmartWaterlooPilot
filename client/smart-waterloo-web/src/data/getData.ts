@@ -1,5 +1,5 @@
 import { defaultEvent} from "./types/events";
-import {defaultSurvey} from "./types/surveys"
+import {defaultAnswer, defaultSurvey} from "./types/surveys"
 import userABI from "./utils/SmartUser.json";
 import {AbiItem} from "web3-utils";
 import Web3 from "web3";
@@ -7,14 +7,21 @@ import orgABI from "./utils/SmartOrganisation.json";
 import eventABI from "./utils/OrganisationEvents.json";
 import {USE_WEB3} from "./dataConstants";
 import {defaultAccount} from "./types/account";
-import {web2GetUserOrgs, web2GetOrgSurveysData, web2GetOrgEventsData, web2GetBasicUserData, web2GetSurveysData, web2GetBasicOrgData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData} from "./web2/web2GetData";
+import {web2GetAnswersData, web2GetUserOrgs, web2GetOrgSurveysData, web2GetOrgEventsData, web2GetUserData, web2GetSurveysData, web2GetBasicOrgData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData, web2GetQuestionsAndAnswers} from "./web2/web2GetData";
 import {defaultOrg} from "./types/orgs";
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
 
-const getBasicUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}> => {
-	return USE_WEB3 ? (await web3GetBasicUserData()) : (await web2GetBasicUserData());
+
+const getQuestionsAndAnswers = async (answerIds: number[]):Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
+	return USE_WEB3 ? (await web3GetQuestionsAndAnswers(answerIds)) : (await web2GetQuestionsAndAnswers(answerIds));
+}
+const web3GetQuestionsAndAnswers = async (answerIds: number[]):Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
+	return {success: false, questions: [], answers: [], errors: ["not implemented"]};
+}
+const getUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}> => {
+	return USE_WEB3 ? (await web3GetUserData()) : (await web2GetUserData());
 };
 const getSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {
 	return USE_WEB3 ? (await web3GetSurveysData()) : (await web2GetSurveysData());
@@ -41,8 +48,14 @@ const getBasicOrgData = async (id:string|undefined):Promise<{success:boolean, or
 	return USE_WEB3 ? (await web3GetBasicOrgData(id)) : (await web2GetBasicOrgData(id));
 }
 
+const getAnswersData = async (id:string|undefined):Promise<{success:boolean, answers: typeof defaultAnswer[], errors:string[]}> => {
+	return USE_WEB3 ? (await web3GetAnswersData(id)) : (await web2GetAnswersData(id));
+}
 
 
+const web3GetAnswersData = async (id:string|undefined):Promise<{success:boolean, answers: typeof defaultAnswer[], errors:string[]}> => {
+	return {success: false, answers: [], errors: ["not implemented"]};
+}
 const web3GetBasicOrgData = async (id:string|undefined):Promise<{success:boolean, org: typeof defaultOrg|{}, errors:string[]}> => {
 	return {success: false, org: {}, errors: ["not implemented"]};
 }
@@ -67,7 +80,7 @@ const web3GetOrgEventsData = async (id:string|undefined):Promise<{success:boolea
 
 
 
-const web3GetBasicUserData = async ()
+const web3GetUserData = async ()
 :Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}|any> => {
 	// return {success:false, userData:{}, errors:[]}
 	// let {org} = useContext(OrgContext);
@@ -105,7 +118,7 @@ const web3GetBasicUserData = async ()
 			// nickname: userData.avatarName,
 			// avatarString: user.avatarString
 			nickname: userData[9].substring(0, userData[9].length - 8),
-			avatarString: userData[9].substring(-8),
+			avatar_string: userData[9].substring(-8),
 		};
 	} else {
 		const orgAddress = userAddress;
@@ -125,7 +138,7 @@ const web3GetBasicUserData = async ()
 			// nickname: userData.avatarName,
 			// avatarString: user.avatarString
 			nickname: userData[2],
-			avatarString: userData.avatarName,
+			avatar_string: userData.avatarName,
 		};
 	}
 };
@@ -155,7 +168,7 @@ const web3GetEventsData = async () => {
 	// 	newEvents.push({
 	// 		id: event.id,
 	// 		name: event.name,
-	// 		organization: event.organization,
+	// 		org: event.org,
 	// 		age_range: event.age_range,
 	// 		start_date: event.start_date,
 	// 		end_date: event.end_date,
@@ -172,4 +185,4 @@ const web3GetEventsData = async () => {
 	return newEvents;
 };
 
-export {getOrgEventsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getBasicUserData, getEventsData, getEventData, getSurveysData, getSurveyData};
+export {getQuestionsAndAnswers, getAnswersData, getOrgEventsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getUserData, getEventsData, getEventData, getSurveysData, getSurveyData};

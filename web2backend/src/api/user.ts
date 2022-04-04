@@ -6,6 +6,7 @@ import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {addUserEvent, addUserSurvey, addUserOrg} from "../modules/putDatabaseInfo";
 import {userData} from "../database/userData";
 import {orgData} from "../database/orgData";
+import { createToken } from "../auth/tokenFunctions";
 
 
 /* register controller */
@@ -47,16 +48,17 @@ export default class userController {
 			if (postResult.success) {
 				result.status = 201;
 				result.success = true;
-				result.response = {userData: postResult.newUser}
+				let token = createToken({user_id: baseParams[0], authorized: true})
+				result.response = {userData: postResult.newUser, token: token}
 			} else postResult.errors.forEach((error) => {result.errors.push(error)});
 		} else baseErrors.forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
 	}
 	static async putUser(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success:eventSuccess, params:eventParams, errors:eventErrors} = await getBodyParams(req, ["event_id", "user_id"]);
-		let {success:surveySuccess, params:surveyParams, errors:surveyErrors} = await getBodyParams(req, ["survey_id", "user_id"]);
-		let {success:orgSuccess, params:orgParams, errors:orgErrors} = await getBodyParams(req, ["org_name", "user_id"]);
+		let {success:eventSuccess, params:eventParams } = await getBodyParams(req, ["event_id", "user_id"]);
+		let {success:surveySuccess, params:surveyParams } = await getBodyParams(req, ["survey_id", "user_id"]);
+		let {success:orgSuccess, params:orgParams } = await getBodyParams(req, ["org_name", "user_id"]);
 		if (eventSuccess) {
 			let putResult = await addUserEvent(eventParams[0], eventParams[1]);
 			result.status = putResult.status;
@@ -70,7 +72,7 @@ export default class userController {
 				result.success = true;
 			} else result.errors.push("put database error");
 		} else if (orgSuccess) {
-			let putResult = await addUserOrg(surveyParams[0], surveyParams[1]);
+			let putResult = await addUserOrg(orgParams[0], orgParams[1]);
 			result.status = putResult.status;
 			if (result.status == 201) {
 				result.success = true;

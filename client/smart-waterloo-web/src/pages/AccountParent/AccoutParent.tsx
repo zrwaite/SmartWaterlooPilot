@@ -1,26 +1,28 @@
 import "./AccountParent.css";
-import Navbar from "../../components/Navbar";
 import Cookies from "universal-cookie";
-import Sidebar from "../../components/Sidebar";
 import {useContext, useState} from "react";
 import {MobileContext} from "../../App";
 import { defaultEventsState } from "../../data/types/events";
-import {getUserOrgs, getEventsData, getBasicUserData, getSurveysData, getBasicOrgData, getOrgEventsData, getOrgSurveysData} from "../../data/getData"
+import {getUserOrgs, getEventsData, getUserData, getSurveysData, getBasicOrgData, getOrgEventsData, getOrgSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
 import { defaultSurveysState } from "../../data/types/surveys";
 import { useNavigate, useParams } from "react-router-dom";
 import { isSignedIn } from "../../data/account";
-import {defaultAccountState} from "../../data/types/account";
+import {defaultAccount, defaultAccountState} from "../../data/types/account";
 import { defaultOrgsState } from "../../data/types/orgs";
 import OrgsModal from "../../components/OrgsModal";
-import Dashboard from "../Dashboard";
-import Events from "../Events";
-import MyData from "../MyData";
-import Surveys from "../Surveys";
+import PrimaryPage from "../PrimaryPage";
+import AddOrgMember from "../AddOrgMember";
+import EventDetails from "../EventDetails";
+import Survey from "../Survey";
+import OrgData from "../OrgData";
+import UserData from "../UserData";
+import UserAnswers from "../UserAnswers";
+import UserAccess from "../UserAccess";
 
 interface AccountParentProps {
 	org: boolean;
-	page: "dashboard"|"events"|"data"|"surveys"
+	page: "dashboard"|"events"|"data"|"surveys"|"addorgmember"|"eventdetails"|"survey"|"orgdata"|"userdata"|"useranswers"|"useraccess"
 }
 
 const AccountParent = (props:AccountParentProps) => {
@@ -34,8 +36,6 @@ const AccountParent = (props:AccountParentProps) => {
 	const [dataCalled, setDataCalled] = useState(false);
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [orgsModalOpen, setOrgsModalOpen] = useState(false);
-
-	let {mobile} = useContext(MobileContext);
 	const { orgId } = useParams();
 	const navigate = useNavigate();
 
@@ -49,34 +49,43 @@ const AccountParent = (props:AccountParentProps) => {
 
 	const getSetOrgsData = async () => {
 		let {success, orgs, errors} = await getUserOrgs(cookies.get("userId"));
-		if (!success) alert(JSON.stringify(errors));
+		if (!success) {
+			if (errors.length) alert(JSON.stringify(errors));
+		}
 		else setOrgsData({orgs: orgs, set: true })
 	}
 
 	/* USER FUNCTIONS */
 	const getSetUserData = async () => {
-		let {success, userData, errors} = await getBasicUserData();
-		if (!success) alert(JSON.stringify(errors));	
+		let {success, userData, errors} = await getUserData();
+		if (!success && errors.length) alert(JSON.stringify(errors));	
 		else if ('nickname' in userData) setAccountData({account: userData, set: true});
 		else console.error("invalid userData response");
 	}
 	const getSetEventsData = async () => {
 		let {success, events, errors} = await getEventsData();
-		if (!success) alert(JSON.stringify(errors));
+		if (!success && errors.length) alert(JSON.stringify(errors));
 		else setEventData({events: events, set: true })
 	}
 	const getSetSurveysData = async () => {
 		let {success, surveys, errors} = await getSurveysData();
-		if (!success) alert(JSON.stringify(errors));
+		if (!success && errors.length) alert(JSON.stringify(errors));
 		else setSurveyData({surveys: surveys, set: true })
 	}
 	/* ORG FUNCTIONS */
 	const getSetOrgData = async () => {
 		let {success, org, errors} = await getBasicOrgData(orgId);
-		if (!success) alert(JSON.stringify(errors));
+		if (!success) {
+			alert(JSON.stringify(errors));
+			console.error("GersetOrgData failure");
+		}
 		else if ('nickname' in org) {
 			setAccountData({
-				account: {avatarString: org.avatar_string, nickname: org.nickname}, 
+				account: {
+					...defaultAccount,
+					avatar_string: org.avatar_string, 
+					nickname: org.nickname,
+				}, 
 				set: true
 			});
 			setVerified(Boolean(org.verified));
@@ -118,38 +127,36 @@ const AccountParent = (props:AccountParentProps) => {
 		orgsData: orgsData,
 		org: props.org,
 		orgId: orgId,
-		verified: verified
+		verified: verified,
+		openSettings: () => setSettingsOpen(true),
+		openOrgsModal: () => setOrgsModalOpen(true),
+		page: props.page
 	}
 
 	return (
 		<>
-			<Navbar root={true} org={props.org} orgId={orgId} orgs={orgsData.orgs} signedIn={true}/>
-			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
-			<OrgsModal orgs={orgsData.orgs} open={orgsModalOpen} closeModal={() => setOrgsModalOpen(false)}/>
-			<div className={mobile?"dashboardContainerMobile":"asideContainer"}>
-				{mobile ? null : 
-				<Sidebar 
-					org={props.org} 
-					orgId={orgId} 
-					orgs={orgsData.orgs} 
-					nickname={accountData.account.nickname}
-					avatarString={accountData.account.avatarString}
-					accountSet={accountData.set} 
-					openOrgsModal={() => setOrgsModalOpen(true)} 
-					openSettings={() => setSettingsOpen(true)} 
-					page={props.page} 
-				/>}
-				{props.page==="dashboard"&&<Dashboard {...allDataObj}/>}
-				{props.page==="events"&&<Events {...allDataObj}/>}
-				{props.page==="data"&&<MyData {...allDataObj}/>}
-				{props.page==="surveys"&&<Surveys {...allDataObj}/>}
-			</div>
+			<Settings org={props.org} orgId={orgId} open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
+			<OrgsModal org={props.org&&orgId?orgId:false} orgs={orgsData.orgs} open={orgsModalOpen} closeModal={() => setOrgsModalOpen(false)}/>
+			{props.page==="dashboard"&&<PrimaryPage {...allDataObj} page={"dashboard"}/>}
+			{props.page==="events"&&<PrimaryPage {...allDataObj} page={"events"}/>}
+			{props.page==="data"&&<PrimaryPage {...allDataObj} page={"data"}/>}
+			{props.page==="surveys"&&<PrimaryPage {...allDataObj} page={"surveys"}/>}
+			{props.page==="addorgmember"&&<AddOrgMember {...allDataObj}/>}
+			{props.page==="eventdetails"&&<EventDetails {...allDataObj}/>}
+			{props.page==="survey"&&<Survey {...allDataObj}/>}
+			{props.page==="orgdata"&&<OrgData {...allDataObj}/>}
+			{props.page==="userdata"&&<UserData {...allDataObj}/>}
+			{props.page==="useranswers"&&<UserAnswers {...allDataObj}/>}
+			{props.page==="useraccess"&&<UserAccess {...allDataObj}/>}
+			
 		</>
     );
 }
 export default AccountParent;
 
 interface AccountChildProps {
+	openSettings: () => void;
+	openOrgsModal: () => void;
 	eventsData: typeof defaultEventsState,
 	surveysData: typeof defaultSurveysState,
 	orgsData: typeof defaultOrgsState,

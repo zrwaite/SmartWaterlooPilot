@@ -6,6 +6,8 @@ import "./Settings.css";
 import {logout} from "../../data/account";
 
 interface settingsProps {
+	orgId: string|undefined;
+	org: boolean;
 	open: boolean;
 	closeModal: () => void;
 }
@@ -35,6 +37,7 @@ const Settings = (props: settingsProps) => {
 				<div>
 					<button className={"blackButton settingsButton"} onClick={logoutRedirect}>Logout</button>
 					<button className={"blackButton settingsButton"} onClick={() => navigate("/createorg")}>Create Organization</button>
+					{props.org&&<button className={"blackButton settingsButton"} onClick={() => navigate(`/addorgmember/${props.orgId}`)}>Add Org Member</button>}
 				</div>
 			</div>
 		</Modal>

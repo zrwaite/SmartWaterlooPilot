@@ -9,6 +9,7 @@ interface orgsProps {
 	open: boolean;
 	closeModal: () => void;
 	orgs: typeof defaultOrg[];
+	org: false|string;
 }
 
 const OrgsModal = (props: orgsProps) => {
@@ -32,15 +33,20 @@ const OrgsModal = (props: orgsProps) => {
 				<div>
 					{
 						props.orgs.map((org, i) => {
-							return (
+							return props.org!==org.id.toString()?(
 								<div key={i} className={"orgPreview"}>
 									<h3>"{org.nickname}" | ID:{org.id}</h3>
 									<button className={"blackButton orgsModalButton"} onClick={() => {navigate(`/dashboard/org/${org.id}`); props.closeModal();}}>Open "{org.nickname}"</button>
 								</div>
-							);
+							):null;
 						})
 					}
 				</div>
+				{props.org&&(<>
+					<hr/>
+					<button className={"blackButton orgsModalButton"} onClick={() => {navigate(`/dashboard/user`); props.closeModal();}}>Open User Account</button>
+				</>)}
+				
 			</div>
 		</Modal>
 	)

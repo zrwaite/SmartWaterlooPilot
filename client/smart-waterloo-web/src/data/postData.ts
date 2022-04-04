@@ -8,6 +8,9 @@ import { postSurveyReturn, postSurveyType, Question, submitSurveyReturn} from ".
 import { postOrgReturn, postOrgType } from "./types/orgs";
 import { postEventReturn, postEventType } from "./types/events";
 import { postUserType } from "./types/account";
+import { addSurveytoUser } from "./addData";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
 
 const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));
@@ -21,7 +24,7 @@ const postEvent = async (id:string, inputData:postEventType):Promise<postEventRe
 const postSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
 	return USE_WEB3?(await web3PostSurvey(id, inputData)):(await web2PostSurvey(id, inputData));
 }
-const submitSurvey = async (questions: Question[], answers: string[]):Promise<submitSurveyReturn> => {
+const submitSurvey = async (surveyId: string, questions: Question[], answers: string[]):Promise<submitSurveyReturn> => {
 	if (questions.length !== answers.length) return {success: false, errors: ["invalid answers"]};
 	questions.forEach((question, i) => {
 		if (question.choices?.length && !question.choices.includes(answers[i])) return {success: false, errors: ["invalid answer "+answers[i]]};
@@ -30,13 +33,14 @@ const submitSurvey = async (questions: Question[], answers: string[]):Promise<su
 		let postAnswerErrors = await postAnswer(questions[i].id, answers[i])
 		if (postAnswerErrors.length) return {success: false, errors: postAnswerErrors};
 	}
-	return {success: true, errors: []};
+	let {success, errors} = await addSurveytoUser(cookies.get("userId"), surveyId)
+	return {success: success, errors: errors};
 }
 const postAnswer = async (questionId: string, answer: string):Promise<string[]> => {
 	return USE_WEB3?(await web3PostAnswer(questionId, answer)):(await web2PostAnswer(questionId, answer)); 
 }
 const web3PostAnswer = async (questionId: string, answer: string):Promise<string[]> => {
-	return ["function not implemented"];
+	return ["function not implemented"]; 
 }
 
 
@@ -111,7 +115,7 @@ let contractABI;
 		inputData.race,
 		inputData.religion,
 		inputData.sexuality,
-		(inputData.nickname + inputData.avatarString)).send({ from: web3.eth.defaultAccount })
+		(inputData.nickname + inputData.avatar_string)).send({ from: web3.eth.defaultAccount })
 		.then(() => console.log("Information added successfully"))
 		.catch((err: any) => console.log(err));
 // }
@@ -120,7 +124,7 @@ let contractABI;
 // 	contractABI = orgABI;
 // 	const orgContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
 // 	console.log(orgContract);
-// 	await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatarString), [""]).send({from: web3.eth.defaultAccount})
+// 	await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatar_string), [""]).send({from: web3.eth.defaultAccount})
 // 	.then(() => console.log(`Organisation ${state.formInputs.businessNumber} created succesfully`))
 // 	.catch((err:any) => console.log(err));
 // }

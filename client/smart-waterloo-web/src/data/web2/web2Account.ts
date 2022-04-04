@@ -13,7 +13,7 @@ const web2IsSignedIn = ():boolean => {
 	return false;
 }
 
-const web2onCardScan = async (userId: string):Promise<boolean> => {
+const web2AccountExists = async (userId: number):Promise<boolean> => {
 	let json = await httpReq("/api/user/?user_id=" + userId, "GET")
 	if (json) {
 		let response = JSON.parse(json);
@@ -47,4 +47,4 @@ const web2Login = async (id:string, password:string):Promise<any[]> => {
 	} else return ["request failed"];
 }
 
-export {web2logout, web2Login, web2onCardScan, web2IsSignedIn}
+export {web2logout, web2Login, web2AccountExists, web2IsSignedIn}

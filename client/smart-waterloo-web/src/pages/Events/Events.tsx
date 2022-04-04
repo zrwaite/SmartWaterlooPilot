@@ -27,7 +27,7 @@ const Events = (props: AccountChildProps) => {
 						props.eventsData.set ?
 							props.eventsData.events.map((event, i) => {
 								return (
-									<EventPanel index={i} key={i} {...event} />
+									<EventPanel isOrg={props.org} orgId={props.orgId} index={i} key={i} {...event} />
 								);
 							}):
 							[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })

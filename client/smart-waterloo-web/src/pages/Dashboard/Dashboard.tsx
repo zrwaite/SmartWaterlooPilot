@@ -16,22 +16,21 @@ const Dashboard = (props: AccountChildProps) => {
 	const cookies = new Cookies();
 	cookies.set("back", `/dashboard/${props.org?`org/${orgId}`:"user"}`);
 	const dashboardPreviewData = {
-		...props.accountData.account,
+		...props.accountData,
 		...props.eventsData,
 		...props.surveysData, 
 		eventsSet:props.eventsData.set,
 		surveysSet:props.surveysData.set,
 		org:props.org ,
 		orgId:orgId,
-		verified: props.verified
+		verified: props.verified,
 	}
-	console.log(props.surveysData.surveys);
     return (
 		<>
 			{mobile&&(
 				<header className="center">
 					<h4>Dashboard 📌</h4>
-					<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatarString}.svg`} alt="avatarImage"/>
+					<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatar_string}.svg`} alt="avatarImage"/>
 					<h5>{props.accountData.account.nickname}</h5>
 				</header>
 			)}

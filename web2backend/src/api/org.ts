@@ -41,7 +41,7 @@ export default class orgController {
 					else if (result.status == 404) result.errors.push("orgs not found");
 					else result.errors.push(...errors);
 				} else {
-					result.errors.push("invalid owner_id");
+					result.errors.push("invalid user_id");
 					result.status = 404;
 				}
 			} else {
@@ -78,7 +78,7 @@ export default class orgController {
 			result.status = putResult.status;
 			if (result.status == 201) {
 				result.success = true;
-			} else result.errors.push("put database error");
+			} else result.errors.push(...putResult.errors);
 		} else userErrors.forEach((error) => result.errors.push("missing "+error));
 		//Put request code
 		res.status(result.status).json(result); //Return whatever result remains

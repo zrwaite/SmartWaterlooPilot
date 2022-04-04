@@ -1,7 +1,7 @@
 const defaultEvent = {
 	id: "",
 	name: "",
-	organization: "",
+	org: "",
 	age_range: "",
 	start_date: "",
 	end_date: "",
@@ -9,6 +9,7 @@ const defaultEvent = {
 	signed_up: false,
 	description: "",
 	image: "",
+	attendees: ""
 }
 
 const defaultEventsState: {

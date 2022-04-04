@@ -20,6 +20,7 @@ import "./styles/styles.css";
 import {mobileWidth} from "./constants";
 import AccountParent from "./pages/AccountParent";
 import React, {useState} from "react";
+import AddOrgMember from "./pages/AddOrgMember";
 
 
 const MobileContext = React.createContext<{mobile: boolean; setMobile: Function;}>({
@@ -81,17 +82,24 @@ function App() {
 							<Route path="/data/user" element={<AccountParent page={"data"} org={false} />}></Route>
 							<Route path="/surveys/user" element={<AccountParent page={"surveys"} org={false} />}></Route>
 							<Route path="/events/user" element={<AccountParent page={"events"} org={false} />}></Route>
+							<Route path="/userdata" element={<AccountParent page={"userdata"} org={false} />}></Route>
+							<Route path="/useranswers" element={<AccountParent page={"useranswers"} org={false} />}></Route>
+							<Route path="/useraccess" element={<AccountParent page={"useraccess"} org={false} />}></Route>
 
 							<Route path="/dashboard/org/:orgId" element={<AccountParent page={"dashboard"} org={true} />}></Route>
 							<Route path="/data/org/:orgId" element={<AccountParent page={"data"} org={true} />}></Route>
 							<Route path="/surveys/org/:orgId" element={<AccountParent page={"surveys"} org={true} />}></Route>
 							<Route path="/events/org/:orgId" element={<AccountParent page={"events"} org={true} />}></Route>
 
-							<Route path="/survey/:id" element={<Survey />}></Route>
-							<Route path="/eventdetails/:id" element={<EventDetails />}></Route>
+							<Route path="/survey/:id/user" element={<AccountParent page={"survey"} org={false} />}></Route>
+							<Route path="/survey/:id/org/:orgId" element={<AccountParent page={"survey"} org={true} />}></Route>
+							<Route path="/eventdetails/:id/user" element={<AccountParent page={"eventdetails"} org={false} />}></Route>
+							<Route path="/eventdetails/:id/org/:orgId" element={<AccountParent page={"eventdetails"} org={true} />}></Route>
 
 							<Route path="/createevent/:orgId" element={<CreateEvent />}></Route>
 							<Route path="/createsurvey/:orgId" element={<CreateSurvey />}></Route>
+							<Route path="/addorgmember/:orgId" element={<AccountParent page={"addorgmember"} org={true} />}></Route>
+							<Route path="/orgdata/:orgId" element={<AccountParent page={"orgdata"} org={true} />}></Route>
 
 							<Route path="/test" element={<TestPage />}></Route>
 							<Route path="*" element={<NotFound />}></Route>

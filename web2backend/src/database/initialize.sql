@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS "users"(
 	grade varchar(100),
 	postal_code varchar(100),
 	avatar_string varchar(100),
-	answers integer[],
-	events integer[],
-	surveys integer[],
-	orgs text[]
+	answers integer[] default array[]::integer[],
+	events integer[] default array[]::integer[],
+	surveys integer[] default array[]::integer[],
+	orgs text[] default array[]::text[]
 );
 
 create table if not exists "orgs"(
@@ -35,7 +35,7 @@ create table if not exists "orgs"(
 	business_number varchar(100),
 	verified bit default '0',
 	avatar_string varchar(100),
-	members int[]
+	members int[] default array[]::integer[]
 );
 
 create table if not exists "surveys"(
@@ -55,7 +55,7 @@ create table if not exists "questions"(
 	id serial primary key,
 	prompt TEXT,
 	answer_type type_choices,
-	choices TEXT[]
+	choices TEXT[] default array[]::text[]
 );
 
 create table if not exists "answers"(

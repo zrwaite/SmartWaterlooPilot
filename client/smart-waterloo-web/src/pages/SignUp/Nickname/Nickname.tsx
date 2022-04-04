@@ -4,7 +4,7 @@ import "./Nickname.css";
 type NicknameProps = {
 	backStep: () => void,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void
-	nicknameData: { nickname: string, avatarString: string };
+	nicknameData: { nickname: string, avatar_string: string };
 	submit: () => void;
 	org: boolean;
 };
@@ -21,7 +21,7 @@ function Nickname(props: NicknameProps) {
 			<div className={"nicknameContainer"}>
 				<h4>Almost there 😎</h4>
 				<p style={spacing}>Now let's give a nickname to your Avatar</p>
-				<img src={`https://avatars.dicebear.com/api/bottts/${props.nicknameData.avatarString}.svg`} alt="Avatar" className="avatarImage" />
+				<img src={`https://avatars.dicebear.com/api/bottts/${props.nicknameData.avatar_string}.svg`} alt="Avatar" className="avatarImage" />
 				<hr />
 				<input onChange={props.handleParentInputChange} name="nickname" type="text" className="nicknameInput" id="nicknameInput" placeholder="Enter a nickname" value={props.nicknameData.nickname} />
 				{

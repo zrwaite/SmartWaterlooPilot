@@ -12,6 +12,8 @@ const Surveys = (props: AccountChildProps) => {
 	const navigate = useNavigate();
 	const cookies = new Cookies();
 	cookies.set("back", `/dashboard/${props.org?`org/${props.orgId}`:"user"}`);
+	
+
 	return (
 		<div className={"besideAside"}>
 			<div className={mobile? "":"fullScreenPanel"}>
@@ -24,8 +26,10 @@ const Surveys = (props: AccountChildProps) => {
 					</div>:null}
 					{
 						props.surveysData.set?(
-							props.surveysData.surveys.map((survey, i) => {return (
-								<SurveyPanel index={i} key={i} {...survey}/>
+							props.surveysData.surveys.map((survey, i) => {
+								const surveyCompleted = props.accountData.account.surveys.includes(parseInt(survey.id));
+								return (
+								<SurveyPanel completed={surveyCompleted} numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} index={i} key={i} {...survey}/>
 							);})
 						):[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
 					}

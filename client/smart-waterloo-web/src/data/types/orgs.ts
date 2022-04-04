@@ -4,7 +4,8 @@ const defaultOrg = {
 	avatar_string: "",
 	owner_id: 0,
 	verified: 0,
-	id: 0
+	id: 0,
+	members: []
 }
 
 const defaultOrgsState:{orgs: typeof defaultOrg[], set: boolean} = {
@@ -13,11 +14,12 @@ const defaultOrgsState:{orgs: typeof defaultOrg[], set: boolean} = {
 }
 
 interface postOrgType {
-	avatarString:string, 
+	avatar_string:string, 
 	nickname: string, 
 	businessNumber: string
 }
 type postOrgReturn = {success:boolean, errors: string[], orgId:string}
+type addMemberReturn = {success:boolean, errors: string[]}
 
 export {defaultOrg, defaultOrgsState};
-export type {postOrgType, postOrgReturn}
+export type {postOrgType, postOrgReturn, addMemberReturn}

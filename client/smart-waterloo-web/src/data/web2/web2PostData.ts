@@ -13,6 +13,7 @@ const web2PostAnswer = async (questionId: string, answer: string):Promise<string
 		user_id: cookies.get("userId"),
 		answer: answer,
 		question_id: questionId,
+		link: true
 	})
 	if (json) {
 		let response = JSON.parse(json);
@@ -63,7 +64,7 @@ const postOrgWeb2 = async (inputData:postOrgType):Promise<postOrgReturn> => {
 		owner_id: cookies.get("userId"),
 		business_number: inputData.businessNumber,
 		nickname: inputData.nickname,
-		avatar_string: inputData.avatarString,
+		avatar_string: inputData.avatar_string,
 	})
 	if (json) {
 		let response = JSON.parse(json);
@@ -90,7 +91,7 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 		race: inputData.race,
 		grade: inputData.grade,
 		postal_code: inputData.postalCode,
-		avatar_string: inputData.avatarString,
+		avatar_string: inputData.avatar_string,
 	})
 	if (json) {
 		let response = JSON.parse(json);

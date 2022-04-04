@@ -11,6 +11,8 @@ import EventPanel from "../../Events/EventPanel"
 import SurveyPanel from "../../Surveys/SurveyPanel"
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
+import { defaultAccount } from "../../../data/types/account";
+import DataPanels from "../../MyData/DataPanels/DataPanels";
 
 interface DashboardPreviewHeaderProps {
 	name: keyof typeof Data;
@@ -36,8 +38,9 @@ interface DashboardPreviewProps {
 	name: keyof typeof Data;
 	events: typeof defaultEvent[];
 	eventsSet: boolean;
-	surveys: typeof defaultSurvey[]
+	surveys: typeof defaultSurvey[];
 	surveysSet: boolean;
+	account: typeof defaultAccount;
 	org: boolean;
 	orgId: string|undefined;
 	verified: boolean;
@@ -59,7 +62,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			{
 				props.eventsSet?
 				props.events.map((event, i) => {return (
-					i<5?<EventPanel key={i} index={i} {...event}/>:null
+					i<5?<EventPanel isOrg={props.org} orgId={props.orgId} key={i} index={i} {...event}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
@@ -67,16 +70,16 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				<button onClick={() => navigate(`/createevent/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
 			</div>:null}
 		</>
-		); break; case "data": panelList = (<>
-			{dataPanelsData.map((panel, i) => {return (
-				i<5?<MyDataPanel key={i} index={i} {...panel}/>:null
-			);})}
-		</>
-		);break; case "surveys": panelList = (<>
+		); break; case "data": panelList = (<DataPanels orgId={props.orgId} org={props.org} />
+		);break; case "surveys": 
+			panelList = (<>
 			{
 				props.surveysSet?
-				props.surveys.map((survey, i) => {return (
-					i<5?<SurveyPanel key={i} index={i} {...survey}/>:null
+				props.surveys.map((survey, i) => {
+					console.log(props.account.surveys);
+					const surveyCompleted = props.account.surveys.includes(parseInt(survey.id));
+					return (
+					i<5?<SurveyPanel completed={surveyCompleted} numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} key={i} index={i} {...survey}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			} 

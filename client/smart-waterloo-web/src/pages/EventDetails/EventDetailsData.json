@@ -2,7 +2,7 @@
 	{
 		"name": "basketball-skills",
 		"title": "Basketball Skills",
-		"organization": "Kinbrdige Community Association",
+		"org": "Kinbrdige Community Association",
 		"age_range": "8-12",
 		"start_date": "March 15 2022",
 		"end_date": "June 15 2022",
@@ -14,7 +14,7 @@
 	{
 		"name": "afterschool-program",
 		"title": "Afterschool Program",
-		"organization": "Fiddlesticks Community Centre",
+		"org": "Fiddlesticks Community Centre",
 		"age_range": "6-12",
 		"start_date": "September 6 2021",
 		"end_date": "June 30 2022",
@@ -26,7 +26,7 @@
 	{
 		"name": "march-break-camp",
 		"title": "March Break Camp",
-		"organization": "Greenway-Chaplin Community Centre",
+		"org": "Greenway-Chaplin Community Centre",
 		"age_range": "4-12",
 		"start_date": "March 9 2022",
 		"end_date": "March 15 2022",

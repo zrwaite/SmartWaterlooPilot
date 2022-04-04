@@ -12,37 +12,29 @@ import NotFound from "../NotFound";
 import {useParams,useNavigate,} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultEvent } from '../../data/types/events';
-import { getEventData } from '../../data/getData';
 import Cookies from 'universal-cookie';
+import { addEventtoUser } from '../../data/addData';
+import { AccountChildProps } from '../AccountParent';
 
 Modal.setAppElement("#root");
 
-const EventsDetails = () => {
+const EventsDetails = (props: AccountChildProps) => {
 	let {mobile} = useContext(MobileContext);
 	const navigate = useNavigate();
-	const { id } = useParams();
-	const [buttonText, setText] = React.useState("Sign Up");
-	const [signupButtonClass, setClass] = React.useState("signupButton");
-	const [bottomButtonClass, setBottomClass] = React.useState("bottomButton");
+	const { id, orgId} = useParams();
+	const [buttonText, setText] = useState("Sign Up");
+	const [signupButtonClass, setClass] = useState("signupButton");
+	const [bottomButtonClass, setBottomClass] = useState("bottomButton");
 	const [isOpen, setIsOpen] = React.useState(false);
 
 	// const event = eventDataRaw.find(event => event.id === id);
 	const [notFound, setNotFound] = useState(false);
-	const [eventData, setEventData] = useState({event: defaultEvent, eventDataSet: false});
-	const getSetEventData = async () => {
-		if (!id) return;
-		let {event, success, errors} = await getEventData(id);
-		if (!success) {
-			setNotFound(true);
-			console.error(errors);
-		}
-		else setEventData({ event: event, eventDataSet: true })
+	const [eventData, setEventData] = useState({event: defaultEvent, set: false});
+	if (!eventData.set) {
+		const newEventData = props.eventsData.events.find(event => event.id == id)
+		if (newEventData) setEventData({event: newEventData, set: true})
 	}
-	const [dataCalled, setDataCalled] = useState(false);
-	if (!dataCalled) {
-		getSetEventData();
-		setDataCalled(true);
-	}
+	
 	if (notFound || !id) return <NotFound />
 
 	function openModal() {
@@ -53,6 +45,24 @@ const EventsDetails = () => {
 		setIsOpen(false);
 	}
 	const cookies = new Cookies();
+	const signedUp = props.accountData.account.events.includes(parseInt(eventData.event.id));
+	const trySignUp = async () => {
+		if (!signedUp) {
+			let {success, errors} = await addEventtoUser(cookies.get("userId"), eventData.event.id)
+			if (success) {
+				openModal();
+				setText("Signed Up ✓");
+				setClass("signupLightBlueButton");
+				setBottomClass("bottomLightBlueButton");
+				setTimeout(() => window.location.reload(), 800);
+			} else alert(JSON.stringify(errors));
+		}
+	}
+	if (props.accountData.set && eventData.set && signedUp && buttonText!=="Signed Up ✓" && signupButtonClass!=="signupLightBlueButton" && bottomButtonClass!=="bottomLightBlueButton") {
+		setText("Signed Up ✓");
+		setClass("signupLightBlueButton");
+		setBottomClass("bottomLightBlueButton");
+	}
 
 	return (
 		<>
@@ -77,28 +87,20 @@ const EventsDetails = () => {
 					</div>					
 				</div>
 				<div>
-					<p className={signupButtonClass} onClick={() => { 
-					openModal()
-					setText("Signed Up ✓") 
-					setClass("signupLightBlueButton")
-					setBottomClass("bottomLightBlueButton") }}>{buttonText}</p>
+					<p className={signupButtonClass} onClick={trySignUp}>{buttonText}</p>
 				</div>		
 			</div>
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanelNoPadding"}>
 					{
-						(eventData.eventDataSet)?(<>
+						(eventData.set)?(<>
 							<div className={"eventDetails"}>
 								<img src={event_images.basketball_skills} alt={eventData.event.name} className="eventImage" />
 							</div>
 							<EventInfo {...eventData.event} />
-							<div className="DesktopPanelNoBorder">
-								<p className={bottomButtonClass} onClick={() => { 
-								openModal()
-								setText("Signed Up ✓") 
-								setClass("signupLightBlueButton")
-								setBottomClass("bottomLightBlueButton") }}>{buttonText}</p>
-							</div>
+							{props.org?null:(<div className="DesktopPanelNoBorder">
+								<p className={bottomButtonClass} onClick={trySignUp}>{buttonText}</p>
+							</div>)}
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>
 						)

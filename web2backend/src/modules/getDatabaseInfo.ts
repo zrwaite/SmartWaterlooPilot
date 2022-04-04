@@ -94,6 +94,30 @@ const getOrgs = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "orgs", orgData.orgKeys);
 	return {status: status, orgs: entries, errors: errors};
 }
+const getEventOrg = async (eventId:number) => {
+	let errors: string[] = [];
+	let orgNickname = "";
+	const {status, entries:event, errors:eventErrors} = await getEntries(false, "id", eventId, "events", ["org"]);
+	if (event.length) {
+		const {entries:org, errors:orgErrors} = await getEntries(false, "id", event[0].org, "orgs", ["nickname"]);
+		if (org.length) {
+			orgNickname = org[0].nickname
+		} else errors.push(...orgErrors);
+	} else errors.push(...eventErrors);
+	return {status: status, orgNickname: orgNickname, errors: errors};
+}
+const getSurveyOrg = async (surveyId:number) => {
+	let errors: string[] = [];
+	let orgNickname = "";
+	const {status, entries:survey, errors:surveysErrors} = await getEntries(false, "id", surveyId, "surveys", ["org"]);
+	if (survey.length) {
+		const {status, entries:org, errors:orgErrors} = await getEntries(false, "id", survey[0].org, "orgs", ["nickname"]);
+		if (org.length) {
+			orgNickname = org[0].nickname
+		} else errors.push(...orgErrors);
+	} else errors.push(...surveysErrors);
+	return {status: status, orgNickname: orgNickname, errors: errors};
+}
 const verifyOrgVerification = async (id:string):Promise<boolean> => {
 	const {entries} = await getEntries(false, "id", id, "orgs", ["verified"]);
 	return (entries && entries.length>0 && entries[0].verified === '1');
@@ -161,4 +185,4 @@ const getQuestionAnswers = async (questionId: string) => {
 	const {status, entries, errors} = await getEntries(true, "question_id", questionId, "answers", answerKeys);
 	return {status: status, answers: entries, errors: errors};
 }
-export {getUserOrgs, getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getEventOrg, getSurveyOrg, getUserOrgs, getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
