@@ -115,7 +115,7 @@ let contractABI;
 		inputData.race,
 		inputData.religion,
 		inputData.sexuality,
-		(inputData.nickname + inputData.avatarString)).send({ from: web3.eth.defaultAccount })
+		(inputData.nickname + inputData.avatar_string)).send({ from: web3.eth.defaultAccount })
 		.then(() => console.log("Information added successfully"))
 		.catch((err: any) => console.log(err));
 // }
@@ -124,7 +124,7 @@ let contractABI;
 // 	contractABI = orgABI;
 // 	const orgContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
 // 	console.log(orgContract);
-// 	await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatarString), [""]).send({from: web3.eth.defaultAccount})
+// 	await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatar_string), [""]).send({from: web3.eth.defaultAccount})
 // 	.then(() => console.log(`Organisation ${state.formInputs.businessNumber} created succesfully`))
 // 	.catch((err:any) => console.log(err));
 // }

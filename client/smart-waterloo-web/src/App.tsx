@@ -96,6 +96,7 @@ function App() {
 							<Route path="/createevent/:orgId" element={<CreateEvent />}></Route>
 							<Route path="/createsurvey/:orgId" element={<CreateSurvey />}></Route>
 							<Route path="/addorgmember/:orgId" element={<AccountParent page={"addorgmember"} org={true} />}></Route>
+							<Route path="/orgdata/:orgId" element={<AccountParent page={"orgdata"} org={true} />}></Route>
 
 							<Route path="/test" element={<TestPage />}></Route>
 							<Route path="*" element={<NotFound />}></Route>

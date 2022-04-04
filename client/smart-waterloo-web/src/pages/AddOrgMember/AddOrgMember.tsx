@@ -17,7 +17,6 @@ const ScanQR = (props:AccountChildProps) => {
 	const navigate = useNavigate();
 	let {orgId} = useParams();
 
-
 	useEffect(() => {
 		const scanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 }, undefined);
 		const onScanSuccess = async (decodedText:any, decodedResult:any) => {
@@ -54,7 +53,7 @@ const ScanQR = (props:AccountChildProps) => {
 							Scan user's id to add them to your org
 						</p>
 						<div className={mobile?"center":"horizontal"}>
-							<img className={"avatarImg"} src={props.accountData.account.avatarString===""?"":`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatarString}.svg`} alt=""/>
+							<img className={"avatarImg"} src={props.accountData.account.avatar_string===""?"":`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatar_string}.svg`} alt=""/>
 							<img className={"qrCodePNG"} src={mobile?QRMobilePNG:QRDesktopPNG} alt="QRCode Scanner"/>
 						</div>
 						<button onClick={() => functions.scan()} className={"blackButton scanCardButton"}>Scan Card</button>

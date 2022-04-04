@@ -7,10 +7,8 @@ import "./Survey.css";
 import { useNavigate, useParams } from "react-router-dom";
 import SurveyQuestion from "./SurveyQuestion";
 // import Cookies from "universal-cookie";
-import { getBasicUserData, getSurveyData } from "../../data/getData";
 import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";
-import { defaultAccountState } from "../../data/types/account";
 import { AccountChildProps } from "../AccountParent";
 
 const defaultSurveyData:SurveyDataType = {

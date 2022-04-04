@@ -12,9 +12,7 @@ import NotFound from "../NotFound";
 import {useParams,useNavigate,} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultEvent } from '../../data/types/events';
-import { getBasicUserData, getEventData } from '../../data/getData';
 import Cookies from 'universal-cookie';
-import { defaultAccountState } from '../../data/types/account';
 import { addEventtoUser } from '../../data/addData';
 import { AccountChildProps } from '../AccountParent';
 

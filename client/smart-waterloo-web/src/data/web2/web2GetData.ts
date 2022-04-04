@@ -16,18 +16,12 @@ const web2GetAnswersData = async (id:string|undefined):Promise<{success:boolean,
 	} else return {success: false, answers: [], errors:["request failed"]};
 }
 
-const web2GetBasicUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}> => {
+const web2GetUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}> => {
 	let json = await httpReq("/api/user/?user_id=" + cookies.get("userId"))
 	if (json) {
 		let response = JSON.parse(json);
 		if (response.success) {
-			let basicUserData = {...defaultAccount};
-			basicUserData.avatarString = response.response.avatar_string;
-			basicUserData.nickname = response.response.nickname;
-			basicUserData.surveys = response.response.surveys;
-			basicUserData.events = response.response.events;
-			basicUserData.orgs = response.response.orgs;
-			return {success: true, userData:basicUserData, errors: []};
+			return {success: true, userData:response.response, errors: []};
 		} else {
 			return {success: false, userData:{}, errors: response.errors}
 		}
@@ -116,4 +110,4 @@ const web2GetBasicOrgData = async (id:string|undefined):Promise<{success:boolean
 
 
 
-export {web2GetAnswersData, web2GetOrgEventsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetBasicUserData, web2GetUserOrgs, web2GetSurveysData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData};
+export {web2GetAnswersData, web2GetOrgEventsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetUserData, web2GetUserOrgs, web2GetSurveysData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData};

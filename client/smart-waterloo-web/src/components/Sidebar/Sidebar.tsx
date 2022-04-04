@@ -8,7 +8,7 @@ interface SidebarProps {
 	page: string;
 	accountSet:boolean;
 	nickname: string;
-	avatarString: string;
+	avatar_string: string;
 	openSettings: () => void;
 	openOrgsModal: ()=>void;
 	orgs: (typeof defaultOrg)[];
@@ -23,7 +23,7 @@ const Sidebar = (props:SidebarProps) => {
 	return (
 		<aside className={"sidebarContainer"}>
 			<div className="center sidebarAvatar">
-				<img src={props.avatarString===""?"":`https://avatars.dicebear.com/api/bottts/${props.avatarString}.svg`} alt=""/>
+				<img src={props.avatar_string===""?"":`https://avatars.dicebear.com/api/bottts/${props.avatar_string}.svg`} alt=""/>
 				<h5>{props.nickname}</h5>
 			</div>
 			<div className="topSidebar">

@@ -1,12 +1,12 @@
 const defaultAccount:{
 	nickname: string;
-	avatarString: string;
+	avatar_string: string;
 	surveys: number[];
 	events: number[];
 	orgs: string[];	
 } = {
 	nickname: "--------",
-	avatarString: "",
+	avatar_string: "",
 	surveys: [],
 	events: [],
 	orgs: []
@@ -21,7 +21,7 @@ interface postUserType {
 	gender:string, height:string, weight:string,
 	qrId:string, grade:string, postalCode:string,
 	race:string, religion:string, sexuality:string,
-	nickname:string, avatarString:string, password:string
+	nickname:string, avatar_string:string, password:string
 }
 export {defaultAccountState, defaultAccount}
 export type {postUserType}

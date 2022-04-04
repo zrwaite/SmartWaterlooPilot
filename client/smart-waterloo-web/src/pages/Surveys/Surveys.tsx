@@ -1,13 +1,11 @@
 import { MobileContext } from "../../App";
-import {useContext, useState} from "react";
+import {useContext} from "react";
 import "./Surveys.css";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import Cookies from "universal-cookie";
 import {AccountChildProps} from "../AccountParent"
-import { defaultAccountState } from "../../data/types/account";
-import { getBasicUserData } from "../../data/getData";
 const Surveys = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
 	// const {address} = useContext(AddressContext);

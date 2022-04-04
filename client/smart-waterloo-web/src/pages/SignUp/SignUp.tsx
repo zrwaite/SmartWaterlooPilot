@@ -42,13 +42,13 @@ const defaultPasswordProps = {
 }
 const defaultNicknameProps = {
 	nickname: "",
-	avatarString: defaultAvatarString
+	avatar_string: defaultAvatarString
 }
 const defaultVerifiedProps = {
 	businessNumber: ""
 }
 const defaultAvatarProps = {
-	avatarString: defaultAvatarString
+	avatar_string: defaultAvatarString
 }
 const defaultSignUpState = {
 	step: 0,

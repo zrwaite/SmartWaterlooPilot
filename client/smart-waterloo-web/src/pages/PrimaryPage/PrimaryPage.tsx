@@ -24,7 +24,7 @@ const AccountParent = (props:PrimaryPageProps) => {
 					orgId={props.orgId} 
 					orgs={props.orgsData.orgs} 
 					nickname={props.accountData.account.nickname}
-					avatarString={props.accountData.account.avatarString}
+					avatar_string={props.accountData.account.avatar_string}
 					accountSet={props.accountData.set} 
 					openOrgsModal={props.openOrgsModal} 
 					openSettings={props.openSettings} 

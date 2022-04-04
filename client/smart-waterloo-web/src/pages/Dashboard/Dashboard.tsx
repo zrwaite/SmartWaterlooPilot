@@ -30,7 +30,7 @@ const Dashboard = (props: AccountChildProps) => {
 			{mobile&&(
 				<header className="center">
 					<h4>Dashboard 📌</h4>
-					<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatarString}.svg`} alt="avatarImage"/>
+					<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatar_string}.svg`} alt="avatarImage"/>
 					<h5>{props.accountData.account.nickname}</h5>
 				</header>
 			)}

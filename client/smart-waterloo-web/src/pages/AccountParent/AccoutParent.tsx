@@ -1,11 +1,9 @@
 import "./AccountParent.css";
-import Navbar from "../../components/Navbar";
 import Cookies from "universal-cookie";
-import Sidebar from "../../components/Sidebar";
 import {useContext, useState} from "react";
 import {MobileContext} from "../../App";
 import { defaultEventsState } from "../../data/types/events";
-import {getUserOrgs, getEventsData, getBasicUserData, getSurveysData, getBasicOrgData, getOrgEventsData, getOrgSurveysData} from "../../data/getData"
+import {getUserOrgs, getEventsData, getUserData, getSurveysData, getBasicOrgData, getOrgEventsData, getOrgSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
 import { defaultSurveysState } from "../../data/types/surveys";
 import { useNavigate, useParams } from "react-router-dom";
@@ -13,18 +11,15 @@ import { isSignedIn } from "../../data/account";
 import {defaultAccountState} from "../../data/types/account";
 import { defaultOrgsState } from "../../data/types/orgs";
 import OrgsModal from "../../components/OrgsModal";
-import Dashboard from "../Dashboard";
-import Events from "../Events";
-import MyData from "../MyData";
-import Surveys from "../Surveys";
 import PrimaryPage from "../PrimaryPage";
 import AddOrgMember from "../AddOrgMember";
 import EventDetails from "../EventDetails";
 import Survey from "../Survey";
+import OrgData from "../OrgData";
 
 interface AccountParentProps {
 	org: boolean;
-	page: "dashboard"|"events"|"data"|"surveys"|"addorgmember"|"eventdetails"|"survey"
+	page: "dashboard"|"events"|"data"|"surveys"|"addorgmember"|"eventdetails"|"survey"|"orgdata"
 }
 
 const AccountParent = (props:AccountParentProps) => {
@@ -38,8 +33,6 @@ const AccountParent = (props:AccountParentProps) => {
 	const [dataCalled, setDataCalled] = useState(false);
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [orgsModalOpen, setOrgsModalOpen] = useState(false);
-
-	let {mobile} = useContext(MobileContext);
 	const { orgId } = useParams();
 	const navigate = useNavigate();
 
@@ -61,7 +54,7 @@ const AccountParent = (props:AccountParentProps) => {
 
 	/* USER FUNCTIONS */
 	const getSetUserData = async () => {
-		let {success, userData, errors} = await getBasicUserData();
+		let {success, userData, errors} = await getUserData();
 		if (!success && errors.length) alert(JSON.stringify(errors));	
 		else if ('nickname' in userData) setAccountData({account: userData, set: true});
 		else console.error("invalid userData response");
@@ -85,7 +78,7 @@ const AccountParent = (props:AccountParentProps) => {
 		}
 		else if ('nickname' in org) {
 			setAccountData({
-				account: {avatarString: org.avatar_string, nickname: org.nickname, surveys: [], events: [], orgs: []}, 
+				account: {avatar_string: org.avatar_string, nickname: org.nickname, surveys: [], events: [], orgs: []}, 
 				set: true
 			});
 			setVerified(Boolean(org.verified));
@@ -144,6 +137,8 @@ const AccountParent = (props:AccountParentProps) => {
 			{props.page==="addorgmember"&&<AddOrgMember {...allDataObj}/>}
 			{props.page==="eventdetails"&&<EventDetails {...allDataObj}/>}
 			{props.page==="survey"&&<Survey {...allDataObj}/>}
+			{props.page==="orgdata"&&<OrgData {...allDataObj}/>}
+			
 		</>
     );
 }

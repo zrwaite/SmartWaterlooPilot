@@ -14,7 +14,7 @@ const defaultOrgsState:{orgs: typeof defaultOrg[], set: boolean} = {
 }
 
 interface postOrgType {
-	avatarString:string, 
+	avatar_string:string, 
 	nickname: string, 
 	businessNumber: string
 }
