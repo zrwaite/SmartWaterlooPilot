@@ -8,7 +8,7 @@ import Settings from "../../components/Settings";
 import { defaultSurveysState } from "../../data/types/surveys";
 import { useNavigate, useParams } from "react-router-dom";
 import { isSignedIn } from "../../data/account";
-import {defaultAccountState} from "../../data/types/account";
+import {defaultAccount, defaultAccountState} from "../../data/types/account";
 import { defaultOrgsState } from "../../data/types/orgs";
 import OrgsModal from "../../components/OrgsModal";
 import PrimaryPage from "../PrimaryPage";
@@ -16,10 +16,11 @@ import AddOrgMember from "../AddOrgMember";
 import EventDetails from "../EventDetails";
 import Survey from "../Survey";
 import OrgData from "../OrgData";
+import UserData from "../UserData";
 
 interface AccountParentProps {
 	org: boolean;
-	page: "dashboard"|"events"|"data"|"surveys"|"addorgmember"|"eventdetails"|"survey"|"orgdata"
+	page: "dashboard"|"events"|"data"|"surveys"|"addorgmember"|"eventdetails"|"survey"|"orgdata"|"userdata"
 }
 
 const AccountParent = (props:AccountParentProps) => {
@@ -78,7 +79,11 @@ const AccountParent = (props:AccountParentProps) => {
 		}
 		else if ('nickname' in org) {
 			setAccountData({
-				account: {avatar_string: org.avatar_string, nickname: org.nickname, surveys: [], events: [], orgs: []}, 
+				account: {
+					...defaultAccount,
+					avatar_string: org.avatar_string, 
+					nickname: org.nickname,
+				}, 
 				set: true
 			});
 			setVerified(Boolean(org.verified));
@@ -138,7 +143,7 @@ const AccountParent = (props:AccountParentProps) => {
 			{props.page==="eventdetails"&&<EventDetails {...allDataObj}/>}
 			{props.page==="survey"&&<Survey {...allDataObj}/>}
 			{props.page==="orgdata"&&<OrgData {...allDataObj}/>}
-			
+			{props.page==="userdata"&&<UserData {...allDataObj}/>}
 		</>
     );
 }

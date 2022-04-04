@@ -82,6 +82,7 @@ function App() {
 							<Route path="/data/user" element={<AccountParent page={"data"} org={false} />}></Route>
 							<Route path="/surveys/user" element={<AccountParent page={"surveys"} org={false} />}></Route>
 							<Route path="/events/user" element={<AccountParent page={"events"} org={false} />}></Route>
+							<Route path="/userdata" element={<AccountParent page={"userdata"} org={false} />}></Route>
 
 							<Route path="/dashboard/org/:orgId" element={<AccountParent page={"dashboard"} org={true} />}></Route>
 							<Route path="/data/org/:orgId" element={<AccountParent page={"data"} org={true} />}></Route>
