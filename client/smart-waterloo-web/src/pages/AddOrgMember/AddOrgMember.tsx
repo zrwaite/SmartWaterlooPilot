@@ -39,7 +39,7 @@ const ScanQR = () => {
 		}
 		else if ('nickname' in org) {
 			setAccountData({
-				account: {avatarString: org.avatar_string, nickname: org.nickname}, 
+				account: {avatarString: org.avatar_string, nickname: org.nickname, events:[], surveys:[], orgs:[]}, 
 				set: true
 			});
 		}

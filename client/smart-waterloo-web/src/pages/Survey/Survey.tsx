@@ -4,12 +4,13 @@ import { MobileContext } from "../../App";
 import { SurveyDataType } from "../../data/types/surveys";
 import SurveyLanding from "./SurveyLanding";
 import "./Survey.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import SurveyQuestion from "./SurveyQuestion";
 // import Cookies from "universal-cookie";
-import { getSurveyData } from "../../data/getData";
+import { getBasicUserData, getSurveyData } from "../../data/getData";
 import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";
+import { defaultAccountState } from "../../data/types/account";
 
 const defaultSurveyData:SurveyDataType = {
 	id: "",
@@ -17,16 +18,17 @@ const defaultSurveyData:SurveyDataType = {
 	org: "- - - - - - - - -",
 	description: "- - - - - - - - -",
 	length: "? mins",
-	completed: false,
 	questions: []
 }
 const defaultAnswers:string[] = [];
 const Survey = (props: {org:boolean}) => {
 	// const cookies = new Cookies()
 	// cookies.set("back", "/surveys/");
+	const navigate = useNavigate();
 	const { id, orgId } = useParams();
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
+	const [accountData, setAccountData] = useState(defaultAccountState);
 	const [answers, setAnswers] = useState(defaultAnswers);
 	const greyText = {color: "grey"};
 	const childSetProgress = (newVal: boolean) => {
@@ -49,8 +51,15 @@ const Survey = (props: {org:boolean}) => {
 			console.error(errors);
 		}
 	}
+	const getSetUserData = async () => {
+		let {success, userData, errors} = await getBasicUserData();
+		if (!success && errors.length) alert(JSON.stringify(errors));	
+		else if ('nickname' in userData) setAccountData({account: userData, set: true});
+		else console.error("invalid userData response");
+	}
 	const [dataCalled, setDataCalled] = useState(false);
 	if (!dataCalled) {
+		getSetUserData();
 		getSetSurveyData();
 		setDataCalled(true);
 	} 
@@ -66,12 +75,15 @@ const Survey = (props: {org:boolean}) => {
 	});
 	const complete = answers.every(answer => answer!=="");
 	const trySubmitSurvey = async () => {
-		let {success, errors} = await submitSurvey(surveyData.survey.questions, answers);
-		// if (success) navigate(`/eventdetails/${eventId}`);
-		// else alert(JSON.stringify(errors));
+		let {success, errors} = await submitSurvey(surveyData.survey.id, surveyData.survey.questions, answers);
+		if (success) {
+			alert("Submitted!");
+			navigate(`/surveys/${props.org?`org/${orgId}`:"user"}`);
+		} else alert(JSON.stringify(errors));
 	}
 	if (notFound || !id) return <NotFound />
-	return (
+	const completed = (accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
+	return ( 
 		<>
 			<Navbar root={false}/>
 			<div className={"PageContainer"}>
@@ -83,7 +95,7 @@ const Survey = (props: {org:boolean}) => {
 							{questions}
 							{!owner&&<button onClick={complete?trySubmitSurvey:()=>{}} className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
 						</div>
-						):<SurveyLanding org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
+						):<SurveyLanding set={surveyData.surveyDataSet} completed={completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
 				</div>
 			</div>
 		</>

@@ -16,14 +16,14 @@ const Dashboard = (props: AccountChildProps) => {
 	const cookies = new Cookies();
 	cookies.set("back", `/dashboard/${props.org?`org/${orgId}`:"user"}`);
 	const dashboardPreviewData = {
-		...props.accountData.account,
+		...props.accountData,
 		...props.eventsData,
 		...props.surveysData, 
 		eventsSet:props.eventsData.set,
 		surveysSet:props.surveysData.set,
 		org:props.org ,
 		orgId:orgId,
-		verified: props.verified
+		verified: props.verified,
 	}
     return (
 		<>

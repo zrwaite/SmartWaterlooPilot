@@ -1,6 +1,15 @@
-const defaultAccount = {
+const defaultAccount:{
+	nickname: string;
+	avatarString: string;
+	surveys: number[];
+	events: number[];
+	orgs: string[];	
+} = {
 	nickname: "--------",
-	avatarString: ""
+	avatarString: "",
+	surveys: [],
+	events: [],
+	orgs: []
 }
 const defaultAccountState = {
 	set: false,

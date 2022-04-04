@@ -12,7 +12,6 @@ interface postSurveyType {
 interface SurveyDataType extends postSurveyType {
 	id: string;
 	length: string;
-	completed: boolean;
 	org: string;
 }
 const defaultSurvey:SurveyDataType = {
@@ -21,7 +20,6 @@ const defaultSurvey:SurveyDataType = {
 	org: "",
 	length: "",
 	description: "",
-	completed: false,
 	questions: []
 }
 const defaultAnswer = {
@@ -36,9 +34,10 @@ const defaultSurveysState: {
 
 type postSurveyReturn = {success:boolean, errors: string[], surveyId:string}
 type submitSurveyReturn = {success: boolean, errors: string[]}
+type addSurveyReturn = submitSurveyReturn;
 
 export { defaultAnswer, defaultSurvey, defaultSurveysState};
-export type {Question, SurveyDataType, postSurveyType, postSurveyReturn, submitSurveyReturn};
+export type {addSurveyReturn, Question, SurveyDataType, postSurveyType, postSurveyReturn, submitSurveyReturn};
 
 
 

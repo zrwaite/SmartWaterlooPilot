@@ -24,6 +24,9 @@ const web2GetBasicUserData = async ():Promise<{success:boolean, userData:typeof 
 			let basicUserData = {...defaultAccount};
 			basicUserData.avatarString = response.response.avatar_string;
 			basicUserData.nickname = response.response.nickname;
+			basicUserData.surveys = response.response.surveys;
+			basicUserData.events = response.response.events;
+			basicUserData.orgs = response.response.orgs;
 			return {success: true, userData:basicUserData, errors: []};
 		} else {
 			return {success: false, userData:{}, errors: response.errors}
