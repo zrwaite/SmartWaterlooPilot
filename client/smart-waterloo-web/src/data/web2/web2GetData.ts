@@ -126,6 +126,41 @@ const web2GetBasicOrgData = async (id:string|undefined):Promise<{success:boolean
 	} else return {success: false, org: {}, errors:["request failed"]};
 }
 
+const web2GetQuestionsAndAnswers = async (answerIds: number[]):Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
+	let answers: string[] = [];
+	let questions: string[] = [];
+	let errors: string[] = [];
+	for (let i=0; i<answerIds.length; i++) {
+		let json = await httpReq("/api/answer/?answer_id="+answerIds[i])
+		if (json) {
+			let response = JSON.parse(json);
+			if (response.success) {
+				answers.push(response.response.answer);
+				let questionJSON = await httpReq("/api/question/?question_id="+response.response.question_id)
+				if (questionJSON) {
+					let questionResponse = JSON.parse(questionJSON);
+					if (questionResponse.success) questions.push(questionResponse.response.prompt);
+					else {
+						errors.push(...questionResponse.errors);
+						break;
+					}
+				} else {
+					errors.push("request error");
+					break;
+				}
+			} else {
+				errors.push(...response.errors);
+				break;
+			}
+		} else {
+			errors.push("request error");
+			break;
+		}
+	}
+	if (errors.length) return {success: false, questions: [], answers: [], errors: errors};
+	else return {success: true, questions: questions, answers: answers, errors: []};
+}
 
 
-export {web2GetAnswersData, web2GetOrgEventsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetUserData, web2GetUserOrgs, web2GetSurveysData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData};
+
+export {web2GetQuestionsAndAnswers, web2GetAnswersData, web2GetOrgEventsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetUserData, web2GetUserOrgs, web2GetSurveysData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData};

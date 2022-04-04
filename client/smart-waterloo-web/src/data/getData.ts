@@ -7,12 +7,19 @@ import orgABI from "./utils/SmartOrganisation.json";
 import eventABI from "./utils/OrganisationEvents.json";
 import {USE_WEB3} from "./dataConstants";
 import {defaultAccount} from "./types/account";
-import {web2GetAnswersData, web2GetUserOrgs, web2GetOrgSurveysData, web2GetOrgEventsData, web2GetUserData, web2GetSurveysData, web2GetBasicOrgData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData} from "./web2/web2GetData";
+import {web2GetAnswersData, web2GetUserOrgs, web2GetOrgSurveysData, web2GetOrgEventsData, web2GetUserData, web2GetSurveysData, web2GetBasicOrgData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData, web2GetQuestionsAndAnswers} from "./web2/web2GetData";
 import {defaultOrg} from "./types/orgs";
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
 
+
+const getQuestionsAndAnswers = async (answerIds: number[]):Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
+	return USE_WEB3 ? (await web3GetQuestionsAndAnswers(answerIds)) : (await web2GetQuestionsAndAnswers(answerIds));
+}
+const web3GetQuestionsAndAnswers = async (answerIds: number[]):Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
+	return {success: false, questions: [], answers: [], errors: ["not implemented"]};
+}
 const getUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}> => {
 	return USE_WEB3 ? (await web3GetUserData()) : (await web2GetUserData());
 };
@@ -178,4 +185,4 @@ const web3GetEventsData = async () => {
 	return newEvents;
 };
 
-export {getAnswersData, getOrgEventsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getUserData, getEventsData, getEventData, getSurveysData, getSurveyData};
+export {getQuestionsAndAnswers, getAnswersData, getOrgEventsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getUserData, getEventsData, getEventData, getSurveysData, getSurveyData};
