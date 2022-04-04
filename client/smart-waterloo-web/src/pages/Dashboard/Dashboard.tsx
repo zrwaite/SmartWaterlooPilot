@@ -25,7 +25,6 @@ const Dashboard = (props: AccountChildProps) => {
 		orgId:orgId,
 		verified: props.verified
 	}
-	console.log(props.surveysData.surveys);
     return (
 		<>
 			{mobile&&(

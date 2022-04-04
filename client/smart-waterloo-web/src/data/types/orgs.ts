@@ -4,7 +4,8 @@ const defaultOrg = {
 	avatar_string: "",
 	owner_id: 0,
 	verified: 0,
-	id: 0
+	id: 0,
+	members: []
 }
 
 const defaultOrgsState:{orgs: typeof defaultOrg[], set: boolean} = {

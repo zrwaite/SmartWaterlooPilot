@@ -77,7 +77,7 @@ const Survey = () => {
 				<div className={mobile? "":"surveyPagePanel"}>
 					{mobile?<h4>{surveyData.survey.name}</h4>:<h4 className={"surveyHeader"}>{surveyData.survey.name}</h4>}
 					<p>{surveyData.survey.organization}</p>
-					<p style={greyText}>{surveyData.survey.length} to fill</p>
+					<p style={greyText}>{surveyData.survey.questions.length} questions</p>
 					<div className={"surveyForm"}>
 						
 					</div>
@@ -86,7 +86,7 @@ const Survey = () => {
 							{questions}
 							<button onClick={complete?trySubmitSurvey:()=>{}} className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>
 						</div>
-						):<SurveyLanding setParentProgress={childSetProgress}/>}
+						):<SurveyLanding description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
 				</div>
 			</div>
 		</>

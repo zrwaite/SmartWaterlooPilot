@@ -49,31 +49,36 @@ const AccountParent = (props:AccountParentProps) => {
 
 	const getSetOrgsData = async () => {
 		let {success, orgs, errors} = await getUserOrgs(cookies.get("userId"));
-		if (!success) alert(JSON.stringify(errors));
+		if (!success) {
+			if (errors.length) alert(JSON.stringify(errors));
+		}
 		else setOrgsData({orgs: orgs, set: true })
 	}
 
 	/* USER FUNCTIONS */
 	const getSetUserData = async () => {
 		let {success, userData, errors} = await getBasicUserData();
-		if (!success) alert(JSON.stringify(errors));	
+		if (!success && errors.length) alert(JSON.stringify(errors));	
 		else if ('nickname' in userData) setAccountData({account: userData, set: true});
 		else console.error("invalid userData response");
 	}
 	const getSetEventsData = async () => {
 		let {success, events, errors} = await getEventsData();
-		if (!success) alert(JSON.stringify(errors));
+		if (!success && errors.length) alert(JSON.stringify(errors));
 		else setEventData({events: events, set: true })
 	}
 	const getSetSurveysData = async () => {
 		let {success, surveys, errors} = await getSurveysData();
-		if (!success) alert(JSON.stringify(errors));
+		if (!success && errors.length) alert(JSON.stringify(errors));
 		else setSurveyData({surveys: surveys, set: true })
 	}
 	/* ORG FUNCTIONS */
 	const getSetOrgData = async () => {
 		let {success, org, errors} = await getBasicOrgData(orgId);
-		if (!success) alert(JSON.stringify(errors));
+		if (!success) {
+			alert(JSON.stringify(errors));
+			console.error("GersetOrgData failure");
+		}
 		else if ('nickname' in org) {
 			setAccountData({
 				account: {avatarString: org.avatar_string, nickname: org.nickname}, 
@@ -125,7 +130,7 @@ const AccountParent = (props:AccountParentProps) => {
 		<>
 			<Navbar root={true} org={props.org} orgId={orgId} orgs={orgsData.orgs} signedIn={true}/>
 			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
-			<OrgsModal orgs={orgsData.orgs} open={orgsModalOpen} closeModal={() => setOrgsModalOpen(false)}/>
+			<OrgsModal org={props.org&&orgId?orgId:false} orgs={orgsData.orgs} open={orgsModalOpen} closeModal={() => setOrgsModalOpen(false)}/>
 			<div className={mobile?"dashboardContainerMobile":"asideContainer"}>
 				{mobile ? null : 
 				<Sidebar 

@@ -83,7 +83,7 @@ const getWeb2EventData = async (id:string):Promise<{success:boolean, event:typeo
 }; 
 
 const web2GetUserOrgs = async (id:string):Promise<{success:boolean, orgs: typeof defaultOrg[], errors:string[]}> => {
-	let json = await httpReq("/api/org/?owner_id="+id)
+	let json = await httpReq("/api/org/?user_id="+id)
 	if (json) {
 		let response = JSON.parse(json);
 		if (response.success) return {success: true, orgs:response.response, errors: []};

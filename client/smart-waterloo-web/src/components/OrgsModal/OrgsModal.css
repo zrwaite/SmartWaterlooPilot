@@ -13,8 +13,9 @@
 }
 .orgsModalButton {
 	margin: 0.5rem 2rem;
-	height: 2rem;
-	font-size: 1.5rem;
+	height: 2.5rem;
+	font-size: 1.25rem;
+	padding: 0.25rem;
 	width: calc(100% - 4rem);
 	box-sizing: border-box;
 }

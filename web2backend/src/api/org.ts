@@ -41,7 +41,7 @@ export default class orgController {
 					else if (result.status == 404) result.errors.push("orgs not found");
 					else result.errors.push(...errors);
 				} else {
-					result.errors.push("invalid owner_id");
+					result.errors.push("invalid user_id");
 					result.status = 404;
 				}
 			} else {
