@@ -1,20 +1,39 @@
 import pool from "../database/db";
-
+const foundOrgMembers = async (orgId:number, userId: number) => {
+	try {
+		let result:any = await pool.query(
+			"SELECT members from orgs WHERE id = $1",
+			[orgId]
+		);
+		return (result.rows.length && result.rows[0].members.includes(userId));
+	} catch (e) {
+		console.log(e);
+		return true;
+	}
+}
 const addOrgMember = async (orgId:number, userId: number) => {
 	let result;
 	let status = 400;
-	try {
-		result = await pool.query(
-			"UPDATE orgs SET members = array_append(members, $1) WHERE id = $2",
-			[userId, orgId]
-		);
-		if (result && result.rowCount) status = 201;
-		else status = 404;
-	} catch (e) {
-		status = 400;
-		console.log(e);
+	let errors:string[] = [];
+	if (orgId == userId) {
+		errors.push("user is owner");
+	} else if (await foundOrgMembers(orgId, userId)) {
+		errors.push("user already in org");
+	} else {
+		try {
+			result = await pool.query(
+				"UPDATE orgs SET members = array_append(members, $1) WHERE id = $2",
+				[userId, orgId]
+			);
+			if (result && result.rowCount) status = 201;
+			else status = 404;
+		} catch (e) {
+			status = 400;
+			console.log(e);
+			errors.push("database error");
+		}
 	}
-	return {status: status, result: result};
+	return {status: status, result: result, errors: errors};
 }
 const incrementEvent = async (eventId: number) => {
 	try {

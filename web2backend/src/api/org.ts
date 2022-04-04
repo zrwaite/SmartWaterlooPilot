@@ -78,7 +78,7 @@ export default class orgController {
 			result.status = putResult.status;
 			if (result.status == 201) {
 				result.success = true;
-			} else result.errors.push("put database error");
+			} else result.errors.push(...putResult.errors);
 		} else userErrors.forEach((error) => result.errors.push("missing "+error));
 		//Put request code
 		res.status(result.status).json(result); //Return whatever result remains

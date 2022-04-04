@@ -12,6 +12,7 @@ import SurveyPanel from "../../Surveys/SurveyPanel"
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 import { defaultAccount } from "../../../data/types/account";
+import DataPanels from "../../MyData/DataPanels/DataPanels";
 
 interface DashboardPreviewHeaderProps {
 	name: keyof typeof Data;
@@ -69,11 +70,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				<button onClick={() => navigate(`/createevent/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
 			</div>:null}
 		</>
-		); break; case "data": panelList = (<>
-			{dataPanelsData.map((panel, i) => {return (
-				i<5?<MyDataPanel key={i} index={i} {...panel}/>:null
-			);})}
-		</>
+		); break; case "data": panelList = (<DataPanels orgId={props.orgId} org={props.org} />
 		);break; case "surveys": 
 			panelList = (<>
 			{
