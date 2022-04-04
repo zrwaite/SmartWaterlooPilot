@@ -60,9 +60,10 @@ const Survey = (props: {org:boolean}) => {
 		for (let i = 0; i<surveyData.survey.questions.length; i++) newAnswers.push("");
 		setAnswers(newAnswers);
 	}
+	const owner = (orgId===surveyData.survey.org.toString());
 	const questions = surveyData.survey.questions.map((question, i) => {
-		return <SurveyQuestion key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
-	})
+		return <SurveyQuestion owner={owner} key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
+	});
 	const complete = answers.every(answer => answer!=="");
 	const trySubmitSurvey = async () => {
 		let {success, errors} = await submitSurvey(surveyData.survey.questions, answers);
@@ -76,17 +77,13 @@ const Survey = (props: {org:boolean}) => {
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"surveyPagePanel"}>
 					{mobile?<h4>{surveyData.survey.name}</h4>:<h4 className={"surveyHeader"}>{surveyData.survey.name}</h4>}
-					<p>{surveyData.survey.org}</p>
 					<p style={greyText}>{surveyData.survey.questions.length} questions</p>
-					<div className={"surveyForm"}>
-						
-					</div>
 					{progress?(
 						<div className={"surveyForm"}>
 							{questions}
-							<button onClick={complete?trySubmitSurvey:()=>{}} className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>
+							{!owner&&<button onClick={complete?trySubmitSurvey:()=>{}} className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
 						</div>
-						):<SurveyLanding description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
+						):<SurveyLanding org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
 				</div>
 			</div>
 		</>

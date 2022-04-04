@@ -24,6 +24,10 @@ const defaultSurvey:SurveyDataType = {
 	completed: false,
 	questions: []
 }
+const defaultAnswer = {
+	answer: "",
+	question_id: 0
+}
 
 const defaultSurveysState: {
 	set: boolean;
@@ -33,7 +37,7 @@ const defaultSurveysState: {
 type postSurveyReturn = {success:boolean, errors: string[], surveyId:string}
 type submitSurveyReturn = {success: boolean, errors: string[]}
 
-export { defaultSurvey, defaultSurveysState};
+export { defaultAnswer, defaultSurvey, defaultSurveysState};
 export type {Question, SurveyDataType, postSurveyType, postSurveyReturn, submitSurveyReturn};
 
 

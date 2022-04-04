@@ -13,6 +13,7 @@ const web2PostAnswer = async (questionId: string, answer: string):Promise<string
 		user_id: cookies.get("userId"),
 		answer: answer,
 		question_id: questionId,
+		link: false
 	})
 	if (json) {
 		let response = JSON.parse(json);

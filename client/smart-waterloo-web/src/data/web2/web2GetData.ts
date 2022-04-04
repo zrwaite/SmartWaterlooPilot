@@ -2,9 +2,19 @@ import {httpReq} from "./httpRequest";
 import Cookies from "universal-cookie";
 import {defaultAccount} from "../types/account";
 import {defaultEvent} from "../types/events";
-import {defaultSurvey} from "../types/surveys"
+import {defaultAnswer, defaultSurvey} from "../types/surveys"
 import {defaultOrg} from "../types/orgs";
 const cookies = new Cookies();
+
+const web2GetAnswersData = async (id:string|undefined):Promise<{success:boolean, answers: typeof defaultAnswer[], errors:string[]}> => {
+	let json = await httpReq("/api/answer/?question_id="+id)
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) return {success: true, answers:response.response, errors: []};
+		else if (response.status === 404) return {success: true, answers:[], errors: []};
+		else return {success: false, answers:[], errors: response.errors}
+	} else return {success: false, answers: [], errors:["request failed"]};
+}
 
 const web2GetBasicUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}> => {
 	let json = await httpReq("/api/user/?user_id=" + cookies.get("userId"))
@@ -103,4 +113,4 @@ const web2GetBasicOrgData = async (id:string|undefined):Promise<{success:boolean
 
 
 
-export {web2GetOrgEventsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetBasicUserData, web2GetUserOrgs, web2GetSurveysData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData};
+export {web2GetAnswersData, web2GetOrgEventsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetBasicUserData, web2GetUserOrgs, web2GetSurveysData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData};
