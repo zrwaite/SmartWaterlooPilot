@@ -17,10 +17,14 @@ import Dashboard from "../Dashboard";
 import Events from "../Events";
 import MyData from "../MyData";
 import Surveys from "../Surveys";
+import PrimaryPage from "../PrimaryPage";
+import AddOrgMember from "../AddOrgMember";
+import EventDetails from "../EventDetails";
+import Survey from "../Survey";
 
 interface AccountParentProps {
 	org: boolean;
-	page: "dashboard"|"events"|"data"|"surveys"
+	page: "dashboard"|"events"|"data"|"surveys"|"addorgmember"|"eventdetails"|"survey"
 }
 
 const AccountParent = (props:AccountParentProps) => {
@@ -123,38 +127,31 @@ const AccountParent = (props:AccountParentProps) => {
 		orgsData: orgsData,
 		org: props.org,
 		orgId: orgId,
-		verified: verified
+		verified: verified,
+		openSettings: () => setSettingsOpen(true),
+		openOrgsModal: () => setOrgsModalOpen(true),
+		page: props.page
 	}
 
 	return (
 		<>
-			<Navbar root={true} org={props.org} orgId={orgId} orgs={orgsData.orgs} signedIn={true}/>
 			<Settings org={props.org} orgId={orgId} open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<OrgsModal org={props.org&&orgId?orgId:false} orgs={orgsData.orgs} open={orgsModalOpen} closeModal={() => setOrgsModalOpen(false)}/>
-			<div className={mobile?"dashboardContainerMobile":"asideContainer"}>
-				{mobile ? null : 
-				<Sidebar 
-					org={props.org} 
-					orgId={orgId} 
-					orgs={orgsData.orgs} 
-					nickname={accountData.account.nickname}
-					avatarString={accountData.account.avatarString}
-					accountSet={accountData.set} 
-					openOrgsModal={() => setOrgsModalOpen(true)} 
-					openSettings={() => setSettingsOpen(true)} 
-					page={props.page} 
-				/>}
-				{props.page==="dashboard"&&<Dashboard {...allDataObj}/>}
-				{props.page==="events"&&<Events {...allDataObj}/>}
-				{props.page==="data"&&<MyData {...allDataObj}/>}
-				{props.page==="surveys"&&<Surveys {...allDataObj}/>}
-			</div>
+			{props.page==="dashboard"&&<PrimaryPage {...allDataObj} page={"dashboard"}/>}
+			{props.page==="events"&&<PrimaryPage {...allDataObj} page={"events"}/>}
+			{props.page==="data"&&<PrimaryPage {...allDataObj} page={"data"}/>}
+			{props.page==="surveys"&&<PrimaryPage {...allDataObj} page={"surveys"}/>}
+			{props.page==="addorgmember"&&<AddOrgMember {...allDataObj}/>}
+			{props.page==="eventdetails"&&<EventDetails {...allDataObj}/>}
+			{props.page==="survey"&&<Survey {...allDataObj}/>}
 		</>
     );
 }
 export default AccountParent;
 
 interface AccountChildProps {
+	openSettings: () => void;
+	openOrgsModal: () => void;
 	eventsData: typeof defaultEventsState,
 	surveysData: typeof defaultSurveysState,
 	orgsData: typeof defaultOrgsState,

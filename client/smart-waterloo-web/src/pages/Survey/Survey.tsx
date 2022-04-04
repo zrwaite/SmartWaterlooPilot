@@ -11,6 +11,7 @@ import { getBasicUserData, getSurveyData } from "../../data/getData";
 import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";
 import { defaultAccountState } from "../../data/types/account";
+import { AccountChildProps } from "../AccountParent";
 
 const defaultSurveyData:SurveyDataType = {
 	id: "",
@@ -21,14 +22,13 @@ const defaultSurveyData:SurveyDataType = {
 	questions: []
 }
 const defaultAnswers:string[] = [];
-const Survey = (props: {org:boolean}) => {
+const Survey = (props: AccountChildProps) => {
 	// const cookies = new Cookies()
 	// cookies.set("back", "/surveys/");
 	const navigate = useNavigate();
 	const { id, orgId } = useParams();
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
-	const [accountData, setAccountData] = useState(defaultAccountState);
 	const [answers, setAnswers] = useState(defaultAnswers);
 	const greyText = {color: "grey"};
 	const childSetProgress = (newVal: boolean) => {
@@ -40,29 +40,7 @@ const Survey = (props: {org:boolean}) => {
 		setAnswers(newAnswers);
 	}
 	const [notFound, setNotFound] = useState(false);
-	const [surveyData, setSurveyData] = useState({survey: defaultSurveyData, surveyDataSet: false});
-	const getSetSurveyData = async () => {
-		if (!id) return;
-		let {survey, success, errors} = await getSurveyData(id);
-		if (success) {
-			setSurveyData({ survey: survey, surveyDataSet: true })
-		} else {
-			setNotFound(true);
-			console.error(errors);
-		}
-	}
-	const getSetUserData = async () => {
-		let {success, userData, errors} = await getBasicUserData();
-		if (!success && errors.length) alert(JSON.stringify(errors));	
-		else if ('nickname' in userData) setAccountData({account: userData, set: true});
-		else console.error("invalid userData response");
-	}
-	const [dataCalled, setDataCalled] = useState(false);
-	if (!dataCalled) {
-		getSetUserData();
-		getSetSurveyData();
-		setDataCalled(true);
-	} 
+	const [surveyData, setSurveyData] = useState({survey: defaultSurveyData, set: false});
 
 	if (answers.length !== surveyData.survey.questions.length) {
 		const newAnswers = [];
@@ -82,7 +60,13 @@ const Survey = (props: {org:boolean}) => {
 		} else alert(JSON.stringify(errors));
 	}
 	if (notFound || !id) return <NotFound />
-	const completed = (accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
+	const completed = (props.accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
+
+	if (!surveyData.set) {
+		const newSurveyData = props.surveysData.surveys.find(survey => survey.id == id)
+		if (newSurveyData) setSurveyData({survey: newSurveyData, set: true})
+	}
+
 	return ( 
 		<>
 			<Navbar root={false}/>
@@ -95,7 +79,7 @@ const Survey = (props: {org:boolean}) => {
 							{questions}
 							{!owner&&<button onClick={complete?trySubmitSurvey:()=>{}} className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
 						</div>
-						):<SurveyLanding set={surveyData.surveyDataSet} completed={completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
+						):<SurveyLanding set={surveyData.set} completed={completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
 				</div>
 			</div>
 		</>

@@ -1,5 +1,5 @@
 import Navbar from "../../components/Navbar";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 import QRDesktopPNG from "../../images/QRDesktop.png";
 import QRMobilePNG from "../../images/QRMobile.png";
 import "./AddOrgMember.css";
@@ -9,42 +9,13 @@ import Cookies from "universal-cookie";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
 import {accountExists} from "../../data/account";
-import { defaultAccountState } from "../../data/types/account";
-import { getBasicOrgData, getUserOrgs } from "../../data/getData";
 import { addUserToOrg } from "../../data/addData";
-import { defaultOrgsState } from "../../data/types/orgs";
-const ScanQR = () => {
-	const [accountData, setAccountData] = useState(defaultAccountState);
+import { AccountChildProps } from "../AccountParent";
+const ScanQR = (props:AccountChildProps) => {
 	const [functions, setFunctions] = useState({scan: () => {}});
-	const [orgsData, setOrgsData] = useState(defaultOrgsState);
-	const [dataPulled, setDataPulled] = useState(false);
 	let {mobile} = useContext(MobileContext);
-	const cookies = new Cookies();
-	cookies.set("back", "/qr");
 	const navigate = useNavigate();
 	let {orgId} = useParams();
-
-	const getSetOrgsData = async () => {
-		let {success, orgs, errors} = await getUserOrgs(cookies.get("userId"));
-		if (!success) {
-			if (errors.length) alert(JSON.stringify(errors));
-		}
-		else setOrgsData({orgs: orgs, set: true })
-	}
-	const getSetOrgData = async () => {
-		let {success, org, errors} = await getBasicOrgData(orgId);
-		if (!success) {
-			alert(JSON.stringify(errors));
-			console.error("GetsetOrgData failure");
-		}
-		else if ('nickname' in org) {
-			setAccountData({
-				account: {avatarString: org.avatar_string, nickname: org.nickname, events:[], surveys:[], orgs:[]}, 
-				set: true
-			});
-		}
-		else console.error("invalid userData response");
-	}
 
 
 	useEffect(() => {
@@ -70,26 +41,20 @@ const ScanQR = () => {
 			} else alert("invalid qr code");
 		}
 		setFunctions({scan: () => scanner.render(onScanSuccess, ()=>{})})
-	}, [navigate]);
-
-	if (!dataPulled) {
-		getSetOrgData();
-		getSetOrgsData();
-		setDataPulled(true);
-	}
+	}, [navigate, orgId]);
 
 	return (
 		<>
-			<Navbar org={true} orgs={orgsData.orgs} orgId={orgId}  signedIn={true} root={true}/>
+			<Navbar root={false}/>
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanel"}>
 					<div className={"QRInfoPanel"}>
-						<h2>Add Member to {accountData.account.nickname}</h2>
+						<h2>Add Member to {props.accountData.account.nickname}</h2>
 						<p>
 							Scan user's id to add them to your org
 						</p>
 						<div className={mobile?"center":"horizontal"}>
-							<img className={"avatarImg"} src={accountData.account.avatarString===""?"":`https://avatars.dicebear.com/api/bottts/${accountData.account.avatarString}.svg`} alt=""/>
+							<img className={"avatarImg"} src={props.accountData.account.avatarString===""?"":`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatarString}.svg`} alt=""/>
 							<img className={"qrCodePNG"} src={mobile?QRMobilePNG:QRDesktopPNG} alt="QRCode Scanner"/>
 						</div>
 						<button onClick={() => functions.scan()} className={"blackButton scanCardButton"}>Scan Card</button>
