@@ -84,6 +84,7 @@ function App() {
 							<Route path="/events/user" element={<AccountParent page={"events"} org={false} />}></Route>
 							<Route path="/userdata" element={<AccountParent page={"userdata"} org={false} />}></Route>
 							<Route path="/useranswers" element={<AccountParent page={"useranswers"} org={false} />}></Route>
+							<Route path="/useraccess" element={<AccountParent page={"useraccess"} org={false} />}></Route>
 
 							<Route path="/dashboard/org/:orgId" element={<AccountParent page={"dashboard"} org={true} />}></Route>
 							<Route path="/data/org/:orgId" element={<AccountParent page={"data"} org={true} />}></Route>

@@ -18,10 +18,11 @@ import Survey from "../Survey";
 import OrgData from "../OrgData";
 import UserData from "../UserData";
 import UserAnswers from "../UserAnswers";
+import UserAccess from "../UserAccess";
 
 interface AccountParentProps {
 	org: boolean;
-	page: "dashboard"|"events"|"data"|"surveys"|"addorgmember"|"eventdetails"|"survey"|"orgdata"|"userdata"|"useranswers"
+	page: "dashboard"|"events"|"data"|"surveys"|"addorgmember"|"eventdetails"|"survey"|"orgdata"|"userdata"|"useranswers"|"useraccess"
 }
 
 const AccountParent = (props:AccountParentProps) => {
@@ -146,6 +147,8 @@ const AccountParent = (props:AccountParentProps) => {
 			{props.page==="orgdata"&&<OrgData {...allDataObj}/>}
 			{props.page==="userdata"&&<UserData {...allDataObj}/>}
 			{props.page==="useranswers"&&<UserAnswers {...allDataObj}/>}
+			{props.page==="useraccess"&&<UserAccess {...allDataObj}/>}
+			
 		</>
     );
 }

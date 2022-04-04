@@ -54,6 +54,7 @@ const EventsDetails = (props: AccountChildProps) => {
 				setText("Signed Up ✓");
 				setClass("signupLightBlueButton");
 				setBottomClass("bottomLightBlueButton");
+				setTimeout(() => window.location.reload(), 800);
 			} else alert(JSON.stringify(errors));
 		}
 	}

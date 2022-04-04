@@ -54,7 +54,7 @@ const Survey = (props: AccountChildProps) => {
 		let {success, errors} = await submitSurvey(surveyData.survey.id, surveyData.survey.questions, answers);
 		if (success) {
 			alert("Submitted!");
-			navigate(`/surveys/${props.org?`org/${orgId}`:"user"}`);
+			window.location.href=`/surveys/${props.org?`org/${orgId}`:"user"}`;
 		} else alert(JSON.stringify(errors));
 	}
 	if (notFound || !id) return <NotFound />

@@ -11,7 +11,7 @@ const UserAccessPanel = (props: MyDataPanelProps) => {
 	// const mobile = useContext(MobileContext);
 	const navigate = useNavigate();
 	return (
-		<div onClick={() => navigate("/userdata")} className={`dataPanel`}>
+		<div onClick={() => navigate("/useraccess")} className={`dataPanel`}>
 			<div className="dataPanelInfo">
 				<h5>Who has access</h5>
 				<p>What orgs have you given your data to?</p>

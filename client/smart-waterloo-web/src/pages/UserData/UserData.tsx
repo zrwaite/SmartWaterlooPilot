@@ -3,9 +3,7 @@ import "./UserData.css";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
 import { AccountChildProps } from "../AccountParent";
-import { useParams } from "react-router-dom";
 const UserData = (props:AccountChildProps) => {
-	let {orgId} = useParams();
 	let {mobile} = useContext(MobileContext);
 
 	/*
