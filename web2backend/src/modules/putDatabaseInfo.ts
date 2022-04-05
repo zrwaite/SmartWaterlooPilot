@@ -1,27 +1,35 @@
 import { unchangedTextChangeRange } from "typescript";
 import pool from "../database/db";
 import { getEventOrg, getSurveyOrg } from "./getDatabaseInfo";
-const foundOrgMembers = async (orgId:number, userId: number) => {
+const foundOrgMembers = async (orgId:number, userId: number):Promise<{success: boolean, error: string}> => {
 	try {
-		let result:any = await pool.query(
-			"SELECT members from orgs WHERE id = $1",
-			[orgId]
-		);
-		return (result.rows.length && result.rows[0].members.includes(userId));
+		let user:any = await pool.query(
+			"SELECT id from users WHERE user_id = $1",
+			[userId]
+		)
+		if (user.rows.length) {
+			let result:any = await pool.query(
+				"SELECT members, owner_id from orgs WHERE id = $1",
+				[orgId]
+			);
+			if (result.rows.length) {
+				console.log(result.rows[0].members, userId)
+				if (result.rows[0].owner_id==userId) return {success: false, error: "This user already owns the org"}
+				else if (result.rows[0].members.includes(userId)) return {success: false, error: "This user is already an org member"}
+				else return {success: true, error: ""};
+			} else return {success: false, error: "This org doesn't exist"}
+		} else return {success: false, error: "user has not created account"}
 	} catch (e) {
 		console.log(e);
-		return true;
+		return {success: false, error: "database error"}
 	}
 }
 const addOrgMember = async (orgId:number, userId: number) => {
 	let result;
 	let status = 400;
 	let errors:string[] = [];
-	if (orgId == userId) {
-		errors.push("user is owner");
-	} else if (await foundOrgMembers(orgId, userId)) {
-		errors.push("user already in org");
-	} else {
+	let {error: foundMemberErrors, success} = await foundOrgMembers(orgId, userId)
+	if (success) {
 		try {
 			result = await pool.query(
 				"UPDATE orgs SET members = array_append(members, $1) WHERE id = $2",
@@ -34,7 +42,7 @@ const addOrgMember = async (orgId:number, userId: number) => {
 			console.log(e);
 			errors.push("database error");
 		}
-	}
+	} else errors.push(foundMemberErrors);
 	return {status: status, result: result, errors: errors};
 }
 const incrementEvent = async (eventId: number) => {

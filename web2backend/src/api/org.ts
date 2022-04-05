@@ -81,14 +81,20 @@ export default class orgController {
 		let result:responseInterface = new response(); //Create new standardized response
 		let {success:userSuccess, params:userParams, errors:userErrors} = await getBodyParams(req, ["org_id", "user_id"]);
 		if (userSuccess) {
-			let {success: tokenSuccess, error: tokenError } = await verifyOrgMember(userParams[0], getToken(req.headers));
-			if (tokenSuccess) {
-				let putResult = await addOrgMember(userParams[0], userParams[1]);
-				result.status = putResult.status;
-				if (result.status == 201) {
-					result.success = true;
-				} else result.errors.push(...putResult.errors);
-			} else result.errors.push(tokenError);
+			let orgId = userParams[0];
+			let userId = userParams[1];
+			if (!isNaN(userId) && !isNaN(orgId)){
+				orgId = parseInt(orgId);
+				userId = parseInt(userId);
+				let {success: tokenSuccess, error: tokenError } = await verifyOrgMember(orgId, getToken(req.headers));
+				if (tokenSuccess) {
+					let putResult = await addOrgMember(orgId, userId);
+					result.status = putResult.status;
+					if (result.status == 201) {
+						result.success = true;
+					} else result.errors.push(...putResult.errors);
+				} else result.errors.push(tokenError);
+			} else result.errors.push("invalid userId or orgId");
 		} else userErrors.forEach((error) => result.errors.push("missing "+error));
 		//Put request code
 		res.status(result.status).json(result); //Return whatever result remains
