@@ -1,6 +1,7 @@
 // import {Link} from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import SWRLogo from "../../images/SWRLogo.png"
+import HomepageDescription from "../../images/HomepageDescription.png";
 import "./SplashPage.css";
 import cookies from "../../modules/cookies";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +17,7 @@ function SplashPage() {
 			<section className="splashPage">
 				<img src={SWRLogo} alt={"SWR Logo"} className="splashPageLogo"/>
 				<h3>Data Playground Pilot</h3>
+				<img src={HomepageDescription} alt={"SWR Description"} className="splashPageLogo"/>
 				<h4 className={"signedInIndicator"} >{signedIn?"Signed In":"Not signed in"}</h4>
 				{signedIn?<button onClick={() => navigate("/dashboard/user")} className="blackButton splashPageButton">Dashboard</button>:
 				<button onClick={() => navigate("/qr")} className="blackButton splashPageButton">Scan Card</button>}

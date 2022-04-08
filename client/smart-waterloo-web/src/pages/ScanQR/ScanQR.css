@@ -12,3 +12,9 @@
 	flex-direction: column;
 	align-items: var(--defaultTextAlign);
 }
+.qrScannerContainer{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
