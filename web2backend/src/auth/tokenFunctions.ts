@@ -28,7 +28,7 @@ const verifyOrgMember = async (orgId:string, token:string|undefined):Promise<{su
 		if (!token) return {error: "no auth token provided", success: false}
 		let decodedToken = verifyToken(token);
 		if (!decodedToken.authorized) return {error: "invalid token", success: false}
-		if (decodedToken.user_id === org.owner) return {error: "", success: true}
+		if (decodedToken.user_id == org.owner_id) return {error: "", success: true}
 		if (org.members.includes(parseInt(decodedToken.user_id))) return {error: "", success: true}
 		return {error: "token not authorized for this org", success: false}
 	} else return {success: false, error: errors[0]}
