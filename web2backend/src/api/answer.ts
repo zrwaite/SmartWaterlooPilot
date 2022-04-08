@@ -73,7 +73,10 @@ export default class answerController {
 						result.success = true;
 					}
 				} else result.errors.push(...postResult.errors);
-			} else result.errors.push(tokenError)
+			} else {
+				result.errors.push(tokenError)
+				result.status = 401;
+			}
 		} else answerErrors.forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
 	}

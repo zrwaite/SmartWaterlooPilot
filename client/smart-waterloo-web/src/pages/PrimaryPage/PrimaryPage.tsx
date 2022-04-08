@@ -16,7 +16,15 @@ const AccountParent = (props:PrimaryPageProps) => {
 	let {mobile} = useContext(MobileContext);
 	return (
 		<>
-			<Navbar root={true} org={props.org} orgId={props.orgId} orgs={props.orgsData.orgs} signedIn={true}/>
+			<Navbar 
+				root={true} 
+				org={props.org} 
+				orgId={props.orgId} 
+				orgs={props.orgsData.orgs} 
+				signedIn={true}
+				openOrgsModal={props.openOrgsModal} 
+				openSettings={props.openSettings} 
+			/>
 			<div className={mobile?"dashboardContainerMobile":"asideContainer"}>
 				{mobile ? null : 
 				<Sidebar 

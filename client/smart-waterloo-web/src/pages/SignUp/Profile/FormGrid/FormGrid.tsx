@@ -19,7 +19,6 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 		props.formData.gender !== "" &&
 		props.formData.height !== "" &&
 		props.formData.weight !== "" &&
-		props.formData.grade !== "" &&
 		props.formData.postalCode !== ""
 	);
 	return (
@@ -88,7 +87,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 					<div className="formDiv horizontal">
 						<div>
 							<p>
-								Grade<span style={redText}>*</span>
+								Grade
 							</p>
 							<div className="horizontal">
 								<div className="pill">

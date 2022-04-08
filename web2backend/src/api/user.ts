@@ -18,16 +18,25 @@ export default class userController {
 			const userId = params[0];
 			if (!isNaN(userId)) {
 				let {success: tokenSuccess, error: tokenError } = await verifyUser(userId, getToken(req.headers));
-				if (tokenSuccess) {
-					const getUserResponse = await getUser(userId);
-					result.status = getUserResponse.status;
-					if (result.status == 200) {
+				const getUserResponse = await getUser(userId);
+				result.status = getUserResponse.status;
+				if (result.status == 200) {
+					if (tokenSuccess) {
 						result.success = true;
 						result.response = getUserResponse.user;
+					} else {
+						result.errors.push(tokenError)
+						result.status = 401;
 					}
-					else if (result.status == 404) result.errors.push("user not found");
-					else result.errors.push(...errors);
-				} else result.errors.push(tokenError);
+				} else if (result.status == 404) {
+					result.errors.push("user not found");
+				} else {
+					result.errors.push(...errors);
+					if (!tokenSuccess) {
+						result.errors.push(tokenError)
+						result.status = 401;
+					}
+				}
 			} else result.errors.push("invalid user_id");
 		} else errors.forEach((error) => result.errors.push(error));
 		// {
@@ -82,7 +91,10 @@ export default class userController {
 						result.success = true;
 					} else result.errors.push("put database error");
 				} else result.errors.push("missing survey_id, event_id, and org_name");
-			} else result.errors.push(tokenError);
+			} else {
+				result.errors.push(tokenError)
+				result.status = 401;
+			}
 		} else result.errors.push("invalid user_id");
 
 

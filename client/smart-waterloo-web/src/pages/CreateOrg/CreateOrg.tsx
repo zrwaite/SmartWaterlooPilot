@@ -35,11 +35,10 @@ const defaultSignUpState = {
 	}
 }
 
-const SignUp = (props: SignUpProps) => {
+const CreateOrg = (props: SignUpProps) => {
 	const [state, setState] = useState(defaultSignUpState);
 	const {mobile} = useContext(MobileContext);
 	const navigate = useNavigate();
-	cookies.set("back", "/signup");
 	const updateStep = (step: number) => {
 		setState({ ...state, step: step });
 	}
@@ -121,4 +120,4 @@ const SignUp = (props: SignUpProps) => {
 	);
 }
 
-export default SignUp;
+export default CreateOrg;

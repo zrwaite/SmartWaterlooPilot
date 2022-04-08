@@ -66,7 +66,10 @@ export default class eventController {
 						eventData: postResult.newEvent,
 					}
 				} else postResult.errors.forEach((error) => {result.errors.push(error)});
-			} else result.errors.push(tokenError);
+			} else {
+				result.errors.push(tokenError)
+				result.status = 401;
+			}
 		} else eventErrors.forEach((param)=>{result.errors.push("missing "+param)});
 		res.status(result.status).json(result); //Return whatever result remains
 	}

@@ -73,7 +73,10 @@ export default class orgController {
 						}
 					} else postResult.errors.forEach((error) => {result.errors.push(error)});
 				} else orgErrors.forEach((param)=>{result.errors.push("missing "+param)});
-			} else result.errors.push(tokenError);
+			} else {
+				result.errors.push(tokenError)
+				result.status = 401;
+			}
 		} else result.errors.push("missing owner_id");
 		res.status(result.status).json(result); //Return whatever result remains
 	}
@@ -93,7 +96,10 @@ export default class orgController {
 					if (result.status == 201) {
 						result.success = true;
 					} else result.errors.push(...putResult.errors);
-				} else result.errors.push(tokenError);
+				} else {
+					result.errors.push(tokenError)
+					result.status = 401;
+				}
 			} else result.errors.push("invalid userId or orgId");
 		} else userErrors.forEach((error) => result.errors.push("missing "+error));
 		//Put request code

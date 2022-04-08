@@ -20,11 +20,12 @@ const web2AccountExists = async (userId: number):Promise<boolean> => {
 			return true;
 		} else if (response.status === 404) {
 			return false;
+		} else if (response.status === 401) {
+			return true;
 		} else {
 			console.error(response.errors);
+			return false;
 		}
-		//else if (response.errors.length > 0)
-		return false;
 	} else return false;
 }
 
