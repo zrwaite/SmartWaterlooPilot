@@ -17,8 +17,6 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 		props.formData.month !== "" &&
 		props.formData.year !== "" &&
 		props.formData.gender !== "" &&
-		props.formData.height !== "" &&
-		props.formData.weight !== "" &&
 		props.formData.postalCode !== ""
 	);
 	return (
@@ -46,7 +44,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 						</p>
 						<Select className={"selectComponent"} defaultInputValue={props.formData.gender} name={"gender"} onChange={props.handleParentSelectChange} options={genderOptions} />
 					</div>
-					<div className="formDiv horizontal">
+					{/* <div className="formDiv horizontal">
 						<div>
 							<p>
 								Height<span style={redText}>*</span>
@@ -65,7 +63,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 								<p className="pillText">lbs</p>
 							</div>
 						</div>
-					</div>
+					</div> */}
 					<div className="formDiv">
 						<p>
 							Religion <span style={greyText}>(Optional)</span>

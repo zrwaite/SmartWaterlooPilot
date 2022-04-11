@@ -49,4 +49,19 @@ const web2AddEventtoUser = async (userId: string, eventId: string):Promise<succe
 	} else return {success: false, errors: ["request failed"]};
 }
 
-export {web2AddUserToOrg, web2AddSurveytoUser, web2AddEventtoUser}
+const web2VerifyOrg = async (business_number: string, password:string):Promise<successErrorsReturn> => {
+	let json = await httpReq("/function/verify/", "POST", {
+		business_number: business_number,
+		password: password
+	})
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) {
+			return {success: true, errors: []}
+		} else {
+			return {success: false, errors: response.errors}
+		}
+	} else return {success: false, errors: ["request failed"]};
+}
+
+export {web2VerifyOrg, web2AddUserToOrg, web2AddSurveytoUser, web2AddEventtoUser}

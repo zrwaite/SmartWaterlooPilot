@@ -1,0 +1,5 @@
+.verifyOrgButton{
+	height: 3rem;
+	font-size: 2rem;
+	width: min(80%, 20rem);
+}

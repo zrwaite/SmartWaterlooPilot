@@ -21,6 +21,7 @@ import {mobileWidth} from "./constants";
 import AccountParent from "./pages/AccountParent";
 import React, {useState} from "react";
 import AddOrgMember from "./pages/AddOrgMember";
+import VerifyOrg from "./pages/VerifyOrg";
 
 
 const MobileContext = React.createContext<{mobile: boolean; setMobile: Function;}>({
@@ -102,6 +103,7 @@ function App() {
 							<Route path="/orgdata/:orgId" element={<AccountParent page={"orgdata"} org={true} />}></Route>
 
 							<Route path="/test" element={<TestPage />}></Route>
+							<Route path="/verifyorg" element={<VerifyOrg />}></Route>
 							<Route path="*" element={<NotFound />}></Route>
 							{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
 						</Routes>
