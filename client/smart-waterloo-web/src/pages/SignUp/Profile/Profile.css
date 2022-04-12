@@ -8,8 +8,11 @@ header>h2, header>p{
 #gradeInput{
 	width: 1.5rem;
 }
-#dayInput, #monthInput, #yearInput {
+#dayInput, #monthInput{
 	width: 2rem;
+}
+#yearInput {
+	width: 3.5rem;
 }
 .pill{
 	display:flex;

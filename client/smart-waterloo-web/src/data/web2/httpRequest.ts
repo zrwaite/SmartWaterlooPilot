@@ -1,6 +1,6 @@
 import cookies from "../../modules/cookies"
-const baseURL = "https://smart-waterloo-region.herokuapp.com";
-// const baseURL = "https://existed-shake-arkansas-alternatives.trycloudflare.com";
+// const baseURL = "https://smart-waterloo-region.herokuapp.com";
+const baseURL = "https://approaches-tactics-replica-pig.trycloudflare.com";
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
     url = baseURL + url;

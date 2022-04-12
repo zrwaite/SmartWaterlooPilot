@@ -1,20 +1,18 @@
--- drop table answers;
--- drop table events;
--- drop table surveys;
--- drop table questions;
--- drop table orgs;
--- drop table users;
+drop table answers;
+drop table events;
+drop table surveys;
+drop table questions;
+drop table orgs;
+drop table users;
 CREATE TABLE IF NOT EXISTS "users"(
 	id SERIAL PRIMARY KEY,
 	user_id INT UNIQUE,
-	password_hash varchar(80),
-	nickname VARCHAR(100),
-	birth_day varchar(100),
-	birth_month varchar(100),
-	birth_year varchar(100),
-	gender varchar(100),
-	height varchar(100),
-	weight varchar(100),
+	password_hash varchar(80) not null,
+	nickname VARCHAR(100) not null,
+	birth_day date not null,
+	gender varchar(100) not null,
+	-- height varchar(100),
+	-- weight varchar(100),
 	religion varchar(100),
 	sexuality varchar(100),
 	race varchar(100),
