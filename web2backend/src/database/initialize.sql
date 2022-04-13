@@ -53,7 +53,7 @@ create table if not exists "surveys"(
 	linked bit default '0',
 	description TEXT,
 	questions integer[],
-	user_data int[] default array[]::integer[]
+	user_info int[] default array[]::integer[]
 );
 
 -- CREATE TYPE type_choices AS ENUM ('short', 'long', 'mc', 'check');
@@ -85,6 +85,6 @@ create table if not exists "events"(
 	linked_survey_id int null,
 	FOREIGN KEY (linked_survey_id) REFERENCES surveys(id),
 	image varchar(80),
-	user_data int[] default array[]::integer[],
+	user_info int[] default array[]::integer[],
 	attendees int default 0
 );

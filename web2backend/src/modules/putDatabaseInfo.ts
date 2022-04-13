@@ -1,6 +1,6 @@
 import { unchangedTextChangeRange } from "typescript";
 import pool from "../database/db";
-import { getEventOrg, getSurveyOrg } from "./getDatabaseInfo";
+import { getEventOrg, getSurveyOrg, getUser } from "./getDatabaseInfo";
 const foundOrgMembers = async (orgId:number, userId: number):Promise<{success: boolean, error: string}> => {
 	try {
 		let user:any = await pool.query(
@@ -68,10 +68,16 @@ const addUserEvent = async (eventId:number, userId: number) => {
 				[eventId, orgNickname, userId]
 			);
 			if (result && result.rowCount) {
-				status = 201;
-				incrementEvent(eventId);
-			}
-			else status = 404;
+				let {user} = await getUser(userId.toString());
+				result = await pool.query(
+					"UPDATE events SET user_info = array_append(user_info, $1) WHERE id = $2",
+					[user.user_info_id, eventId]
+				);
+				if (result && result.rowCount) {
+					status = 201;
+					incrementEvent(eventId);
+				} else status = 404;
+			} else status = 404;
 		} catch (e) {
 			status = 400;
 			console.log(e);
@@ -111,8 +117,16 @@ const addUserSurvey = async (surveyId:number, userId: number) => {
 				"UPDATE users SET surveys = array_append(surveys, $1), orgs = array_append(orgs, $2) WHERE user_id = $3",
 				[surveyId, orgNickname, userId]
 			);
-			if (result && result.rowCount) status = 201;
-			else status = 404;
+			if (result && result.rowCount) {
+				let {user} = await getUser(userId.toString());
+				result = await pool.query(
+					"UPDATE surveys SET user_info = array_append(user_info, $1) WHERE id = $2",
+					[user.user_info_id, surveyId]
+				);
+				if (result && result.rowCount) {
+					status = 201;
+				} else status = 404;
+			} else status = 404;
 		} catch (e) {
 			status = 400;
 			console.log(e);
