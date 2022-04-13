@@ -1,10 +1,10 @@
 import {Request, Response} from "express"; //Typescript types
 import {response, responseInterface} from "../models/response"; //Created pre-formatted uniform response
-import {postUser} from "../modules/postDatabaseInfo";
-import {getUser, getUsers} from "../modules/getDatabaseInfo";
+import {postUser, postUserInfo} from "../modules/postDatabaseInfo";
+import {getUser} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {addUserEvent, addUserSurvey, addUserOrg} from "../modules/putDatabaseInfo";
-import {userData} from "../database/userData";
+import {userData, userInfoData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import { createToken, getToken, verifyUser } from "../auth/tokenFunctions";
 
@@ -25,7 +25,7 @@ export default class userController {
 						result.success = true;
 						result.response = getUserResponse.user;
 					} else {
-						result.errors.push(tokenError)
+						result.errors.push(tokenError);
 						result.status = 401;
 					}
 				} else if (result.status == 404) {
@@ -50,17 +50,23 @@ export default class userController {
 	static async postUser(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
 		let {success:baseSuccess, params:baseParams, errors:baseErrors} = await getBodyParams(req, ["password", ...userData.baseKeys]);
+		let {success:baseInfoSuccess, params:baseInfoParams, errors:baseInfoErrors} = await getBodyParams(req, userInfoData.baseKeys);
+		let {params:nullableInfoParams} = await getBodyParams(req, userInfoData.nullableKeys);
 		if (baseSuccess) {
-			const password = baseParams.shift();
-			let {params:nullableParams} = await getBodyParams(req, [...userData.nullableKeys]);
-			let postResult = await postUser(password, [...baseParams, ...nullableParams]);
-			if (postResult.success) {
-				result.status = 201;
-				result.success = true;
-				let token = createToken({user_id: baseParams[0], authorized: true})
-				result.response = {userData: postResult.newUser, token: token}
-			} else postResult.errors.forEach((error) => {result.errors.push(error)});
-		} else baseErrors.forEach((param)=>{result.errors.push("missing "+param)});
+			if (baseInfoSuccess) {
+				const password = baseParams.shift();
+				let postUserInfoResult = await postUserInfo([...baseInfoParams, ...nullableInfoParams]);
+				if (postUserInfoResult.success) {
+					let postResult = await postUser(password, postUserInfoResult.id, [...baseParams]);
+					if (postResult.success) {
+						result.status = 201;
+						result.success = true;
+						let token = createToken({user_id: baseParams[0], authorized: true})
+						result.response = {userData: postResult.newUser, token: token}
+					} else result.errors.push(...postResult.errors)
+				} else result.errors.push(...postUserInfoResult.errors);
+			} else baseInfoErrors.forEach(error => result.errors.push("missing " + error))
+		} else baseErrors.forEach(error => result.errors.push("missing " + error));
 		res.status(result.status).json(result); //Return whatever result remains
 	}
 	static async putUser(req: Request, res: Response) {

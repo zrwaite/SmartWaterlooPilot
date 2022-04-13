@@ -69,7 +69,7 @@ export default class orgController {
 						result.status = 201;
 						result.success = true;
 						result.response = {
-							orgData: postResult.newOrg,
+							orgData: postResult.id,
 						}
 					} else postResult.errors.forEach((error) => {result.errors.push(error)});
 				} else orgErrors.forEach((param)=>{result.errors.push("missing "+param)});

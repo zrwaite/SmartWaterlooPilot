@@ -1,5 +1,5 @@
 import pool from "../database/db";
-import {userData} from "../database/userData";
+import {userData, userInfoData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import {eventData} from "../database/eventData";
 import {answerKeys, getQuestionKeys, getSurveyKeys} from "../database/surveyData";
@@ -59,17 +59,23 @@ const getUserOrgs = async (userId: number) => {
 }
 
 const getUser = async (userid:string) => {
-	const {status, entries, errors} = await getEntries(false, "user_id", userid, "users", userData.getKeys);;
-	return {status: status, user: entries.length?entries[0]:{}, errors: errors}
+	const {status:userStatus, entries:userEntries, errors:userErrors} = await getEntries(false, "user_id", userid, "users", userData.getKeys);
+	if (userStatus === 200) {
+		let userInfoId = userEntries[0].user_info_id;
+		const {status:userInfoStatus, entries:userInfoEntries, errors:userInfoErrors} = await getEntries(false, "id", userInfoId, "user_info", userInfoData.getKeys);
+		if (userInfoEntries.length) {
+			return {status: userInfoStatus, user: {...userInfoEntries[0], ...userEntries[0]}, errors: [...userInfoErrors, ...userErrors]}
+		} else return {status: userInfoStatus, user: {}, errors: [...userInfoErrors, ...userErrors]};
+	} else return {status: userStatus, user: {}, errors: userErrors};
 }
 const getUserHash = async (userId:string) => {
 	const {status, entries, errors} = await getEntries(false, "user_id", userId, "users", ["password_hash"]);
 	return {status: status, user: entries.length?entries[0]:{}, errors: errors};
 }
-const getUsers = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "users", userData.getKeys);
-	return {status: status, users: entries, errors: errors}
-}
+// const getUsers = async () => {
+// 	const {status, entries, errors} = await getEntries(true, "", "", "users", userData.getKeys);
+// 	return {status: status, users: entries, errors: errors}
+// }
 const getEvent = async (eventId:number) => {
 	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.allEventKeys);
 	return {status: status, event: entries.length?entries[0]:{}, errors: errors};
@@ -185,4 +191,4 @@ const getQuestionAnswers = async (questionId: string) => {
 	const {status, entries, errors} = await getEntries(true, "question_id", questionId, "answers", answerKeys);
 	return {status: status, answers: entries, errors: errors};
 }
-export {getEventOrg, getSurveyOrg, getUserOrgs, getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getUsers, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getEventOrg, getSurveyOrg, getUserOrgs, getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}

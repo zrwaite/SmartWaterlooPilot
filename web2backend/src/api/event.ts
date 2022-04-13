@@ -63,7 +63,7 @@ export default class eventController {
 					result.status = 201;
 					result.success = true;
 					result.response = {
-						eventData: postResult.newEvent,
+						eventData: postResult.id,
 					}
 				} else postResult.errors.forEach((error) => {result.errors.push(error)});
 			} else {

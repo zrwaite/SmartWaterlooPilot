@@ -62,11 +62,11 @@ export default class answerController {
 				let postResult = await postAnswer(answer, questionId);
 				if (postResult.success) {
 					if (link) {
-						let putResult = await updateAnswersArray(userId, postResult.newAnswer)
+						let putResult = await updateAnswersArray(userId, postResult.id)
 						if (putResult.status === 201) {
 							result.status = 201;
 							result.success = true;
-							result.response = {answerData: postResult.newAnswer}
+							result.response = {answerData: postResult.id}
 						} else result.errors.push("database put error");
 					} else {
 						result.status = 201;

@@ -4,21 +4,30 @@ drop table surveys;
 drop table questions;
 drop table orgs;
 drop table users;
+-- drop table user_info;
+
+
+CREATE TABLE IF NOT EXISTS "user_info"(
+	id SERIAL primary key,
+	birth_day date not null,
+	gender varchar(100) not null,
+	religion varchar(100),
+	sexuality varchar(100),
+	race varchar(100),
+	grade varchar(100),
+	postal_code varchar(100)
+);
+
 CREATE TABLE IF NOT EXISTS "users"(
 	id SERIAL PRIMARY KEY,
 	user_id INT UNIQUE,
 	password_hash varchar(80) not null,
 	nickname VARCHAR(100) not null,
-	birth_day date not null,
-	gender varchar(100) not null,
+	avatar_string varchar(100) not null,
+	user_info_id int not null,
+	FOREIGN KEY (user_info_id) REFERENCES user_info(id),
 	-- height varchar(100),
 	-- weight varchar(100),
-	religion varchar(100),
-	sexuality varchar(100),
-	race varchar(100),
-	grade varchar(100),
-	postal_code varchar(100),
-	avatar_string varchar(100),
 	answers integer[] default array[]::integer[],
 	events integer[] default array[]::integer[],
 	surveys integer[] default array[]::integer[],
@@ -43,8 +52,8 @@ create table if not exists "surveys"(
 	FOREIGN KEY (org) REFERENCES orgs(id),
 	linked bit default '0',
 	description TEXT,
-	questions integer[]
-	-- FOREIGN KEY (EACH ELEMENT OF questions) REFERENCES questions(id),
+	questions integer[],
+	user_data int[] default array[]::integer[]
 );
 
 -- CREATE TYPE type_choices AS ENUM ('short', 'long', 'mc', 'check');
@@ -76,5 +85,6 @@ create table if not exists "events"(
 	linked_survey_id int null,
 	FOREIGN KEY (linked_survey_id) REFERENCES surveys(id),
 	image varchar(80),
+	user_data int[] default array[]::integer[],
 	attendees int default 0
 );
