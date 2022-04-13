@@ -57,15 +57,18 @@ const getUserOrgs = async (userId: number) => {
 	// const {status, entries, errors} = await getEntries(true, "owner_id", ownerId, "orgs", orgData.orgKeys);
 	return {status: status, orgs: orgs, errors: errors};
 }
+const getUserInfo = async (userInfoId:string) => {
+	const {status, entries, errors} = await getEntries(false, "id", userInfoId, "user_info", userInfoData.getKeys);
+	return {status: status, userInfo: entries.length?entries[0]:null, errors: errors};
+}
 
 const getUser = async (userid:string) => {
 	const {status:userStatus, entries:userEntries, errors:userErrors} = await getEntries(false, "user_id", userid, "users", userData.getKeys);
 	if (userStatus === 200) {
 		let userInfoId = userEntries[0].user_info_id;
-		const {status:userInfoStatus, entries:userInfoEntries, errors:userInfoErrors} = await getEntries(false, "id", userInfoId, "user_info", userInfoData.getKeys);
-		if (userInfoEntries.length) {
-			return {status: userInfoStatus, user: {...userInfoEntries[0], ...userEntries[0]}, errors: [...userInfoErrors, ...userErrors]}
-		} else return {status: userInfoStatus, user: {}, errors: [...userInfoErrors, ...userErrors]};
+		const {status: userInfoStatus, userInfo, errors: userInfoErrors} = await getUserInfo(userInfoId);
+		if (userInfo) return {status: userInfoStatus, user: {...userInfo, ...userEntries[0]}, errors: [...userInfoErrors, ...userErrors]}
+		else return {status: userInfoStatus, user: {}, errors: [...userInfoErrors, ...userErrors]};
 	} else return {status: userStatus, user: {}, errors: userErrors};
 }
 const getUserHash = async (userId:string) => {
@@ -76,6 +79,9 @@ const getUserHash = async (userId:string) => {
 // 	const {status, entries, errors} = await getEntries(true, "", "", "users", userData.getKeys);
 // 	return {status: status, users: entries, errors: errors}
 // }
+const parseEvents = async (eventId:number) => {
+
+}
 const getEvent = async (eventId:number) => {
 	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.allEventKeys);
 	return {status: status, event: entries.length?entries[0]:{}, errors: errors};
@@ -191,4 +197,4 @@ const getQuestionAnswers = async (questionId: string) => {
 	const {status, entries, errors} = await getEntries(true, "question_id", questionId, "answers", answerKeys);
 	return {status: status, answers: entries, errors: errors};
 }
-export {getEventOrg, getSurveyOrg, getUserOrgs, getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getUserInfo, getEventOrg, getSurveyOrg, getUserOrgs, getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}

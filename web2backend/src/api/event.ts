@@ -5,6 +5,7 @@ import {getEvent, getEvents, getOrgEvents} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {eventData} from "../database/eventData";
 import {verifyOrgMember, getToken} from "../auth/tokenFunctions";
+import { parseOrgEvent } from "../modules/parseData";
 
 /* register controller */
 export default class eventController {
@@ -13,14 +14,22 @@ export default class eventController {
 		let {success:eventSuccess, params:eventParams, errors:eventErrors} = await getQueryParams(req, ["event_id"]);
 		if (eventSuccess) {
 			const eventId = eventParams[0];
-			if (!isNaN(eventId)){
+			if (!isNaN(eventId)){				
 				const getEventResponse = await getEvent(eventId);
 				result.status = getEventResponse.status;
 				if (result.status == 200) {
+					const orgId = getEventResponse.event.org;
+					let {success: tokenSuccess} = await verifyOrgMember(orgId, getToken(req.headers));
+					if (tokenSuccess ){
+						console.log("Parsing event");
+						let {status: parseStatus, event: parseEvent, errors: parseErrors} = await parseOrgEvent(getEventResponse.event);
+						if (parseErrors.length) {
+							result.status = parseStatus;
+							result.errors.push(...parseErrors);
+						} else result.response = parseEvent;
+					} else result.response = getEventResponse.event;
 					result.success = true;
-					result.response = getEventResponse.event;
-				}
-				else if (result.status == 404) result.errors.push("event not found");
+				} else if (result.status == 404) result.errors.push("event not found");
 				else result.errors.push(...eventErrors);
 			} else {
 				result.errors.push("invalid event_id");

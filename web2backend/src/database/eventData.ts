@@ -17,7 +17,8 @@ const postEvent = {
 }
 const getEventParams = {
 	id: "",
-	attendees: ""
+	attendees: "",
+	user_info: []
 }
 const defaultEvent = {
 	...postEvent,

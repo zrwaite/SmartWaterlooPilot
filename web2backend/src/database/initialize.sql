@@ -4,7 +4,7 @@ drop table surveys;
 drop table questions;
 drop table orgs;
 drop table users;
--- drop table user_info;
+drop table user_info;
 
 
 CREATE TABLE IF NOT EXISTS "user_info"(
