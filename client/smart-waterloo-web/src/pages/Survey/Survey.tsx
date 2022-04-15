@@ -9,7 +9,7 @@ import SurveyQuestion from "./SurveyQuestion";
 import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";
 import { AccountChildProps } from "../AccountParent";
-import { defaultUserInfoLists } from "../../data/types/account";
+import { getDefaultUserInfoLists } from "../../data/types/account";
 
 const defaultSurveyData:SurveyDataType = {
 	id: "",
@@ -40,7 +40,7 @@ const Survey = (props: AccountChildProps) => {
 	}
 	const [notFound, setNotFound] = useState(false);
 	const [surveyData, setSurveyData] = useState({survey: defaultSurveyData, set: false});
-	const [userInfoLists, setUserInfoLists] = useState({...defaultUserInfoLists})
+	const [userInfoLists, setUserInfoLists] = useState(getDefaultUserInfoLists())
 
 	if (answers.length !== surveyData.survey.questions.length) {
 		const newAnswers = [];
@@ -70,7 +70,7 @@ const Survey = (props: AccountChildProps) => {
 	}
 
 	const parseUserInfoLists = () => {
-		const newUserInfoLists = {...defaultUserInfoLists};
+		const newUserInfoLists = getDefaultUserInfoLists();
 		surveyData.survey.user_info.forEach((user) => {
 			incrementMap(newUserInfoLists.birthdays, user.birth_day);
 			incrementMap(newUserInfoLists.genders, user.gender);
@@ -95,19 +95,19 @@ const Survey = (props: AccountChildProps) => {
 		sexualities: []
 	}
 	userInfoLists.birthdays.forEach((value, key) => {
-		userInfoComponents.birthdays.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.birthdays.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.religions.forEach((value, key) => {
-		userInfoComponents.religions.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.religions.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.sexualities.forEach((value, key) => {
-		userInfoComponents.sexualities.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.sexualities.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.races.forEach((value, key) => {
-		userInfoComponents.races.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.races.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.genders.forEach((value, key) => {
-		userInfoComponents.genders.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.genders.push(<p>{key}: {value}</p>)
 	})
 
 	if (!surveyData.set) {

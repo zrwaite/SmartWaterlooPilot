@@ -8,19 +8,21 @@ interface userInfo {
 	postal_code: string,
 }
 
-const defaultUserInfoLists: {
+const getDefaultUserInfoLists = (): {
 	religions: Map<string, number>,
 	sexualities: Map<string, number>,
 	genders: Map<string, number>,
 	races: Map<string, number>
 	birthdays: Map<string, number>
-} = {
-	religions: new Map(),
-	sexualities: new Map(),
-	genders: new Map(),
-	races: new Map(),
-	birthdays: new Map()
-} as const;
+} => {
+	return{
+		religions: new Map(),
+		sexualities: new Map(),
+		genders: new Map(),
+		races: new Map(),
+		birthdays: new Map()
+	} as const;
+}
 
 interface defaultAccountType extends userInfo {
 	nickname: string;
@@ -62,5 +64,5 @@ interface postUserType {
 	race:string, religion:string, sexuality:string,
 	nickname:string, avatar_string:string, password:string
 }
-export {defaultUserInfoLists, defaultAccountState, defaultAccount}
+export {getDefaultUserInfoLists, defaultAccountState, defaultAccount}
 export type {postUserType, userInfo}

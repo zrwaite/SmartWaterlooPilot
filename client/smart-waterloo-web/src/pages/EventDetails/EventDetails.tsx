@@ -15,7 +15,7 @@ import { defaultEvent } from '../../data/types/events';
 import cookies from "../../modules/cookies";
 import { addEventtoUser } from '../../data/addData';
 import { AccountChildProps } from '../AccountParent';
-import { defaultUserInfoLists } from '../../data/types/account';
+import { getDefaultUserInfoLists } from '../../data/types/account';
 
 Modal.setAppElement("#root");
 
@@ -27,7 +27,7 @@ const EventsDetails = (props: AccountChildProps) => {
 	const [signupButtonClass, setClass] = useState("signupButton");
 	const [bottomButtonClass, setBottomClass] = useState("bottomButton");
 	const [isOpen, setIsOpen] = React.useState(false);
-	const [userInfoLists, setUserInfoLists] = useState({...defaultUserInfoLists})
+	const [userInfoLists, setUserInfoLists] = useState(getDefaultUserInfoLists())
 	const [userInfoParsed, setUserInfoParsed] = useState(false);
 
 	// const event = eventDataRaw.find(event => event.id === id);
@@ -70,7 +70,7 @@ const EventsDetails = (props: AccountChildProps) => {
 	}
 
 	const parseUserInfoLists = () => {
-		const newUserInfoLists = {...defaultUserInfoLists};
+		const newUserInfoLists = getDefaultUserInfoLists();
 		console.log(eventData.event.user_info);
 		eventData.event.user_info.forEach((user) => {
 			incrementMap(newUserInfoLists.birthdays, user.birth_day);
@@ -104,19 +104,19 @@ const EventsDetails = (props: AccountChildProps) => {
 		sexualities: []
 	}
 	userInfoLists.birthdays.forEach((value, key) => {
-		userInfoComponents.birthdays.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.birthdays.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.religions.forEach((value, key) => {
-		userInfoComponents.religions.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.religions.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.sexualities.forEach((value, key) => {
-		userInfoComponents.sexualities.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.sexualities.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.races.forEach((value, key) => {
-		userInfoComponents.races.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.races.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.genders.forEach((value, key) => {
-		userInfoComponents.genders.push(<p>{key}: {value/2}</p>)
+		userInfoComponents.genders.push(<p>{key}: {value}</p>)
 	})
 
 	return (
