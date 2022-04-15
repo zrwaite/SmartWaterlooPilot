@@ -42,7 +42,8 @@ create table if not exists "orgs"(
 	business_number varchar(100),
 	verified bit default '0',
 	avatar_string varchar(100),
-	members int[] default array[]::integer[]
+	members int[] default array[]::integer[],
+	user_info int[] default array[]::integer[]
 );
 
 create table if not exists "surveys"(

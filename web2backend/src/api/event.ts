@@ -25,9 +25,11 @@ export default class eventController {
 						if (parseErrors.length) {
 							result.status = parseStatus;
 							result.errors.push(...parseErrors);
-						} else result.response = parseEvent;
+						} else {
+							result.response = parseEvent;
+							result.success = true;
+						}
 					} else result.response = getEventResponse.event;
-					result.success = true;
 				} else if (result.status == 404) result.errors.push("event not found");
 				else result.errors.push(...eventErrors);
 			} else {

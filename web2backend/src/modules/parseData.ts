@@ -18,5 +18,13 @@ const parseOrgSurvey = async (survey: any) => {
 	}
 	return {status: 200, survey: survey, errors: []}
 }
+const parseOrg = async (org: any) => {
+	for (let i=0; i<org.user_info.length; i++) {
+		const {status, userInfo, errors} = await getUserInfo(org.user_info[i]);
+		if (userInfo) org.user_info[i] = userInfo;
+		else return {status: status, org: {}, errors: errors};
+	}
+	return {status: 200, org: org, errors: []}
+}
 
-export {parseOrgEvent, parseOrgSurvey}
+export {parseOrg, parseOrgEvent, parseOrgSurvey}

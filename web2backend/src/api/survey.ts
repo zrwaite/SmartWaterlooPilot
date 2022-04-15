@@ -26,9 +26,11 @@ export default class surveyController {
 						if (parseErrors.length) {
 							result.status = parseStatus;
 							result.errors.push(...parseErrors);
-						} else result.response = parseSurvey;
+						} else {
+							result.response = parseSurvey;
+							result.success = true;
+						}
 					} else result.response = getSurveyResponse.survey;
-					result.success = true;
 				} else if (result.status == 404) result.errors.push("survey not found");
 				else result.errors.push(...surveyErrors);
 			} else {

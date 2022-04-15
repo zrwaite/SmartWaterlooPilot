@@ -22,7 +22,7 @@ Modal.setAppElement("#root");
 const EventsDetails = (props: AccountChildProps) => {
 	let {mobile} = useContext(MobileContext);
 	const navigate = useNavigate();
-	const { id, orgId} = useParams();
+	const { id } = useParams();
 	const [buttonText, setText] = useState("Sign Up");
 	const [signupButtonClass, setClass] = useState("signupButton");
 	const [bottomButtonClass, setBottomClass] = useState("bottomButton");

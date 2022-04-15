@@ -6,6 +6,7 @@ import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {addOrgMember} from "../modules/putDatabaseInfo";
 import {orgData} from "../database/orgData";
 import { getToken, verifyOrgMember, verifyUser } from "../auth/tokenFunctions";
+import { parseOrg } from "../modules/parseData";
 
 
 /* register controller */
@@ -19,8 +20,14 @@ export default class orgController {
 				const getOrgResponse = await getOrg(orgId);
 				result.status = getOrgResponse.status;
 				if (result.status == 200) {
-					result.success = true;
-					result.response = getOrgResponse.org;
+					let {status: parseStatus, org: parsedOrg, errors: parseErrors} = await parseOrg(getOrgResponse.org);
+					if (parseErrors.length) {
+						result.status = parseStatus;
+						result.errors.push(...parseErrors);
+					} else {
+						result.response = parsedOrg;
+						result.success = true;
+					}
 				}
 				else if (result.status == 404) result.errors.push("org not found");
 				else result.errors.push(...errors);
@@ -36,6 +43,14 @@ export default class orgController {
 					const getOrgResponse = await getUserOrgs(userId);
 					result.status = getOrgResponse.status;
 					if (result.status == 200) {
+						let parsedOrgs = [];
+						for (let i=0; i<getOrgResponse.orgs.length; i++) {
+							let {status: parseStatus, org: parsedOrg, errors: parseErrors} = await parseOrg(getOrgResponse.orgs[i]);
+							if (parseErrors.length) {
+								result.status = parseStatus;
+								result.errors.push(...parseErrors);
+							} else parsedOrgs.push(parsedOrg);
+						} result.response = parsedOrgs;
 						result.success = true;
 						result.response = getOrgResponse.orgs;
 					}

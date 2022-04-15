@@ -31,9 +31,10 @@ const addOrgMember = async (orgId:number, userId: number) => {
 	let {error: foundMemberErrors, success} = await foundOrgMembers(orgId, userId)
 	if (success) {
 		try {
+			let {user} = await getUser(userId.toString());
 			result = await pool.query(
-				"UPDATE orgs SET members = array_append(members, $1) WHERE id = $2",
-				[userId, orgId]
+				"UPDATE orgs SET members = array_append(members, $1), user_info = array_append(user_info, $2) WHERE id = $3",
+				[userId, user.user_info_id, orgId]
 			);
 			if (result && result.rowCount) status = 201;
 			else status = 404;
