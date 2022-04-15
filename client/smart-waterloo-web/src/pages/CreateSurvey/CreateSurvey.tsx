@@ -3,14 +3,18 @@ import {useContext} from "react";
 import {MobileContext} from "../../App";
 // import {eventCategories} from "./CreateSurveyData";
 // import Select, {ActionMeta} from "react-select";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {useState} from "react";
+import { postSurvey } from "../../data/postData";
+import cookies from "../../modules/cookies";
+import { forceNavigate } from "../../modules/navigate";
 //Todo change buttons to links
 
 
 interface Question {
+	id: string;
 	prompt: string;
-    type: string;
+    answer_type: "short"|"long"|"mc"|"check";
 	choices: string[];
 }
 const DefaultStandardInput = {
@@ -22,6 +26,7 @@ const DefaultQuestionArray:Question[] = [];
 const CreateSurvey = () => {
 	const navigate = useNavigate();
 	let {mobile} = useContext(MobileContext);
+	let {orgId} = useParams();
 	const [standardInputs, setStandardInputs] = useState(DefaultStandardInput);
 	const [questionInputs, setQuestionInputs] = useState(DefaultQuestionArray);
 	const handleStandardInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -31,10 +36,14 @@ const CreateSurvey = () => {
 		partialInput[name] = event.target.value;
         setStandardInputs(partialInput);
     }
-	const handleQuestionInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, index: number, name: "prompt"|"type") => {
+	const handleQuestionInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, index: number, name: "prompt"|"answer_type") => {
         let partialInput = [...questionInputs];
-		partialInput[index][name] = event.target.value;
-		if (name==="type" && partialInput[index].choices.length===0) partialInput[index].choices = ["", ""];
+		if (name==="answer_type") {
+			partialInput[index][name] = event.target.value as "short"|"long"|"mc"|"check";
+			if (partialInput[index].choices.length===0) partialInput[index].choices = ["", ""];
+		} else {
+			partialInput[index][name] = event.target.value;
+		}
         setQuestionInputs(partialInput);
     }
 	const handleAnswerInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, qindex: number, aindex: number) => {
@@ -50,8 +59,9 @@ const CreateSurvey = () => {
 	const addQuestion = () => {
 		let previousQuestions = [...questionInputs];
 		previousQuestions.push({
+			id: "",
 			prompt: "",
-			type: "short",
+			answer_type: "short",
 			choices: []
 		});
 		setQuestionInputs(previousQuestions);
@@ -73,11 +83,18 @@ const CreateSurvey = () => {
 	}
 	const greyText = {color: "grey"};
 	const link = {cursor: "pointer"};
+	const tryPostSurvey = async () => {
+		if (orgId) {
+			let {success, errors, surveyId} = await postSurvey(orgId, {name: standardInputs.name, description: standardInputs.description, questions: questionInputs}) 
+			if (success && surveyId) forceNavigate(`/survey/${surveyId}/org/${orgId}`);
+			else alert(JSON.stringify(errors));
+		}
+	}
 	return (
 		<>
 			<div className={"PageContainer"}>
 				<div className={"createNavbar"}>
-					<h6 style={link} onClick={() => navigate("/surveys")}>Cancel</h6>	
+					<h6 style={link} onClick={() => navigate(cookies.get("back"))}>Cancel</h6>	
 					<h6 style={greyText}>Next</h6>
 				</div>
 				<div className={mobile? "":"DesktopPanel"}>
@@ -114,12 +131,12 @@ const CreateSurvey = () => {
 														{shortName:"check",fullName:"Checkboxes"},
 													].map((questionType, i2) => {
 														return (<div key={i2}>
-															<input name={`type${i}`} type="radio" value={questionType.shortName} checked={question.type===questionType.shortName} onChange={(e) => handleQuestionInputChange(e, i, "type")}/>
+															<input name={`type${i}`} type="radio" value={questionType.shortName} checked={question.answer_type===questionType.shortName} onChange={(e) => handleQuestionInputChange(e, i, "answer_type")}/>
 															<p>{questionType.fullName}</p>
 														</div>)
 													})}
 											</div>
-											{(questionInputs[i].type==="mc"||questionInputs[i].type==="check")?(
+											{(questionInputs[i].answer_type==="mc"||questionInputs[i].answer_type==="check")?(
 												<div className={"questionChoiceCreator"}>
 													{questionInputs[i].choices.map((choice, i2) => {
 														return (
@@ -143,6 +160,9 @@ const CreateSurvey = () => {
 					</div>
 					<div className={"horizontal"}>
 						<button onClick={() => addQuestion()}className={"addQuestionButton blackButton"}>+ Add Question</button>
+					</div>
+					<div className={"horizontal"}>
+						<button onClick={tryPostSurvey}className={"addQuestionButton blackButton"}>Submit Survey!</button>
 					</div>
 				</div>
 			</div>	

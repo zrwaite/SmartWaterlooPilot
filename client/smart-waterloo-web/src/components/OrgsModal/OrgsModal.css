@@ -1,0 +1,27 @@
+.orgsModal{
+	display: flex;
+	flex-direction: column;
+}
+.orgsModal>* {
+	width: 100%;
+}
+.orgsModalHeader{
+	display: flex;
+	justify-content: space-between;
+	margin: 0;
+	margin-bottom: 1rem;
+}
+.orgsModalButton {
+	margin: 0.5rem 2rem;
+	height: 2.5rem;
+	/* font-size: 1.25rem; */
+	padding: 0.25rem;
+	width: calc(100% - 4rem);
+	box-sizing: border-box;
+}
+.orgPreview{
+	border: 0.2rem solid black;
+	border-radius: 0.5rem;
+	padding: 1rem;
+	margin: 1rem;
+}

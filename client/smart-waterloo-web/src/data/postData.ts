@@ -3,39 +3,53 @@ import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
 import { AbiItem } from 'web3-utils';
 import eventABI from "./utils/OrganisationEvents.json";
+import {postEventWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey, web2PostAnswer} from "./web2/web2PostData";
+import { postSurveyReturn, postSurveyType, Question, submitSurveyReturn} from "./types/surveys";
+import { postOrgReturn, postOrgType } from "./types/orgs";
+import { postEventReturn, postEventType } from "./types/events";
+import { postUserType } from "./types/account";
+import { addSurveytoUser } from "./addData";
+import cookies from "../modules/cookies";
 
-
-interface postUserType {
-	day:string, month:string, year:string,
-	gender:string, height:string, weight:string,
-	qrId:string, grade:string, postalCode:string,
-	race:string, religion:string, sexuality:string,
-	nickname:string, avatarString:string
+const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
+	return USE_WEB3?(await postOrgWeb3(inputData)):(await postOrgWeb2(inputData));
+}
+const postUser = async (inputData:postUserType):Promise<string[]> => {
+	return USE_WEB3?(await postUserWeb3(inputData)):(await postUserWeb2(inputData));
+}
+const postEvent = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
+	return USE_WEB3?(await postEventWeb3(id, inputData)):(await postEventWeb2(id, inputData));
+}
+const postSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
+	return USE_WEB3?(await web3PostSurvey(id, inputData)):(await web2PostSurvey(id, inputData));
+}
+const submitSurvey = async (surveyId: string, questions: Question[], answers: string[]):Promise<submitSurveyReturn> => {
+	if (questions.length !== answers.length) return {success: false, errors: ["invalid answers"]};
+	questions.forEach((question, i) => {
+		if (question.choices?.length && !question.choices.includes(answers[i])) return {success: false, errors: ["invalid answer "+answers[i]]};
+	});
+	for (let i=0; i<questions.length; i++) {
+		let postAnswerErrors = await postAnswer(questions[i].id, answers[i])
+		if (postAnswerErrors.length) return {success: false, errors: postAnswerErrors};
+	}
+	let {success, errors} = await addSurveytoUser(cookies.get("userId"), surveyId)
+	return {success: success, errors: errors};
+}
+const postAnswer = async (questionId: string, answer: string):Promise<string[]> => {
+	return USE_WEB3?(await web3PostAnswer(questionId, answer)):(await web2PostAnswer(questionId, answer)); 
+}
+const web3PostAnswer = async (questionId: string, answer: string):Promise<string[]> => {
+	return ["function not implemented"]; 
 }
 
 
-
-
-const postUser = async (inputData:postUserType) => {
-	USE_WEB3?(await postUserWeb2(inputData)):(await postUserWeb3(inputData));
+const web3PostSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
+	return {success: false, errors: ["not implemented"], surveyId: ""};
 }
-
-const postEvent = async (inputData:postEventType) => {
-	USE_WEB3?(await postEventWeb2(inputData)):(await postEventWeb3(inputData));
+const postOrgWeb3 = async (inputData:postOrgType):Promise<postOrgReturn> => {
+	return {success: false, errors: ["not implemented"], orgId: ""};
 }
-  
-const postEventWeb2 = (inputData:postEventType) => {
-
-}
-
-interface postEventType {
-	name:string, age:string, 
-	start_day:string, start_month:string, start_year:string,
-	end_day:string, end_month:string, end_year:string,
-	category:string, description: string
-}
-
-const postEventWeb3 = async (inputData:postEventType) => {
+const postEventWeb3 = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
 	let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 	web3.eth.defaultAccount = accounts[0];
 	const contractABI = eventABI;
@@ -56,12 +70,9 @@ const postEventWeb3 = async (inputData:postEventType) => {
 			console.log(`${inputData.name} created successfully`);
 		})
 		.catch((err: any) => console.log(err));
-
+	return {success: false, errors: ["function not yet implemented"], eventId: "-1"}
 }
 
-const postUserWeb2 = async (inputData:postUserType) => {
-
-}
 declare var window: any;
 let web3 = new Web3(Web3.givenProvider);
 
@@ -103,7 +114,7 @@ let contractABI;
 		inputData.race,
 		inputData.religion,
 		inputData.sexuality,
-		(inputData.nickname + inputData.avatarString)).send({ from: web3.eth.defaultAccount })
+		(inputData.nickname + inputData.avatar_string)).send({ from: web3.eth.defaultAccount })
 		.then(() => console.log("Information added successfully"))
 		.catch((err: any) => console.log(err));
 // }
@@ -112,11 +123,11 @@ let contractABI;
 // 	contractABI = orgABI;
 // 	const orgContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
 // 	console.log(orgContract);
-// 	await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatarString), [""]).send({from: web3.eth.defaultAccount})
+// 	await orgContract.methods.createOrg(web3.eth.defaultAccount,qrId, state.formInputs.businessNumber, (state.formInputs.nickname + state.formInputs.avatar_string), [""]).send({from: web3.eth.defaultAccount})
 // 	.then(() => console.log(`Organisation ${state.formInputs.businessNumber} created succesfully`))
 // 	.catch((err:any) => console.log(err));
 // }
-
+	return ["not implemented"]
 }
 
-export {postUser, postEvent}
+export {submitSurvey, postSurvey, postUser, postEvent, postOrg}

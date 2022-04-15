@@ -1,15 +1,13 @@
-import { useNavigate } from "react-router-dom"
 import {icons} from "../../../images/icons";
 import "./MobileNavItem.css";
 type MovileNavItemProps = {
-	link: string,
+	onClick: () => void,
 	title: string,
 	i: number;
 }
 const MovileNavItem = (props:MovileNavItemProps) => {
-	const navigate = useNavigate()
 	return (
-		<div onClick={() => navigate(props.link)}>
+		<div onClick={props.onClick}>
 			{props.i?<hr></hr>:null}
 			<div className="navModalItem">
 				<h6>{props.title}</h6>

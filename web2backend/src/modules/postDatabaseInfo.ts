@@ -1,113 +1,162 @@
 import bcrypt from "bcrypt";
 import pool from "../database/db";
-import {encrypt} from "./encryption";
-import {userData} from "../database/userData";
-import {orgData} from "../database/orgData";
-import {defaultEvent, eventData} from "../database/eventData";
-const postUser = async (userId:string, password:string, userDataParams: string[]) => {
+import {userData, postUserInfo as postUserInfoObj, userInfoData} from "../database/userData";
+import {orgData, postOrg as postOrgObj} from "../database/orgData";
+import {eventData, postEvent as postEventObj} from "../database/eventData";
+import {surveyKeys, questionKeys, questionValues, surveyValues, postSurveyValues, postQuestionValues, answerKeys, answerValues} from "../database/surveyData";
+import {verifyOrgVerification} from "./getDatabaseInfo";
+interface PostDataReturn {
+	success: boolean,
+	errors: string[],
+	id: number
+}
+
+const postEntry = async (entry: object, tableName:string ):Promise<PostDataReturn> => {
+	let errors: string[] = [];
+	let success = false;
+	let newId:number = 0;
+	let entryDataValuesString = "";
+	const entryKeys = Object.keys(entry);
+	const entryValues = Object.values(entry);
+	for (let i=0; i<entryKeys.length; i++) {
+		if (i) entryDataValuesString += ", ";
+		entryDataValuesString += `$${i+1}`;
+	}
+	const entryDataQueryString = entryKeys.join(", ");
+	try {
+		let newEntryId = await pool.query(
+			`INSERT INTO ${tableName} (${entryDataQueryString}) VALUES(${entryDataValuesString}) RETURNING id`,
+			entryValues
+		);
+		newId = newEntryId.rows[0].id;
+		success = true;
+	} catch (e: any) {
+		const knownErrorCodes = ["22P02", "23505", "23503"];
+		if (knownErrorCodes.includes(e.code)) errors.push(e.detail);
+		else errors.push("database error");
+		console.log(e);
+	}
+	return {success: success, errors: errors, id: newId};
+}
+type postEntryTypeArrayType = {
+	keys: typeof surveyKeys , values: postSurveyValues
+}|{
+	keys: typeof questionKeys , values: postQuestionValues
+}|{
+	keys: typeof answerKeys, values: answerValues	
+}
+const postEntryArrays = async (entry: postEntryTypeArrayType, tableName:string ):Promise<PostDataReturn>  => {
+	let errors: string[] = [];
+	let success = false;
+	let newId:number = 0;
+	let entryDataValuesString = "";
+	for (let i=0; i<entry.keys.length; i++) {
+		if (i) entryDataValuesString += ", ";
+		entryDataValuesString += `$${i+1}`;
+	}
+	const entryDataQueryString = entry.keys.join(", ");
+	try {
+		let newEntryId = await pool.query(
+			`INSERT INTO ${tableName} (${entryDataQueryString}) VALUES(${entryDataValuesString}) RETURNING id`,
+			entry.values
+		);
+		newId = newEntryId.rows[0].id;
+		success = true;
+	} catch (e: any) {
+		const knownErrorCodes = ["23505", "23503"];
+		if (knownErrorCodes.includes(e.code)) errors.push(e.detail);
+		else errors.push("database error");
+		console.log(e);
+	}
+	return {success: success, errors: errors, id: newId};
+}
+
+const postUser = async (password:string, userInfoId: number, userParams: string[]) => {
 	let errors:string[] = [];
 	let success = false;
 	let newUser:any = {};
-	let userDataValuesString = "";
-	for (let i=0; i<userDataParams.length; i++) {
-		if (i) userDataValuesString += ", ";
-		userDataValuesString += `$${i+1}`;
+	let userValuesString = "";
+	for (let i=0; i<userParams.length+2; i++) {
+		if (i) userValuesString += ", ";
+		userValuesString += `$${i+1}`;
 	}
-	// let postUser = {...defaultUserData};
-	let userDataQueryValues:string[] = [];
-	userDataParams.forEach(key => userDataQueryValues.push(encrypt(key)))
-	const userDataQueryKeysString = userData.dataKeys.join(", ");
-	try {
-		let newUserDataId = await pool.query(
-			"INSERT INTO user_data ("+ userDataQueryKeysString +") VALUES("+userDataValuesString+") RETURNING id",
-			[...userDataQueryValues]
-		);
-		let userQueryValues:string[] = [];
-		let userQueryKeysString = "u_id, password_hash, user_data_id" ;
-		userQueryValues.push(userId);
-		const password_hash = bcrypt.hashSync(password, 10);
-		if (password_hash=="0") errors.push("invalid hashing");
-		else userQueryValues.push(password_hash);
-		userQueryValues.push(newUserDataId.rows[0].id.toString());
-		let newUserId = await pool.query(
-			"INSERT INTO users ("+ userQueryKeysString +") VALUES($1, $2, $3) RETURNING id",
-			[...userQueryValues]
-		);
-		newUser = newUserId.rows[0].id;
-		success = true;
-	} catch (e: any) {
-		if (e.code == 23505) {
-			errors.push(e.detail);
-		} else {
-			errors.push("database error");
+	const userQueryKeysString = ["password_hash", "user_info_id", ...userData.postKeys].join(", ");
+	const password_hash = bcrypt.hashSync(password, 10);
+	if (password_hash=="0") errors.push("invalid hashing");
+	else {
+		const userQueryValues = [password_hash, userInfoId, ...userParams];
+		try {
+			let newUserId = await pool.query(
+				"INSERT INTO users ("+ userQueryKeysString +") VALUES("+userValuesString+") RETURNING id",
+				[...userQueryValues]
+			);
+			newUser = newUserId.rows[0].id;
+			success = true;
+		} catch (e: any) {
+			if (e.code == 23505) {
+				errors.push(e.detail);
+			} else {
+				errors.push("database error");
+			}
+			console.log(e);
 		}
-		console.log(e);
 	}
 	return {success: success, errors: errors, newUser: newUser};
 }
 
-const postOrg = async (orgDataParams: string[]) => {
-	let errors:string[] = [];
-	let success = false;
-	let newOrg:any = {};
-	let orgDataValuesString = "";
-	for (let i=0; i<orgDataParams.length; i++) {
-		if (i) orgDataValuesString += ", ";
-		orgDataValuesString += `$${i+1}`;
-	}
 
-	// let orgDataQueryValues:string[] = [...orgDataParams];
-	// orgDataParams.forEach(key => orgDataQueryValues.push(encrypt(key)))
-	const orgDataQueryKeysString = orgData.postKeys.join(", ");
-	try {
-		let newOrgDataId = await pool.query(
-			"INSERT INTO orgs ("+ orgDataQueryKeysString +") VALUES("+orgDataValuesString+") RETURNING id",
-			[...orgDataParams]
-		);
-		newOrg = newOrgDataId.rows[0].id;
-		success = true;
-	} catch (e: any) {
-		if (e.code == 23505) {
-			errors.push(e.detail);
-		} else if (e.code == 23503) {
-			errors.push(e.detail);
-		} else {
-			errors.push("database error");
-		}
-		console.log(e);
-	}
-	return {success: success, errors: errors, newOrg: newOrg};
-}
+
 
 const postEvent = async (eventParams:string[]) => {
-	let errors:string[] = [];
-	let success = false;
-	let newEvent = {...defaultEvent};
-	let eventDataValuesString = "";
-	for (let i=0; i<eventParams.length; i++) {
-		if (i) eventDataValuesString += ", ";
-		eventDataValuesString += `$${i+1}`;
-	}
-	const eventDataQueryKeysString = eventData.eventKeys.join(", ");
-	try {
-		console.log("INSERT INTO events ("+ eventDataQueryKeysString +") VALUES("+eventDataValuesString+") RETURNING id",);
-		console.log(eventParams);
-		let newEventId = await pool.query(
-			"INSERT INTO events ("+ eventDataQueryKeysString +") VALUES("+eventDataValuesString+") RETURNING id",
-			eventParams
-		);
-		newEvent = newEventId.rows[0].id;
-		success = true;
-	} catch (e: any) {
-		if (e.code == 23505) {
-			errors.push(e.detail);
+	if (!(await verifyOrgVerification(eventParams[0]))) return {success: false, errors: ["org not verified"], id: 0};
+	let newPostEventObj = {...postEventObj};
+	for (let i = 0; i<eventParams.length; i++) newPostEventObj[eventData.postEventKeys[i]] = eventParams[i];
+	return await postEntry(newPostEventObj, "events");
+}
+
+const postSurvey = async (surveyParams:(surveyValues)) => {
+	let errors: string[] = [];
+	let success = true;
+	let questionIds = [];
+	if (!(await verifyOrgVerification(surveyParams[0]))) return {success: false, errors: ["org not verified"], id:0};
+	for (let i=0; i<surveyParams[3].length; i++) {
+		let {success: questionSuccess, errors: questionErrors, id: questionId} = await postQuestion(surveyParams[3][i])
+		if (questionSuccess) {
+			questionIds.push(questionId.toString());
 		} else {
-			errors.push("database error");
+			errors.push(...questionErrors);
+			success = false;
+			break;
 		}
-		console.log(e);
 	}
-	return {success: success, errors: errors, newEvent: newEvent};
+	let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`];
+	if (questionIds.length) postSurveyArray[3] = `{"${questionIds.join("\", \"")}"}`;
+	let {errors:postEntryErrors, success:postEntrySuccess, id} = await postEntryArrays({keys:surveyKeys, values: postSurveyArray}, "surveys");
+	return {success: success && postEntrySuccess, errors: [...errors, ...postEntryErrors], id: id};
+}
+
+const postQuestion = async (questionParams:(questionValues)) => {
+	let postQuestionArray:postQuestionValues = [questionParams[0], questionParams[1], `{}`];
+	if (questionParams[2]?.length) postQuestionArray[2] = `{"${questionParams[2]?.join("\", \"")}"}`;
+	return await postEntryArrays({keys:questionKeys, values: postQuestionArray}, "questions");
+}
+const postAnswer = async (answer:string, question_id:number) => {
+	let postAnswerArray:answerValues = [answer, question_id];
+	// if (answerParams[2]?.length) postAnswerArray[2] = `{"${answerParams[2]?.join("\", \"")}"}`;
+	return await postEntryArrays({keys:answerKeys, values: postAnswerArray}, "answers");
+}
+
+const postOrg = async (orgParams:string[]) => {
+	let newPostOrgObj = {...postOrgObj};
+	for (let i = 0; i<orgParams.length; i++) newPostOrgObj[orgData.postKeys[i]] = orgParams[i];
+	return await postEntry(newPostOrgObj, "orgs");
+}
+
+const postUserInfo = async (userInfoParams:string[]) => {
+	let newPostUserInfoObj = {...postUserInfoObj};
+	for (let i = 0; i<userInfoParams.length; i++) newPostUserInfoObj[userInfoData.postKeys[i]] = userInfoParams[i];
+	return await postEntry(newPostUserInfoObj, "user_info");
 }
 
 
-export {postUser, postOrg, postEvent}
+export {postAnswer, postUser, postOrg, postEvent, postSurvey, postUserInfo}

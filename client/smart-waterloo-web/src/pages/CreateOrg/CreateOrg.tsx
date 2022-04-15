@@ -7,23 +7,24 @@ import MeetAvatar from "../SignUp/MeetAvatar";
 import Nickname from "../SignUp/Nickname";
 import Verified from "./Verified";
 import StepBubbles from "../../components/StepBubbles";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import { ActionMeta } from "react-select";
 import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
+import { postOrg } from "../../data/postData";
 
 const defaultAvatarString = randomString();
 type SignUpProps = {
 };
 const defaultNicknameProps = {
 	nickname: "",
-	avatarString: defaultAvatarString
+	avatar_string: defaultAvatarString
 }
 const defaultVerifiedProps = {
 	businessNumber: ""
 }
 const defaultAvatarProps = {
-	avatarString: defaultAvatarString
+	avatar_string: defaultAvatarString
 }
 const defaultSignUpState = {
 	step: 0,
@@ -34,12 +35,10 @@ const defaultSignUpState = {
 	}
 }
 
-const SignUp = (props: SignUpProps) => {
+const CreateOrg = (props: SignUpProps) => {
 	const [state, setState] = useState(defaultSignUpState);
 	const {mobile} = useContext(MobileContext);
-	const cookies = new Cookies();
 	const navigate = useNavigate();
-	cookies.set("back", "/signup");
 	const updateStep = (step: number) => {
 		setState({ ...state, step: step });
 	}
@@ -81,9 +80,12 @@ const SignUp = (props: SignUpProps) => {
 		return verifiedProps;
 	}
 	const submitForm = async () => {
-		
-		let path = `/dashboard/org`;
-		navigate(path);
+		let {success, errors, orgId} = await postOrg({...state.formInputs});
+		if (success) {
+			navigate(`/dashboard/org/${orgId}`);
+		} else {
+			alert("Something went wrong" + JSON.stringify(errors));
+		}
 	}
 
 	let stepSection: any;
@@ -107,7 +109,7 @@ const SignUp = (props: SignUpProps) => {
 	}
 	return (
 		<>
-			<Navbar root={true} />
+			<Navbar root={false} />
 			<div className={"PageContainer"}>
 				{<div className={mobile ? "" : "DesktopPanel"}>
 					{state.step ? <StepBubbles steps={["Verification", "Avatar"]} step={state.step} /> : null}
@@ -118,4 +120,4 @@ const SignUp = (props: SignUpProps) => {
 	);
 }
 
-export default SignUp;
+export default CreateOrg;

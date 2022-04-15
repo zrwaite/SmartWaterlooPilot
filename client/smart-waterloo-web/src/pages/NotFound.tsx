@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 function NotFound() {
     return (
 		<>
-			<Navbar root={true}/>
+			<Navbar root={false}/>
 			<h1>404 page not found</h1>
 		</>
     );

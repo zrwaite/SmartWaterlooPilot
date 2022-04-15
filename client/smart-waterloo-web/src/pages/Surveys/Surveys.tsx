@@ -1,59 +1,40 @@
-import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
-import { MobileContext, IdContext, AddressContext } from "../../App";
-import {useContext, useState} from "react";
+import { MobileContext } from "../../App";
+import {useContext} from "react";
 import "./Surveys.css";
-import {exampleSurveys} from "../../data/Surveys";
 import SurveyPanel from "./SurveyPanel";
 import { useNavigate } from "react-router-dom";
-import { defaultUserData} from "../../data/Users";
-import { getUserData} from "../../data/getData"
-import Settings from "../../components/Settings";
-
-
-
-const Surveys = (props: {org: boolean}) => {
-	const [settingsOpen, setSettingsOpen] = useState(false);
+import { ClipLoader } from "react-spinners";
+import cookies from "../../modules/cookies";
+import {AccountChildProps} from "../AccountParent"
+const Surveys = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
-	const {address} = useContext(AddressContext);
-	const {id} = useContext(IdContext);
+	// const {address} = useContext(AddressContext);
 	const navigate = useNavigate();
-
-	const [userData, setUserData] = useState(defaultUserData);
-	const getSetUserData = async () => {
-		let users = await getUserData();
-		if (!users) return;
-		setUserData(users)
-	}
-	const [dataCalled, setDataCalled] = useState(false);
-	if (!dataCalled) {
-		getSetUserData();
-		setDataCalled(true);
-	}
+	cookies.set("back", `/dashboard/${props.org?`org/${props.orgId}`:"user"}`);
+	
 
 	return (
-		<>
-			<Navbar root={true}/>
-			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
-			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="surveys"/>}
-				<div className={"besideAside"}>
-					<div className={mobile? "":"fullScreenPanel"}>
-						<h4>Surveys 📝</h4>
-						<hr/>
-						<p>A brief description about what the surveys listed here are and any other info that is required.</p>
-						<div className={"surveyGrid"}>
-							{props.org?<div className={"addSurveySection"}>
-								<button onClick={() => navigate("/createsurvey")}  className={"blackButton addSurveyButton"}>Add Survey</button>
-							</div>:null}
-							{exampleSurveys.map((survey, i) => {return (
-								<SurveyPanel index={i} key={i} {...survey}/>
-							);})}
-						</div>
-					</div>
+		<div className={"besideAside"}>
+			<div className={mobile? "":"fullScreenPanel"}>
+				<h4>Surveys 📝</h4>
+				<hr/>
+				<p>A brief description about what the surveys listed here are and any other info that is required.</p>
+				<div className={"surveyGrid"}>
+					{props.org && props.verified ?<div className={"addSurveySection"}>
+						<button onClick={() => navigate(`/createsurvey/${props.orgId}`)}  className={"blackButton addSurveyButton"}>Add Survey</button>
+					</div>:null}
+					{
+						props.surveysData.set?(
+							props.surveysData.surveys.map((survey, i) => {
+								const surveyCompleted = props.accountData.account.surveys.includes(parseInt(survey.id));
+								return (
+								<SurveyPanel completed={surveyCompleted} numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} index={i} key={i} {...survey}/>
+							);})
+						):[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
+					}
 				</div>
 			</div>
-		</>
+		</div>
 	)
 }
 

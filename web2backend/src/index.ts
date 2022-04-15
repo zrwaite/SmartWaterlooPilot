@@ -14,6 +14,6 @@ const initializeDB = async () => {
 }
 
 app.listen(port, () => {
-	initializeDB()
+	// initializeDB(); 
 	console.log(`listening on port ${port}`);
 });

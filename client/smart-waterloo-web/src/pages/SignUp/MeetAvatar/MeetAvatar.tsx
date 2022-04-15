@@ -9,14 +9,14 @@ type MeetAvatarProps = {
 	backStep: () => void,
 	nextStep: () => void,
 	updateParentState: Function
-	avatarData: {avatarString:string}
+	avatarData: {avatar_string:string}
 };
 function MeetAvatar(props:MeetAvatarProps) {
 	const spacing = {
 		margin: "0.5rem 0"
 	}
 	const generateNewAvatar = async () => {
-		props.updateParentState("avatarString", randomString());
+		props.updateParentState("avatar_string", randomString());
 	}
     return (
 		<>
@@ -24,7 +24,7 @@ function MeetAvatar(props:MeetAvatarProps) {
 				<h4>Meet your Avatar 🦄</h4>
 				<p style={spacing}>This is your Avatar, you can give it a nickname and customize its features!</p>
 				{/* <img src={Avatar} alt="Avatar" className="avatarImage"/> */}
-				<img className="avatarImage" alt="avatar" src={`https://avatars.dicebear.com/api/bottts/${props.avatarData.avatarString}.svg`}/>
+				<img className="avatarImage" alt="avatar" src={`https://avatars.dicebear.com/api/bottts/${props.avatarData.avatar_string}.svg`}/>
 				<hr/>
 				<div className="buttonContainer">
 					<button style={spacing} onClick={() => generateNewAvatar()} className={"blackButton signUpButton"}>Generate new Avatar</button>

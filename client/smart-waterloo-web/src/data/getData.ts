@@ -1,5 +1,7 @@
-// import { defaultEvent} from "./types/events";
-// import {defaultAnswer, defaultSurvey} from "./types/surveys"
+
+import { defaultEvent} from "./types/events";
+import {defaultAnswer, defaultSurvey} from "./types/surveys"
+import userABI from "./utils/SmartUser.json";
 import {AbiItem} from "web3-utils";
 import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
@@ -8,9 +10,10 @@ import responseABI from "./utils/SurveyResponse.json";
 import eventABI from "./utils/OrganisationEvents.json";
 import surveyABI from "./utils/OrgSurvey.json";
 import {USE_WEB3} from "./dataConstants";
-// import {defaultAccount} from "./types/account";
+
+import {defaultAccount} from "./types/account";
 import {web2GetAnswersData, web2GetUserOrgs, web2GetOrgSurveysData, web2GetOrgEventsData, web2GetUserData, web2GetSurveysData, web2GetBasicOrgData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData, web2GetQuestionsAndAnswers} from "./web2/web2GetData";
-// import {defaultOrg} from "./types/orgs";
+import {defaultOrg} from "./types/orgs";
 
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;

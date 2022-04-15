@@ -1,56 +1,23 @@
-import Sidebar from "../../components/Sidebar";
-import Navbar from "../../components/Navbar";
-import { MobileContext, IdContext, AddressContext } from "../../App";
-import {useContext, useState} from "react";
-import { userDataPanels, orgDataPanels } from "./MyDataPanel/MyDataPanels";
-import MyDataPanel from "./MyDataPanel";
+import { MobileContext } from "../../App";
+import {useContext} from "react";
 import "./MyData.css";
-import Cookies from "universal-cookie";
-import { defaultUserData} from "../../data/Users";
-import { getUserData} from "../../data/getData"
-import Settings from "../../components/Settings";
-
-
-const MyData = (props: {org: boolean}) => {
-	const [settingsOpen, setSettingsOpen] = useState(false);
+import cookies from "../../modules/cookies";
+import {AccountChildProps} from "../AccountParent"
+import DataPanels from "./DataPanels/DataPanels";
+const MyData = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
-	const {address} = useContext(AddressContext);
-	const {id} = useContext(IdContext);
-	const cookies = new Cookies();
-	cookies.set("back", "/data");
-	const dataPanelsData = props.org?orgDataPanels:userDataPanels;
-
-	const [userData, setUserData] = useState(defaultUserData);
-	const getSetUserData = async () => {
-		let users = await getUserData();
-		if (!users) return;
-		setUserData(users)
-	}
-	const [dataCalled, setDataCalled] = useState(false);
-	if (!dataCalled) {
-		getSetUserData();
-		setDataCalled(true);
-	}
+	cookies.set("back", `/data/${props.org?`org/${props.orgId}`:"user"}`);
 	return (
-		<>
-			<Navbar root={true}/>
-			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
-			<div className={mobile?"PageContainer":"asideContainer"}>
-				{mobile?null:<Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="data"/>}
-				<div className={"besideAside"}>
-					<div className={mobile? "":"fullScreenPanel"}>
-						<h4>My Data 📊</h4>
-						<hr/>
-						<p>A brief description about what the events listed here are and any other info that is required.</p>
-						<div className={"myDataGrid"}>
-							{dataPanelsData.map((panel, i) => {return (
-								<MyDataPanel index={i} key={i} {...panel}/>
-							);})}
-						</div>
-					</div>
+		<div className={"besideAside"}>
+			<div className={mobile? "":"fullScreenPanel"}>
+				<h4>My Data 📊</h4>
+				<hr/>
+				<p>A brief description about what the events listed here are and any other info that is required.</p>
+				<div className="myDataGrid">
+					<DataPanels orgId={props.orgId} org={props.org}/>
 				</div>
 			</div>
-		</>
+		</div>
 	)
 }
 

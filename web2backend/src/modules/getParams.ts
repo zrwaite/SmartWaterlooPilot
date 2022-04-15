@@ -1,22 +1,22 @@
-const getParams = async (req:any, params:string[], type:string) =>{
+const getParams = (obj:any, params: readonly string[]) => {
 	let success = true;
 	let undefinedParams: string[] = [];
-	let definedParams: any[] = [];
+	let allParams: any[] = [];
 	params.forEach((param) => {
-		if (req[type][param]==undefined) {
+		if (obj[param]==undefined) {
 			success = false;	
 			undefinedParams.push(param);
-		} else definedParams.push(req[type][param]);
+		} 
+		allParams.push(obj[param]);
 	});
-	return {success: success, params: definedParams, errors: undefinedParams};
+	return {success: success, params: allParams, errors: undefinedParams};
 }
-
-const getBodyParams = async (req:any, params:string[]) =>{
-	return getParams(req, params, "body");
+const getBodyParams = (req:any, params: readonly string[]) =>{
+	return getParams(req['body'], params);
 };
 
-const getQueryParams = async (req:any, params:string[]) =>{
-	return getParams(req, params, "query");
+const getQueryParams = (req:any, params: readonly string[]) =>{
+	return getParams(req['query'], params);
 };
 
-export {getBodyParams, getQueryParams}
+export {getBodyParams, getQueryParams, getParams}

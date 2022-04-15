@@ -1,66 +1,44 @@
 // import {Link} from "react-router-dom";
 import "./Dashboard.css";
-import Navbar from "../../components/Navbar";
 
 //Todo change buttons to links
 // import settingsIcon from "../../images/settings.svg";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import DashboardPreview from "./DashboardPreview";
-import Sidebar from "../../components/Sidebar";
-import {useContext, useState} from "react";
-import {MobileContext, AddressContext, IdContext} from "../../App";
-import { defaultUserData} from "../../data/Users";
-import { defaultEventsData } from "../../data/Events";
-import {getEventsData, getUserData} from "../../data/getData"
-import Settings from "../../components/Settings";
-
-
-
-const Dashboard = (props: {org: boolean}) => {
+import {useContext} from "react";
+import {MobileContext} from "../../App";
+import { useParams } from "react-router-dom";
+// import NotFound from "../NotFound";
+import {AccountChildProps} from "../AccountParent"
+const Dashboard = (props: AccountChildProps) => {
 	let {mobile} = useContext(MobileContext);
-	let {address} = useContext(AddressContext);
-	let {id} = useContext(IdContext);
-	const [settingsOpen, setSettingsOpen] = useState(false);
-	const cookies = new Cookies();
-	cookies.set("back", "/dashboard/user");
-	const [userData, setUserData] = useState(defaultUserData);
-	const getSetUserData = async () => {
-		let users = await getUserData();
-		if (!users) return;
-		setUserData(users)
+	const { orgId } = useParams();
+	cookies.set("back", `/dashboard/${props.org?`org/${orgId}`:"user"}`);
+	const dashboardPreviewData = {
+		...props.accountData,
+		...props.eventsData,
+		...props.surveysData, 
+		eventsSet:props.eventsData.set,
+		surveysSet:props.surveysData.set,
+		org:props.org ,
+		orgId:orgId,
+		verified: props.verified,
 	}
-	const [eventsData, setEventData] = useState(defaultEventsData);
-	const getSetEventsData = async () => {
-		let events = await getEventsData();
-		if (!events) return;
-		setEventData({events: events, eventsDataSet: true })
-	}
-	const [dataCalled, setDataCalled] = useState(false);
-	if (!dataCalled) {
-		getSetEventsData();
-		getSetUserData();
-		setDataCalled(true);
-	}
-
     return (
 		<>
-			<Navbar root={true}/>
-			<Settings open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
-			<div className={mobile?"dashboardContainerMobile":"asideContainer"}>
-				{mobile?(
-					<header className="center">
-						<h4>Dashboard 📌</h4>
-						<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${userData.avatarString}.svg`} alt="avatarImage"/>
-						<h5>{userData.nickname}</h5>
-					</header>	
-				):<Sidebar {...userData} openSettings={() => setSettingsOpen(true)} page="dashboard"/>}
-				<div className={"besideAside"}> 
-					<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
-						{props.org?null:<DashboardPreview {...userData} org={props.org} {...eventsData} name="upcoming"/>}
-						<DashboardPreview {...userData} org={props.org} {...eventsData} name="data"/>
-						<DashboardPreview {...userData} org={props.org} {...eventsData} name="events"/>
-						<DashboardPreview {...userData} org={props.org} {...eventsData} name="surveys"/>
-					</div>
+			{mobile&&(
+				<header className="center">
+					<h4>Dashboard 📌</h4>
+					<img className="avatarProfile" src={`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatar_string}.svg`} alt="avatarImage"/>
+					<h5>{props.accountData.account.nickname}</h5>
+				</header>
+			)}
+			<div className={"besideAside"}> 
+				<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
+					{/* {props.org?null:<DashboardPreview {...prop.accountData} org={props.org} {...eventsData} {...surveysData} name="upcoming"/>} */}
+					<DashboardPreview {...dashboardPreviewData} name="data"/>
+					<DashboardPreview {...dashboardPreviewData} name="events"/>
+					<DashboardPreview {...dashboardPreviewData} name="surveys"/>
 				</div>
 			</div>
 		</>

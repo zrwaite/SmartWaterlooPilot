@@ -12,7 +12,13 @@ type ProfileFormGridProps = {
 function ProfileFormGrid(props: ProfileFormGridProps) {
 	let redText = { color: "red" };
 	let greyText = { color: "grey" };
-
+	let canContinue = (
+		props.formData.day !== "" && !isNaN(parseInt(props.formData.day)) && parseInt(props.formData.day) <=31  && parseInt(props.formData.day) >0 &&
+		props.formData.month !== "" && !isNaN(parseInt(props.formData.month)) && parseInt(props.formData.month) <=12  && parseInt(props.formData.month) >0 && 
+		props.formData.year !== "" && !isNaN(parseInt(props.formData.year)) && parseInt(props.formData.year) <=3000  && parseInt(props.formData.year) >1000 &&
+		props.formData.gender !== "" &&
+		props.formData.postalCode !== ""
+	);
 	return (
 		<>
 			<main>
@@ -29,7 +35,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 							<pre> / </pre>
 							<input name="month" id="monthInput" placeholder="MM" type={"text"} value={props.formData.month} onChange={props.handleParentInputChange} />
 							<pre> / </pre>
-							<input name="year" id="yearInput" placeholder="YY" type={"text"} value={props.formData.year} onChange={props.handleParentInputChange} />
+							<input name="year" id="yearInput" placeholder="YYYY" type={"text"} value={props.formData.year} onChange={props.handleParentInputChange} />
 						</div>
 					</div>
 					<div className="formDiv">
@@ -38,7 +44,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 						</p>
 						<Select className={"selectComponent"} defaultInputValue={props.formData.gender} name={"gender"} onChange={props.handleParentSelectChange} options={genderOptions} />
 					</div>
-					<div className="formDiv horizontal">
+					{/* <div className="formDiv horizontal">
 						<div>
 							<p>
 								Height<span style={redText}>*</span>
@@ -57,7 +63,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 								<p className="pillText">lbs</p>
 							</div>
 						</div>
-					</div>
+					</div> */}
 					<div className="formDiv">
 						<p>
 							Religion <span style={greyText}>(Optional)</span>
@@ -79,7 +85,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 					<div className="formDiv horizontal">
 						<div>
 							<p>
-								Grade<span style={redText}>*</span>
+								Grade
 							</p>
 							<div className="horizontal">
 								<div className="pill">
@@ -98,7 +104,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 					</div>
 				</section>
 				<div className="formDiv">
-					<button className="blackButton signUpButton" onClick={props.nextStep}>
+					<button className={`${canContinue?"blackButton":"disabledButton"} signUpButton`} onClick={canContinue?props.nextStep:()=>{}}>
 						Continue
 					</button>
 				</div>

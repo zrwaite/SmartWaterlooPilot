@@ -2,20 +2,22 @@ import React, { useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import AvatarPNG from "../../images/fullAvatar.png";
 import "./Login.css";
-import Cookies from "universal-cookie";
+import cookies from "../../modules/cookies";
 import { useContext, useState } from "react";
-import { MobileContext } from "../../App";
-import { useNavigate } from "react-router-dom";
+import { IdContext, MobileContext } from "../../App";
+import { useNavigate, Link } from "react-router-dom";
 import userABI from "../../data/utils/SmartUser.json";
 import { AbiItem } from "web3-utils";
 import Web3 from "web3";
+import {USE_WEB3} from "../../data/dataConstants";
+import {web2Login} from "../../data/account";
 
 declare const window: any;
 let web3 = new Web3(Web3.givenProvider);
 
 const Login = () => {
 	let { mobile } = useContext(MobileContext);
-	const cookies = new Cookies();
+	let { id } = useContext(IdContext);
 	cookies.set("back", "/login");
 	const signIn = "MetaMask Sign-in";
 	const [currentUser, setCurrentUser] = useState("Tyragreenex");
@@ -23,14 +25,15 @@ const Login = () => {
 	const connected = "Connected!";
 
 	const navigate = useNavigate();
-	// const [state, setState] = useState({inputs: {password: ""}});
-	// const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => {
-	// 	let stateKeys: keyof typeof state.inputs;
-	// 	const name = event.target.name as typeof stateKeys;
-	// 	let partialState = {...state};
-	// 	partialState.inputs[name] = event.target.value;
-	//     setState(partialState);
-	// }
+	const defaultState:{inputs: {password: string}, errors: any[]} = {inputs: {password: ""}, errors: []}
+	const [state, setState] = useState(defaultState);
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => {
+		let stateKeys: keyof typeof state.inputs;
+		const name = event.target.name as typeof stateKeys;
+		let partialState = {...state};
+		partialState.inputs[name] = event.target.value;
+	    setState(partialState);
+	}
 
 	//MetaMask Sign-In
 	const checkConnectedWallet = async () => {
@@ -95,25 +98,49 @@ const Login = () => {
 		}
 	};
 
+	const tryLogin = async (id:string, password:string) => {
+		let errors = await web2Login(id, password);
+		if (errors.length) {
+			setState({...state, errors: errors});
+		} else {
+			navigate("/dashboard/user");
+		}
+	}
+
 	useEffect(() => {
-		checkConnectedWallet();
-		connectWallet();
+		if (USE_WEB3) {
+			checkConnectedWallet();
+			connectWallet();
+		} else {
+			if (id==="") navigate("/qr");
+		}
 	});
 
 	return (
 		<>
-			<Navbar root={true} />
+			<Navbar root={true} signedIn={false}/>
 			<div className={"PageContainer"}>
 				<img src={AvatarPNG} alt="avatar" className={"avatarImage"} />
 				<div className={mobile ? "loginFormMobile" : "loginFormDesktop DesktopPanel"}>
-					<h4>Welcome back {currentUser}! 🎉</h4>
-					{/* <p>Enter your password to continue using "Name of the Project"</p>
-					<div className="passwordInput">
-						<h6>Password</h6>
-						<input name="password" id="passwordInput" placeholder="Password" type={"password"} value={state.inputs.password} onChange={handleInputChange}/>
-						<Link to={"/forgotpassword"}>Forgot your password?</Link>
-					</div> */}
-					<button onClick={connectWallet} className="blackButton loginButton">{buttonText}</button>
+					{
+						USE_WEB3?(<>
+							<h4>Welcome back {currentUser}! 🎉</h4>
+							<button onClick={connectWallet} className="blackButton loginButton">{buttonText}</button>
+						</>):(<>
+							<p>Enter your password to continue using the Data Playground Pilot</p>
+							<div className="passwordInput">
+								<h4>Password</h4>
+								<input name="password" id="passwordInput" placeholder="Password" type={"password"} value={state.inputs.password} onChange={handleInputChange}/>
+								<Link to={"/forgotpassword"}>Forgot your password?</Link>
+								<button onClick={() => tryLogin(id, state.inputs.password)} className="blackButton loginButton">Login</button>
+							</div>	
+						</>)
+					}
+				</div>
+				<div className={"errors"}>
+					{state.errors.map((error, i) => {
+						return <p key={i}>{error}</p>
+					})}
 				</div>
 			</div>
 		</>

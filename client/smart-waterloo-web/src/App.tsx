@@ -1,5 +1,4 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
 import SplashPage from "./pages/SplashPage";
 import ScanQR from "./pages/ScanQR";
 import Privacy from "./pages/Privacy";
@@ -11,18 +10,18 @@ import TestPage from "./pages/TestPage";
 import SignUp from "./pages/SignUp";
 import About from "./pages/About";
 import SharedData from "./pages/SharedData";
-import MyData from "./pages/MyData";
-import Events from "./pages/Events";
 import Survey from "./pages/Survey";
 import CreateEvent from "./pages/CreateEvent";
 import CreateSurvey from "./pages/CreateSurvey";
 import CreateOrg from "./pages/CreateOrg";
 import EventDetails from "./pages/EventDetails";
-import Surveys from "./pages/Surveys";
 import { useEffect } from 'react';
 import "./styles/styles.css";
 import {mobileWidth} from "./constants";
+import AccountParent from "./pages/AccountParent";
 import React, {useState} from "react";
+import AddOrgMember from "./pages/AddOrgMember";
+import VerifyOrg from "./pages/VerifyOrg";
 
 
 const MobileContext = React.createContext<{mobile: boolean; setMobile: Function;}>({
@@ -34,13 +33,13 @@ const AddressContext = React.createContext<{address: string; setAddress: Functio
 	setAddress: () => {}
 });
 const IdContext = React.createContext<{id: string; setId: Function;}>({
-	id: "069",
+	id: "",
 	setId: () => {}
 });
 function App() {
 	const [mobile, setMobile] = useState(false);
 	const [address, setAddress] = useState("");
-	const [id, setId] = useState("069");
+	const [id, setId] = useState("");
 	const mobileValue = {mobile, setMobile};
 	const addressValue = {address, setAddress};
 	const idValue = {id, setId};
@@ -69,29 +68,44 @@ function App() {
 					<Router>
 						<Routes>
 							<Route path="/" element={<SplashPage />}></Route>
-							<Route path="/dashboard/user" element={<Dashboard org={false} />}></Route>
-							<Route path="/dashboard/org" element={<Dashboard org={true} />}></Route>
 							<Route path="/qr" element={<ScanQR />}></Route>
+
 							<Route path="/about" element={<About />}></Route>
 							<Route path="/shareddata" element={<SharedData />}></Route>
 							<Route path="/privacy" element={<Privacy />}></Route>
-							<Route path="/login" element={<Login />}></Route>
-							{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
 							<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
+							
 							<Route path="/signup" element={<SignUp />}></Route>
-							<Route path="/test" element={<TestPage />}></Route>
-							<Route path="/data" element={<MyData org={false} />}></Route>
-							<Route path="/data/org" element={<MyData org={true} />}></Route>
-							<Route path="/surveys" element={<Surveys org={false} />}></Route>
-							<Route path="/surveys/org" element={<Surveys org={true} />}></Route>
-							<Route path="/survey/:id" element={<Survey />}></Route>
-							<Route path="/events" element={<Events org={false} />}></Route>
-							<Route path="/events/org" element={<Events org={true} />}></Route>
-							<Route path="/eventdetails/:name" element={<EventDetails />}></Route>
-							<Route path="/createevent" element={<CreateEvent />}></Route>
-							<Route path="/createsurvey" element={<CreateSurvey />}></Route>
+							<Route path="/login" element={<Login />}></Route>
 							<Route path="/createorg" element={<CreateOrg />}></Route>
+
+							<Route path="/dashboard/user" element={<AccountParent page={"dashboard"} org={false} />}></Route>
+							<Route path="/data/user" element={<AccountParent page={"data"} org={false} />}></Route>
+							<Route path="/surveys/user" element={<AccountParent page={"surveys"} org={false} />}></Route>
+							<Route path="/events/user" element={<AccountParent page={"events"} org={false} />}></Route>
+							<Route path="/userdata" element={<AccountParent page={"userdata"} org={false} />}></Route>
+							<Route path="/useranswers" element={<AccountParent page={"useranswers"} org={false} />}></Route>
+							<Route path="/useraccess" element={<AccountParent page={"useraccess"} org={false} />}></Route>
+
+							<Route path="/dashboard/org/:orgId" element={<AccountParent page={"dashboard"} org={true} />}></Route>
+							<Route path="/data/org/:orgId" element={<AccountParent page={"data"} org={true} />}></Route>
+							<Route path="/surveys/org/:orgId" element={<AccountParent page={"surveys"} org={true} />}></Route>
+							<Route path="/events/org/:orgId" element={<AccountParent page={"events"} org={true} />}></Route>
+
+							<Route path="/survey/:id/user" element={<AccountParent page={"survey"} org={false} />}></Route>
+							<Route path="/survey/:id/org/:orgId" element={<AccountParent page={"survey"} org={true} />}></Route>
+							<Route path="/eventdetails/:id/user" element={<AccountParent page={"eventdetails"} org={false} />}></Route>
+							<Route path="/eventdetails/:id/org/:orgId" element={<AccountParent page={"eventdetails"} org={true} />}></Route>
+
+							<Route path="/createevent/:orgId" element={<CreateEvent />}></Route>
+							<Route path="/createsurvey/:orgId" element={<CreateSurvey />}></Route>
+							<Route path="/addorgmember/:orgId" element={<AccountParent page={"addorgmember"} org={true} />}></Route>
+							<Route path="/orgdata/:orgId" element={<AccountParent page={"orgdata"} org={true} />}></Route>
+
+							<Route path="/test" element={<TestPage />}></Route>
+							<Route path="/verifyorg" element={<VerifyOrg />}></Route>
 							<Route path="*" element={<NotFound />}></Route>
+							{/* <Route path="/loginFromMetamask" element={<OnboardingButton />}></Route> */}
 						</Routes>
 					</Router>
 				</MobileContext.Provider>
