@@ -28,7 +28,6 @@ const Survey = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
 	const [answers, setAnswers] = useState(defaultAnswers);
-	const [userInfoParsed, setUserInfoParsed] = useState(false);
 	const greyText = {color: "grey"};
 	const childSetProgress = (newVal: boolean) => {
 		setProgess(newVal);
@@ -40,6 +39,7 @@ const Survey = (props: AccountChildProps) => {
 	}
 	const [notFound, setNotFound] = useState(false);
 	const [surveyData, setSurveyData] = useState({survey: defaultSurveyData, set: false});
+	const [userInfoParsed, setUserInfoParsed] = useState(false);
 	const [userInfoLists, setUserInfoLists] = useState(getDefaultUserInfoLists())
 
 	if (answers.length !== surveyData.survey.questions.length) {

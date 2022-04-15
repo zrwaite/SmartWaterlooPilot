@@ -1,11 +1,25 @@
-const defaultOrg = {
+import { userInfo } from "./account"
+
+interface defaultOrgType {
+	nickname: string,
+	business_number: string,
+	avatar_string: string,
+	owner_id: number,
+	verified: number,
+	id: number,
+	members: number[],
+	user_info: userInfo[]
+}
+
+const defaultOrg:defaultOrgType = {
 	nickname: "",
 	business_number: "",
 	avatar_string: "",
 	owner_id: 0,
 	verified: 0,
 	id: 0,
-	members: []
+	members: [],
+	user_info: []
 }
 
 const defaultOrgsState:{orgs: typeof defaultOrg[], set: boolean} = {
