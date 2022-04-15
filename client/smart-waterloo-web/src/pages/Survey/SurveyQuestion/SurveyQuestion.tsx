@@ -9,6 +9,7 @@ interface SurveyQuestionProps extends Question {
 	owner: boolean;
 	id: string;
 }
+
 const defaultAnswers: {answer: string, question_id: number}[] = []
 const SurveyQuestion = (props: SurveyQuestionProps) => {
 	const [answers, setAnswers] = useState(defaultAnswers);
@@ -21,8 +22,10 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 		if (!success && errors.length) alert(JSON.stringify(errors));
 		else setAnswers(newAnswers)
 	}
+	
 	let userInput;
 	let userAnswers;
+	
 	if (!props.owner) {
 		if (props.answer_type==="short") {
 			userInput = <input className={"questionInput"} value={props.answer} onChange={handleInputChange} />
@@ -55,7 +58,7 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 		}
 	} else {
 		userAnswers = (<>
-			<p>Answers: {answers.length}</p>
+			<h6>Answers: {answers.length}</h6>
 			<ul>
 				{answers.map((answer, i) => {
 					return (
@@ -64,7 +67,6 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 				})}
 			</ul>
 		</>)
-		
 	}
 	if (!dataPulled) {
 		getSetAnswers();

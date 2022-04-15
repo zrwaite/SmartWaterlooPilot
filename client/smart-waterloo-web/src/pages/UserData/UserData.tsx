@@ -22,8 +22,8 @@ const UserData = (props:AccountChildProps) => {
 					<p>Race: {account.race}</p>
 					<p>Religion: {account.religion}</p>
 					<p>Sexuality: {account.sexuality}</p>
-					<p>Height: {account.height}</p>
-					<p>Weight: {account.weight}</p>
+					{/* <p>Height: {account.height}</p>
+					<p>Weight: {account.weight}</p> */}
 					<p>Postal Code: {account.postal_code}</p>
 					<p>Grade: {account.grade}</p>
 					<p>Number of Events: {account.events.length}</p>

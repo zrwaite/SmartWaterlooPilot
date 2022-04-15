@@ -86,7 +86,6 @@ const AccountParent = (props:AccountParentProps) => {
 				set: true
 			});
 			setVerified(Boolean(org.verified));
-			console.log(Boolean(org.verified));
 		}
 		else console.error("invalid userData response");
 	}

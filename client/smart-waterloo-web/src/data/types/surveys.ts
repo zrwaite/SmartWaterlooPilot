@@ -1,3 +1,5 @@
+import { userInfo } from "./account";
+
 interface Question {
 	prompt: string;
     answer_type: "short"|"long"|"mc"|"check";
@@ -13,6 +15,7 @@ interface SurveyDataType extends postSurveyType {
 	id: string;
 	length: string;
 	org: string;
+	user_info: userInfo[];
 }
 const defaultSurvey:SurveyDataType = {
 	id: "",
@@ -20,7 +23,8 @@ const defaultSurvey:SurveyDataType = {
 	org: "",
 	length: "",
 	description: "",
-	questions: []
+	questions: [],
+	user_info: []
 }
 const defaultAnswer = {
 	answer: "",
