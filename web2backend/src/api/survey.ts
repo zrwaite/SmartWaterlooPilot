@@ -22,7 +22,6 @@ export default class surveyController {
 					const orgId = getSurveyResponse.survey.org;
 					let {success: tokenSuccess, error} = await verifyOrgMember(orgId, getToken(req.headers));
 					if (tokenSuccess) {
-						console.log("Parsing survey");
 						let {status: parseStatus, survey: parseSurvey, errors: parseErrors} = await parseOrgSurvey(getSurveyResponse.survey);
 						if (parseErrors.length) {
 							result.status = parseStatus;
@@ -44,10 +43,19 @@ export default class surveyController {
 					const getSurveyResponse = await getOrgSurveys(orgId);
 					result.status = getSurveyResponse.status;
 					if (result.status == 200) {
+						let {success: tokenSuccess} = await verifyOrgMember(orgId, getToken(req.headers));
+						if (tokenSuccess){
+							let parsedSurveys = [];
+							for (let i=0; i<getSurveyResponse.surveys.length; i++) {
+								let {status: parseStatus, survey: parseSurvey, errors: parseErrors} = await parseOrgSurvey(getSurveyResponse.surveys[i]);
+								if (parseErrors.length) {
+									result.status = parseStatus;
+									result.errors.push(...parseErrors);
+								} else parsedSurveys.push(parseSurvey);
+							} result.response = parsedSurveys;
+						} else result.response = getSurveyResponse.surveys;
 						result.success = true;
-						result.response = getSurveyResponse.surveys;
-					}
-					else if (result.status == 404) result.errors.push("surveys not found");
+					} else if (result.status == 404) result.errors.push("surveys not found");
 					else result.errors.push(...orgSurveyErrors);
 				} else {
 					result.errors.push("invalid survey_id");

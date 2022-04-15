@@ -4,7 +4,7 @@ import { MobileContext } from "../../App";
 import { SurveyDataType } from "../../data/types/surveys";
 import SurveyLanding from "./SurveyLanding";
 import "./Survey.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import SurveyQuestion from "./SurveyQuestion";
 import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";

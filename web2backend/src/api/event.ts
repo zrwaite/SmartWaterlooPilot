@@ -21,7 +21,6 @@ export default class eventController {
 					const orgId = getEventResponse.event.org;
 					let {success: tokenSuccess} = await verifyOrgMember(orgId, getToken(req.headers));
 					if (tokenSuccess ){
-						console.log("Parsing event");
 						let {status: parseStatus, event: parseEvent, errors: parseErrors} = await parseOrgEvent(getEventResponse.event);
 						if (parseErrors.length) {
 							result.status = parseStatus;
@@ -42,8 +41,18 @@ export default class eventController {
 				const getEventResponse = await getOrgEvents(orgId);
 				result.status = getEventResponse.status;
 				if (result.status == 200) {
+					let {success: tokenSuccess} = await verifyOrgMember(orgId, getToken(req.headers));
+					if (tokenSuccess){
+						let parsedEvents = [];
+						for (let i=0; i<getEventResponse.events.length; i++) {
+							let {status: parseStatus, event: parseEvent, errors: parseErrors} = await parseOrgEvent(getEventResponse.events[i]);
+							if (parseErrors.length) {
+								result.status = parseStatus;
+								result.errors.push(...parseErrors);
+							} else parsedEvents.push(parseEvent);
+						} result.response = parsedEvents;
+					} else result.response = getEventResponse.events;
 					result.success = true;
-					result.response = getEventResponse.events;
 				}
 				else if (result.status == 404) result.errors.push("events not found");
 				else result.errors.push(...orgEventErrors);
