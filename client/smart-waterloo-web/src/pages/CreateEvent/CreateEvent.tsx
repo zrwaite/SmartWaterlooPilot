@@ -6,6 +6,7 @@ import Select, { ActionMeta } from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import { postEvent } from "../../data/postData";
 import cookies from "../../modules/cookies";
+import { forceNavigate } from "../../modules/navigate";
 
 //Todo change buttons to links
 const DefaultCreateEventState = {
@@ -48,7 +49,7 @@ const CreateEvent = () => {
 	const eventCreation = async () => {
 		if (orgId) {
 			let {success, errors, eventId} = await postEvent(orgId, {...state.inputs});
-			if (success) navigate(`/eventdetails/${eventId}/org/${orgId}`);
+			if (success) forceNavigate(`/eventdetails/${eventId}/org/${orgId}`);
 			else alert(JSON.stringify(errors));
 		}
 	}
