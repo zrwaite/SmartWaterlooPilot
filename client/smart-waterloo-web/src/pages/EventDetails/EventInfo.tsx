@@ -3,17 +3,17 @@ import "./EventDetails.css";
 // import eventDataRaw from './EventDetailsData.json';
 
 interface EventData {
-    "name": string;
-    "id": string;
-    "org": string;
-    "age_range": string;
-    "start_date": string;
-    "end_date": string;
-    "category": string;
-    "signed_up": boolean;
-    "description": string;
-    "image": string;
+    name: string;
+    id: string;
+    age_range: string;
+    start_date: string;
+    end_date: string;
+    category: string;
+    signed_up: boolean;
+    description: string;
+    image: string;
 	attendees: string;
+    org: boolean;
 }
 const EventInfo = (props: EventData): any => {
 	return (
@@ -29,7 +29,12 @@ const EventInfo = (props: EventData): any => {
 				<p className="greytext">{props.start_date} {props.end_date}</p>
 				<br></br>
 				<p >{props.description}</p>
-				<p>Signed Up: {props.attendees}</p>
+				{
+					props.org&&(<>
+						<p>Signed Up: {props.attendees}</p>
+						
+					</>)
+				}
 			</div>
 		</>
 	)

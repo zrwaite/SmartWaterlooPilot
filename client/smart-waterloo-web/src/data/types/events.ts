@@ -1,4 +1,20 @@
-const defaultEvent = {
+import { userInfo } from "./account";
+
+interface defaultEventType {
+	id: string,
+	name: string,
+	org: string,
+	age_range: string,
+	start_date: string,
+	end_date: string,
+	category: string,
+	signed_up: boolean,
+	description: string,
+	image: string,
+	attendees: string,
+	user_info: userInfo[]
+}
+const defaultEvent:defaultEventType = {
 	id: "",
 	name: "",
 	org: "",
@@ -9,12 +25,13 @@ const defaultEvent = {
 	signed_up: false,
 	description: "",
 	image: "",
-	attendees: ""
+	attendees: "",
+	user_info: []
 }
 
 const defaultEventsState: {
 	set: boolean;
-	events: typeof defaultEvent[]
+	events: defaultEventType[]
 } = {set: false, events:[]};
 
 interface postEventType {

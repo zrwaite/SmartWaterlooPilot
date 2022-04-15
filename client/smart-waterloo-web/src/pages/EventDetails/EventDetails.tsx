@@ -15,6 +15,7 @@ import { defaultEvent } from '../../data/types/events';
 import cookies from "../../modules/cookies";
 import { addEventtoUser } from '../../data/addData';
 import { AccountChildProps } from '../AccountParent';
+import { defaultUserInfoLists } from '../../data/types/account';
 
 Modal.setAppElement("#root");
 
@@ -26,14 +27,13 @@ const EventsDetails = (props: AccountChildProps) => {
 	const [signupButtonClass, setClass] = useState("signupButton");
 	const [bottomButtonClass, setBottomClass] = useState("bottomButton");
 	const [isOpen, setIsOpen] = React.useState(false);
+	const [userInfoLists, setUserInfoLists] = useState({...defaultUserInfoLists})
+	const [userInfoParsed, setUserInfoParsed] = useState(false);
 
 	// const event = eventDataRaw.find(event => event.id === id);
 	const [notFound, setNotFound] = useState(false);
 	const [eventData, setEventData] = useState({event: defaultEvent, set: false});
-	if (!eventData.set) {
-		const newEventData = props.eventsData.events.find(event => event.id == id)
-		if (newEventData) setEventData({event: newEventData, set: true})
-	}
+	
 	
 	if (notFound || !id) return <NotFound />
 
@@ -62,6 +62,62 @@ const EventsDetails = (props: AccountChildProps) => {
 		setClass("signupLightBlueButton");
 		setBottomClass("bottomLightBlueButton");
 	}
+
+
+	const incrementMap = (map: Map<string, number>, key:string) => {
+		let numValues = map.get(key)||0;
+		map.set(key, numValues+1);
+	}
+
+	const parseUserInfoLists = () => {
+		const newUserInfoLists = {...defaultUserInfoLists};
+		console.log(eventData.event.user_info);
+		eventData.event.user_info.forEach((user) => {
+			incrementMap(newUserInfoLists.birthdays, user.birth_day);
+			incrementMap(newUserInfoLists.genders, user.gender);
+			incrementMap(newUserInfoLists.races, user.race);
+			incrementMap(newUserInfoLists.religions, user.religion);
+			incrementMap(newUserInfoLists.sexualities, user.sexuality);
+		})
+		setUserInfoLists(newUserInfoLists);
+	}
+
+	if (!eventData.set) {
+		const newEventData = props.eventsData.events.find(event => event.id == id)
+		if (newEventData) setEventData({event: newEventData, set: true})
+	} else if (!userInfoParsed) {
+		parseUserInfoLists();
+		setUserInfoParsed(true);
+	}
+
+	let userInfoComponents:{
+		religions: JSX.Element[]
+		genders: JSX.Element[]
+		races: JSX.Element[]
+		birthdays: JSX.Element[]
+		sexualities: JSX.Element[]
+	}= {
+		religions: [],
+		genders: [],
+		races: [],
+		birthdays: [],
+		sexualities: []
+	}
+	userInfoLists.birthdays.forEach((value, key) => {
+		userInfoComponents.birthdays.push(<p>{key}: {value/2}</p>)
+	})
+	userInfoLists.religions.forEach((value, key) => {
+		userInfoComponents.religions.push(<p>{key}: {value/2}</p>)
+	})
+	userInfoLists.sexualities.forEach((value, key) => {
+		userInfoComponents.sexualities.push(<p>{key}: {value/2}</p>)
+	})
+	userInfoLists.races.forEach((value, key) => {
+		userInfoComponents.races.push(<p>{key}: {value/2}</p>)
+	})
+	userInfoLists.genders.forEach((value, key) => {
+		userInfoComponents.genders.push(<p>{key}: {value/2}</p>)
+	})
 
 	return (
 		<>
@@ -96,7 +152,32 @@ const EventsDetails = (props: AccountChildProps) => {
 							<div className={"eventDetails"}>
 								<img src={event_images.basketball_skills} alt={eventData.event.name} className="eventImage" />
 							</div>
-							<EventInfo {...eventData.event} />
+							<EventInfo {...eventData.event} org={props.org} />
+							{props.org&&(
+								<>
+								<h6>User info:</h6>
+								<p>Birthdays:</p>
+								<ul>
+									{userInfoComponents.birthdays.map((component, key) => <li key={key}>{component}</li>)}
+								</ul>
+								<p>Genders:</p>
+								<ul>
+									{userInfoComponents.genders.map((component, key) => <li key={key}>{component}</li>)}
+								</ul>
+								<p>Religions:</p>
+								<ul>
+									{userInfoComponents.religions.map((component, key) => <li key={key}>{component}</li>)}
+								</ul>
+								<p>Sexualities:</p>
+								<ul>
+									{userInfoComponents.sexualities.map((component, key) => <li key={key}>{component}</li>)}
+								</ul>
+								<p>Races:</p>
+								<ul>
+									{userInfoComponents.races.map((component, key) => <li key={key}>{component}</li>)}
+								</ul>
+								</>
+							)}
 							{props.org?null:(<div className="DesktopPanelNoBorder">
 								<p className={bottomButtonClass} onClick={trySignUp}>{buttonText}</p>
 							</div>)}
