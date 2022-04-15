@@ -6,6 +6,7 @@ import {getBodyParams, getParams, getQueryParams} from "../modules/getParams";
 import {surveyKeys, surveyValues, questionValues, questionKeys} from "../database/surveyData";
 import { isQuestionArray, isSurveyArray } from "../modules/typeAssertions";
 import { getToken, verifyOrgMember } from "../auth/tokenFunctions";
+import { parseOrgSurvey } from "../modules/parseData";
 
 /* register controller */
 export default class surveyController {
@@ -18,10 +19,18 @@ export default class surveyController {
 				const getSurveyResponse = await getSurvey(surveyId);
 				result.status = getSurveyResponse.status;
 				if (result.status == 200) {
+					const orgId = getSurveyResponse.survey.org;
+					let {success: tokenSuccess, error} = await verifyOrgMember(orgId, getToken(req.headers));
+					if (tokenSuccess) {
+						console.log("Parsing survey");
+						let {status: parseStatus, survey: parseSurvey, errors: parseErrors} = await parseOrgSurvey(getSurveyResponse.survey);
+						if (parseErrors.length) {
+							result.status = parseStatus;
+							result.errors.push(...parseErrors);
+						} else result.response = parseSurvey;
+					} else result.response = getSurveyResponse.survey;
 					result.success = true;
-					result.response = getSurveyResponse.survey;
-				}
-				else if (result.status == 404) result.errors.push("survey not found");
+				} else if (result.status == 404) result.errors.push("survey not found");
 				else result.errors.push(...surveyErrors);
 			} else {
 				result.errors.push("invalid survey_id");

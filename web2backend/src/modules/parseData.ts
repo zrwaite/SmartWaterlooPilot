@@ -9,5 +9,14 @@ const parseOrgEvent = async (event: any) => {
 	}
 	return {status: 200, event: event, errors: []}
 }
+const parseOrgSurvey = async (survey: any) => {
+	for (let i=0; i<survey.user_info.length; i++) {
+		const {status, userInfo, errors} = await getUserInfo(survey.user_info[i]);
+		if (userInfo) {
+			survey.user_info[i] = userInfo;
+		} else return {status: status, survey: {}, errors: errors};
+	}
+	return {status: 200, survey: survey, errors: []}
+}
 
-export {parseOrgEvent}
+export {parseOrgEvent, parseOrgSurvey}
