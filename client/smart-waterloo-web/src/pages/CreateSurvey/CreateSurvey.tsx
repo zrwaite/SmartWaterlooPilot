@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import {useState} from "react";
 import { postSurvey } from "../../data/postData";
 import cookies from "../../modules/cookies";
+import { forceNavigate } from "../../modules/navigate";
 //Todo change buttons to links
 
 
@@ -85,7 +86,7 @@ const CreateSurvey = () => {
 	const tryPostSurvey = async () => {
 		if (orgId) {
 			let {success, errors, surveyId} = await postSurvey(orgId, {name: standardInputs.name, description: standardInputs.description, questions: questionInputs}) 
-			if (success) navigate(`/survey/${surveyId}/org/${orgId}`);
+			if (success && surveyId) forceNavigate(`/survey/${surveyId}/org/${orgId}`);
 			else alert(JSON.stringify(errors));
 		}
 	}

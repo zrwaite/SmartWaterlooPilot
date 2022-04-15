@@ -118,7 +118,7 @@ const postSurvey = async (surveyParams:(surveyValues)) => {
 	let errors: string[] = [];
 	let success = true;
 	let questionIds = [];
-	if (!(await verifyOrgVerification(surveyParams[0]))) return {success: false, errors: ["org not verified"], newSurvey: {}};
+	if (!(await verifyOrgVerification(surveyParams[0]))) return {success: false, errors: ["org not verified"], id:0};
 	for (let i=0; i<surveyParams[3].length; i++) {
 		let {success: questionSuccess, errors: questionErrors, id: questionId} = await postQuestion(surveyParams[3][i])
 		if (questionSuccess) {

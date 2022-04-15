@@ -98,11 +98,12 @@ export default class surveyController {
 				} else result.errors.push(`invalid survey type`);
 				if (result.errors.length === 0){
 					let postResult = await postSurvey(surveyParams);
+					console.log(postResult);
 					if (postResult.success) {
 						result.status = 201;
 						result.success = true;
 						result.response = {
-							surveyData: postResult.newSurvey,
+							surveyData: postResult.id,
 						}
 					} else postResult.errors.forEach((error) => {result.errors.push(error)});
 				}
