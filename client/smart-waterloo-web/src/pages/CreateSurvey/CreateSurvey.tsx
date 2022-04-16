@@ -29,6 +29,8 @@ const CreateSurvey = () => {
 	let {orgId} = useParams();
 	const [standardInputs, setStandardInputs] = useState(DefaultStandardInput);
 	const [questionInputs, setQuestionInputs] = useState(DefaultQuestionArray);
+	const [canSubmit, setCanSubmit] = useState(true);
+
 	const handleStandardInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>) => {
 		let inputKeys: keyof typeof standardInputs;
         const name = event.target.name as typeof inputKeys;
@@ -84,10 +86,14 @@ const CreateSurvey = () => {
 	const greyText = {color: "grey"};
 	const link = {cursor: "pointer"};
 	const tryPostSurvey = async () => {
+		setCanSubmit(false);
 		if (orgId) {
 			let {success, errors, surveyId} = await postSurvey(orgId, {name: standardInputs.name, description: standardInputs.description, questions: questionInputs}) 
 			if (success && surveyId) forceNavigate(`/survey/${surveyId}/org/${orgId}`);
-			else alert(JSON.stringify(errors));
+			else {
+				alert(JSON.stringify(errors));
+				setCanSubmit(true);
+			}
 		}
 	}
 	return (
@@ -162,7 +168,7 @@ const CreateSurvey = () => {
 						<button onClick={() => addQuestion()}className={"addQuestionButton blackButton"}>+ Add Question</button>
 					</div>
 					<div className={"horizontal"}>
-						<button onClick={tryPostSurvey}className={"addQuestionButton blackButton"}>Submit Survey!</button>
+						<button onClick={canSubmit?tryPostSurvey:undefined}className={`addQuestionButton ${canSubmit?"blackButton":"disabledButton"}`}>Submit Survey!</button>
 					</div>
 				</div>
 			</div>	

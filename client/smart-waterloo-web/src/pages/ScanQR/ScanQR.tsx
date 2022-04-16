@@ -12,6 +12,8 @@ import {accountExists} from "../../data/account";
 const ScanQR = () => {
 	let {mobile} = useContext(MobileContext);
 	let {setId} = useContext(IdContext);
+	const [camOpen, setCamOpen] = useState(false);
+	const [closeCam, setCloseCam] = useState({close: ()=>{console.log("hi")}});
 	cookies.set("back", "/qr");
 	// const [functions, setFunctions] = useState({scan: () => {}});
 	const navigate = useNavigate();
@@ -39,10 +41,19 @@ const ScanQR = () => {
 							},
 							(errorMessage) => {}
 						)
-						.catch((err) => alert("Failed to open camera"));
+						.catch((err) => alert("Failed to open camera"))
+						.finally(() => {
+							setCloseCam({close: () => {
+								html5QrCode.stop().catch((err) => {
+									alert("Failed to close camera");
+								})
+								setCamOpen(false);
+							}})
+						})
 				}
 			})
-			.catch((err) => alert("camera error"));
+			.catch((err) => alert("camera error"))
+			
 	};
 	useEffect(() => {
 		// const scanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 }, undefined);
@@ -71,13 +82,9 @@ const ScanQR = () => {
 							<img className={"qrCodePNG"} src={mobile ? QRMobilePNG : QRDesktopPNG} alt="QRCode Scanner" />
 						</div>
 						<button
-							onClick={() => {
-								scan(); /*functions.scan()*/
-							}}
+							onClick={camOpen?()=>{closeCam.close();}:() => {setCamOpen(true); scan();}}
 							className={"blackButton scanCardButton"}
-						>
-							Scan Card
-						</button>
+						>{camOpen?"Close Camera":"Scan Card"}</button>
 						{/* <div id="qr-reader-results"></div> */}
 					</div>
 				</div>

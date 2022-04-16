@@ -16,7 +16,6 @@ interface EventData {
     org: boolean;
 }
 const EventInfo = (props: EventData): any => {
-	console.log(props);
 	return (
 		<>
 			{/* <div className={"eventDetails"}>

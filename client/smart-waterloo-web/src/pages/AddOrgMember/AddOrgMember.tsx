@@ -4,7 +4,7 @@ import QRDesktopPNG from "../../images/QRDesktop.png";
 import QRMobilePNG from "../../images/QRMobile.png";
 import "./AddOrgMember.css";
 import {Html5Qrcode} from "html5-qrcode";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {MobileContext} from "../../App";
 import {accountExists} from "../../data/account";
 import { addUserToOrg } from "../../data/addData";
@@ -12,7 +12,8 @@ import { AccountChildProps } from "../AccountParent";
 const ScanQR = (props:AccountChildProps) => {
 	let {mobile} = useContext(MobileContext);
 	let {orgId} = useParams();
-
+	const [camOpen, setCamOpen] = useState(false);
+	const [closeCam, setCloseCam] = useState({close: ()=>{console.log("hi")}});
 	const scan = () => {
 		Html5Qrcode.getCameras()
 			.then((devices) => {
@@ -45,7 +46,16 @@ const ScanQR = (props:AccountChildProps) => {
 							},
 							(errorMessage) => {}
 						)
-						.catch((err) => alert("Failed to open camera"));
+						.catch((err) => alert("Failed to open camera"))
+						.finally(() => {
+							setCloseCam({close: () => {
+								html5QrCode.stop().catch((err) => {
+									alert("Failed to close camera");
+								})
+								setCamOpen(false);
+							}})
+						})
+					// 
 				}
 			})
 			.catch((err) => alert("camera error"));
@@ -65,7 +75,7 @@ const ScanQR = (props:AccountChildProps) => {
 							<img className={"avatarImg"} src={props.accountData.account.avatar_string===""?"":`https://avatars.dicebear.com/api/bottts/${props.accountData.account.avatar_string}.svg`} alt=""/>
 							<img className={"qrCodePNG"} src={mobile?QRMobilePNG:QRDesktopPNG} alt="QRCode Scanner"/>
 						</div>
-						<button onClick={scan} className={"blackButton scanCardButton"}>Scan Card</button>
+						<button onClick={!camOpen?(() => {setCamOpen(true); scan();}):(()=>{closeCam.close()})} className={`blackButton scanCardButton`}>{camOpen?"Close Camera":"Scan Card"}</button>
 						<div id="qr-reader" style={{width:"500px"}}></div>
 						<div id="qr-reader-results"></div>
 					</div>

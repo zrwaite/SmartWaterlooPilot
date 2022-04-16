@@ -122,7 +122,9 @@ const SignUp = (props: SignUpProps) => {
 		} else {
 			let path = `/dashboard/user`;
 			navigate(path);
+			return true;
 		}
+		return false;
 	}
 
 	let stepSection: any;

@@ -33,6 +33,7 @@ const EventsDetails = (props: AccountChildProps) => {
 	// const event = eventDataRaw.find(event => event.id === id);
 	const [notFound, setNotFound] = useState(false);
 	const [eventData, setEventData] = useState({event: defaultEvent, set: false});
+	const [canSubmit, setCanSubmit] = useState(true);
 	
 	
 	if (notFound || !id) return <NotFound />
@@ -46,6 +47,7 @@ const EventsDetails = (props: AccountChildProps) => {
 	}
 	const signedUp = props.accountData.account.events.includes(parseInt(eventData.event.id));
 	const trySignUp = async () => {
+		setCanSubmit(false);
 		if (!signedUp) {
 			let {success, errors} = await addEventtoUser(cookies.get("userId"), eventData.event.id)
 			if (success) {
@@ -179,7 +181,7 @@ const EventsDetails = (props: AccountChildProps) => {
 								</>
 							)}
 							{props.org?null:(<div className="DesktopPanelNoBorder">
-								<p className={bottomButtonClass} onClick={trySignUp}>{buttonText}</p>
+								<p className={bottomButtonClass} onClick={canSubmit?trySignUp:undefined}>{buttonText}</p>
 							</div>)}
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>

@@ -84,9 +84,11 @@ const CreateOrg = (props: SignUpProps) => {
 		let {success, errors, orgId} = await postOrg({...state.formInputs});
 		if (success) {
 			setTimeout(() => forceNavigate(`/dashboard/org/${orgId}`),500);
+			return true;
 		} else {
 			alert("Something went wrong" + JSON.stringify(errors));
 		}
+		return false;
 	}
 
 	let stepSection: any;

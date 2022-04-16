@@ -28,6 +28,7 @@ const CreateEvent = () => {
 	let { mobile } = useContext(MobileContext);
 	let {orgId} = useParams();
 	const [state, setState] = useState(DefaultCreateEventState)
+	const [canSubmit, setCanSubmit] = useState(true);
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
 		let inputKeys: keyof typeof state.inputs;
 		const name = event.target.name as typeof inputKeys;
@@ -47,10 +48,14 @@ const CreateEvent = () => {
 	const link = { cursor: "pointer" };
 
 	const eventCreation = async () => {
+		setCanSubmit(false);
 		if (orgId) {
 			let {success, errors, eventId} = await postEvent(orgId, {...state.inputs});
 			if (success) forceNavigate(`/eventdetails/${eventId}/org/${orgId}`);
-			else alert(JSON.stringify(errors));
+			else {
+				alert(JSON.stringify(errors));
+				setCanSubmit(true);
+			}
 		}
 	}
 	
@@ -111,7 +116,7 @@ const CreateEvent = () => {
 						<textarea name={"description"} className={"questionTextarea createEventTextArea"} value={state.inputs.description} onChange={handleInputChange} />
 					</div>
 					<p>*All fields are required to continue</p>
-					<button onClick={eventCreation} className={`createEventButton ${complete ? "blackButton" : "disabledButton"}`}>Create Event</button>
+					<button onClick={canSubmit&&complete?eventCreation:undefined} className={`createEventButton ${canSubmit&&complete ? "blackButton" : "disabledButton"}`}>Create Event</button>
 				</div>
 			</div>
 	</>
