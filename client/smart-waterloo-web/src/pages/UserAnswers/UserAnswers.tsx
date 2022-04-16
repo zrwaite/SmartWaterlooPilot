@@ -30,7 +30,6 @@ const UserAnswers = (props:AccountChildProps) => {
 			</div>
 		)
 	}
-	console.log(questionsAndAnswers);
 	return (
 		<>
 			<Navbar root={false}/>

@@ -29,6 +29,7 @@ const Survey = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
 	const [answers, setAnswers] = useState(defaultAnswers);
+	const [canSubmit, setCanSubmit] = useState(true);
 	const greyText = {color: "grey"};
 	const childSetProgress = (newVal: boolean) => {
 		setProgess(newVal);
@@ -54,9 +55,14 @@ const Survey = (props: AccountChildProps) => {
 	});
 	const complete = answers.every(answer => answer!=="");
 	const trySubmitSurvey = async () => {
+		setCanSubmit(false);
 		let {success, errors} = await submitSurvey(surveyData.survey.id, surveyData.survey.questions, answers);
 		if (success) forceNavigate(`/surveys/${props.org?`org/${orgId}`:"user"}`);
-		else alert(JSON.stringify(errors));
+		else {
+			alert(JSON.stringify(errors));
+			setCanSubmit(true);
+		}
+		
 	}
 	if (notFound || !id) return <NotFound />
 	const completed = (props.accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
@@ -152,7 +158,7 @@ const Survey = (props: AccountChildProps) => {
 								</>
 							)}
 							{questions}
-							{!owner&&<button onClick={complete?trySubmitSurvey:()=>{}} className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
+							{!owner&&<button onClick={complete&&canSubmit?trySubmitSurvey:()=>{}} className={complete&&canSubmit?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
 						</div>
 						):<SurveyLanding set={surveyData.set} completed={completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
 				</div>

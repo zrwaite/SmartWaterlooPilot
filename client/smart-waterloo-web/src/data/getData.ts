@@ -33,11 +33,11 @@ const surveyContractAddresss = "0x109DaBC18160c4fc589112Ad76DFBCdC666b1615";
 const surveyContractABI = surveyABI.abi;
 const surveyContract = new web3.eth.Contract(surveyContractABI as AbiItem[], surveyContractAddresss);
 
-console.log(userContract.methods);
-console.log(orgContract.methods);
-console.log(responseContract.methods);
-console.log(eventContract.methods);
-console.log(surveyContract.methods);
+// console.log(userContract.methods);
+// console.log(orgContract.methods);
+// console.log(responseContract.methods);
+// console.log(eventContract.methods);
+// console.log(surveyContract.methods);
 
 
 const getQuestionsAndAnswers = async (answerIds: number[]):Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
@@ -158,4 +158,4 @@ const getUserAddress = async ():Promise<string> => {
 // };
 
 
-export {getQuestionsAndAnswers, getAnswersData, getOrgEventsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getUserData, getEventsData, getEventData, getSurveysData, getSurveyData};
+export { getQuestionsAndAnswers, getAnswersData, getOrgEventsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getUserData, getEventsData, getEventData, getSurveysData, getSurveyData};

@@ -193,8 +193,29 @@ const getAnswer = async (id:string) => {
 	const {status, entries, errors} = await getEntries(false, "id", id, "answers", answerKeys);
 	return {status: status, answer: entries.length?entries[0]:{}, errors: errors};
 }
+const getAnswersAndQuestions = async (answerIds: string[]) => {
+	let answers: string[] = [];
+	let questions: string[] = [];
+	let errors: string[] = [];
+	for (let i=0; i<answerIds.length; i++) {
+		let {status: answerStatus, answer, errors: answerErrors} = await getAnswer(answerIds[i]);
+		if (answerStatus === 200) {
+			answers.push(answer.answer);
+			let {status: questionStatus, question, errors: questionErrors} = await getQuestion(answer.question_id);
+			if (questionStatus === 200) questions.push(question.prompt);
+			else {
+				errors.push(...questionErrors);
+				break;
+			}
+		} else {
+			errors.push(...answerErrors);
+			break;
+		}
+	}
+	return {status: errors.length?400:200, answers: answers, questions:questions, errors: errors};
+}
 const getQuestionAnswers = async (questionId: string) => {
 	const {status, entries, errors} = await getEntries(true, "question_id", questionId, "answers", answerKeys);
 	return {status: status, answers: entries, errors: errors};
 }
-export {getUserInfo, getEventOrg, getSurveyOrg, getUserOrgs, getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getUserInfo, getEventOrg, getSurveyOrg, getUserOrgs, getAnswersAndQuestions, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}

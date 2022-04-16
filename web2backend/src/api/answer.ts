@@ -1,7 +1,7 @@
 import {Request, Response} from "express"; //Typescript types
 import {response, responseInterface} from "../models/response"; //Created pre-formatted uniform response
 import {postAnswer} from "../modules/postDatabaseInfo";
-import {getAnswer, getQuestionAnswers} from "../modules/getDatabaseInfo";
+import {getAnswersAndQuestions, getQuestionAnswers} from "../modules/getDatabaseInfo";
 import {updateAnswersArray} from "../modules/putDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {answerKeys} from "../database/surveyData";
@@ -11,20 +11,30 @@ import { getToken, verifyUser } from "../auth/tokenFunctions";
 export default class answerController {
 	static async getAnswer(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success:answerSuccess, params:answerParams, errors:answerErrors} = await getQueryParams(req, ["answer_id"]);
+		let {success:answerSuccess, params:answerParams, errors:answerErrors} = await getQueryParams(req, ["answer_ids"]);
 		if (answerSuccess) {
-			const answerId = answerParams[0];
-			if (!isNaN(answerId)) {
-				const getAnswerResponse = await getAnswer(answerId);
+			let answerIds =  []
+			try {
+				answerIds = JSON.parse(answerParams[0])
+			} catch (e) {
+				result.errors.push(e as string);
+			}
+			let allNums = true;
+			answerIds.forEach((id:any) => {if(isNaN(id)) allNums = false});
+			if (allNums && !result.errors.length) {
+				const getAnswerResponse = await getAnswersAndQuestions(answerIds);
 				result.status = getAnswerResponse.status;
 				if (result.status == 200) {
 					result.success = true;
-					result.response = getAnswerResponse.answer;
+					result.response = {
+						answers: getAnswerResponse.answers,
+						questions: getAnswerResponse.questions,
+					}
 				}
 				else if (result.status == 404) result.errors.push("answer not found");
 				else result.errors.push(...answerErrors);
 			} else {
-				result.errors.push("invalid answer_id");
+				result.errors.push("invalid answer_ids");
 				result.status = 404;
 			}
 		} else {
