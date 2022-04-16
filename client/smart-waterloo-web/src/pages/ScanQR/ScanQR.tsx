@@ -71,9 +71,7 @@ const ScanQR = () => {
 					<div className={"QRInfoPanel"}>
 						<h1>Welcome! 🎉</h1>
 						<p>
-							Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way.
-							Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Explanation of the project in a brief and simple way. Want to
-							learn more about it?
+							{"Want to learn more about it?  "}
 							<Link to={"/about"}>Read More</Link>
 						</p>
 						<Link to={"/privacy"}>Privacy Policy</Link>

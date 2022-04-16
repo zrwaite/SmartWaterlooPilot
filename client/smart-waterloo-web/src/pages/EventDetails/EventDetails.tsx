@@ -144,7 +144,7 @@ const EventsDetails = (props: AccountChildProps) => {
 					</div>					
 				</div>
 				<div>
-					<p className={signupButtonClass} onClick={trySignUp}>{buttonText}</p>
+					{/* <p className={signupButtonClass} onClick={trySignUp}>{buttonText}</p> */}
 				</div>		
 			</div>
 			<div className={"PageContainer"}>

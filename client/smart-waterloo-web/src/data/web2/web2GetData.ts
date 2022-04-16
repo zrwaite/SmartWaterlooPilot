@@ -39,6 +39,7 @@ const web2GetUserData = async ():Promise<{success:boolean, userData:typeof defau
 			response.response.orgs = response.response.orgs.filter((item, pos) => {
 				return response.response.orgs.indexOf(item) === pos;
 			})
+			response.response.birth_day = response.response.birth_day.split("T")[0];
 			return {success: true, userData:response.response, errors: []};
 		} else {
 			return {success: false, userData:{}, errors: response.errors}

@@ -33,7 +33,7 @@ const topElements = [
 const orgElements = [
 	{
 		modalName: "orgs",
-		title: "Orgs",
+		title: "Accounts",
 		icon: icons.group
 	},
 ]

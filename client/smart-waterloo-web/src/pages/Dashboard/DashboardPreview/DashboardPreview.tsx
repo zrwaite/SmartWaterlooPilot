@@ -70,7 +70,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				<button onClick={() => navigate(`/createevent/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
 			</div>:null}
 		</>
-		); break; case "data": panelList = (<DataPanels orgId={props.orgId} org={props.org} />
+		); break; case "data": panelList = (<DataPanels {...props.account} orgId={props.orgId} org={props.org} />
 		);break; case "surveys": 
 			panelList = (<>
 			{

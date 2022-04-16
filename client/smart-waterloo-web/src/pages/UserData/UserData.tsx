@@ -15,7 +15,7 @@ const UserData = (props:AccountChildProps) => {
 			<Navbar root={false}/>
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanel"}>
-					{mobile?<h6>User Data</h6>:<h4 className={"UserDataHeader"}>User Data</h4>}
+					{mobile?<h6>Your Data</h6>:<h4 className={"UserDataHeader"}>User Data</h4>}
 					<p>Nickname: {account.nickname}</p>
 					<p>Birthday: {account.birth_day}/{account.birth_month}/{account.birth_year}</p>
 					<p>Gender: {account.gender}</p>

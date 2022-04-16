@@ -9,6 +9,7 @@ import {MobileContext} from "../../App";
 import {accountExists} from "../../data/account";
 import { addUserToOrg } from "../../data/addData";
 import { AccountChildProps } from "../AccountParent";
+import { forceNavigate } from "../../modules/navigate";
 const ScanQR = (props:AccountChildProps) => {
 	let {mobile} = useContext(MobileContext);
 	let {orgId} = useParams();
@@ -36,6 +37,7 @@ const ScanQR = (props:AccountChildProps) => {
 											let {success, errors} = await addUserToOrg(scannedId, parseInt(orgId));
 											if (success) {
 												alert("Member added!");
+												forceNavigate(`/dashboard/org/${orgId}`);
 											} else {
 												alert(JSON.stringify(errors));
 											}

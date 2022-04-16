@@ -27,7 +27,7 @@ const OrgsModal = (props: orgsProps) => {
 		<Modal isOpen={props.open} onRequestClose={props.closeModal} style={customStyles} contentLabel="Example Modal">
 			<div className="orgsModal">
 				<div className="orgsModalHeader">
-					<h2>Orgs</h2>
+					<h2>Accounts</h2>
 					<img className="h4 imageButton" onClick={props.closeModal} src={icons.close} alt="close"></img>
 				</div>
 				<div>
