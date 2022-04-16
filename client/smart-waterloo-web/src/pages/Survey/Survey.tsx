@@ -10,6 +10,7 @@ import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";
 import { AccountChildProps } from "../AccountParent";
 import { getDefaultUserInfoLists } from "../../data/types/account";
+import { forceNavigate } from "../../modules/navigate";
 
 const defaultSurveyData:SurveyDataType = {
 	id: "",
@@ -54,15 +55,12 @@ const Survey = (props: AccountChildProps) => {
 	const complete = answers.every(answer => answer!=="");
 	const trySubmitSurvey = async () => {
 		let {success, errors} = await submitSurvey(surveyData.survey.id, surveyData.survey.questions, answers);
-		if (success) {
-			alert("Submitted!");
-			window.location.href=`/surveys/${props.org?`org/${orgId}`:"user"}`;
-		} else alert(JSON.stringify(errors));
+		if (success) forceNavigate(`/surveys/${props.org?`org/${orgId}`:"user"}`);
+		else alert(JSON.stringify(errors));
 	}
 	if (notFound || !id) return <NotFound />
 	const completed = (props.accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
 
-	
 
 	const incrementMap = (map: Map<string, number>, key:string) => {
 		let numValues = map.get(key)||0;

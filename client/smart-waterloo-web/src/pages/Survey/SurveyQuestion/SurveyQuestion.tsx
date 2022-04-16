@@ -27,9 +27,10 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 	let userAnswers;
 	
 	if (!props.owner) {
-		if (props.answer_type==="short") {
-			userInput = <input className={"questionInput"} value={props.answer} onChange={handleInputChange} />
-		} else if (props.answer_type==="long") {
+		// if (props.answer_type==="short") {
+		// 	userInput = <input className={"questionInput"} value={props.answer} onChange={handleInputChange} />
+		// } else 
+		if (props.answer_type==="text") {
 			userInput = <textarea className={"questionTextarea"} value={props.answer} onChange={handleInputChange} />
 		} else if (props.answer_type==="mc") {
 			userInput = (
@@ -42,20 +43,21 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 					})}
 				</div>
 			)
-		} else if (props.answer_type==="check") {
-			userInput = (
-				<div className={"questionChoices"}>
-					{props.choices?.map((choice, i) => {
-						return (
-							<div className={"questionChoice"} key={i}>
-								<input type="checkbox" value={choice} checked={choice===props.answer} onChange={handleInputChange}/>
-								<p>{choice}</p>
-							</div>
-						)
-					})}
-				</div>
-			)
-		}
+		} 
+		// else if (props.answer_type==="check") {
+		// 	userInput = (
+		// 		<div className={"questionChoices"}>
+		// 			{props.choices?.map((choice, i) => {
+		// 				return (
+		// 					<div className={"questionChoice"} key={i}>
+		// 						<input type="checkbox" value={choice} checked={choice===props.answer} onChange={handleInputChange}/>
+		// 						<p>{choice}</p>
+		// 					</div>
+		// 				)
+		// 			})}
+		// 		</div>
+		// 	)
+		// }
 	} else {
 		userAnswers = (<>
 			<h6>Answers: {answers.length}</h6>

@@ -5,7 +5,7 @@ drop table questions;
 drop table orgs;
 drop table users;
 drop table user_info;
-
+drop type type_choices;
 
 CREATE TABLE IF NOT EXISTS "user_info"(
 	id SERIAL primary key,
@@ -57,7 +57,7 @@ create table if not exists "surveys"(
 	user_info int[] default array[]::integer[]
 );
 
--- CREATE TYPE type_choices AS ENUM ('short', 'long', 'mc', 'check');
+CREATE TYPE type_choices AS ENUM ('text', 'mc');
 
 create table if not exists "questions"(
 	id serial primary key,

@@ -82,7 +82,8 @@ const Login = () => {
 				const contractAddress = "0x584Bfa8354673eF5f9Ab17a3d041D8E2537b4dD8";
 				const contractABI = userABI;
 				const userContract = await new web3.eth.Contract(
-					contractABI as AbiItem[],
+					contractABI as any,
+					// contractABI as AbiItem[],
 					contractAddress
 				);
 				await userContract.methods

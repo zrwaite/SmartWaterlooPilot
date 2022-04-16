@@ -12,6 +12,7 @@ import { ActionMeta } from "react-select";
 import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
 import { postOrg } from "../../data/postData";
+import { forceNavigate } from "../../modules/navigate";
 
 const defaultAvatarString = randomString();
 type SignUpProps = {
@@ -82,7 +83,7 @@ const CreateOrg = (props: SignUpProps) => {
 	const submitForm = async () => {
 		let {success, errors, orgId} = await postOrg({...state.formInputs});
 		if (success) {
-			navigate(`/dashboard/org/${orgId}`);
+			setTimeout(() => forceNavigate(`/dashboard/org/${orgId}`),500);
 		} else {
 			alert("Something went wrong" + JSON.stringify(errors));
 		}

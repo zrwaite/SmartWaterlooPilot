@@ -55,7 +55,8 @@ const postEventWeb3 = async (id:string, inputData:postEventType):Promise<postEve
 	const contractABI = eventABI;
 	const contractAddress = "0xd242a3Fa65b82Aa9C87D3a19C82EA6b5Db78e8EB";
 
-	const eventContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
+	// const eventContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
+	const eventContract = await new web3.eth.Contract(contractABI as any, contractAddress);
 
 	await eventContract.methods.createOrgEvent(
 		web3.eth.defaultAccount,
@@ -101,7 +102,8 @@ let contractABI;
 	contractAddress = "0x584Bfa8354673eF5f9Ab17a3d041D8E2537b4dD8";
 	contractABI = userABI;
 
-	const userContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
+	const userContract = await new web3.eth.Contract(contractABI as any, contractAddress);
+	// const userContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
 
 	await userContract.methods.addInfo(
 		web3.eth.defaultAccount,

@@ -2,7 +2,7 @@ import { userInfo } from "./account";
 
 interface Question {
 	prompt: string;
-    answer_type: "short"|"long"|"mc"|"check";
+    answer_type: "text"|"mc";
 	choices?: string[];
 	id: string;
 }

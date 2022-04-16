@@ -4,7 +4,6 @@ import {defaultAnswer, defaultSurvey} from "./types/surveys"
 import userABI from "./utils/SmartUser.json";
 import {AbiItem} from "web3-utils";
 import Web3 from "web3";
-import userABI from "./utils/SmartUser.json";
 import orgABI from "./utils/SmartOrganisation.json";
 import responseABI from "./utils/SurveyResponse.json";
 import eventABI from "./utils/OrganisationEvents.json";
@@ -51,8 +50,9 @@ const web3GetQuestionsAndAnswers = async ():Promise<{success:boolean, answers: s
 const getUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors:string[]}> => {
 	return USE_WEB3 ? (await web3GetUserData()) : (await web2GetUserData());
 };
-const web3GetUserData = async ():Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
-	return {success: false, questions: [], answers: [], errors: ["not implemented"]};
+const web3GetUserData = async ():Promise<{success:boolean, userData:typeof defaultAccount|{}, errors: string[]}> =>{
+	return {success: false, userData:{}, errors: ["not implemented"]};
+	// return {success: false, questions: [], answers: [], errors: ["not implemented"]};
 }
 
 const getSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {

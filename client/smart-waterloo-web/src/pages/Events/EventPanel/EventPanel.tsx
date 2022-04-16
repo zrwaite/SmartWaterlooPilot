@@ -3,7 +3,7 @@ import "./EventPanel.css";
 interface EventPanelProps {
 	id: string,
 	org: string,
-	age_range: string,
+	age_group: string,
 	start_date:string,
 	end_date: string,
 	category: string,
@@ -33,7 +33,7 @@ const EventPanel = (props: EventPanelProps) => {
 				{props.signed_up?<div  style={colorDiv} className={"eventBubble"}>Signed Up</div>:<div></div>}
 			</div>
 			<h6>{props.name}</h6>
-			<p style={greyText}>For Ages {props.age_range}</p>
+			<p style={greyText}>For Ages {props.age_group}</p>
 			<p style={greyText}>{props.start_date} {props.end_date}</p>
 		</div>
 	)

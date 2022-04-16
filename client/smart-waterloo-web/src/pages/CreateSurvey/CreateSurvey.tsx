@@ -14,7 +14,7 @@ import { forceNavigate } from "../../modules/navigate";
 interface Question {
 	id: string;
 	prompt: string;
-    answer_type: "short"|"long"|"mc"|"check";
+    answer_type: "text"|"mc";
 	choices: string[];
 }
 const DefaultStandardInput = {
@@ -39,7 +39,7 @@ const CreateSurvey = () => {
 	const handleQuestionInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, index: number, name: "prompt"|"answer_type") => {
         let partialInput = [...questionInputs];
 		if (name==="answer_type") {
-			partialInput[index][name] = event.target.value as "short"|"long"|"mc"|"check";
+			partialInput[index][name] = event.target.value as "text"|"mc";
 			if (partialInput[index].choices.length===0) partialInput[index].choices = ["", ""];
 		} else {
 			partialInput[index][name] = event.target.value;
@@ -61,7 +61,7 @@ const CreateSurvey = () => {
 		previousQuestions.push({
 			id: "",
 			prompt: "",
-			answer_type: "short",
+			answer_type: "text",
 			choices: []
 		});
 		setQuestionInputs(previousQuestions);
@@ -104,7 +104,7 @@ const CreateSurvey = () => {
 					</div>
 					<h2 className={"createEventHeader"}>Create New Survey 📝</h2>
 					<div className={"formQuestion"}>
-						<h6>Name of Event</h6>
+						<h6>Name of Survey</h6>
 						<input name={"name"} className={"createEventInput"} placeholder={"Enter Text"} value={standardInputs.name} onChange={handleStandardInputChange} />
 					</div>
 					<div className={"formQuestion"}>
@@ -125,10 +125,10 @@ const CreateSurvey = () => {
 										<div className={"tabbedSection"}>	
 											<div className={"questionTypeMCSection"} >
 													{[
-														{shortName:"short",fullName:"Short Text"},
+														{shortName:"text",fullName:"Text"},
 														{shortName:"mc",fullName:"Multiple Choice"},
-														{shortName:"long",fullName:"Long Text"},
-														{shortName:"check",fullName:"Checkboxes"},
+														// {shortName:"long",fullName:"Long Text"},
+														// {shortName:"check",fullName:"Checkboxes"},
 													].map((questionType, i2) => {
 														return (<div key={i2}>
 															<input name={`type${i}`} type="radio" value={questionType.shortName} checked={question.answer_type===questionType.shortName} onChange={(e) => handleQuestionInputChange(e, i, "answer_type")}/>
@@ -136,7 +136,7 @@ const CreateSurvey = () => {
 														</div>)
 													})}
 											</div>
-											{(questionInputs[i].answer_type==="mc"||questionInputs[i].answer_type==="check")?(
+											{(questionInputs[i].answer_type==="mc")?(
 												<div className={"questionChoiceCreator"}>
 													{questionInputs[i].choices.map((choice, i2) => {
 														return (
