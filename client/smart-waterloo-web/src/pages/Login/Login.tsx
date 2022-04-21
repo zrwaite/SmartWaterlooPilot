@@ -80,7 +80,7 @@ const Login = () => {
 			//Just a sleep function for it to wait before moving to dashboard
 			(async () => {
 				const contractAddress = "0x584Bfa8354673eF5f9Ab17a3d041D8E2537b4dD8";
-				const contractABI = userABI;
+				const contractABI = userABI.abi;
 				const userContract = await new web3.eth.Contract(
 					contractABI as AbiItem[],
 					contractAddress
@@ -108,12 +108,12 @@ const Login = () => {
 	}
 
 	useEffect(() => {
-		if (USE_WEB3) {
-			checkConnectedWallet();
-			connectWallet();
-		} else {
+		// if (USE_WEB3) {
+		// 	checkConnectedWallet();
+		// 	connectWallet();
+		// } else {
 			if (id==="") navigate("/qr");
-		}
+		// }
 	});
 
 	return (
