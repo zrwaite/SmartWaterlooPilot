@@ -1,8 +1,6 @@
 const baseUser = {
 	user_id: "",
 	nickname:"",
-	// height: "",
-	// weight: "",
 	avatar_string: "",
 }
 const baseUserInfo = {
@@ -10,11 +8,22 @@ const baseUserInfo = {
 	gender: "",
 	grade: "",
 	postal_code: "",
+	household_income: "",
+	num_family_members: "",
+	height: "",
+	weight: "",
+	medical_concerns: "",
+	medication: "",
+	disability: "",
+	behavioural_support: "",
+	school_system_support: "",
 }
 const nullableUserInfo = {
 	religion: "",
 	sexuality: "",
 	race: "",
+	primary_language: "",
+	secondary_language: "",
 }
 const postUserInfo = {
 	...baseUserInfo,

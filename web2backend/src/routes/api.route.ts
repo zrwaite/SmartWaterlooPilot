@@ -5,6 +5,7 @@ import eventCtrl from '../api/event';
 import surveyCtrl from '../api/survey';
 import questionCtrl from '../api/question';
 import answerCtrl from '../api/answer';
+import notFound from '../api/notfound';
 const router = express.Router();
 router.route('/user')
 	.get(userCtrl.getUser)
@@ -18,7 +19,7 @@ router.route('/org')
 	.put(orgCtrl.putOrg)
 	.delete(orgCtrl.deleteOrg)
 
-router.route('/event')
+router.route(['/event', '/program'])
 	.get(eventCtrl.getEvent)
 	.post(eventCtrl.postEvent)
 	.put(eventCtrl.putEvent)
@@ -41,5 +42,11 @@ router.route('/answer')
 	.post(answerCtrl.postAnswer)
 	.put(answerCtrl.putAnswer)
 	.delete(answerCtrl.deleteAnswer)
+
+router.route('*')
+	.get(notFound)
+	.post(notFound)
+	.put(notFound)
+	.delete(notFound);
 
 export default router;

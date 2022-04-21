@@ -1,9 +1,11 @@
 const baseEvent = {
 	org: "",
 	name: "",
-	age_group: "",
+	min_age: "",
+	max_age: "",
 	start_date: "",
 	end_date: "",
+	place: "",
 	category: "",
 	description: "",
 	image: ""
