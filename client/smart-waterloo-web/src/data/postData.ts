@@ -207,6 +207,13 @@ const submitSurvey = async (
   questions: Question[],
   answers: string[]
 ): Promise<submitSurveyReturn> => {
+  if(USE_WEB3)
+  {
+    web3submitSurvey(surveyId, answers);
+    return { success: true, errors: [] };
+  }
+  else
+  {
   if (questions.length !== answers.length)
     return { success: false, errors: ["invalid answers"] };
   questions.forEach((question, i) => {
@@ -223,21 +230,19 @@ const submitSurvey = async (
     surveyId
   );
   return { success: success, errors: errors };
+  }
 };
 const postAnswer = async (
   questionId: string,
   answer: string
 ): Promise<string[]> => {
-  return USE_WEB3
-    ? await web3PostAnswer(questionId, answer)
-    : await web2PostAnswer(questionId, answer);
+  return await web2PostAnswer(questionId, answer);
 };
 
-
 //web3 implementation of posting a survey response
-const web3PostAnswer = async (
-  questionId: string,
-  answer: string
+const web3submitSurvey = async (
+  surveyID: string,
+  answer: string[]
 ): Promise<string[]> => {
   return ["function not implemented"];
 };

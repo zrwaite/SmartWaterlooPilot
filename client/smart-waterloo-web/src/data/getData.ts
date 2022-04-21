@@ -40,6 +40,8 @@ const getUserAddress = async (): Promise<string> => {
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
+
+//All user questions and responses
 const getQuestionsAndAnswers = async (
   answerIds: number[]
 ): Promise<{
@@ -76,6 +78,8 @@ const web3GetQuestionsAndAnswers = async (): Promise<{
   };
 };
 
+
+//Basic Initial sign up User Data
 const getUserData = async (): Promise<{
   success: boolean;
   userData: typeof defaultAccount | {};
@@ -125,6 +129,7 @@ const web3GetUserData = async (): Promise<{
   }
 };
 
+//All surveys
 const getSurveysData = async (): Promise<{
   success: boolean;
   surveys: typeof defaultSurvey[];
@@ -175,6 +180,7 @@ const web3GetSurveysData = async (): Promise<{
   return { success: true, surveys: surveys, errors: [] };
 };
 
+//All events
 const getEventsData = async (): Promise<
   { success: boolean; events: typeof defaultEvent[]; errors: string[] } | any
 > => {
@@ -210,6 +216,7 @@ const web3GetEventsData = async (): Promise<{
   }
 };
 
+//Get all surveys for a specific org
 const getOrgSurveysData = async (
   id: string | undefined
 ): Promise<{
@@ -266,7 +273,7 @@ const web3GetOrgSurveysData = async (
   return { success: true, surveys: surveys, errors: [] };
 };
 
-
+//All events for a specific org
 const getOrgEventsData = async (
   id: string | undefined
 ): Promise<
@@ -309,48 +316,51 @@ const web3GetOrgEventsData = async (
   }
 };
 
-const getEventData = async (
-  id: string
-): Promise<
-  { success: boolean; event: typeof defaultEvent | {}; errors: string[] } | any
-> => {
-  return USE_WEB3 ? await getWeb3EventData(id) : await getWeb2EventData(id);
-};
-const getWeb3EventData = async (
-  id: string
-): Promise<{
-  success: boolean;
-  answers: string[];
-  questions: string[];
-  errors: string[];
-}> => {
-  return {
-    success: false,
-    questions: [],
-    answers: [],
-    errors: ["not implemented"],
-  };
-};
+//Specific for an event
+// const getEventData = async (
+//   id: string
+// ): Promise<
+//   { success: boolean; event: typeof defaultEvent | {}; errors: string[] } | any
+// > => {
+//   return USE_WEB3 ? await getWeb3EventData(id) : await getWeb2EventData(id);
+// };
+// const getWeb3EventData = async (
+//   id: string
+// ): Promise<{
+//   success: boolean;
+//   answers: string[];
+//   questions: string[];
+//   errors: string[];
+// }> => {
+//   return {
+//     success: false,
+//     questions: [],
+//     answers: [],
+//     errors: ["not implemented"],
+//   };
+// };
 
-const getSurveyData = async (
-  id: string
-): Promise<
-  | { success: boolean; survey: typeof defaultSurvey | {}; errors: string[] }
-  | any
-> => {
-  return USE_WEB3 ? await getWeb3SurveyData(id) : await getWeb2SurveyData(id);
-};
+// const getSurveyData = async (
+//   id: string
+// ): Promise<
+//   | { success: boolean; survey: typeof defaultSurvey | {}; errors: string[] }
+//   | any
+// > => {
+//   return USE_WEB3 ? await getWeb3SurveyData(id) : await getWeb2SurveyData(id);
+// };
 
-const getWeb3SurveyData = async (
-  id: string
-): Promise<{
-  success: boolean;
-  survey: typeof defaultSurvey | {};
-  errors: string[];
-}> => {
-  return { success: false, survey: {}, errors: [] };
-};
+// const getWeb3SurveyData = async (
+//   id: string
+// ): Promise<{
+//   success: boolean;
+//   survey: typeof defaultSurvey | {};
+//   errors: string[];
+// }> => {
+//   return { success: false, survey: {}, errors: [] };
+// };
 
+
+// Orgs a user's involved with
 const getUserOrgs = async (
   id: string
 ): Promise<{
@@ -400,6 +410,7 @@ const web3GetUserOrgs = async (
   }
 };
 
+//All member user info and basic initial data for an org
 const getBasicOrgData = async (
   id: string | undefined
 ): Promise<{
@@ -464,6 +475,7 @@ const web3GetBasicOrgData = async (
   };
 };
 
+//get survey answers
 const getAnswersData = async (
   id: string | undefined
 ): Promise<{
@@ -493,7 +505,7 @@ export {
   getUserOrgs,
   getUserData,
   getEventsData,
-  getEventData,
+  // getEventData,
   getSurveysData,
-  getSurveyData,
+  // getSurveyData,
 };
