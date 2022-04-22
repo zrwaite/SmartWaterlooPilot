@@ -1,6 +1,7 @@
 // import {Link} from "react-router-dom";
 import { incomeOptions, genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState } from "./FormGridData";
 import Select, { ActionMeta } from "react-select";
+import { Link } from "react-router-dom";
 
 
 type ProfileFormGridProps = {
@@ -133,7 +134,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 						<input name="contact" id="contactInput" type={"checkbox"} checked={props.formData.contact} onChange={props.handleParentCheckboxChange} />
 					</div>
 					<div className="formDiv">
-						<p>Have you read and agree to our Code of Conduct?</p>
+						<p>Have you read and agree to our <Link to={"/codeofconduct"}>Code of Conduct?</Link></p>
 						<input name="code_of_conduct" id="codeOfConductInput" type={"checkbox"} checked={props.formData.code_of_conduct} onChange={props.handleParentCheckboxChange} />
 					</div>
 				</section>

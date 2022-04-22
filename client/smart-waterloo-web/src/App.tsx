@@ -10,18 +10,19 @@ import TestPage from "./pages/TestPage";
 import SignUp from "./pages/SignUp";
 import About from "./pages/About";
 import SharedData from "./pages/SharedData";
-import Survey from "./pages/Survey";
+// import Survey from "./pages/Survey";
 import CreateEvent from "./pages/CreateEvent";
 import CreateSurvey from "./pages/CreateSurvey";
 import CreateOrg from "./pages/CreateOrg";
-import EventDetails from "./pages/EventDetails";
+// import EventDetails from "./pages/EventDetails";
 import { useEffect } from 'react';
 import "./styles/styles.css";
 import {mobileWidth} from "./constants";
 import AccountParent from "./pages/AccountParent";
 import React, {useState} from "react";
-import AddOrgMember from "./pages/AddOrgMember";
+// import AddOrgMember from "./pages/AddOrgMember";
 import VerifyOrg from "./pages/VerifyOrg";
+import CodeOfConduct from "./pages/CodeOfConduct";
 
 
 const MobileContext = React.createContext<{mobile: boolean; setMobile: Function;}>({
@@ -71,6 +72,7 @@ function App() {
 							<Route path="/qr" element={<ScanQR />}></Route>
 
 							<Route path="/about" element={<About />}></Route>
+							<Route path="/codeofconduct" element={<CodeOfConduct />}></Route>
 							<Route path="/shareddata" element={<SharedData />}></Route>
 							<Route path="/privacy" element={<Privacy />}></Route>
 							<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
