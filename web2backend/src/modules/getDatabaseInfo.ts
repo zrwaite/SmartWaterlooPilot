@@ -1,7 +1,7 @@
 import pool from "../database/db";
 import {userData, userInfoData} from "../database/userData";
 import {orgData} from "../database/orgData";
-import {eventData} from "../database/eventData";
+import {programData} from "../database/programData";
 import {answerKeys, getQuestionKeys, getSurveyKeys} from "../database/surveyData";
 
 const getEntries = async (multi: boolean, idKey:string, idValue:string|number, tableName: string, columns: readonly string[]) => {
@@ -83,17 +83,17 @@ const getUserInfoByUserId = async (userId:number) => {
 	const {status, entries, errors} = await getEntries(false, "user_id", userId, "users", ["user_info_id"]);
 	return {status: status, user_info: entries.length?entries[0]:{}, errors: errors};
 }
-const getEvent = async (eventId:number) => {
-	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.allEventKeys);
-	return {status: status, event: entries.length?entries[0]:{}, errors: errors};
+const getProgram = async (programId:number) => {
+	const {status, entries, errors} = await getEntries(false, "id", programId, "programs", programData.allProgramKeys);
+	return {status: status, program: entries.length?entries[0]:{}, errors: errors};
 }
-const getEvents = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "events", eventData.allEventKeys);
-	return {status: status, events: entries, errors: errors};
+const getPrograms = async () => {
+	const {status, entries, errors} = await getEntries(true, "", "", "programs", programData.allProgramKeys);
+	return {status: status, programs: entries, errors: errors};
 }
-const getOrgEvents = async (org_id:string) => {
-	const {status, entries, errors} = await getEntries(true, "org", org_id, "events", eventData.allEventKeys);
-	return {status: status, events: entries, errors: errors};
+const getOrgPrograms = async (org_id:string) => {
+	const {status, entries, errors} = await getEntries(true, "org", org_id, "programs", programData.allProgramKeys);
+	return {status: status, programs: entries, errors: errors};
 }
 const getOrg = async (id:string) => {
 	const {status, entries, errors} = await getEntries(false, "id", id, "orgs", orgData.orgKeys);
@@ -107,16 +107,16 @@ const getOrgs = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "orgs", orgData.orgKeys);
 	return {status: status, orgs: entries, errors: errors};
 }
-const getEventOrg = async (eventId:number) => {
+const getProgramOrg = async (programId:number) => {
 	let errors: string[] = [];
 	let orgNickname = "";
-	const {status, entries:event, errors:eventErrors} = await getEntries(false, "id", eventId, "events", ["org"]);
-	if (event.length) {
-		const {entries:org, errors:orgErrors} = await getEntries(false, "id", event[0].org, "orgs", ["nickname"]);
+	const {status, entries:program, errors:programErrors} = await getEntries(false, "id", programId, "programs", ["org"]);
+	if (program.length) {
+		const {entries:org, errors:orgErrors} = await getEntries(false, "id", program[0].org, "orgs", ["nickname"]);
 		if (org.length) {
 			orgNickname = org[0].nickname
 		} else errors.push(...orgErrors);
-	} else errors.push(...eventErrors);
+	} else errors.push(...programErrors);
 	return {status: status, orgNickname: orgNickname, errors: errors};
 }
 const getSurveyOrg = async (surveyId:number) => {
@@ -219,4 +219,4 @@ const getQuestionAnswers = async (questionId: string) => {
 	const {status, entries, errors} = await getEntries(true, "question_id", questionId, "answers", answerKeys);
 	return {status: status, answers: entries, errors: errors};
 }
-export {getUserInfoByUserId, getUserInfo, getEventOrg, getSurveyOrg, getUserOrgs, getAnswersAndQuestions, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getUserInfoByUserId, getUserInfo, getProgramOrg, getSurveyOrg, getUserOrgs, getAnswersAndQuestions, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getProgram, getPrograms, getOrgPrograms, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}

@@ -5,21 +5,21 @@ import img_party_popper from "../../images/emoji-party-popper.png"
 import CNOLogo from "../../images/CNOLogo.png"
 import { MobileContext } from "../../App";
 import {useContext} from "react";
-import "./EventDetails.css";
-import EventInfo from "./EventInfo";
+import "./ProgramDetails.css";
+import ProgramInfo from "./ProgramInfo";
 import ClipLoader from "react-spinners/ClipLoader";
 import NotFound from "../NotFound";
 import {useParams,useNavigate,} from "react-router-dom";
 import Modal from "react-modal";
-import { defaultEvent } from '../../data/types/events';
+import { defaultProgram } from '../../data/types/programs';
 import cookies from "../../modules/cookies";
-import { addEventtoUser } from '../../data/addData';
+import { addProgramtoUser } from '../../data/addData';
 import { AccountChildProps } from '../AccountParent';
 import { getDefaultUserInfoLists } from '../../data/types/account';
 
 Modal.setAppElement("#root");
 
-const EventsDetails = (props: AccountChildProps) => {
+const ProgramsDetails = (props: AccountChildProps) => {
 	let {mobile} = useContext(MobileContext);
 	const navigate = useNavigate();
 	const { id } = useParams();
@@ -30,9 +30,9 @@ const EventsDetails = (props: AccountChildProps) => {
 	const [userInfoLists, setUserInfoLists] = useState(getDefaultUserInfoLists())
 	const [userInfoParsed, setUserInfoParsed] = useState(false);
 
-	// const event = eventDataRaw.find(event => event.id === id);
+	// const program = programDataRaw.find(program => program.id === id);
 	const [notFound, setNotFound] = useState(false);
-	const [eventData, setEventData] = useState({event: defaultEvent, set: false});
+	const [programData, setProgramData] = useState({program: defaultProgram, set: false});
 	const [canSubmit, setCanSubmit] = useState(true);
 	
 	
@@ -45,11 +45,11 @@ const EventsDetails = (props: AccountChildProps) => {
 	function closeModal() {
 		setIsOpen(false);
 	}
-	const signedUp = props.accountData.account.events.includes(parseInt(eventData.event.id));
+	const signedUp = props.accountData.account.programs.includes(parseInt(programData.program.id));
 	const trySignUp = async () => {
 		setCanSubmit(false);
 		if (!signedUp) {
-			let {success, errors} = await addEventtoUser(cookies.get("userId"), eventData.event.id)
+			let {success, errors} = await addProgramtoUser(cookies.get("userId"), programData.program.id)
 			if (success) {
 				openModal();
 				setText("Signed Up ✓");
@@ -59,7 +59,7 @@ const EventsDetails = (props: AccountChildProps) => {
 			} else alert(JSON.stringify(errors));
 		}
 	}
-	if (props.accountData.set && eventData.set && signedUp && buttonText!=="Signed Up ✓" && signupButtonClass!=="signupLightBlueButton" && bottomButtonClass!=="bottomLightBlueButton") {
+	if (props.accountData.set && programData.set && signedUp && buttonText!=="Signed Up ✓" && signupButtonClass!=="signupLightBlueButton" && bottomButtonClass!=="bottomLightBlueButton") {
 		setText("Signed Up ✓");
 		setClass("signupLightBlueButton");
 		setBottomClass("bottomLightBlueButton");
@@ -73,8 +73,8 @@ const EventsDetails = (props: AccountChildProps) => {
 
 	const parseUserInfoLists = () => {
 		const newUserInfoLists = getDefaultUserInfoLists();
-		console.log(eventData.event.user_info);
-		eventData.event.user_info.forEach((user) => {
+		console.log(programData.program.user_info);
+		programData.program.user_info.forEach((user) => {
 			incrementMap(newUserInfoLists.birthdays, user.birth_day);
 			incrementMap(newUserInfoLists.genders, user.gender);
 			incrementMap(newUserInfoLists.races, user.race);
@@ -84,9 +84,9 @@ const EventsDetails = (props: AccountChildProps) => {
 		setUserInfoLists(newUserInfoLists);
 	}
 
-	if (!eventData.set) {
-		const newEventData = props.eventsData.events.find(event => event.id == id)
-		if (newEventData) setEventData({event: newEventData, set: true})
+	if (!programData.set) {
+		const newProgramData = props.programsData.programs.find(program => program.id == id)
+		if (newProgramData) setProgramData({program: newProgramData, set: true})
 	} else if (!userInfoParsed) {
 		parseUserInfoLists();
 		setUserInfoParsed(true);
@@ -136,11 +136,11 @@ const EventsDetails = (props: AccountChildProps) => {
 					</div>
 				</div>
 			</Modal>	
-			<div className='navbarEventDetails'>
-				<div className='leftNavEventDetail'>
-					<div onClick={() => navigate(cookies.get("back"))} className="eventBackButton">
-						<img src={icons.leftArrow} alt="Events" className="h5"/>
-						<p className="eventBackButton">Events</p>
+			<div className='navbarProgramDetails'>
+				<div className='leftNavProgramDetail'>
+					<div onClick={() => navigate(cookies.get("back"))} className="programBackButton">
+						<img src={icons.leftArrow} alt="Programs" className="h5"/>
+						<p className="programBackButton">Programs</p>
 					</div>					
 				</div>
 				<div>
@@ -150,11 +150,11 @@ const EventsDetails = (props: AccountChildProps) => {
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanelNoPadding"}>
 					{
-						(eventData.set)?(<>
-							<div className={"eventDetails"}>
-								<img src={CNOLogo} alt={eventData.event.name} className="eventImage" />
+						(programData.set)?(<>
+							<div className={"programDetails"}>
+								<img src={CNOLogo} alt={programData.program.name} className="programImage" />
 							</div>
-							<EventInfo {...eventData.event} org={props.org} />
+							<ProgramInfo {...programData.program} org={props.org} />
 							{props.org&&(
 								<>
 								<h6>User info:</h6>
@@ -193,4 +193,4 @@ const EventsDetails = (props: AccountChildProps) => {
 	);
 }
 
-export default EventsDetails;
+export default ProgramsDetails;

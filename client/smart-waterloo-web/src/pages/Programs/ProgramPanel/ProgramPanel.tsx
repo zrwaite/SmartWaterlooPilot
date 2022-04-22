@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import "./EventPanel.css";
-interface EventPanelProps {
+import "./ProgramPanel.css";
+interface ProgramPanelProps {
 	id: string,
 	org: string,
 	age_group: string,
@@ -15,7 +15,7 @@ interface EventPanelProps {
 	orgId: string|undefined;
 }
 
-const EventPanel = (props: EventPanelProps) => {
+const ProgramPanel = (props: ProgramPanelProps) => {
 	const activeColour = {
 		backgroundColor: props.upcoming?"#F9EEF3":"#6ec6f933"
 	}
@@ -24,13 +24,13 @@ const EventPanel = (props: EventPanelProps) => {
 	const colorDiv = {backgroundColor: props.upcoming?"#EF276F":"#3FBAFF"};
 	const navigate = useNavigate();
 	return (
-		<div onClick={() => navigate(`/eventdetails/${props.id}/${props.isOrg?`org/${props.orgId}`:"user"}`)} style={props.signed_up?activeColour:{}} className={`eventPanel`}>
-			<div className="eventPanelHeader">
+		<div onClick={() => navigate(`/programdetails/${props.id}/${props.isOrg?`org/${props.orgId}`:"user"}`)} style={props.signed_up?activeColour:{}} className={`programPanel`}>
+			<div className="programPanelHeader">
 				<div className="horizontal">
-					<p style={colorDiv} className={"eventBubble"}>NEW</p>
+					<p style={colorDiv} className={"programBubble"}>NEW</p>
 					<p style={colorText}>{props.category}</p>
 				</div>
-				{props.signed_up?<div  style={colorDiv} className={"eventBubble"}>Signed Up</div>:<div></div>}
+				{props.signed_up?<div  style={colorDiv} className={"programBubble"}>Signed Up</div>:<div></div>}
 			</div>
 			<h6>{props.name}</h6>
 			<p style={greyText}>For Ages {props.age_group}</p>
@@ -39,4 +39,4 @@ const EventPanel = (props: EventPanelProps) => {
 	)
 }	
 
-export default EventPanel;
+export default ProgramPanel;

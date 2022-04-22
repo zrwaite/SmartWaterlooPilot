@@ -37,7 +37,7 @@ interface defaultAccountType extends userInfo {
 	avatar_string: string;
 	answers: number[]
 	surveys: number[];
-	events: number[];
+	programs: number[];
 	orgs: string[];	
 }
 
@@ -61,7 +61,7 @@ const defaultAccount:defaultAccountType = {
 	weight: "",
 	answers: [],
 	surveys: [],
-	events: [],
+	programs: [],
 	orgs: [],
 }
 const defaultAccountState = {

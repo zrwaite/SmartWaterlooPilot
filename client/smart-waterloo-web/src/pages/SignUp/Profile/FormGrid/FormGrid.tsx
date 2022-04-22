@@ -130,7 +130,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 						<input name="heard" id="heardInput" type={"text"} value={props.formData.heard} onChange={props.handleParentInputChange} />
 					</div>
 					<div className="formDiv">
-						<p>How would you like to be contacted for upcoming programs/events</p>
+						<p>How would you like to be contacted for upcoming programs/events?</p>
 						<input name="contact" id="contactInput" type={"checkbox"} checked={props.formData.contact} onChange={props.handleParentCheckboxChange} />
 					</div>
 					<div className="formDiv">

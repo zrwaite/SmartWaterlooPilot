@@ -1,8 +1,6 @@
 import "./CreateSurvey.css";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
-// import {eventCategories} from "./CreateSurveyData";
-// import Select, {ActionMeta} from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import {useState} from "react";
 import { postSurvey } from "../../data/postData";

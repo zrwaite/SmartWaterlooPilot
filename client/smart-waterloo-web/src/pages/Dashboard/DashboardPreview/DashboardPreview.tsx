@@ -3,11 +3,11 @@ import { MobileContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
-import { defaultEvent } from "../../../data/types/events";
+import { defaultProgram } from "../../../data/types/programs";
 import {defaultSurvey} from "../../../data/types/surveys"
 import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
 import MyDataPanel from "../../MyData/MyDataPanel";
-import EventPanel from "../../Events/EventPanel"
+import ProgramPanel from "../../Programs/ProgramPanel"
 import SurveyPanel from "../../Surveys/SurveyPanel"
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -36,8 +36,8 @@ const DashboardPreviewHeader = (props:DashboardPreviewHeaderProps) => {
 
 interface DashboardPreviewProps {
 	name: keyof typeof Data;
-	events: typeof defaultEvent[];
-	eventsSet: boolean;
+	programs: typeof defaultProgram[];
+	programsSet: boolean;
 	surveys: typeof defaultSurvey[];
 	surveysSet: boolean;
 	account: typeof defaultAccount;
@@ -58,16 +58,16 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 	);
 	let panelList;
 	switch (props.name) {
-		case "events": panelList = (<> 
+		case "programs": panelList = (<> 
 			{
-				props.eventsSet?
-				props.events.map((event, i) => {return (
-					i<5?<EventPanel isOrg={props.org} orgId={props.orgId} key={i} index={i} {...event}/>:null
+				props.programsSet?
+				props.programs.map((program, i) => {return (
+					i<5?<ProgramPanel isOrg={props.org} orgId={props.orgId} key={i} index={i} {...program}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
 			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
-				<button onClick={() => navigate(`/createevent/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Event</button>
+				<button onClick={() => navigate(`/createprogram/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Program</button>
 			</div>:null}
 		</>
 		); break; case "data": panelList = (<DataPanels {...props.account} orgId={props.orgId} org={props.org} />
@@ -88,9 +88,9 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 		</>
 		); break; 
 		// case "upcoming": panelList = (<>
-		// 	{exampleEvents.map((event, i) => {
-		// 		if (event.signed_up) return (
-		// 			numUpcoming<5?<EventPanel index={i} key={i} upcoming={true} {...event}/>:null
+		// 	{examplePrograms.map((program, i) => {
+		// 		if (program.signed_up) return (
+		// 			numUpcoming<5?<ProgramPanel index={i} key={i} upcoming={true} {...program}/>:null
 		// 		);
 		// 		else return null;
 		// 	})}

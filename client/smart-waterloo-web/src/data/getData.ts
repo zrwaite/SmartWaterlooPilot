@@ -1,5 +1,5 @@
 
-import { defaultEvent} from "./types/events";
+import { defaultProgram} from "./types/programs";
 import {defaultAnswer, defaultSurvey} from "./types/surveys"
 import userABI from "./utils/SmartUser.json";
 import {AbiItem} from "web3-utils";
@@ -11,7 +11,7 @@ import surveyABI from "./utils/OrgSurvey.json";
 import {USE_WEB3} from "./dataConstants";
 
 import {defaultAccount} from "./types/account";
-import {web2GetAnswersData, web2GetUserOrgs, web2GetOrgSurveysData, web2GetOrgEventsData, web2GetUserData, web2GetSurveysData, web2GetBasicOrgData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData, web2GetQuestionsAndAnswers} from "./web2/web2GetData";
+import {web2GetAnswersData, web2GetUserOrgs, web2GetOrgSurveysData, web2GetOrgProgramsData, web2GetUserData, web2GetSurveysData, web2GetBasicOrgData, web2GetProgramsData, getWeb2ProgramData, getWeb2SurveyData, web2GetQuestionsAndAnswers} from "./web2/web2GetData";
 import {defaultOrg} from "./types/orgs";
 
 let web3 = new Web3(Web3.givenProvider);
@@ -58,23 +58,23 @@ const web3GetUserData = async ():Promise<{success:boolean, userData:typeof defau
 const getSurveysData = async ():Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {
 	return USE_WEB3 ? (await web3GetSurveysData()) : (await web2GetSurveysData());
 }
-const getEventsData = async ():Promise<{success:boolean, events:typeof defaultEvent[], errors: string[]}|any> => {
-	return USE_WEB3 ? (await web3GetEventsData()) : (await web2GetEventsData());
+const getProgramsData = async ():Promise<{success:boolean, events:typeof defaultProgram[], errors: string[]}|any> => {
+	return USE_WEB3 ? (await web3GetProgramsData()) : (await web2GetProgramsData());
 };
-const web3GetEventsData = async ():Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
+const web3GetProgramsData = async ():Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
 	return {success: false, questions: [], answers: [], errors: ["not implemented"]};
 }
 
 const getOrgSurveysData = async (id:string|undefined):Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {
 	return USE_WEB3 ? (await web3GetOrgSurveysData(id)) : (await web2GetOrgSurveysData(id));
 }
-const getOrgEventsData = async (id:string|undefined):Promise<{success:boolean, events:typeof defaultEvent[], errors: string[]}|any> => {
-	return USE_WEB3 ? (await web3GetOrgEventsData(id)) : (await web2GetOrgEventsData(id));
+const getOrgProgramsData = async (id:string|undefined):Promise<{success:boolean, events:typeof defaultProgram[], errors: string[]}|any> => {
+	return USE_WEB3 ? (await web3GetOrgProgramsData(id)) : (await web2GetOrgProgramsData(id));
 };
-const getEventData = async (id:string):Promise<{success:boolean, event:typeof defaultEvent|{}, errors: string[]}|any> => {
-	return USE_WEB3 ? (await getWeb3EventData(id)) : (await getWeb2EventData(id));
+const getProgramData = async (id:string):Promise<{success:boolean, event:typeof defaultProgram|{}, errors: string[]}|any> => {
+	return USE_WEB3 ? (await getWeb3ProgramData(id)) : (await getWeb2ProgramData(id));
 };
-const getWeb3EventData = async (id:string):Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
+const getWeb3ProgramData = async (id:string):Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
 	return {success: false, questions: [], answers: [], errors: ["not implemented"]};
 }
 
@@ -114,7 +114,7 @@ const web3GetSurveysData = async ():Promise<{success:boolean, surveys:typeof def
 const web3GetOrgSurveysData = async (id:string|undefined):Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {
 	return {success: false, surveys: [], errors: []}
 }
-const web3GetOrgEventsData = async (id:string|undefined):Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {
+const web3GetOrgProgramsData = async (id:string|undefined):Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {
 	return {success: false, surveys: [], errors: []}
 }
 
@@ -158,4 +158,4 @@ const getUserAddress = async ():Promise<string> => {
 // };
 
 
-export { getQuestionsAndAnswers, getAnswersData, getOrgEventsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getUserData, getEventsData, getEventData, getSurveysData, getSurveyData};
+export { getQuestionsAndAnswers, getAnswersData, getOrgProgramsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getUserData, getProgramsData, getProgramData, getSurveysData, getSurveyData};

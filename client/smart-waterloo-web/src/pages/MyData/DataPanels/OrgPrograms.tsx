@@ -8,18 +8,18 @@ interface DataPanelProps {
 }
 
 
-const OrgEventsPanel = (props: DataPanelProps) => {
+const OrgProgramsPanel = (props: DataPanelProps) => {
 	// const mobile = useContext(MobileContext);
 	const navigate = useNavigate();
 	return (
-		<div onClick={() => navigate(`/events/org/${props.orgId}`)} className={`dataPanel`}>
+		<div onClick={() => navigate(`/programs/org/${props.orgId}`)} className={`dataPanel`}>
 			<div className="dataPanelInfo">
-				<h5>Org Events</h5>
-				<p>Your events and their signups</p>
+				<h5>Org Programs</h5>
+				<p>Your programs and their signups</p>
 			</div>
 			<div className="dataPanelPreview">
 				<ul>
-					<li>Event Data</li>
+					<li>Program Data</li>
 					<li>Number of attendees</li>
 					<li>...</li>
 				</ul>
@@ -28,4 +28,4 @@ const OrgEventsPanel = (props: DataPanelProps) => {
 	)
 }	
 
-export default OrgEventsPanel;
+export default OrgProgramsPanel;

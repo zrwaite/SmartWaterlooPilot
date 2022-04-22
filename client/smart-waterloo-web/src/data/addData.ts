@@ -1,6 +1,6 @@
 import { USE_WEB3 } from "./dataConstants";
 import { successErrorsReturn } from "./types/generics";
-import { web2VerifyOrg, web2AddEventtoUser, web2AddSurveytoUser, web2AddUserToOrg } from "./web2/web2AddData";
+import { web2VerifyOrg, web2AddProgramtoUser, web2AddSurveytoUser, web2AddUserToOrg } from "./web2/web2AddData";
 
 const addUserToOrg = async (userId: number, orgId: number):Promise<successErrorsReturn> => {
 	return USE_WEB3?(await web3AddUserToOrg(userId, orgId)):(await web2AddUserToOrg(userId, orgId));
@@ -8,8 +8,8 @@ const addUserToOrg = async (userId: number, orgId: number):Promise<successErrors
 const addSurveytoUser = async (userId: string, surveyId: string):Promise<successErrorsReturn> => {
 	return USE_WEB3?(await web3AddSurveytoUser(userId, surveyId)):(await web2AddSurveytoUser(userId, surveyId));
 }
-const addEventtoUser = async (userId: string, eventId: string):Promise<successErrorsReturn> => {
-	return USE_WEB3?(await web3AddEventtoUser(userId, eventId)):(await web2AddEventtoUser(userId, eventId));
+const addProgramtoUser = async (userId: string, programId: string):Promise<successErrorsReturn> => {
+	return USE_WEB3?(await web3AddProgramtoUser(userId, programId)):(await web2AddProgramtoUser(userId, programId));
 }
 const verifyOrg = async (business_number: string, password:string):Promise<successErrorsReturn> => {
 	return USE_WEB3?(await web3VerifyOrg(business_number, password)):(await web2VerifyOrg(business_number, password));
@@ -18,7 +18,7 @@ const verifyOrg = async (business_number: string, password:string):Promise<succe
 const web3VerifyOrg = async (business_number: string, password:string):Promise<successErrorsReturn> => {
 	return {success: false, errors: ["not implemented"]}
 }
-const web3AddEventtoUser = async (userId: string, eventId: string):Promise<successErrorsReturn> => {
+const web3AddProgramtoUser = async (userId: string, programId: string):Promise<successErrorsReturn> => {
 	return {success: false, errors: ["not implemented"]}
 }
 
@@ -29,4 +29,4 @@ const web3AddUserToOrg = async (userId: number, orgId: number):Promise<successEr
 	return {success: false, errors: ["not implemented"]}
 }
 
-export {verifyOrg, addUserToOrg, addSurveytoUser, addEventtoUser}
+export {verifyOrg, addUserToOrg, addSurveytoUser, addProgramtoUser}

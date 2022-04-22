@@ -2,11 +2,11 @@ import {USE_WEB3} from "./dataConstants";
 import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
 import { AbiItem } from 'web3-utils';
-import eventABI from "./utils/OrganisationEvents.json";
-import {postEventWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey, web2PostAnswer} from "./web2/web2PostData";
+import programABI from "./utils/OrganisationEvents.json";
+import {postProgramWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey, web2PostAnswer} from "./web2/web2PostData";
 import { postSurveyReturn, postSurveyType, Question, submitSurveyReturn} from "./types/surveys";
 import { postOrgReturn, postOrgType } from "./types/orgs";
-import { postEventReturn, postEventType } from "./types/events";
+import { postProgramReturn, postProgramType } from "./types/programs";
 import { postUserType } from "./types/account";
 import { addSurveytoUser } from "./addData";
 import cookies from "../modules/cookies";
@@ -17,8 +17,8 @@ const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 const postUser = async (inputData:postUserType):Promise<string[]> => {
 	return USE_WEB3?(await postUserWeb3(inputData)):(await postUserWeb2(inputData));
 }
-const postEvent = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
-	return USE_WEB3?(await postEventWeb3(id, inputData)):(await postEventWeb2(id, inputData));
+const postProgram = async (id:string, inputData:postProgramType):Promise<postProgramReturn> => {
+	return USE_WEB3?(await postProgramWeb3(id, inputData)):(await postProgramWeb2(id, inputData));
 }
 const postSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
 	return USE_WEB3?(await web3PostSurvey(id, inputData)):(await web2PostSurvey(id, inputData));
@@ -49,16 +49,16 @@ const web3PostSurvey = async (id:string, inputData:postSurveyType):Promise<postS
 const postOrgWeb3 = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return {success: false, errors: ["not implemented"], orgId: ""};
 }
-const postEventWeb3 = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
+const postProgramWeb3 = async (id:string, inputData:postProgramType):Promise<postProgramReturn> => {
 	let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 	web3.eth.defaultAccount = accounts[0];
-	const contractABI = eventABI;
+	const contractABI = programABI;
 	const contractAddress = "0xd242a3Fa65b82Aa9C87D3a19C82EA6b5Db78e8EB";
 
-	// const eventContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
-	const eventContract = await new web3.eth.Contract(contractABI as any, contractAddress);
+	// const programContract = await new web3.eth.Contract(contractABI as AbiItem[], contractAddress);
+	const programContract = await new web3.eth.Contract(contractABI as any, contractAddress);
 
-	await eventContract.methods.createOrgEvent(
+	await programContract.methods.createOrgProgram(
 		web3.eth.defaultAccount,
 		inputData.name,
 		inputData.age,
@@ -71,7 +71,7 @@ const postEventWeb3 = async (id:string, inputData:postEventType):Promise<postEve
 			console.log(`${inputData.name} created successfully`);
 		})
 		.catch((err: any) => console.log(err));
-	return {success: false, errors: ["function not yet implemented"], eventId: "-1"}
+	return {success: false, errors: ["function not yet implemented"], programId: "-1"}
 }
 
 declare var window: any;
@@ -132,4 +132,4 @@ let contractABI;
 	return ["not implemented"]
 }
 
-export {submitSurvey, postSurvey, postUser, postEvent, postOrg}
+export {submitSurvey, postSurvey, postUser, postProgram, postOrg}

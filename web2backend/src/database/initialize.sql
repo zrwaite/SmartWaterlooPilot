@@ -1,5 +1,5 @@
 drop table answers;
-drop table events;
+drop table programs;
 drop table surveys;
 drop table questions;
 drop table orgs;
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "users"(
 	user_info_id int not null,
 	FOREIGN KEY (user_info_id) REFERENCES user_info(id),
 	answers integer[] default array[]::integer[],
-	events integer[] default array[]::integer[],
+	programs integer[] default array[]::integer[],
 	surveys integer[] default array[]::integer[],
 	orgs text[] default array[]::text[]
 );
@@ -78,7 +78,7 @@ create table if not exists "answers"(
 	FOREIGN KEY (question_id) REFERENCES questions(id)
 );
 
-create table if not exists "events"(
+create table if not exists "programs"(
 	id serial primary key,
 	name varchar(80),
 	org int,

@@ -1,5 +1,5 @@
 import OrgDataPanel from "./OrgData";
-import OrgEventsPanel from "./OrgEvents";
+import OrgProgramsPanel from "./OrgPrograms";
 import OrgSurveysPanel from "./OrgSurveys";
 import UserAccessPanel from "./UserAccess";
 import UserAnswersPanel from "./UserAnswers";
@@ -15,7 +15,7 @@ const DataPanels = (props: DataPanelsProps) => {
 		<>{
 			props.org?(<>
 				<OrgDataPanel/>
-				<OrgEventsPanel orgId={props.orgId} />
+				<OrgProgramsPanel orgId={props.orgId} />
 				<OrgSurveysPanel orgId={props.orgId} />
 			</>):(<>
 				<UserDataPanel religion={props.religion} gender={props.gender} race={props.race} />

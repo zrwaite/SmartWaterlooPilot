@@ -4,10 +4,10 @@ p{
 .greytext{
 	color: grey;
 }
-.eventTitle{
+.programTitle{
 	text-align: left;
 }
-.navbarEventDetails{
+.navbarProgramDetails{
 	display:flex;
 	align-items: center;
 	justify-content: space-between;
@@ -29,12 +29,12 @@ p{
 	display: inline-block;
 	font-weight: bold;
 }
-.eventBackButton{
+.programBackButton{
 	display: flex;
 	text-align: left;
 	/* display: inline-block; */
 }
-.eventImage {
+.programImage {
 	display: block;
 	/* margin-left: auto;
 	margin-right: auto; */
@@ -179,14 +179,14 @@ p{
 }
 
 /* Others */
-.rightNavEventDetails{
+.rightNavProgramDetails{
 	display:flex;
 	align-items: center;
 	justify-content: center;
 	height: 100%;
 	padding-right: 0.5rem;
 }
-.leftNavEventDetails{
+.leftNavProgramDetails{
 	display:flex;
 	align-items: center;
 	justify-content: center;

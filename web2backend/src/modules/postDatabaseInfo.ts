@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import pool from "../database/db";
 import {userData, postUserInfo as postUserInfoObj, userInfoData} from "../database/userData";
 import {orgData, postOrg as postOrgObj} from "../database/orgData";
-import {eventData, postEvent as postEventObj} from "../database/eventData";
+import {programData, postProgram as postProgramObj} from "../database/programData";
 import {surveyKeys, questionKeys, questionValues, surveyValues, postSurveyValues, postQuestionValues, answerKeys, answerValues} from "../database/surveyData";
 import {verifyOrgVerification} from "./getDatabaseInfo";
 interface PostDataReturn {
@@ -107,11 +107,11 @@ const postUser = async (password:string, userInfoId: number, userParams: string[
 
 
 
-const postEvent = async (eventParams:string[]) => {
-	if (!(await verifyOrgVerification(eventParams[0]))) return {success: false, errors: ["org not verified"], id: 0};
-	let newPostEventObj = {...postEventObj};
-	for (let i = 0; i<eventParams.length; i++) newPostEventObj[eventData.postEventKeys[i]] = eventParams[i];
-	return await postEntry(newPostEventObj, "events");
+const postProgram = async (programParams:string[]) => {
+	if (!(await verifyOrgVerification(programParams[0]))) return {success: false, errors: ["org not verified"], id: 0};
+	let newPostProgramObj = {...postProgramObj};
+	for (let i = 0; i<programParams.length; i++) newPostProgramObj[programData.postProgramKeys[i]] = programParams[i];
+	return await postEntry(newPostProgramObj, "programs");
 }
 
 const postSurvey = async (surveyParams:(surveyValues)) => {
@@ -159,4 +159,4 @@ const postUserInfo = async (userInfoParams:string[]) => {
 }
 
 
-export {postAnswer, postUser, postOrg, postEvent, postSurvey, postUserInfo}
+export {postAnswer, postUser, postOrg, postProgram, postSurvey, postUserInfo}

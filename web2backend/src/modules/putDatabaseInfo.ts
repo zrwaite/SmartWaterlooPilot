@@ -1,6 +1,6 @@
 import { unchangedTextChangeRange } from "typescript";
 import pool from "../database/db";
-import { getEventOrg, getSurveyOrg, getUser } from "./getDatabaseInfo";
+import { getProgramOrg, getSurveyOrg, getUser } from "./getDatabaseInfo";
 const foundOrgMembers = async (orgId:number, userId: number):Promise<{success: boolean, error: string}> => {
 	try {
 		let user:any = await pool.query(
@@ -46,37 +46,37 @@ const addOrgMember = async (orgId:number, userId: number) => {
 	} else errors.push(foundMemberErrors);
 	return {status: status, result: result, errors: errors};
 }
-const incrementEvent = async (eventId: number) => {
+const incrementProgram = async (programId: number) => {
 	try {
 		pool.query(
-			"UPDATE events SET attendees = attendees + 1 WHERE id = $1",
-			[eventId]
+			"UPDATE programs SET attendees = attendees + 1 WHERE id = $1",
+			[programId]
 		);
 	} catch (e) {
 		console.log(e);
 	}
 }
 
-const addUserEvent = async (eventId:number, userId: number) => {
+const addUserProgram = async (programId:number, userId: number) => {
 	let result;
 	let status = 400;
 	let errors: string[] = [];
-	let {orgNickname, errors: nicknameErrors} = await getEventOrg(eventId);
+	let {orgNickname, errors: nicknameErrors} = await getProgramOrg(programId);
 	if (orgNickname!=="") {
 		try {
 			result = await pool.query(
-				"UPDATE users SET events = array_append(events, $1), orgs = array_append(orgs, $2) WHERE user_id = $3",
-				[eventId, orgNickname, userId]
+				"UPDATE users SET programs = array_append(programs, $1), orgs = array_append(orgs, $2) WHERE user_id = $3",
+				[programId, orgNickname, userId]
 			);
 			if (result && result.rowCount) {
 				let {user} = await getUser(userId.toString());
 				result = await pool.query(
-					"UPDATE events SET user_info = array_append(user_info, $1) WHERE id = $2",
-					[user.user_info_id, eventId]
+					"UPDATE programs SET user_info = array_append(user_info, $1) WHERE id = $2",
+					[user.user_info_id, programId]
 				);
 				if (result && result.rowCount) {
 					status = 201;
-					incrementEvent(eventId);
+					incrementProgram(programId);
 				} else status = 404;
 			} else status = 404;
 		} catch (e) {
@@ -173,4 +173,4 @@ const updateOrgVerification = async (businessNumber: string) => {
 	return {status: status, result: result};
 }
 
-export {updateOrgVerification, updateAnswersArray, addUserEvent, addUserSurvey, addUserOrg, addOrgMember};
+export {updateOrgVerification, updateAnswersArray, addUserProgram, addUserSurvey, addUserOrg, addOrgMember};

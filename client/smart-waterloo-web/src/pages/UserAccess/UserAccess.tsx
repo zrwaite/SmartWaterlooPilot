@@ -15,7 +15,7 @@ const UserData = (props:AccountChildProps) => {
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanel"}>
 					{mobile?<h6>Who has access?</h6>:<h4 className={"UserDataHeader"}>Who has access?</h4>}
-					<p>The following organizations have anonymously seen your data through surveys and events:</p>
+					<p>The following organizations have anonymously seen your data through surveys and programs:</p>
 					<ul>
 						{props.accountData.account.orgs.map((org, i) => {
 								return (<li key={i}>{org}</li>)

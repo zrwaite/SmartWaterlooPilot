@@ -1,7 +1,7 @@
 import {httpReq} from "./httpRequest";
 import cookies from "../../modules/cookies";
 import {defaultAccount} from "../types/account";
-import {defaultEvent} from "../types/events";
+import {defaultProgram} from "../types/programs";
 import {defaultAnswer, defaultSurvey} from "../types/surveys"
 import {defaultOrg} from "../types/orgs";
 
@@ -33,8 +33,8 @@ const web2GetUserData = async ():Promise<{success:boolean, userData:typeof defau
 			response.response.surveys = response.response.surveys.filter((item, pos) => {
 				return response.response.surveys.indexOf(item) === pos;
 			})
-			response.response.events = response.response.events.filter((item, pos) => {
-				return response.response.events.indexOf(item) === pos;
+			response.response.programs = response.response.programs.filter((item, pos) => {
+				return response.response.programs.indexOf(item) === pos;
 			})
 			response.response.orgs = response.response.orgs.filter((item, pos) => {
 				return response.response.orgs.indexOf(item) === pos;
@@ -66,24 +66,24 @@ const getWeb2SurveyData = async (id:string):Promise<{success:boolean, survey:typ
 };
 
 
-const web2GetEventsData = async ():Promise<{success:boolean, events:typeof defaultEvent[], errors: string[]}> => {
-	let json = await httpReq("/api/event/")
+const web2GetProgramsData = async ():Promise<{success:boolean, programs:typeof defaultProgram[], errors: string[]}> => {
+	let json = await httpReq("/api/program/")
 	if (json) {
 		let response = JSON.parse(json);
-		if (response.success) return {success: true, events:response.response, errors: []};
-		else if (response.status === 404) return {success: true, events:[], errors: []};
-		else return {success: false, events:[], errors: response.errors}
-	} else return {success: false, events: [], errors:["request failed"]};
+		if (response.success) return {success: true, programs:response.response, errors: []};
+		else if (response.status === 404) return {success: true, programs:[], errors: []};
+		else return {success: false, programs:[], errors: response.errors}
+	} else return {success: false, programs: [], errors:["request failed"]};
 };
 
-const web2GetOrgEventsData = async (id:string|undefined):Promise<{success:boolean, events:typeof defaultEvent[], errors: string[]}> => {
-	let json = await httpReq("/api/event/?org_id="+id)
+const web2GetOrgProgramsData = async (id:string|undefined):Promise<{success:boolean, programs:typeof defaultProgram[], errors: string[]}> => {
+	let json = await httpReq("/api/program/?org_id="+id)
 	if (json) {
 		let response = JSON.parse(json);
-		if (response.success) return {success: true, events:response.response, errors: []};
-		else if (response.status===404) return {success: true, events:[], errors: []};
-		else return {success: false, events:[], errors: response.errors}
-	} else return {success: false, events: [], errors:["request failed"]};
+		if (response.success) return {success: true, programs:response.response, errors: []};
+		else if (response.status===404) return {success: true, programs:[], errors: []};
+		else return {success: false, programs:[], errors: response.errors}
+	} else return {success: false, programs: [], errors:["request failed"]};
 };
 const web2GetOrgSurveysData = async (id:string|undefined):Promise<{success:boolean, surveys:typeof defaultSurvey[], errors: string[]}> => {
 	let json = await httpReq("/api/survey/?org_id="+id)
@@ -95,16 +95,16 @@ const web2GetOrgSurveysData = async (id:string|undefined):Promise<{success:boole
 	} else return {success: false, surveys: [], errors:["request failed"]};
 }
 
-const getWeb2EventData = async (id:string):Promise<{success:boolean, event:typeof defaultEvent|{}, errors: string[]}> => {
-	let json = await httpReq("/api/event/?event_id="+id)
+const getWeb2ProgramData = async (id:string):Promise<{success:boolean, program:typeof defaultProgram|{}, errors: string[]}> => {
+	let json = await httpReq("/api/program/?program_id="+id)
 	if (json) {
 		let response = JSON.parse(json);
 		if (response.success) {
-			return {success: true, event:response.response, errors: []};
+			return {success: true, program:response.response, errors: []};
 		} else {
-			return {success: false, event:{}, errors: response.errors}
+			return {success: false, program:{}, errors: response.errors}
 		}
-	} else return {success: false, event: {}, errors:["request failed"]};
+	} else return {success: false, program: {}, errors:["request failed"]};
 }; 
 
 const web2GetUserOrgs = async (id:string):Promise<{success:boolean, orgs: typeof defaultOrg[], errors:string[]}> => {
@@ -138,4 +138,4 @@ const web2GetQuestionsAndAnswers = async (answerIds: number[]):Promise<{success:
 
 
 
-export { web2GetQuestionsAndAnswers, web2GetAnswersData, web2GetOrgEventsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetUserData, web2GetUserOrgs, web2GetSurveysData, web2GetEventsData, getWeb2EventData, getWeb2SurveyData};
+export { web2GetQuestionsAndAnswers, web2GetAnswersData, web2GetOrgProgramsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetUserData, web2GetUserOrgs, web2GetSurveysData, web2GetProgramsData, getWeb2ProgramData, getWeb2SurveyData};

@@ -1,8 +1,7 @@
 import React from 'react';
-import "./EventDetails.css";
-// import eventDataRaw from './EventDetailsData.json';
+import "./ProgramDetails.css";
 
-interface EventData {
+interface ProgramData {
     name: string;
     id: string;
     age_group: string;
@@ -15,16 +14,13 @@ interface EventData {
 	attendees: string;
     org: boolean;
 }
-const EventInfo = (props: EventData): any => {
+const ProgramInfo = (props: ProgramData): any => {
 	return (
 		<>
-			{/* <div className={"eventDetails"}>
-				<img src={event.image} alt={event.title} className="eventImage" />
-			</div> */}
 			<div className="DesktopPanelNoBorder">
 				<p className="lightblue">NEW</p>
 				<p className="lightbluetext">{props.category}</p>
-				<h5 className="eventTitle">{props.name}</h5>
+				<h5 className="programTitle">{props.name}</h5>
 				<p className="greytext">For Ages {props.age_group}</p>
 				<p className="greytext">{props.start_date} {props.end_date}</p>
 				<br></br>
@@ -40,4 +36,4 @@ const EventInfo = (props: EventData): any => {
 	)
 }
 
-export default EventInfo;
+export default ProgramInfo;

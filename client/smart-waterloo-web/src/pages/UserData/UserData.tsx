@@ -29,7 +29,7 @@ const UserData = (props:AccountChildProps) => {
 					<p>Household Income: {account.household_income}</p>
 					<p>Postal Code: {account.postal_code}</p>
 					<p>Grade: {account.grade}</p>
-					<p>Number of Events: {account.events.length}</p>
+					<p>Number of Programs: {account.programs.length}</p>
 					<p>Number of Surveys: {account.surveys.length}</p>
 					<p></p>
 				</div>

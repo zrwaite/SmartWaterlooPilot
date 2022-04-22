@@ -1,7 +1,7 @@
 import express from 'express';
 import userCtrl from '../api/user';
 import orgCtrl from '../api/org';
-import eventCtrl from '../api/event';
+import programCtrl from '../api/program';
 import surveyCtrl from '../api/survey';
 import questionCtrl from '../api/question';
 import answerCtrl from '../api/answer';
@@ -19,11 +19,11 @@ router.route('/org')
 	.put(orgCtrl.putOrg)
 	.delete(orgCtrl.deleteOrg)
 
-router.route(['/event', '/program'])
-	.get(eventCtrl.getEvent)
-	.post(eventCtrl.postEvent)
-	.put(eventCtrl.putEvent)
-	.delete(eventCtrl.deleteEvent)
+router.route(['/program', '/program'])
+	.get(programCtrl.getProgram)
+	.post(programCtrl.postProgram)
+	.put(programCtrl.putProgram)
+	.delete(programCtrl.deleteProgram)
 
 router.route('/survey')
 	.get(surveyCtrl.getSurvey)

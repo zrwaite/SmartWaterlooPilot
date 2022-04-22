@@ -19,8 +19,8 @@ const userDataPanels = [
 		description: "Any other details that are related to this section. Any other details that are related to this section. Any other details that are related to this sect..."
 	},
 	{
-		title: "Event Participation",
-		learnMore: "/eventData",
+		title: "Program Participation",
+		learnMore: "/programData",
 		component: UserPiGraph,
 		description: "Any other details that are related to this section. Any other details that are related to this section. Any other details that are related to this sect..."
 	},

@@ -1,18 +1,18 @@
-.eventPagePanel{
+.programPagePanel{
 	width: 100%;
 }
-.eventGrid{
+.programGrid{
 	display:grid;
 	margin-top: 1rem;
 	grid-template-columns: repeat(auto-fit, minmax(22rem, auto));
 	gap: 1rem
 }
-.addEventButton{
+.addProgramButton{
 	height: 5rem;
 	width: 10rem;
 	font-size: 2rem;
 }
-.addEventSection{
+.addProgramSection{
 	display:flex;
 	align-items: center;
 	justify-content: center;

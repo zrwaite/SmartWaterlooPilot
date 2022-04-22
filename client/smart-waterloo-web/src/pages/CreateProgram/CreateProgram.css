@@ -5,7 +5,7 @@
 	align-items: center;
 	margin-bottom: 3rem;
 }
-.createEventHeader{
+.createProgramHeader{
 	margin: 1rem 0;
 }
 .mcInputs{
@@ -13,7 +13,7 @@
 	justify-content: flex-start;
 	align-items: center;
 }
-.createEventInput{
+.createProgramInput{
 	width: 100%;
 	box-sizing: border-box;
 }
@@ -25,13 +25,13 @@
 .singleLineMultiInput>*{
 	margin: 0 0.2rem
 }
-.createEventMiniInput{
+.createProgramMiniInput{
 	width: 2rem;
 }
-.createEventTextArea{
+.createProgramTextArea{
 	width: 100%;
 }
-.createEventButton{
+.createProgramButton{
 	width: 80%;
 	margin: auto;
 	height: 2rem;

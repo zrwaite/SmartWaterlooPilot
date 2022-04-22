@@ -35,7 +35,7 @@ const getUser = {
 	...postUser,
 	user_info_id: "",
 	answers: [],
-	events: [],
+	programs: [],
 	surveys: [],
 	orgs: []
 }

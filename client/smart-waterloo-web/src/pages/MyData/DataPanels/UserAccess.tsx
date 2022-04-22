@@ -19,7 +19,7 @@ const UserAccessPanel = (props: MyDataPanelProps) => {
 			<div className="dataPanelPreview">
 				<ul>
 					<li>Surveys</li>
-					<li>Events</li>
+					<li>Programs</li>
 					<li>Members</li>
 					<li>...</li>
 				</ul>

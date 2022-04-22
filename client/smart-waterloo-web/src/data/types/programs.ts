@@ -1,6 +1,6 @@
 import { userInfo } from "./account";
 
-interface defaultEventType {
+interface defaultProgramType {
 	id: string,
 	name: string,
 	org: string,
@@ -14,7 +14,7 @@ interface defaultEventType {
 	attendees: string,
 	user_info: userInfo[]
 }
-const defaultEvent:defaultEventType = {
+const defaultProgram:defaultProgramType = {
 	id: "",
 	name: "",
 	org: "",
@@ -29,19 +29,19 @@ const defaultEvent:defaultEventType = {
 	user_info: []
 }
 
-const defaultEventsState: {
+const defaultProgramsState: {
 	set: boolean;
-	events: defaultEventType[]
-} = {set: false, events:[]};
+	programs: defaultProgramType[]
+} = {set: false, programs:[]};
 
-interface postEventType {
+interface postProgramType {
 	name:string, age:string, 
 	start_day:string, start_month:string, start_year:string,
 	end_day:string, end_month:string, end_year:string,
 	category:string, description: string
 }
 
-type postEventReturn = {success:boolean, errors: string[], eventId:string}
+type postProgramReturn = {success:boolean, errors: string[], programId:string}
 
-export { defaultEvent, defaultEventsState}
-export type {postEventType, postEventReturn}
+export { defaultProgram, defaultProgramsState}
+export type {postProgramType, postProgramReturn}
