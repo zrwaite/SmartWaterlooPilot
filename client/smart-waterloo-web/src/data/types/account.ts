@@ -6,6 +6,14 @@ interface userInfo {
 	race: string,
 	grade: string,
 	postal_code: string,
+	household_income: string,
+	num_family_members: string,
+	height: string,
+	weight: string,
+	primary_language: string,
+	secondary_language: string,
+	heard: string,
+	contact: boolean,
 }
 
 const getDefaultUserInfoLists = (): {
@@ -27,8 +35,6 @@ const getDefaultUserInfoLists = (): {
 interface defaultAccountType extends userInfo {
 	nickname: string;
 	avatar_string: string;
-	birth_month: string,
-	birth_year: string,
 	answers: number[]
 	surveys: number[];
 	events: number[];
@@ -39,14 +45,20 @@ const defaultAccount:defaultAccountType = {
 	nickname: "--------",
 	avatar_string: "",
 	birth_day: "",
-	birth_month: "",
-	birth_year: "",
 	gender: "",
 	grade: "",
 	postal_code: "",
 	religion: "",
 	sexuality: "",
 	race: "",
+	household_income: "",
+	num_family_members: "",
+	primary_language: "",
+	secondary_language: "",
+	heard: "",
+	contact: false,
+	height: "",
+	weight: "",
 	answers: [],
 	surveys: [],
 	events: [],
@@ -58,11 +70,27 @@ const defaultAccountState = {
 }
 
 interface postUserType {
-	day:string, month:string, year:string,
-	gender:string, height:string, weight:string,
-	qrId:string, grade:string, postalCode:string,
-	race:string, religion:string, sexuality:string,
-	nickname:string, avatar_string:string, password:string
+	day:string, 
+	month:string, 
+	year:string,
+	gender:string, 
+	height:string, 
+	weight:string,
+	qrId:string, 
+	grade:string, 
+	postalCode:string,
+	race:string, 
+	religion:string, 
+	sexuality:string,
+	nickname:string, 
+	avatar_string:string, 
+	password:string,
+	household_income: string,
+	num_family_members: string,
+	primary_language: string,
+	secondary_language: string,
+	heard: string,
+	contact: boolean,
 }
 export {getDefaultUserInfoLists, defaultAccountState, defaultAccount}
 export type {postUserType, userInfo}

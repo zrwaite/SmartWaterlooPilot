@@ -51,6 +51,14 @@ const raceOptions = [
 	{ value: "Hispanic", label: "Hispanic" },
 	{ value: "Other", label: "Other" }
 ]
+const incomeOptions = [
+	{ value: "Select", label: "--Select--" },
+	{ value: "<20000", label: "0 - 20,000" },
+	{ value: "<50000", label: "20,000 - 50,000" },
+	{ value: "<100000", label: "50,000 - 100,000" },
+	{ value: "<250000", label: "100,000 - 250,000" },
+	{ value: ">250000", label: "250,000+" },
+]
 type ProfileFormGridState = {
 	day: string,
 	month: string,
@@ -62,7 +70,14 @@ type ProfileFormGridState = {
 	postalCode: string,
 	race: string,
 	religion: string,
-	sexuality: string
+	sexuality: string,
+	household_income: string,
+	num_family_members: string,
+	primary_language: string,
+	secondary_language: string,
+	heard: string,
+	contact: boolean,
+	code_of_conduct: boolean
 }
-export {genderOptions, religionOptions, sexualityOptions, raceOptions}
+export {genderOptions, religionOptions, sexualityOptions, raceOptions, incomeOptions}
 export type {ProfileFormGridState}

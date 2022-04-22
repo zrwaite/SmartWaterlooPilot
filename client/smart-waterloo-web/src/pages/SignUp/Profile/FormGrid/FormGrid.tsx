@@ -1,5 +1,5 @@
 // import {Link} from "react-router-dom";
-import { genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState } from "./FormGridData";
+import { incomeOptions, genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState } from "./FormGridData";
 import Select, { ActionMeta } from "react-select";
 
 
@@ -7,6 +7,7 @@ type ProfileFormGridProps = {
 	nextStep: () => void,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void,
 	handleParentSelectChange: (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => void,
+	handleParentCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
 	formData: ProfileFormGridState
 }
 function ProfileFormGrid(props: ProfileFormGridProps) {
@@ -17,7 +18,8 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 		props.formData.month !== "" && !isNaN(parseInt(props.formData.month)) && parseInt(props.formData.month) <=12  && parseInt(props.formData.month) >0 && 
 		props.formData.year !== "" && !isNaN(parseInt(props.formData.year)) && parseInt(props.formData.year) <=3000  && parseInt(props.formData.year) >1000 &&
 		props.formData.gender !== "" &&
-		props.formData.postalCode !== ""
+		props.formData.postalCode !== "" &&
+		props.formData.code_of_conduct
 	);
 	return (
 		<>
@@ -44,7 +46,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 						</p>
 						<Select className={"selectComponent"} defaultInputValue={props.formData.gender} name={"gender"} onChange={props.handleParentSelectChange} options={genderOptions} />
 					</div>
-					{/* <div className="formDiv horizontal">
+					<div className="formDiv horizontal">
 						<div>
 							<p>
 								Height<span style={redText}>*</span>
@@ -63,7 +65,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 								<p className="pillText">lbs</p>
 							</div>
 						</div>
-					</div> */}
+					</div>
 					<div className="formDiv">
 						<p>
 							Religion <span style={greyText}>(Optional)</span>
@@ -81,6 +83,24 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 							Race <span style={greyText}>(Optional)</span>
 						</p>
 						<Select className={"selectComponent"} defaultInputValue={props.formData.race} name={"race"} onChange={props.handleParentSelectChange} options={raceOptions} />
+					</div>
+					<div className="formDiv">
+						<p>
+							Household Income <span style={greyText}>(Optional)</span>
+						</p>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.household_income} name={"household_income"} onChange={props.handleParentSelectChange} options={incomeOptions} />
+					</div>
+					<div className="formDiv">
+						<p>
+							Primary Language <span style={greyText}>(Optional)</span>
+						</p>
+						<input name="primary_language" id="primaryLanguageInput" type={"text"} value={props.formData.primary_language} onChange={props.handleParentInputChange} />
+					</div>
+					<div className="formDiv">
+						<p>
+							Secondary Language <span style={greyText}>(Optional)</span>
+						</p>
+						<input name="secondary_language" id="secondaryLanguageInput" type={"text"} value={props.formData.secondary_language} onChange={props.handleParentInputChange} />
 					</div>
 					<div className="formDiv horizontal">
 						<div>
@@ -101,6 +121,20 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 							</p>
 							<input name="postalCode" id="postalCodeInput" placeholder="M5A" type={"text"} value={props.formData.postalCode} onChange={props.handleParentInputChange} />
 						</div>
+					</div>
+					<div className="formDiv">
+						<p>
+							How did you hear about us? <span style={greyText}>(Optional)</span>
+						</p>
+						<input name="heard" id="heardInput" type={"text"} value={props.formData.heard} onChange={props.handleParentInputChange} />
+					</div>
+					<div className="formDiv">
+						<p>How would you like to be contacted for upcoming programs/events</p>
+						<input name="contact" id="contactInput" type={"checkbox"} checked={props.formData.contact} onChange={props.handleParentCheckboxChange} />
+					</div>
+					<div className="formDiv">
+						<p>Have you read and agree to our Code of Conduct?</p>
+						<input name="code_of_conduct" id="codeOfConductInput" type={"checkbox"} checked={props.formData.code_of_conduct} onChange={props.handleParentCheckboxChange} />
 					</div>
 				</section>
 				<div className="formDiv">

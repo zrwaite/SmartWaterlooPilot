@@ -88,6 +88,11 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 		grade: inputData.grade,
 		postal_code: inputData.postalCode,
 		avatar_string: inputData.avatar_string,
+		household_income: inputData.household_income,
+		primary_language: inputData.primary_language,
+		secondary_language: inputData.secondary_language,
+		heard: inputData.heard,
+		contact: inputData.contact?1:0
 	})
 	if (json) {
 		let response = JSON.parse(json);

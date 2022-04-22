@@ -9,14 +9,8 @@ const baseUserInfo = {
 	grade: "",
 	postal_code: "",
 	household_income: "",
-	num_family_members: "",
 	height: "",
 	weight: "",
-	medical_concerns: "",
-	medication: "",
-	disability: "",
-	behavioural_support: "",
-	school_system_support: "",
 }
 const nullableUserInfo = {
 	religion: "",
@@ -24,6 +18,8 @@ const nullableUserInfo = {
 	race: "",
 	primary_language: "",
 	secondary_language: "",
+	heard: "",
+	contact: ""
 }
 const postUserInfo = {
 	...baseUserInfo,

@@ -17,16 +17,12 @@ CREATE TABLE IF NOT EXISTS "user_info"(
 	grade varchar(100),
 	postal_code varchar(100),
 	household_income varchar(100),
-	num_family_members int,
 	height varchar(100),
 	weight varchar(100),
 	primary_language varchar(100),
 	secondary_language varchar(100),
-	medical_concerns text,
-	medication text,
-	disability text,
-	behavioural_support text,
-	school_system_support text,
+	heard text,
+	contact bit default '0'
 );
 
 CREATE TABLE IF NOT EXISTS "users"(
@@ -37,7 +33,6 @@ CREATE TABLE IF NOT EXISTS "users"(
 	avatar_string varchar(100) not null,
 	user_info_id int not null,
 	FOREIGN KEY (user_info_id) REFERENCES user_info(id),
-	
 	answers integer[] default array[]::integer[],
 	events integer[] default array[]::integer[],
 	surveys integer[] default array[]::integer[],
