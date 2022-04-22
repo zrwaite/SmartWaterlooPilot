@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {icons} from "../../images/icons";
-import {event_images} from "../../images/eventimages";
 import img_party_popper from "../../images/emoji-party-popper.png"
 // import Sidebar from "../../components/Sidebar";
+import CNOLogo from "../../images/CNOLogo.png"
 import { MobileContext } from "../../App";
 import {useContext} from "react";
 import "./EventDetails.css";
@@ -152,7 +152,7 @@ const EventsDetails = (props: AccountChildProps) => {
 					{
 						(eventData.set)?(<>
 							<div className={"eventDetails"}>
-								<img src={event_images.basketball_skills} alt={eventData.event.name} className="eventImage" />
+								<img src={CNOLogo} alt={eventData.event.name} className="eventImage" />
 							</div>
 							<EventInfo {...eventData.event} org={props.org} />
 							{props.org&&(
