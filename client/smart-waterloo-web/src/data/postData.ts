@@ -61,7 +61,7 @@ const postProgramWeb3 = async (id:string, inputData:postProgramType):Promise<pos
 	await programContract.methods.createOrgProgram(
 		web3.eth.defaultAccount,
 		inputData.name,
-		inputData.age,
+		inputData.min_age,
 		(inputData.start_day + inputData.start_month + inputData.start_year),
 		(inputData.end_day + inputData.end_month + inputData.end_year),
 		inputData.category,

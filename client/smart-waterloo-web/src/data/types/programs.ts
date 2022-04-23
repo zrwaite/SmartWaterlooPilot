@@ -35,10 +35,21 @@ const defaultProgramsState: {
 } = {set: false, programs:[]};
 
 interface postProgramType {
-	name:string, age:string, 
-	start_day:string, start_month:string, start_year:string,
-	end_day:string, end_month:string, end_year:string,
-	category:string, description: string
+	name:string, 
+	min_age:string, 
+	max_age:string, 
+	start_day:string, 
+	start_month:string, 
+	start_year:string,
+	end_day:string, 
+	end_month:string, 
+	end_year:string,
+	start_hour:string,
+	start_minute:string,
+	end_hour:string,
+	end_minute:string,
+	category:string, 
+	description: string
 }
 
 type postProgramReturn = {success:boolean, errors: string[], programId:string}

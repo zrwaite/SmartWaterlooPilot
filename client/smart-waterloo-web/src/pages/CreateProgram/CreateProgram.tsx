@@ -12,7 +12,8 @@ import { forceNavigate } from "../../modules/navigate";
 const DefaultCreateProgramState = {
 	inputs: {
 		name: "",
-		age: "",
+		min_age: "",
+		max_age: "",
 		start_day: "",
 		start_month: "",
 		start_year: "",
@@ -20,7 +21,12 @@ const DefaultCreateProgramState = {
 		end_month: "",
 		end_year: "",
 		category: "",
-		description: ""
+		description: "",
+		place: "",
+		start_hour: "",
+		start_minute: "",
+		end_hour: "",
+		end_minute: ""
 	}
 }
 const CreateProgram = () => {
@@ -78,14 +84,12 @@ const CreateProgram = () => {
 					</div>
 					<div className={"formQuestion"}>
 						<p>Which age group is this program</p>
-						{["4-6", "4-8", "4-12", "6-12", "8-12"].map((age, i) => {
-							return (
-								<div key={i} className={"mcInputs"}>
-									<input name={"age"} type="radio" value={age} checked={age === state.inputs.age} onChange={handleInputChange} />
-									<p>{age}</p>
-								</div>
-							)
-						})}
+						<div className={"singleLineMultiInput"}>
+							<p>Min age: </p>
+							<input name={"min_age"} className={"createProgramMiniInput"} placeholder={"4"} value={state.inputs.min_age} onChange={handleInputChange} />
+							<p>{"   Max age"}</p>
+							<input name={"max_age"} className={"createProgramMiniInput"} placeholder={"8"} value={state.inputs.max_age} onChange={handleInputChange} />
+						</div>
 					</div>
 					<div className={"formQuestion"}>
 						<p>Start Date</p>
@@ -107,9 +111,29 @@ const CreateProgram = () => {
 							<input name={"end_year"} className={"createProgramMiniInput"} placeholder={"YY"} value={state.inputs.end_year} onChange={handleInputChange} />
 						</div>
 					</div>
+					<div className={"formQuestion"}>
+						<p>Start Time:</p>
+						<div className={"singleLineMultiInput"}>
+							<input name={"start_hour"} className={"createProgramMiniInput"} placeholder={"12"} value={state.inputs.start_hour} onChange={handleInputChange} />
+							<h6>:</h6>
+							<input name={"start_minute"} className={"createProgramMiniInput"} placeholder={"15"} value={state.inputs.start_minute} onChange={handleInputChange} />
+						</div>
+					</div>
+					<div className={"formQuestion"}>
+						<p>End Time:</p>
+						<div className={"singleLineMultiInput"}>
+							<input name={"end_hour"} className={"createProgramMiniInput"} placeholder={"12"} value={state.inputs.end_hour} onChange={handleInputChange} />
+							<h6>:</h6>
+							<input name={"end_minute"} className={"createProgramMiniInput"} placeholder={"30"} value={state.inputs.end_minute} onChange={handleInputChange} />
+						</div>
+					</div>
 					<div className="formQuestion">
 						<p>Category</p>
 						<Select className={"selectComponent"} defaultInputValue={state.inputs.category} name={"category"} onChange={handleSelectChange} options={programCategories} />
+					</div>
+					<div className={"formQuestion"}>
+						<p>Place</p>
+						<input name={"place"}  value={state.inputs.place} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
 						<p>Description</p>
