@@ -139,13 +139,13 @@ const addUserSurvey = async (surveyId:number, userId: number) => {
 	return {status: status, result: result, errors: errors};
 }
 
-const updateAnswersArray = async (userId:number, answerId:number) => {
+const updateAnswersArray = async (userId:number, answerIds:number[]) => {
 	let result;
 	let status = 400;
 	try {
 		result = await pool.query(
-			"UPDATE users SET answers = array_append(answers, $1) WHERE user_id = $2",
-			[answerId, userId]
+			"UPDATE users SET answers = array_cat(answers, $1) WHERE user_id = $2",
+			[answerIds, userId]
 		);
 		if (result && result.rowCount) status = 201;
 		else status = 404;

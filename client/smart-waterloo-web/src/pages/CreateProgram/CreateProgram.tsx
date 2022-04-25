@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { postProgram } from "../../data/postData";
 import cookies from "../../modules/cookies";
 import { forceNavigate } from "../../modules/navigate";
+import { AccountChildProps } from "../AccountParent";
 
 //Todo change buttons to links
 const DefaultCreateProgramState = {
@@ -29,7 +30,7 @@ const DefaultCreateProgramState = {
 		end_minute: ""
 	}
 }
-const CreateProgram = () => {
+const CreateProgram = (props:AccountChildProps) => {
 	const navigate = useNavigate();
 	let { mobile } = useContext(MobileContext);
 	let {orgId} = useParams();
@@ -64,6 +65,7 @@ const CreateProgram = () => {
 			}
 		}
 	}
+	console.log(props)
 	
 	return (
 		<>
@@ -99,6 +101,10 @@ const CreateProgram = () => {
 							<input name={"start_month"} className={"createProgramMiniInput"} placeholder={"MM"} value={state.inputs.start_month} onChange={handleInputChange} />
 							<h6>/</h6>
 							<input name={"start_year"} className={"createProgramMiniInput"} placeholder={"YY"} value={state.inputs.start_year} onChange={handleInputChange} />
+							<h6>-</h6>
+							<input name={"start_hour"} className={"createProgramMiniInput"} placeholder={"12"} value={state.inputs.start_hour} onChange={handleInputChange} />
+							<h6>:</h6>
+							<input name={"start_minute"} className={"createProgramMiniInput"} placeholder={"15"} value={state.inputs.start_minute} onChange={handleInputChange} />
 						</div>
 					</div>
 					<div className={"formQuestion"}>
@@ -109,19 +115,7 @@ const CreateProgram = () => {
 							<input name={"end_month"} className={"createProgramMiniInput"} placeholder={"MM"} value={state.inputs.end_month} onChange={handleInputChange} />
 							<h6>/</h6>
 							<input name={"end_year"} className={"createProgramMiniInput"} placeholder={"YY"} value={state.inputs.end_year} onChange={handleInputChange} />
-						</div>
-					</div>
-					<div className={"formQuestion"}>
-						<p>Start Time:</p>
-						<div className={"singleLineMultiInput"}>
-							<input name={"start_hour"} className={"createProgramMiniInput"} placeholder={"12"} value={state.inputs.start_hour} onChange={handleInputChange} />
-							<h6>:</h6>
-							<input name={"start_minute"} className={"createProgramMiniInput"} placeholder={"15"} value={state.inputs.start_minute} onChange={handleInputChange} />
-						</div>
-					</div>
-					<div className={"formQuestion"}>
-						<p>End Time:</p>
-						<div className={"singleLineMultiInput"}>
+							<h6>-</h6>
 							<input name={"end_hour"} className={"createProgramMiniInput"} placeholder={"12"} value={state.inputs.end_hour} onChange={handleInputChange} />
 							<h6>:</h6>
 							<input name={"end_minute"} className={"createProgramMiniInput"} placeholder={"30"} value={state.inputs.end_minute} onChange={handleInputChange} />

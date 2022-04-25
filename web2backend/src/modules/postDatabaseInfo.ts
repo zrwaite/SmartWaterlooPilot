@@ -129,10 +129,13 @@ const postSurvey = async (surveyParams:(surveyValues)) => {
 			break;
 		}
 	}
-	let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`];
-	if (questionIds.length) postSurveyArray[3] = `{"${questionIds.join("\", \"")}"}`;
-	let {errors:postEntryErrors, success:postEntrySuccess, id} = await postEntryArrays({keys:surveyKeys, values: postSurveyArray}, "surveys");
-	return {success: success && postEntrySuccess, errors: [...errors, ...postEntryErrors], id: id};
+	if (success) {
+		let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`];
+		if (questionIds.length) postSurveyArray[3] = `{"${questionIds.join("\", \"")}"}`;
+		let {errors:postEntryErrors, success:postEntrySuccess, id} = await postEntryArrays({keys:surveyKeys, values: postSurveyArray}, "surveys");
+		return {success: success && postEntrySuccess, errors: [...errors, ...postEntryErrors], id: id};
+	}
+	return {success: success, errors: errors, id: 0}
 }
 
 const postQuestion = async (questionParams:(questionValues)) => {
@@ -144,6 +147,21 @@ const postAnswer = async (answer:string, question_id:number) => {
 	let postAnswerArray:answerValues = [answer, question_id];
 	// if (answerParams[2]?.length) postAnswerArray[2] = `{"${answerParams[2]?.join("\", \"")}"}`;
 	return await postEntryArrays({keys:answerKeys, values: postAnswerArray}, "answers");
+}
+const postAnswers = async (answers:string[], question_ids:number[]) => {
+	if (answers.length !== question_ids.length) return {errors: ["questions and answers don't match"], success: false, ids: []}
+	let errors:string[] = [];
+	let success = true;
+	let ids:number[] = [];
+	for (let i=0; i<answers.length;i++) {
+		let {errors:singleErrors, success:singleSuccess, id} = await postAnswer(answers[i], question_ids[i])
+		if (!singleSuccess) {
+			errors.push(...singleErrors);
+			success = false;
+			break;
+		} else ids.push(id);
+	}
+	return {errors: errors, ids: ids, success: success};
 }
 
 const postOrg = async (orgParams:string[]) => {
@@ -159,4 +177,4 @@ const postUserInfo = async (userInfoParams:string[]) => {
 }
 
 
-export {postAnswer, postUser, postOrg, postProgram, postSurvey, postUserInfo}
+export {postAnswers, postUser, postOrg, postProgram, postSurvey, postUserInfo}

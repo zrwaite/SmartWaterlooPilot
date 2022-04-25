@@ -6,11 +6,11 @@ import { postSurveyReturn} from "../types/surveys"
 import { postOrgType, postOrgReturn} from "../types/orgs"
 import { postSurveyType } from "../types/surveys";
 
-const web2PostAnswer = async (questionId: string, answer: string):Promise<string[]> => {
-	let json = await httpReq("/api/answer/", "POST", {
+const web2PostAnswers = async (questionIds: string[], answers: string[]):Promise<string[]> => {
+	let json = await httpReq("/api/answers/", "POST", {
 		user_id: cookies.get("userId"),
-		answer: answer,
-		question_id: questionId,
+		answers: answers,
+		question_ids: questionIds,
 		link: true
 	})
 	if (json) {
@@ -108,4 +108,4 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 	} else return ["request failed"];
 }
 
-export {web2PostAnswer, web2PostSurvey, postProgramWeb2, postOrgWeb2, postUserWeb2};
+export {web2PostAnswers, web2PostSurvey, postProgramWeb2, postOrgWeb2, postUserWeb2};

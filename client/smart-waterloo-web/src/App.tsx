@@ -99,8 +99,8 @@ function App() {
 							<Route path="/programdetails/:id/user" element={<AccountParent page={"programdetails"} org={false} />}></Route>
 							<Route path="/programdetails/:id/org/:orgId" element={<AccountParent page={"programdetails"} org={true} />}></Route>
 
-							<Route path="/createprogram/:orgId" element={<CreateProgram />}></Route>
-							<Route path="/createsurvey/:orgId" element={<CreateSurvey />}></Route>
+							<Route path="/createprogram/:orgId" element={<AccountParent page={"createprogram"} org={true} />}></Route>
+							<Route path="/createsurvey/:orgId" element={<AccountParent page={"createsurvey"} org={true} />}></Route>
 							<Route path="/addorgmember/:orgId" element={<AccountParent page={"addorgmember"} org={true} />}></Route>
 							<Route path="/orgdata/:orgId" element={<AccountParent page={"orgdata"} org={true} />}></Route>
 

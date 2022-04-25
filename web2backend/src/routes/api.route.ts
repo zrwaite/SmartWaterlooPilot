@@ -39,7 +39,7 @@ router.route('/question')
 
 router.route('/answer')
 	.get(answerCtrl.getAnswer)
-	.post(answerCtrl.postAnswer)
+	.post(answerCtrl.postAnswers)
 	.put(answerCtrl.putAnswer)
 	.delete(answerCtrl.deleteAnswer)
 

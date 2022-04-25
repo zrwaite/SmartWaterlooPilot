@@ -6,6 +6,7 @@ import {useState} from "react";
 import { postSurvey } from "../../data/postData";
 import cookies from "../../modules/cookies";
 import { forceNavigate } from "../../modules/navigate";
+import { AccountChildProps } from "../AccountParent";
 //Todo change buttons to links
 
 
@@ -21,7 +22,7 @@ const DefaultStandardInput = {
 }
 const DefaultQuestionArray:Question[] = [];
 
-const CreateSurvey = () => {
+const CreateSurvey = (props:AccountChildProps) => {
 	const navigate = useNavigate();
 	let {mobile} = useContext(MobileContext);
 	let {orgId} = useParams();

@@ -3,7 +3,7 @@ import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
 import { AbiItem } from 'web3-utils';
 import programABI from "./utils/OrganisationEvents.json";
-import {postProgramWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey, web2PostAnswer} from "./web2/web2PostData";
+import {postProgramWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey, web2PostAnswers} from "./web2/web2PostData";
 import { postSurveyReturn, postSurveyType, Question, submitSurveyReturn} from "./types/surveys";
 import { postOrgReturn, postOrgType } from "./types/orgs";
 import { postProgramReturn, postProgramType } from "./types/programs";
@@ -28,17 +28,16 @@ const submitSurvey = async (surveyId: string, questions: Question[], answers: st
 	questions.forEach((question, i) => {
 		if (question.choices?.length && !question.choices.includes(answers[i])) return {success: false, errors: ["invalid answer "+answers[i]]};
 	});
-	for (let i=0; i<questions.length; i++) {
-		let postAnswerErrors = await postAnswer(questions[i].id, answers[i])
-		if (postAnswerErrors.length) return {success: false, errors: postAnswerErrors};
-	}
+	let questionIds = questions.map((question) => question.id)
+	let postAnswersErrors = await postAnswers(questionIds, answers)
+	if (postAnswersErrors.length) return {success: false, errors: postAnswersErrors}; 
 	let {success, errors} = await addSurveytoUser(cookies.get("userId"), surveyId)
 	return {success: success, errors: errors};
 }
-const postAnswer = async (questionId: string, answer: string):Promise<string[]> => {
-	return USE_WEB3?(await web3PostAnswer(questionId, answer)):(await web2PostAnswer(questionId, answer)); 
+const postAnswers = async (questionIds: string[], answers: string[]):Promise<string[]> => {
+	return USE_WEB3?(await web3PostAnswers(questionIds, answers)):(await web2PostAnswers(questionIds, answers)); 
 }
-const web3PostAnswer = async (questionId: string, answer: string):Promise<string[]> => {
+const web3PostAnswers = async (questionIds: string[], answers: string[]):Promise<string[]> => {
 	return ["function not implemented"]; 
 }
 
