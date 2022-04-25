@@ -68,7 +68,8 @@ create table if not exists "questions"(
 	id serial primary key,
 	prompt TEXT,
 	answer_type type_choices,
-	choices TEXT[] default array[]::text[]
+	choices TEXT[] default array[]::text[],
+	mandatory bit default '1'
 );
 
 create table if not exists "answers"(
@@ -85,8 +86,8 @@ create table if not exists "programs"(
 	FOREIGN KEY (org) REFERENCES orgs(id),
 	min_age int,
 	max_age int,
-	start_date date,
-	end_date date,
+	start_date timestamp,
+	end_date timestamp,
 	place text,
 	category varchar(80),
 	description TEXT,

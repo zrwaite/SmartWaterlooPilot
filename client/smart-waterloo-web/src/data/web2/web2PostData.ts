@@ -41,9 +41,10 @@ const postProgramWeb2 = async (id:string, inputData:postProgramType):Promise<pos
 	let json = await httpReq("/api/program/", "POST", {
 		org: id,
 		name: inputData.name,
-		age_group: inputData.age,
-		start_date: inputData.start_day+"/"+inputData.start_month+"/"+inputData.start_year,
-		end_date: inputData.end_day+"/"+inputData.end_month+"/"+inputData.end_year,
+		min_age: inputData.min_age,
+		max_age: inputData.max_age,
+		start_date: inputData.start_day+"/"+inputData.start_month+"/"+inputData.start_year+" "+inputData.start_hour+":"+inputData.start_minute+":00",
+		end_date: inputData.end_day+"/"+inputData.end_month+"/"+inputData.end_year+" "+inputData.end_hour+":"+inputData.end_minute+":00",
 		category: inputData.category,
 		description: inputData.description,
 		image: "1",
