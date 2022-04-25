@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS "user_info"(
 	grade varchar(100),
 	postal_code varchar(100),
 	household_income varchar(100),
+	household_composition varchar(100),
 	height varchar(100),
 	weight varchar(100),
 	primary_language varchar(100),

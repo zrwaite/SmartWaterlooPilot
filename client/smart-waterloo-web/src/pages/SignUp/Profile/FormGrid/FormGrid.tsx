@@ -1,5 +1,5 @@
 // import {Link} from "react-router-dom";
-import { incomeOptions, genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState } from "./FormGridData";
+import {householdCompositionOptions, incomeOptions, genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState } from "./FormGridData";
 import Select, { ActionMeta } from "react-select";
 import { Link } from "react-router-dom";
 
@@ -90,6 +90,12 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 							Household Income <span style={greyText}>(Optional)</span>
 						</p>
 						<Select className={"selectComponent"} defaultInputValue={props.formData.household_income} name={"household_income"} onChange={props.handleParentSelectChange} options={incomeOptions} />
+					</div>
+					<div className="formDiv">
+						<p>
+							Household Composition <span style={greyText}>(Optional)</span>
+						</p>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.household_composition} name={"household_composition"} onChange={props.handleParentSelectChange} options={householdCompositionOptions} />
 					</div>
 					<div className="formDiv">
 						<p>

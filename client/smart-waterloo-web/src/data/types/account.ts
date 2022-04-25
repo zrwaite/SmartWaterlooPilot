@@ -86,7 +86,7 @@ interface postUserType {
 	avatar_string:string, 
 	password:string,
 	household_income: string,
-	num_family_members: string,
+	household_composition: string,
 	primary_language: string,
 	secondary_language: string,
 	heard: string,

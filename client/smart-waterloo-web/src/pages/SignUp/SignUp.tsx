@@ -36,7 +36,7 @@ const defaultProfileProps = {
 	religion: "",
 	sexuality: "",
 	household_income: "",
-	num_family_members: "",
+	household_composition: "",
 	primary_language: "",
 	secondary_language: "",
 	heard: "",

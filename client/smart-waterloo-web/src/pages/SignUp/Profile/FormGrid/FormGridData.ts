@@ -43,22 +43,64 @@ const sexualityOptions = [
 ]
 const raceOptions = [
 	{ value: "Select", label: "--Select--" },
-	{ value: "White", label: "White" },
-	{ value: "Black", label: "Black or African American" },
-	{ value: "Native", label: "Native American or Alaska Native" },
-	{ value: "Asian", label: "Asian" },
-	{ value: "Pacific", label: "Native Hawaiian or Other Pacific Islander" },
-	{ value: "Hispanic", label: "Hispanic" },
-	{ value: "Other", label: "Other" }
+	{ value: "Asian-East", label: "Asian-East" },
+	{ value: "Asian-South", label: "Asian-South" },
+	{ value: "Asian-South East", label: "Asian-South East" },
+	{ value: "Black-African", label: "Black-African" },
+	{ value: "Black-North American", label: "lack-North American" },
+	{ value: "First Nations", label: "First Nations" },
+	{ value: "Indian-Caribbean", label: "Indian-Caribbean" },
+	{ value: "Indigenous/Aboriginal", label: "Indigenous/Aboriginal" },
+	{ value: "Inui", label: "Inui" },
+	{ value: "Latin American", label: "Latin American" },
+	{ value: "Metis", label: "Metis" },
+	{ value: "Middle European", label: "Middle European" },
+	{ value: "White - European", label: "White - European" },
+	{ value: "White-North American", label: "White-North American" },
+	{ value: "Mixed Heritage", label: "Mixed Heritage" },
+	{ value: "Do not know", label: "Do not know" },
+	{ value: "Prefer not to answer", label: "Prefer not to answer" },
+	{ value: "Other", label: "Other" },
 ]
+
+
 const incomeOptions = [
 	{ value: "Select", label: "--Select--" },
-	{ value: "<20000", label: "0 - 20,000" },
-	{ value: "<50000", label: "20,000 - 50,000" },
-	{ value: "<100000", label: "50,000 - 100,000" },
-	{ value: "<250000", label: "100,000 - 250,000" },
-	{ value: ">250000", label: "250,000+" },
+	{ value: "0-14,999", label: "$0-14,999" },
+	{ value: "15,000-19,999", label: "$15,000-19,999" },
+	{ value: "20,000-24,999", label: "$20,000-24,999" },
+	{ value: "25,000-29,999", label: "$25,000-29,999" },
+	{ value: "30,000-34,999", label: "$30,000-34,999" },
+	{ value: "35,000-39,000", label: "$35,000-39,000" },
+	{ value: "40,000-59,999", label: "$40,000-59,999" },
+	{ value: "Over 60,000", label: "Over $60,000" },
+	{ value: "Do not know", label: "Do not know" },
+	{ value: "Prefer not to answer", label: "Prefer not to answer" },
 ]
+
+const householdCompositionOptions = [
+	{ value: "Mother Father Child(ren)", label: "Mother Father Child(ren)" },
+	{ value: "Couple without children", label: "Couple without children" },
+	{ value: "Sole Member", label: "Sole Member" },
+	{ value: "Grandparent(s) with Grandchild(ren)", label: "Grandparent(s) with Grandchild(ren)" },
+	{ value: "Extended Family", label: "Extended Family" },
+	{ value: "Unrelated housemates", label: "Unrelated housemates" },
+	{ value: "Siblings", label: "Siblings" },
+	{ value: "Sinlge Parent Family (Mother)", label: "Single Parent Family (Mother)" },
+	{ value: "Single Parent Family (Father)", label: "Single Parent Family (Father)" },
+	{ value: "Same sex couple", label: "Same sex couple" },
+	{ value: "Do Not Know", label: "Do Not Know" },
+	{ value: "Prefer Not to Answer", label: "Prefer Not to Answer" },
+	{ value: "Other", label: "Other" },
+]
+/*
+ 
+ 
+
+ 
+ 
+
+*/
 type ProfileFormGridState = {
 	day: string,
 	month: string,
@@ -72,12 +114,12 @@ type ProfileFormGridState = {
 	religion: string,
 	sexuality: string,
 	household_income: string,
-	num_family_members: string,
 	primary_language: string,
 	secondary_language: string,
 	heard: string,
+	household_composition:string,
 	contact: boolean,
-	code_of_conduct: boolean
+	code_of_conduct: boolean,
 }
-export {genderOptions, religionOptions, sexualityOptions, raceOptions, incomeOptions}
+export {genderOptions, religionOptions, sexualityOptions, raceOptions, incomeOptions, householdCompositionOptions}
 export type {ProfileFormGridState}

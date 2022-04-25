@@ -9,6 +9,7 @@ const baseUserInfo = {
 	grade: "",
 	postal_code: "",
 	household_income: "",
+	household_composition: "",
 	height: "",
 	weight: "",
 }

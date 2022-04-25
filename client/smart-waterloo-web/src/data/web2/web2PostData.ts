@@ -90,6 +90,7 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 		postal_code: inputData.postalCode,
 		avatar_string: inputData.avatar_string,
 		household_income: inputData.household_income,
+		household_composition: inputData.household_composition,
 		primary_language: inputData.primary_language,
 		secondary_language: inputData.secondary_language,
 		heard: inputData.heard,
