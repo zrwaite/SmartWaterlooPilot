@@ -6,7 +6,7 @@ const baseProgram = {
 	start_date: "",
 	end_date: "",
 	place: "",
-	category: "",
+	// category: "",
 	description: "",
 	image: ""
 }

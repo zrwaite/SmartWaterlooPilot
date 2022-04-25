@@ -1,8 +1,8 @@
 import "./CreateProgram.css";
 import { useContext, useState } from "react";
 import { MobileContext } from "../../App";
-import { programCategories } from "./CreateProgramData";
-import Select, { ActionMeta } from "react-select";
+// import { programCategories } from "./CreateProgramData";
+// import Select, { ActionMeta } from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import { postProgram } from "../../data/postData";
 import cookies from "../../modules/cookies";
@@ -11,6 +11,9 @@ import { AccountChildProps } from "../AccountParent";
 
 //Todo change buttons to links
 const DefaultCreateProgramState = {
+	booleanInputs: {
+		linkSurvey: false
+	},
 	inputs: {
 		name: "",
 		min_age: "",
@@ -21,13 +24,14 @@ const DefaultCreateProgramState = {
 		end_day: "",
 		end_month: "",
 		end_year: "",
-		category: "",
+		// category: "",
 		description: "",
 		place: "",
 		start_hour: "",
 		start_minute: "",
 		end_hour: "",
-		end_minute: ""
+		end_minute: "",
+		linked_survey: ""
 	}
 }
 const CreateProgram = (props:AccountChildProps) => {
@@ -36,28 +40,45 @@ const CreateProgram = (props:AccountChildProps) => {
 	let {orgId} = useParams();
 	const [state, setState] = useState(DefaultCreateProgramState)
 	const [canSubmit, setCanSubmit] = useState(true);
-	const handleInputChange = (Program: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
 		let inputKeys: keyof typeof state.inputs;
-		const name = Program.target.name as typeof inputKeys;
+		const name = event.target.name as typeof inputKeys;
 		let partialInput = { ...state.inputs };
-		partialInput[name] = Program.target.value;
+		partialInput[name] = event.target.value;
 		setState({ ...state, inputs: partialInput });
 	}
-	const handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
-		let inputKeys: keyof typeof state.inputs;
-		const name = actionMeta.name as typeof inputKeys;
-		let partialInput = { ...state.inputs };
-		partialInput[name] = newValue?.value || "";
-		setState({ ...state, inputs: partialInput });
+	const handleBooleanInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		let inputKeys: keyof typeof state.booleanInputs;
+		const name = event.target.name as typeof inputKeys;
+		let partialInput = { ...state.booleanInputs };
+		partialInput[name] = event.target.checked;
+		setState({ ...state, booleanInputs: partialInput });
 	}
-	const complete = Object.values(state.inputs).every(answer => answer !== "");
+	// const handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
+	// 	let inputKeys: keyof typeof state.inputs;
+	// 	const name = actionMeta.name as typeof inputKeys;
+	// 	let partialInput = { ...state.inputs };
+	// 	partialInput[name] = newValue?.value || "";
+	// 	setState({ ...state, inputs: partialInput });
+	// }
+	let complete = true;
+	const values = Object.values(state.inputs);
+	const keys = Object.keys(state.inputs);
+	for (let i=0; i<values.length; i++) {
+		if (values[i] === "" && keys[i]!=="linked_survey") {
+			complete = false
+		} else if (keys[i]==="linked_survey" && state.booleanInputs.linkSurvey && values[i]=== "") {
+			complete = false;
+		}
+	}
 	const greyText = { color: "grey" };
 	const link = { cursor: "pointer" };
 
 	const ProgramCreation = async () => {
 		setCanSubmit(false);
 		if (orgId) {
-			let {success, errors, programId} = await postProgram(orgId, {...state.inputs});
+			const linkedSurvey = state.booleanInputs.linkSurvey?state.inputs.linked_survey:null;
+			let {success, errors, programId} = await postProgram(orgId, {...state.inputs}, linkedSurvey );
 			if (success) forceNavigate(`/Programdetails/${programId}/org/${orgId}`);
 			else {
 				alert(JSON.stringify(errors));
@@ -65,7 +86,6 @@ const CreateProgram = (props:AccountChildProps) => {
 			}
 		}
 	}
-	console.log(props)
 	
 	return (
 		<>
@@ -121,18 +141,35 @@ const CreateProgram = (props:AccountChildProps) => {
 							<input name={"end_minute"} className={"createProgramMiniInput"} placeholder={"30"} value={state.inputs.end_minute} onChange={handleInputChange} />
 						</div>
 					</div>
-					<div className="formQuestion">
+					{/* <div className="formQuestion">
 						<p>Category</p>
 						<Select className={"selectComponent"} defaultInputValue={state.inputs.category} name={"category"} onChange={handleSelectChange} options={programCategories} />
-					</div>
+					</div> */}
 					<div className={"formQuestion"}>
 						<p>Place</p>
-						<input name={"place"}  value={state.inputs.place} onChange={handleInputChange} />
+						<input name={"place"} className={"createProgramInput"} value={state.inputs.place} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
 						<p>Description</p>
 						<textarea name={"description"} className={"questionTextarea createProgramTextArea"} value={state.inputs.description} onChange={handleInputChange} />
 					</div>
+					<div className={"formQuestion"}>
+						<p>Link Survey?</p>
+						<input type={"checkbox"} name={"linkSurvey"} className={"createProgramIput"} checked={state.booleanInputs.linkSurvey} onChange={handleBooleanInputChange} />
+					</div>
+					{state.booleanInputs.linkSurvey&&(
+						<div className={"linkedSurvey"}>
+							<p>Link Survey:</p>
+							{
+								props.surveysData.surveys.map((survey, i) => {return (
+									<div className={"questionChoice"} key={i}>
+										<input name={"linked_survey"} type="radio" value={survey.id} checked={survey.id==state.inputs.linked_survey} onChange={handleInputChange}/>
+										Name:"{survey.name}"  Id:"{survey.id}"
+									</div>
+								)})
+							}
+						</div>
+					)}
 					<p>*All fields are required to continue</p>
 					<button onClick={canSubmit&&complete?ProgramCreation:undefined} className={`createProgramButton ${canSubmit&&complete ? "blackButton" : "disabledButton"}`}>Create Program</button>
 				</div>

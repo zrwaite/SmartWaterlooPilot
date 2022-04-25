@@ -90,7 +90,7 @@ create table if not exists "programs"(
 	start_date timestamp,
 	end_date timestamp,
 	place text,
-	category varchar(80),
+	-- category varchar(80),
 	description TEXT,
 	linked_survey_id int null,
 	FOREIGN KEY (linked_survey_id) REFERENCES surveys(id),

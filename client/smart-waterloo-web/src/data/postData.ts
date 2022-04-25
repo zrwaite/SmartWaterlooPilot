@@ -17,8 +17,8 @@ const postOrg = async (inputData:postOrgType):Promise<postOrgReturn> => {
 const postUser = async (inputData:postUserType):Promise<string[]> => {
 	return USE_WEB3?(await postUserWeb3(inputData)):(await postUserWeb2(inputData));
 }
-const postProgram = async (id:string, inputData:postProgramType):Promise<postProgramReturn> => {
-	return USE_WEB3?(await postProgramWeb3(id, inputData)):(await postProgramWeb2(id, inputData));
+const postProgram = async (id:string, inputData:postProgramType, linkedSurvey:string|null):Promise<postProgramReturn> => {
+	return USE_WEB3?(await postProgramWeb3(id, inputData, linkedSurvey)):(await postProgramWeb2(id, inputData, linkedSurvey));
 }
 const postSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
 	return USE_WEB3?(await web3PostSurvey(id, inputData)):(await web2PostSurvey(id, inputData));
@@ -48,7 +48,7 @@ const web3PostSurvey = async (id:string, inputData:postSurveyType):Promise<postS
 const postOrgWeb3 = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	return {success: false, errors: ["not implemented"], orgId: ""};
 }
-const postProgramWeb3 = async (id:string, inputData:postProgramType):Promise<postProgramReturn> => {
+const postProgramWeb3 = async (id:string, inputData:postProgramType, linkedSurvey:string|null):Promise<postProgramReturn> => {
 	let accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 	web3.eth.defaultAccount = accounts[0];
 	const contractABI = programABI;
@@ -63,7 +63,7 @@ const postProgramWeb3 = async (id:string, inputData:postProgramType):Promise<pos
 		inputData.min_age,
 		(inputData.start_day + inputData.start_month + inputData.start_year),
 		(inputData.end_day + inputData.end_month + inputData.end_year),
-		inputData.category,
+		// inputData.category,
 		inputData.description
 	).send({ from: web3.eth.defaultAccount })
 		.then(() => {

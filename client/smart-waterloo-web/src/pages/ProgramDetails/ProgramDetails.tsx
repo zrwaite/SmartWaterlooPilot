@@ -9,13 +9,14 @@ import "./ProgramDetails.css";
 import ProgramInfo from "./ProgramInfo";
 import ClipLoader from "react-spinners/ClipLoader";
 import NotFound from "../NotFound";
-import {useParams,useNavigate,} from "react-router-dom";
+import {useParams,useNavigate, Link,} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultProgram } from '../../data/types/programs';
 import cookies from "../../modules/cookies";
 import { addProgramtoUser } from '../../data/addData';
 import { AccountChildProps } from '../AccountParent';
 import { getDefaultUserInfoLists } from '../../data/types/account';
+import { looseIncludes } from '../../modules/other';
 
 Modal.setAppElement("#root");
 
@@ -45,6 +46,11 @@ const ProgramsDetails = (props: AccountChildProps) => {
 	function closeModal() {
 		setIsOpen(false);
 	}
+	console.log(programData.program);
+	let filledSurvey = false;
+	if (!programData.program.linked_survey_id) filledSurvey = true;
+	else if (looseIncludes(props.accountData.account.surveys, programData.program.linked_survey_id)) filledSurvey = true;
+	console.log(filledSurvey);
 	const signedUp = props.accountData.account.programs.includes(parseInt(programData.program.id));
 	const trySignUp = async () => {
 		setCanSubmit(false);
@@ -181,7 +187,14 @@ const ProgramsDetails = (props: AccountChildProps) => {
 								</>
 							)}
 							{props.org?null:(<div className="DesktopPanelNoBorder">
-								<p className={bottomButtonClass} onClick={canSubmit?trySignUp:undefined}>{buttonText}</p>
+								{
+									!filledSurvey&&(
+										<div>
+											<h6>You have to fill out this survey first: <Link to={`/survey/${programData.program.linked_survey_id}/user`}>Survey</Link></h6>
+										</div>
+									)
+								}
+								<p className={filledSurvey?bottomButtonClass:"disabledButton"} onClick={canSubmit&&filledSurvey?trySignUp:undefined}>{buttonText}</p>
 							</div>)}
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>

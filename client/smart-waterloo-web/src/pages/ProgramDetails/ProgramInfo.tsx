@@ -7,9 +7,13 @@ interface ProgramData {
     age_group: string;
     start_date: string;
     end_date: string;
+	min_age: string,
+	max_age: string;
+	linked_survey_id: string;
     category: string;
     signed_up: boolean;
     description: string;
+	place: string
     image: string;
 	attendees: string;
     org: boolean;
@@ -21,7 +25,8 @@ const ProgramInfo = (props: ProgramData): any => {
 				<p className="lightblue">NEW</p>
 				<p className="lightbluetext">{props.category}</p>
 				<h5 className="programTitle">{props.name}</h5>
-				<p className="greytext">For Ages {props.age_group}</p>
+				<h6 className="programTitle">{props.place}</h6>
+				<p className="greytext">For Ages {props.min_age}-{props.max_age}</p>
 				<p className="greytext">{props.start_date} {props.end_date}</p>
 				<br></br>
 				<p >{props.description}</p>
