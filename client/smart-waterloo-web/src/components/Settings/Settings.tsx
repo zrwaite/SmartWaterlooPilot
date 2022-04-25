@@ -23,10 +23,6 @@ const Settings = (props: settingsProps) => {
 			transform: "translateX(-50%)",
 		},
 	};
-	const logoutRedirect = () => {
-		logout();
-		window.location.href="/";
-	}
 	return (
 		<Modal isOpen={props.open} onRequestClose={props.closeModal} style={customStyles} contentLabel="Example Modal">
 			<div className="settingsModal">
@@ -35,7 +31,7 @@ const Settings = (props: settingsProps) => {
 					<img className="h4 imageButton" onClick={props.closeModal} src={icons.close} alt="close"></img>
 				</div>
 				<div>
-					<button className={"blackButton settingsButton"} onClick={logoutRedirect}>Logout</button>
+					<button className={"blackButton settingsButton"} onClick={logout}>Logout</button>
 					<button className={"blackButton settingsButton"} onClick={() => navigate("/createorg")}>Create Organization</button>
 					{props.org&&<button className={"blackButton settingsButton"} onClick={() => {props.closeModal(); navigate(`/addorgmember/${props.orgId}`)}}>Add Org Member</button>}
 				</div>

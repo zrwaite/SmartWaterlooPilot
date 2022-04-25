@@ -1,3 +1,4 @@
+import { forceNavigate } from "../modules/navigate";
 import {USE_WEB3} from "./dataConstants";
 import {web2Login, web2AccountExists, web2IsSignedIn, web2logout} from "./web2/web2Account";
 
@@ -9,6 +10,7 @@ const accountExists = async (userId: number):Promise<boolean> => {
 }
 const logout = () => {
 	USE_WEB3?web3logout():web2logout();
+	forceNavigate("/");
 }
 
 
