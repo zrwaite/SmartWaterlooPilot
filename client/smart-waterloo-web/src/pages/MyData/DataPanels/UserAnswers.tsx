@@ -13,14 +13,11 @@ const UserAnswersPanel = (props: MyDataPanelProps) => {
 	return (
 		<div onClick={() => navigate("/useranswers")} className={`dataPanel`}>
 			<div className="dataPanelInfo">
-				<h5>Your Answers</h5>
+				<h5>Your Surveys</h5>
 			</div>
 			<div className="dataPanelPreview">
 				<ul>
-					<li>Surveys</li>
-					<li>Long answer</li>
-					<li>Multiple Choice</li>
-					<li>...</li>
+					<li>Your Answers</li>
 				</ul>
 			</div>
 		</div>

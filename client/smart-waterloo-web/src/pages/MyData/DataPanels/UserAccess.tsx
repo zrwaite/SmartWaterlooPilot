@@ -13,15 +13,13 @@ const UserAccessPanel = (props: MyDataPanelProps) => {
 	return (
 		<div onClick={() => navigate("/useraccess")} className={`dataPanel`}>
 			<div className="dataPanelInfo">
-				<h5>Who has access</h5>
+				<h5>Who has Access to Your Data</h5>
 				<p>What orgs have you given your data to?</p>
 			</div>
 			<div className="dataPanelPreview">
 				<ul>
 					<li>Surveys</li>
 					<li>Programs</li>
-					<li>Members</li>
-					<li>...</li>
 				</ul>
 			</div>
 		</div>

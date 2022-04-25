@@ -1,8 +1,8 @@
 import "./CreateProgram.css";
 import { useContext, useState } from "react";
 import { MobileContext } from "../../App";
-// import { programCategories } from "./CreateProgramData";
-// import Select, { ActionMeta } from "react-select";
+import { programCategories } from "./CreateProgramData";
+import Select, { ActionMeta } from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import { postProgram } from "../../data/postData";
 import cookies from "../../modules/cookies";
@@ -24,7 +24,7 @@ const DefaultCreateProgramState = {
 		end_day: "",
 		end_month: "",
 		end_year: "",
-		// category: "",
+		category: "",
 		description: "",
 		place: "",
 		start_hour: "",
@@ -54,13 +54,13 @@ const CreateProgram = (props:AccountChildProps) => {
 		partialInput[name] = event.target.checked;
 		setState({ ...state, booleanInputs: partialInput });
 	}
-	// const handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
-	// 	let inputKeys: keyof typeof state.inputs;
-	// 	const name = actionMeta.name as typeof inputKeys;
-	// 	let partialInput = { ...state.inputs };
-	// 	partialInput[name] = newValue?.value || "";
-	// 	setState({ ...state, inputs: partialInput });
-	// }
+	const handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
+		let inputKeys: keyof typeof state.inputs;
+		const name = actionMeta.name as typeof inputKeys;
+		let partialInput = { ...state.inputs };
+		partialInput[name] = newValue?.value || "";
+		setState({ ...state, inputs: partialInput });
+	}
 	let complete = true;
 	const values = Object.values(state.inputs);
 	const keys = Object.keys(state.inputs);
@@ -141,10 +141,10 @@ const CreateProgram = (props:AccountChildProps) => {
 							<input name={"end_minute"} className={"createProgramMiniInput"} placeholder={"30"} value={state.inputs.end_minute} onChange={handleInputChange} />
 						</div>
 					</div>
-					{/* <div className="formQuestion">
+					<div className="formQuestion">
 						<p>Category</p>
 						<Select className={"selectComponent"} defaultInputValue={state.inputs.category} name={"category"} onChange={handleSelectChange} options={programCategories} />
-					</div> */}
+					</div>
 					<div className={"formQuestion"}>
 						<p>Place</p>
 						<input name={"place"} className={"createProgramInput"} value={state.inputs.place} onChange={handleInputChange} />

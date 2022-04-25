@@ -57,7 +57,7 @@ interface postProgramType {
 	end_hour:string,
 	end_minute:string,
 	place:string,
-	// category:string, 
+	category:string, 
 	description: string
 }
 
