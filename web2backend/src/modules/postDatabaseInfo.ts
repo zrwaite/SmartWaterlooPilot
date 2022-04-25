@@ -154,12 +154,14 @@ const postAnswers = async (answers:string[], question_ids:number[]) => {
 	let success = true;
 	let ids:number[] = [];
 	for (let i=0; i<answers.length;i++) {
-		let {errors:singleErrors, success:singleSuccess, id} = await postAnswer(answers[i], question_ids[i])
-		if (!singleSuccess) {
-			errors.push(...singleErrors);
-			success = false;
-			break;
-		} else ids.push(id);
+		if (answers[i]!==""&&answers[i]!==null) {
+			let {errors:singleErrors, success:singleSuccess, id} = await postAnswer(answers[i], question_ids[i])
+			if (!singleSuccess) {
+				errors.push(...singleErrors);
+				success = false;
+				break;
+			} else ids.push(id);
+		}
 	}
 	return {errors: errors, ids: ids, success: success};
 }

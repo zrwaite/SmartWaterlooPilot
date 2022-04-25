@@ -8,6 +8,7 @@ interface SurveyQuestionProps extends Question {
 	answer: string;
 	owner: boolean;
 	id: string;
+	optional: boolean;
 }
 
 const defaultAnswers: {answer: string, question_id: number}[] = []
@@ -75,13 +76,15 @@ const SurveyQuestion = (props: SurveyQuestionProps) => {
 		setDataPulled(true);
 	}
 	const fullWidth = {width: "100%"}
+	const greyText = {color: "grey"};
 	return (
 		<div style={fullWidth}>
 			<div className="questionPrompt">
 				<div className={"questionIndexBubble"}>{props.index + 1}</div>
-				<p>{props.prompt}</p>
+				<p>{props.prompt} <span style={greyText}>{props.optional&&"  *Optional"}</span></p>
 			</div>
 			<div>
+				
 				{props.owner?userAnswers:userInput}
 			</div>
 		</div>

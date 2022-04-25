@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS "user_info"(
 	primary_language varchar(100),
 	secondary_language varchar(100),
 	heard text,
-	contact bit default '0'
+	contact boolean default 'f'
 );
 
 CREATE TABLE IF NOT EXISTS "users"(
@@ -56,7 +56,7 @@ create table if not exists "surveys"(
 	name TEXT,
 	org int,
 	FOREIGN KEY (org) REFERENCES orgs(id),
-	linked bit default '0',
+	linked boolean default 'f',
 	description TEXT,
 	questions integer[],
 	user_info int[] default array[]::integer[]
@@ -69,7 +69,7 @@ create table if not exists "questions"(
 	prompt TEXT,
 	answer_type type_choices,
 	choices TEXT[] default array[]::text[],
-	mandatory bit default '1'
+	optional boolean default 'f'
 );
 
 create table if not exists "answers"(

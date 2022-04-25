@@ -61,7 +61,7 @@ export default class answerController {
 	}
 	static async postAnswers(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success:answerSuccess, params, errors:answerErrors} = getBodyParams(req, ["user_id", "link", "answers", "questions"]);
+		let {success:answerSuccess, params, errors:answerErrors} = getBodyParams(req, ["user_id", "link", "answers", "question_ids"]);
 		if (answerSuccess) {
 			let userId = params[0];
 			let link = params[1];

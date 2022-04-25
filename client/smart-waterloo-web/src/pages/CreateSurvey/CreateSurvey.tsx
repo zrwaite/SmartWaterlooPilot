@@ -13,6 +13,7 @@ import { AccountChildProps } from "../AccountParent";
 interface Question {
 	id: string;
 	prompt: string;
+	optional: boolean;
     answer_type: "text"|"mc";
 	choices: string[];
 }
@@ -37,14 +38,22 @@ const CreateSurvey = (props:AccountChildProps) => {
 		partialInput[name] = event.target.value;
         setStandardInputs(partialInput);
     }
+	const handleQuestionBooleanChange = (event: React.ChangeEvent<HTMLInputElement>, index:number, name: "optional") => {
+        let partialInput = [...questionInputs];
+		if (name==="optional") {
+			partialInput[index][name] = event.target.checked;
+		}
+        setQuestionInputs(partialInput);
+	}
+
 	const handleQuestionInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, index: number, name: "prompt"|"answer_type") => {
         let partialInput = [...questionInputs];
 		if (name==="answer_type") {
 			partialInput[index][name] = event.target.value as "text"|"mc";
 			if (partialInput[index].choices.length===0) partialInput[index].choices = ["", ""];
-		} else {
+		} else if (name==="prompt"){
 			partialInput[index][name] = event.target.value;
-		}
+		} 
         setQuestionInputs(partialInput);
     }
 	const handleAnswerInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, qindex: number, aindex: number) => {
@@ -61,6 +70,7 @@ const CreateSurvey = (props:AccountChildProps) => {
 		let previousQuestions = [...questionInputs];
 		previousQuestions.push({
 			id: "",
+			optional: false,
 			prompt: "",
 			answer_type: "text",
 			choices: []
@@ -157,6 +167,10 @@ const CreateSurvey = (props:AccountChildProps) => {
 													</div>
 												</div>
 											):null}
+										</div>
+										<div className={"horizontal"}>
+											<h6>Optional?</h6>
+											<input type={"checkbox"} name={"optional"} className={"createEventInput"} checked={questionInputs[i].optional} onChange={(e) => handleQuestionBooleanChange(e, i, "optional")} />
 										</div>
 									</div>
 								)

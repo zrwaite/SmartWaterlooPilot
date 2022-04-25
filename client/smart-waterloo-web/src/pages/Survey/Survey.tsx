@@ -53,7 +53,7 @@ const Survey = (props: AccountChildProps) => {
 	const questions = surveyData.survey.questions.map((question, i) => {
 		return <SurveyQuestion owner={owner} key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
 	});
-	const complete = answers.every(answer => answer!=="");
+	const complete = answers.every((answer, i) => (answer!=="")||surveyData.survey.questions[i].optional);
 	const trySubmitSurvey = async () => {
 		setCanSubmit(false);
 		let {success, errors} = await submitSurvey(surveyData.survey.id, surveyData.survey.questions, answers);

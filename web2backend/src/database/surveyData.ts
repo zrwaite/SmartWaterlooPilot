@@ -1,7 +1,7 @@
 const answerKeys = ["answer", "question_id"] as const;
 type answerValues = [string, number];
 
-const questionKeys = ["prompt", "answer_type", "choices", "mandatory"] as const;
+const questionKeys = ["prompt", "answer_type", "choices", "optional"] as const;
 const getQuestionKeys = [...questionKeys, "id"] as const;
 type questionValues = [string, string, string[]|undefined, number];
 type postQuestionValues = [string, string, string, number];

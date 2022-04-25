@@ -7,7 +7,7 @@ import { postOrgType, postOrgReturn} from "../types/orgs"
 import { postSurveyType } from "../types/surveys";
 
 const web2PostAnswers = async (questionIds: string[], answers: string[]):Promise<string[]> => {
-	let json = await httpReq("/api/answers/", "POST", {
+	let json = await httpReq("/api/answer/", "POST", {
 		user_id: cookies.get("userId"),
 		answers: answers,
 		question_ids: questionIds,
