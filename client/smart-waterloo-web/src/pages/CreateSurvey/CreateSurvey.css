@@ -53,6 +53,7 @@
 	height: 1rem;
 	width: 1rem;
 	margin: 0.5rem;
+	aspect-ratio: 1;
 }
 .createSurveyQuestionSection{
 	display: flex;

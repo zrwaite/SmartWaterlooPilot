@@ -1,5 +1,14 @@
 // import {Link} from "react-router-dom";
-import {householdCompositionOptions, incomeOptions, genderOptions, religionOptions, sexualityOptions, raceOptions, ProfileFormGridState } from "./FormGridData";
+import {
+	householdCompositionOptions,
+	incomeOptions,
+	genderOptions,
+	religionOptions,
+	sexualityOptions,
+	raceOptions,
+	ProfileFormGridState,
+	heardOptions, contactOptions
+} from "./FormGridData";
 import Select, { ActionMeta } from "react-select";
 import { Link } from "react-router-dom";
 
@@ -20,7 +29,9 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 		props.formData.year !== "" && !isNaN(parseInt(props.formData.year)) && parseInt(props.formData.year) <=3000  && parseInt(props.formData.year) >1000 &&
 		props.formData.gender !== "" &&
 		props.formData.postalCode !== "" &&
+		props.formData.city !== "" &&
 		props.formData.code_of_conduct
+
 	);
 	return (
 		<>
@@ -30,9 +41,15 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 					<label htmlFor="month">Month</label>
 					<label htmlFor="year">Year</label>
 					<div className="formDiv">
-						<p>
-							Date of Birth<span style={redText}>*</span>
-						</p>
+						<p>City<span style={redText}>*</span></p>
+						<input name="city" id="cityInput" type={"text"} value={props.formData.city} onChange={props.handleParentInputChange} />
+					</div>
+					<div className="formDiv">
+						<p>Postal Code<span style={redText}>*</span></p>
+						<input name="postalCode" id="postalCodeInput" placeholder="M5A" type={"text"} value={props.formData.postalCode} onChange={props.handleParentInputChange} />
+					</div>
+					<div className="formDiv">
+						<p>Date of Birth<span style={redText}>*</span></p>
 						<div className="horizontal">
 							<input name="day" id="dayInput" placeholder="DD" type={"text"} value={props.formData.day} onChange={props.handleParentInputChange} />
 							<pre> / </pre>
@@ -42,25 +59,19 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 						</div>
 					</div>
 					<div className="formDiv">
-						<p>
-							Gender<span style={redText}>*</span>
-						</p>
-						<Select className={"selectComponent"} defaultInputValue={props.formData.gender} name={"gender"} onChange={props.handleParentSelectChange} options={genderOptions} />
+						<p>Grade <span style={greyText}>(Optional)</span></p>
+						<input name="grade" id="gradeInput" type={"text"} value={props.formData.grade} onChange={props.handleParentInputChange} />
 					</div>
 					<div className="formDiv horizontal">
 						<div>
-							<p>
-								Height<span style={redText}>*</span>
-							</p>
+							<p>Height<span style={redText}>*</span></p>
 							<div className="pill">
 								<input name="height" id="heightInput" placeholder="168" type={"text"} value={props.formData.height} onChange={props.handleParentInputChange} />
 								<p className="pillText">cm</p>
 							</div>
 						</div>
 						<div>
-							<p>
-								Weight<span style={redText}>*</span>
-							</p>
+							<p>Weight<span style={redText}>*</span></p>
 							<div className="pill">
 								<input name="weight" id="weightInput" placeholder="160" type={"text"} value={props.formData.weight} onChange={props.handleParentInputChange} />
 								<p className="pillText">lbs</p>
@@ -68,80 +79,52 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 						</div>
 					</div>
 					<div className="formDiv">
-						<p>
-							Religion <span style={greyText}>(Optional)</span>
-						</p>
-						<Select className={"selectComponent"} defaultInputValue={props.formData.religion} name={"religion"} onChange={props.handleParentSelectChange} options={religionOptions} />
+						<p>Gender<span style={redText}>*</span></p>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.gender} name={"gender"} onChange={props.handleParentSelectChange} options={genderOptions} />
 					</div>
 					<div className="formDiv">
-						<p>
-							Sexuality <span style={greyText}>(Optional)</span>
-						</p>
+						<p>Sexual Orientation <span style={greyText}>(Optional)</span></p>
 						<Select className={"selectComponent"} defaultInputValue={props.formData.sexuality} name={"sexuality"} onChange={props.handleParentSelectChange} options={sexualityOptions} />
 					</div>
 					<div className="formDiv">
-						<p>
-							Race <span style={greyText}>(Optional)</span>
-						</p>
-						<Select className={"selectComponent"} defaultInputValue={props.formData.race} name={"race"} onChange={props.handleParentSelectChange} options={raceOptions} />
-					</div>
-					<div className="formDiv">
-						<p>
-							Household Income <span style={greyText}>(Optional)</span>
-						</p>
-						<Select className={"selectComponent"} defaultInputValue={props.formData.household_income} name={"household_income"} onChange={props.handleParentSelectChange} options={incomeOptions} />
-					</div>
-					<div className="formDiv">
-						<p>
-							Household Composition <span style={greyText}>(Optional)</span>
-						</p>
-						<Select className={"selectComponent"} defaultInputValue={props.formData.household_composition} name={"household_composition"} onChange={props.handleParentSelectChange} options={householdCompositionOptions} />
-					</div>
-					<div className="formDiv">
-						<p>
-							Primary Language <span style={greyText}>(Optional)</span>
-						</p>
+						<p>Primary Language <span style={greyText}>(Optional)</span></p>
 						<input name="primary_language" id="primaryLanguageInput" type={"text"} value={props.formData.primary_language} onChange={props.handleParentInputChange} />
 					</div>
 					<div className="formDiv">
-						<p>
-							Secondary Language <span style={greyText}>(Optional)</span>
-						</p>
+						<p>Secondary Language <span style={greyText}>(Optional)</span></p>
 						<input name="secondary_language" id="secondaryLanguageInput" type={"text"} value={props.formData.secondary_language} onChange={props.handleParentInputChange} />
 					</div>
-					<div className="formDiv horizontal">
-						<div>
-							<p>
-								Grade
-							</p>
-							<div className="horizontal">
-								<div className="pill">
-									<p className="pillText">-</p>
-									<input name="grade" id="gradeInput" type={"text"} value={props.formData.grade} onChange={props.handleParentInputChange} />
-									<p className="pillText">+</p>
-								</div>
-							</div>
+					<div className="formDiv">
+						<p>Religion <span style={greyText}>(Optional)</span></p>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.religion} name={"religion"} onChange={props.handleParentSelectChange} options={religionOptions} />
+					</div>
+
+					<div className="formDiv">
+						<p>Race <span style={greyText}>(Optional)</span></p>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.race} name={"race"} onChange={props.handleParentSelectChange} options={raceOptions} />
+					</div>
+					<div className="formDiv">
+						<p>Combined Household Income <span style={greyText}>(Optional)</span></p>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.household_income} name={"household_income"} onChange={props.handleParentSelectChange} options={incomeOptions} />
+					</div>
+					<div className="formDiv">
+						<p>Household Composition <span style={greyText}>(Optional)</span></p>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.household_composition} name={"household_composition"} onChange={props.handleParentSelectChange} options={householdCompositionOptions} />
+					</div>
+					<div className="formDiv">
+						<p>How did you hear about us? <span style={greyText}>(Optional)</span></p>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.heard} name={"heard"} onChange={props.handleParentSelectChange} options={heardOptions} />
+					</div>
+					<div className="formDiv">
+						<p>How would you like to be contacted for upcoming programs/events? <span style={greyText}>(Optional)</span></p>
+						<Select className={"selectComponent"} defaultInputValue={props.formData.contact} name={"contact"} onChange={props.handleParentSelectChange} options={contactOptions} />
+					</div>
+					<div className="formDiv">
+						<p>Please Read the <Link to={"/codeofconduct"}>Code of Conduct</Link></p>
+						<div className={"horizontal"}>
+							<p>I have read and agree with the Code of Conduct<span style={redText}>*</span></p>
+							<input name="code_of_conduct" id="codeOfConductInput" type={"checkbox"} checked={props.formData.code_of_conduct} onChange={props.handleParentCheckboxChange} />
 						</div>
-						<div>
-							<p>
-								Postal Code<span style={redText}>*</span>
-							</p>
-							<input name="postalCode" id="postalCodeInput" placeholder="M5A" type={"text"} value={props.formData.postalCode} onChange={props.handleParentInputChange} />
-						</div>
-					</div>
-					<div className="formDiv">
-						<p>
-							How did you hear about us? <span style={greyText}>(Optional)</span>
-						</p>
-						<input name="heard" id="heardInput" type={"text"} value={props.formData.heard} onChange={props.handleParentInputChange} />
-					</div>
-					<div className="formDiv">
-						<p>How would you like to be contacted for upcoming programs/events?</p>
-						<input name="contact" id="contactInput" type={"checkbox"} checked={props.formData.contact} onChange={props.handleParentCheckboxChange} />
-					</div>
-					<div className="formDiv">
-						<p>Have you read and agree to our <Link to={"/codeofconduct"}>Code of Conduct?</Link></p>
-						<input name="code_of_conduct" id="codeOfConductInput" type={"checkbox"} checked={props.formData.code_of_conduct} onChange={props.handleParentCheckboxChange} />
 					</div>
 				</section>
 				<div className="formDiv">

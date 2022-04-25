@@ -12,7 +12,7 @@ interface defaultProgramType {
 	description: string,
 	min_age: string,
 	max_age: string,
-	place: string,
+	location: string,
 	image: string,
 	attendees: string,
 	linked_survey_id: string,
@@ -27,7 +27,7 @@ const defaultProgram:defaultProgramType = {
 	end_date: "",
 	min_age: "",
 	max_age: "",
-	place: "",
+	location: "",
 	category: "",
 	signed_up: false,
 	description: "",
@@ -56,7 +56,7 @@ interface postProgramType {
 	start_minute:string,
 	end_hour:string,
 	end_minute:string,
-	place:string,
+	location:string,
 	category:string, 
 	description: string
 }

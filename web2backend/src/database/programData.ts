@@ -5,10 +5,9 @@ const baseProgram = {
 	max_age: "",
 	start_date: "",
 	end_date: "",
-	place: "",
+	location: "",
 	category: "",
 	description: "",
-	image: ""
 }
 const nullableProgram = {
 	linked_survey_id: ""

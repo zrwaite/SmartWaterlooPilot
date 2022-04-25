@@ -46,7 +46,7 @@ const postProgramWeb2 = async (id:string, inputData:postProgramType, linkedSurve
 		start_date: inputData.start_year+"/"+inputData.start_month+"/"+inputData.start_day+" "+inputData.start_hour+":"+inputData.start_minute+":00",
 		end_date: inputData.end_year+"/"+inputData.end_month+"/"+inputData.end_day+" "+inputData.end_hour+":"+inputData.end_minute+":00",
 		category: inputData.category,
-		place: inputData.place,
+		location: inputData.location,
 		linked_survey_id: linkedSurvey,
 		description: inputData.description,
 		image: "1",
@@ -96,7 +96,7 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 		primary_language: inputData.primary_language,
 		secondary_language: inputData.secondary_language,
 		heard: inputData.heard,
-		contact: inputData.contact?1:0
+		contact: inputData.contact,
 	})
 	if (json) {
 		let response = JSON.parse(json);

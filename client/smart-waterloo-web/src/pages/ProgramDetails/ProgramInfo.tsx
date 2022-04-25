@@ -13,7 +13,7 @@ interface ProgramData {
     category: string;
     signed_up: boolean;
     description: string;
-	place: string
+	location: string
     image: string;
 	attendees: string;
     org: boolean;
@@ -25,7 +25,7 @@ const ProgramInfo = (props: ProgramData): any => {
 				<p className="lightblue">NEW</p>
 				<p className="lightbluetext">{props.category}</p>
 				<h5 className="programTitle">{props.name}</h5>
-				<h6 className="programTitle">{props.place}</h6>
+				<h6 className="programTitle">{props.location}</h6>
 				<p className="greytext">For Ages {props.min_age}-{props.max_age}</p>
 				<p className="greytext">{props.start_date} {props.end_date}</p>
 				<br></br>

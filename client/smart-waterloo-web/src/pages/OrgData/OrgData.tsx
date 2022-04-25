@@ -97,7 +97,7 @@ const OrgData = (props:AccountChildProps) => {
 						<ul>
 							{userInfoComponents.religions.map((component, key) => <li key={key}>{component}</li>)}
 						</ul>
-						<p>Sexualities:</p>
+						<p>Sexual Orientations:</p>
 						<ul>
 							{userInfoComponents.sexualities.map((component, key) => <li key={key}>{component}</li>)}
 						</ul>

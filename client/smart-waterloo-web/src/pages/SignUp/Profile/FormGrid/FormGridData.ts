@@ -2,18 +2,18 @@ const genderOptions = [
 	{ value: "Select", label: "--Select--", isDisabled: true},
 	{ value: "Male", label: "Male"},
 	{ value: "Female", label: "Female"},
-	{ value: "Non-Binary", label: "Non-Binary"},
-	{ value: "Genderqueer", label: "Genderqueer"},
-	{ value: "Agender", label: "Agender"},
-	{ value: "Genderfluid", label: "Genderfluid"},
+	{ value: "Trans-Male to Female", label: "Trans-Male to Female"},
+	{ value: "Trans-Female to Male", label: "Trans-Female to Male"},
+	{ value: "Two Spirit", label: "Two Spirit"},
+	{ value: "Do Not Know", label: "Do Not Know"},
+	{ value: "Prefer Not to Answer", label: "Prefer Not to Answer"},
 	{ value: "Other", label: "Other"},
-	{ value: "Prefer not to say", label: "Prefer not to say"}
 ]
+
 const religionOptions = [
 	{ value: "Select", label: "--Select--", isDisabled: true},
 	{ value: "Muslim", label: "Muslim"},
 	{ value: "Jewish", label: "Jewish"},
-	{ value: "Satanist", label: "Satanist"},
 	{ value: "Atheist", label: "Atheist"},
 	{ value: "Agnostic", label: "Agnostic"},
 	{ value: "Scientologist", label: "Scientologist"},
@@ -22,12 +22,12 @@ const religionOptions = [
 	{ value: "Hindu", label: "Hindu"},
 	{ value: "Taoism", label: "Taoism"},
 	{ value: "Jainism", label: "Jainism"},
-	{ value: "Pastafarianism", label: "Pastafarianism"},
-	{ value: "Spiritual", label: "Not religious, but like, spiritual"},
+	{ value: "Satanist", label: "Satanist"},
+	{ value: "Spiritual", label: "Spiritual"},
 	{ value: "Other", label: "Other"}
 ]
 const sexualityOptions = [
-	{ value: "Select", label: "--Select--" },
+	{ value: "Select", label: "--Select--", isDisabled: true},
 	{ value: "Asexual", label: "Asexual" },
 	{ value: "Bisexual", label: "Bisexual" },
 	{ value: "Heterosexual", label: "Heterosexual" },
@@ -42,7 +42,7 @@ const sexualityOptions = [
 	{ value: "Other", label: "Other" }
 ]
 const raceOptions = [
-	{ value: "Select", label: "--Select--" },
+	{ value: "Select", label: "--Select--", isDisabled: true},
 	{ value: "Asian-East", label: "Asian-East" },
 	{ value: "Asian-South", label: "Asian-South" },
 	{ value: "Asian-South East", label: "Asian-South East" },
@@ -65,7 +65,7 @@ const raceOptions = [
 
 
 const incomeOptions = [
-	{ value: "Select", label: "--Select--" },
+	{ value: "Select", label: "--Select--", isDisabled: true},
 	{ value: "0-14,999", label: "$0-14,999" },
 	{ value: "15,000-19,999", label: "$15,000-19,999" },
 	{ value: "20,000-24,999", label: "$20,000-24,999" },
@@ -79,6 +79,7 @@ const incomeOptions = [
 ]
 
 const householdCompositionOptions = [
+	{ value: "Select", label: "--Select--", isDisabled: true},
 	{ value: "Mother Father Child(ren)", label: "Mother Father Child(ren)" },
 	{ value: "Couple without children", label: "Couple without children" },
 	{ value: "Sole Member", label: "Sole Member" },
@@ -93,14 +94,27 @@ const householdCompositionOptions = [
 	{ value: "Prefer Not to Answer", label: "Prefer Not to Answer" },
 	{ value: "Other", label: "Other" },
 ]
-/*
- 
- 
 
- 
- 
+const heardOptions = [
+	{ value: "Select", label: "--Select--", isDisabled: true},
+	{ value: "Facebook", label: "Facebook" },
+	{ value: "Website", label: "Website" },
+	{ value: "Newsletter", label: "Newsletter" },
+	{ value: "City Activities Guide", label: "City Activities Guide" },
+	{ value: "Word of Mouth", label: "Word of Mouth" },
+	{ value: "Flyer from School", label: "Flyer from School" },
+	{ value: "Internet search", label: "Internet search" },
+	{ value: "Friend", label: "Friend" },
+	{ value: "Other", label: "Other" },
+]
 
-*/
+const contactOptions = [
+	{ value: "Select", label: "--Select--", isDisabled: true},
+	{ value: "Email", label: "Email" },
+	{ value: "Phone", label: "Phone" },
+	{ value: "Mail", label: "Mail" },
+	{ value: "Other", label: "Other" },
+]
 type ProfileFormGridState = {
 	day: string,
 	month: string,
@@ -116,10 +130,11 @@ type ProfileFormGridState = {
 	household_income: string,
 	primary_language: string,
 	secondary_language: string,
+	city: string,
 	heard: string,
 	household_composition:string,
-	contact: boolean,
+	contact: string,
 	code_of_conduct: boolean,
 }
-export {genderOptions, religionOptions, sexualityOptions, raceOptions, incomeOptions, householdCompositionOptions}
+export {contactOptions, heardOptions, genderOptions, religionOptions, sexualityOptions, raceOptions, incomeOptions, householdCompositionOptions}
 export type {ProfileFormGridState}

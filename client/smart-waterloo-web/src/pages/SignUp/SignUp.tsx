@@ -21,8 +21,6 @@ import {USE_WEB3} from "../../data/dataConstants";
 
 
 const defaultAvatarString = randomString();
-type SignUpProps = {
-};
 const defaultProfileProps = {
 	day: "",
 	month: "",
@@ -39,6 +37,8 @@ const defaultProfileProps = {
 	household_composition: "",
 	primary_language: "",
 	secondary_language: "",
+	contact: "",
+	city: "",
 	heard: "",
 }
 const defaultPasswordProps = {
@@ -56,7 +56,6 @@ const defaultAvatarProps = {
 	avatar_string: defaultAvatarString
 }
 const booleanFormInputs = {
-	contact: false,
 	code_of_conduct: false,
 }
 const defaultSignUpState = {
@@ -74,7 +73,7 @@ const defaultSignUpState = {
 }
 
 
-const SignUp = (props: SignUpProps) => {
+const SignUp = () => {
 	const { id: qrId } = useContext(IdContext);
 	// const { address, setAddress } = useContext(AddressContext);
 	const [state, setState] = useState(defaultSignUpState);

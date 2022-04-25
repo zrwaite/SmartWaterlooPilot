@@ -26,7 +26,7 @@ const DefaultCreateProgramState = {
 		end_year: "",
 		category: "",
 		description: "",
-		place: "",
+		location: "",
 		start_hour: "",
 		start_minute: "",
 		end_hour: "",
@@ -146,8 +146,8 @@ const CreateProgram = (props:AccountChildProps) => {
 						<Select className={"selectComponent"} defaultInputValue={state.inputs.category} name={"category"} onChange={handleSelectChange} options={programCategories} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>Place</p>
-						<input name={"place"} className={"createProgramInput"} value={state.inputs.place} onChange={handleInputChange} />
+						<p>Location</p>
+						<input name={"location"} className={"createProgramInput"} value={state.inputs.location} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
 						<p>Description</p>

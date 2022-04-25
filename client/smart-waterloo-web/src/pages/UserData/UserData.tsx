@@ -22,12 +22,12 @@ const UserData = (props:AccountChildProps) => {
 					<p>Gender: {account.gender}</p>
 					<p>Race: {account.race}</p>
 					<p>Religion: {account.religion}</p>
-					<p>Sexuality: {account.sexuality}</p>
+					<p>Sexual Orientation: {account.sexuality}</p>
 					<p>Height: {account.height}</p>
 					<p>Weight: {account.weight}</p>
 					<p>Primary Language: {account.primary_language}</p>
 					<p>Secondary Language: {account.secondary_language}</p>
-					<p>Household Income: {account.household_income}</p>
+					<p>Combined Household Income: {account.household_income}</p>
 					<p>Postal Code: {account.postal_code}</p>
 					<p>Grade: {account.grade}</p>
 					<p>Number of Programs: {account.programs.length}</p>

@@ -37,7 +37,7 @@ function Nickname(props: NicknameProps) {
 					<p style={redText}>*Use the real name of the organization that this account is for.</p>:
 					<p style={redText}>*Do not use your real name or the name of someone you know for privacy reasons.</p>
 				}
-				<button style={spacing} onClick={canSubmit?trySubmit:undefined} className={`${canSubmit?"blackButton":"disabledButton"} signUpButton`}>Start using "The Project"</button>
+				<button style={spacing} onClick={canSubmit?trySubmit:undefined} className={`${canSubmit?"blackButton":"disabledButton"} signUpButton`}>Start using "Data Playground Project"</button>
 			</div>
 			<button onClick={props.backStep} className={"blackButton"}>Back</button>
 		</>

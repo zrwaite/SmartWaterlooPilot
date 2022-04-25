@@ -12,8 +12,9 @@ interface userInfo {
 	weight: string,
 	primary_language: string,
 	secondary_language: string,
+	city: string
 	heard: string,
-	contact: boolean,
+	contact: string,
 }
 
 const getDefaultUserInfoLists = (): {
@@ -55,8 +56,9 @@ const defaultAccount:defaultAccountType = {
 	num_family_members: "",
 	primary_language: "",
 	secondary_language: "",
+	city: "",
 	heard: "",
-	contact: false,
+	contact: "",
 	height: "",
 	weight: "",
 	answers: [],
@@ -90,7 +92,7 @@ interface postUserType {
 	primary_language: string,
 	secondary_language: string,
 	heard: string,
-	contact: boolean,
+	contact: string,
 }
 export {getDefaultUserInfoLists, defaultAccountState, defaultAccount}
 export type {postUserType, userInfo}

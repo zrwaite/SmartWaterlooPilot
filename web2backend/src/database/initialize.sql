@@ -22,8 +22,9 @@ CREATE TABLE IF NOT EXISTS "user_info"(
 	weight varchar(100),
 	primary_language varchar(100),
 	secondary_language varchar(100),
+	city varchar(100),
 	heard text,
-	contact boolean default 'f'
+	contact varchar(100)
 );
 
 CREATE TABLE IF NOT EXISTS "users"(
@@ -89,12 +90,11 @@ create table if not exists "programs"(
 	max_age int,
 	start_date timestamp,
 	end_date timestamp,
-	place text,
+	location text,
 	category varchar(80),
 	description TEXT,
 	linked_survey_id int null,
 	FOREIGN KEY (linked_survey_id) REFERENCES surveys(id),
-	image varchar(80),
 	user_info int[] default array[]::integer[],
 	attendees int default 0
 );

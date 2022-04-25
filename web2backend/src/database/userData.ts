@@ -12,6 +12,7 @@ const baseUserInfo = {
 	household_composition: "",
 	height: "",
 	weight: "",
+	city: ""
 }
 const nullableUserInfo = {
 	religion: "",
