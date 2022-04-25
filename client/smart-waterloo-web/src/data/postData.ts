@@ -63,7 +63,7 @@ const postProgramWeb3 = async (id:string, inputData:postProgramType, linkedSurve
 		inputData.min_age,
 		(inputData.start_day + inputData.start_month + inputData.start_year),
 		(inputData.end_day + inputData.end_month + inputData.end_year),
-		// inputData.category,
+		inputData.category,
 		inputData.description
 	).send({ from: web3.eth.defaultAccount })
 		.then(() => {
