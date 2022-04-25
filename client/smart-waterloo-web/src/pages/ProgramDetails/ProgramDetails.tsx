@@ -81,7 +81,8 @@ const ProgramsDetails = (props: AccountChildProps) => {
 		const newUserInfoLists = getDefaultUserInfoLists();
 		console.log(programData.program.user_info);
 		programData.program.user_info.forEach((user) => {
-			incrementMap(newUserInfoLists.birthdays, user.birth_day);
+			const age = Math.floor(((new Date()).getTime() - (new Date(user.birth_day)).getTime()) / (1000*60*60*24*365));
+			incrementMap(newUserInfoLists.ages, age.toString());
 			incrementMap(newUserInfoLists.genders, user.gender);
 			incrementMap(newUserInfoLists.races, user.race);
 			incrementMap(newUserInfoLists.religions, user.religion);
@@ -102,17 +103,17 @@ const ProgramsDetails = (props: AccountChildProps) => {
 		religions: JSX.Element[]
 		genders: JSX.Element[]
 		races: JSX.Element[]
-		birthdays: JSX.Element[]
+		ages: JSX.Element[]
 		sexualities: JSX.Element[]
 	}= {
 		religions: [],
 		genders: [],
 		races: [],
-		birthdays: [],
+		ages: [],
 		sexualities: []
 	}
-	userInfoLists.birthdays.forEach((value, key) => {
-		userInfoComponents.birthdays.push(<p>{key}: {value}</p>)
+	userInfoLists.ages.forEach((value, key) => {
+		userInfoComponents.ages.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.religions.forEach((value, key) => {
 		userInfoComponents.religions.push(<p>{key}: {value}</p>)
@@ -164,9 +165,9 @@ const ProgramsDetails = (props: AccountChildProps) => {
 							{props.org&&(
 								<>
 								<h6>User info:</h6>
-								<p>Birthdays:</p>
+								<p>Ages:</p>
 								<ul>
-									{userInfoComponents.birthdays.map((component, key) => <li key={key}>{component}</li>)}
+									{userInfoComponents.ages.map((component, key) => <li key={key}>{component}</li>)}
 								</ul>
 								<p>Genders:</p>
 								<ul>

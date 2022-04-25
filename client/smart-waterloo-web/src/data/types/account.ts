@@ -21,14 +21,14 @@ const getDefaultUserInfoLists = (): {
 	sexualities: Map<string, number>,
 	genders: Map<string, number>,
 	races: Map<string, number>
-	birthdays: Map<string, number>
+	ages: Map<string, number>
 } => {
 	return{
 		religions: new Map(),
 		sexualities: new Map(),
 		genders: new Map(),
 		races: new Map(),
-		birthdays: new Map()
+		ages: new Map()
 	} as const;
 }
 
