@@ -22,9 +22,7 @@ import {USE_WEB3} from "../../data/dataConstants";
 
 const defaultAvatarString = randomString();
 const defaultProfileProps = {
-	day: "",
-	month: "",
-	year: "",
+	birth_day: "",
 	gender: "",
 	height: "",
 	weight: "",

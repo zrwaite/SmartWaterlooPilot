@@ -1,7 +1,7 @@
 import {USE_WEB3} from "./dataConstants";
 import Web3 from "web3";
 import userABI from "./utils/SmartUser.json";
-import { AbiItem } from 'web3-utils';
+// import { AbiItem } from 'web3-utils';
 import programABI from "./utils/OrganisationEvents.json";
 import {postProgramWeb2, postOrgWeb2, postUserWeb2, web2PostSurvey, web2PostAnswers} from "./web2/web2PostData";
 import { postSurveyReturn, postSurveyType, Question, submitSurveyReturn} from "./types/surveys";
@@ -61,8 +61,8 @@ const postProgramWeb3 = async (id:string, inputData:postProgramType, linkedSurve
 		web3.eth.defaultAccount,
 		inputData.name,
 		inputData.min_age,
-		(inputData.start_day + inputData.start_month + inputData.start_year),
-		(inputData.end_day + inputData.end_month + inputData.end_year),
+		inputData.start_date,
+		inputData.end_date,
 		inputData.category,
 		inputData.description
 	).send({ from: web3.eth.defaultAccount })
@@ -107,7 +107,7 @@ let contractABI;
 	await userContract.methods.addInfo(
 		web3.eth.defaultAccount,
 		inputData.qrId,
-		(inputData.day + inputData.month + inputData.year),
+		(inputData.birth_day),
 		inputData.gender,
 		(inputData.height + inputData.weight),
 		inputData.grade,

@@ -13,6 +13,7 @@ interface ProgramPanelProps {
 	index: number,
 	isOrg: boolean,
 	orgId: string|undefined;
+	time: string;
 }
 
 const ProgramPanel = (props: ProgramPanelProps) => {
@@ -23,6 +24,8 @@ const ProgramPanel = (props: ProgramPanelProps) => {
 	const greyText = {color: "#848484"};
 	const colorDiv = {backgroundColor: props.upcoming?"#EF276F":"#3FBAFF"};
 	const navigate = useNavigate();
+	const startDate = (new Date(props.start_date)).toDateString();
+	const endDate = (new Date(props.end_date)).toDateString();
 	return (
 		<div onClick={() => navigate(`/programdetails/${props.id}/${props.isOrg?`org/${props.orgId}`:"user"}`)} style={props.signed_up?activeColour:{}} className={`programPanel`}>
 			<div className="programPanelHeader">
@@ -34,7 +37,8 @@ const ProgramPanel = (props: ProgramPanelProps) => {
 			</div>
 			<h6>{props.name}</h6>
 			<p style={greyText}>For Ages {props.age_group}</p>
-			<p style={greyText}>{props.start_date} {props.end_date}</p>
+			<p style={greyText}>{startDate} to {endDate}</p>
+			<p style={greyText}>{props.time}</p>
 		</div>
 	)
 }	

@@ -24,9 +24,7 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 	let redText = { color: "red" };
 	let greyText = { color: "grey" };
 	let canContinue = (
-		props.formData.day !== "" && !isNaN(parseInt(props.formData.day)) && parseInt(props.formData.day) <=31  && parseInt(props.formData.day) >0 &&
-		props.formData.month !== "" && !isNaN(parseInt(props.formData.month)) && parseInt(props.formData.month) <=12  && parseInt(props.formData.month) >0 && 
-		props.formData.year !== "" && !isNaN(parseInt(props.formData.year)) && parseInt(props.formData.year) <=3000  && parseInt(props.formData.year) >1000 &&
+		props.formData.birth_day !== "" &&
 		props.formData.gender !== "" &&
 		props.formData.postalCode !== "" &&
 		props.formData.city !== "" &&
@@ -50,13 +48,13 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 					</div>
 					<div className="formDiv">
 						<p>Date of Birth<span style={redText}>*</span></p>
-						<div className="horizontal">
-							<input name="day" id="dayInput" placeholder="DD" type={"text"} value={props.formData.day} onChange={props.handleParentInputChange} />
-							<pre> / </pre>
-							<input name="month" id="monthInput" placeholder="MM" type={"text"} value={props.formData.month} onChange={props.handleParentInputChange} />
-							<pre> / </pre>
-							<input name="year" id="yearInput" placeholder="YYYY" type={"text"} value={props.formData.year} onChange={props.handleParentInputChange} />
-						</div>
+						<input name="birth_day" type={"date"} value={props.formData.birth_day} onChange={props.handleParentInputChange} />
+						{/*<div className="horizontal">*/}
+						{/*	<pre> / </pre>*/}
+						{/*	<input name="month" id="monthInput" placeholder="MM" type={"text"} value={props.formData.month} onChange={props.handleParentInputChange} />*/}
+						{/*	<pre> / </pre>*/}
+						{/*	<input name="year" id="yearInput" placeholder="YYYY" type={"text"} value={props.formData.year} onChange={props.handleParentInputChange} />*/}
+						{/*</div>*/}
 					</div>
 					<div className="formDiv">
 						<p>Grade <span style={greyText}>(Optional)</span></p>

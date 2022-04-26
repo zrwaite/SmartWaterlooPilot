@@ -72,9 +72,7 @@ const defaultAccountState = {
 }
 
 interface postUserType {
-	day:string, 
-	month:string, 
-	year:string,
+	birth_day: string,
 	gender:string, 
 	height:string, 
 	weight:string,
@@ -93,6 +91,7 @@ interface postUserType {
 	secondary_language: string,
 	heard: string,
 	contact: string,
+	city: string,
 }
 export {getDefaultUserInfoLists, defaultAccountState, defaultAccount}
 export type {postUserType, userInfo}

@@ -18,17 +18,12 @@ const DefaultCreateProgramState = {
 		name: "",
 		min_age: "",
 		max_age: "",
-		start_day: "",
-		start_month: "",
-		start_year: "",
-		end_day: "",
-		end_month: "",
-		end_year: "",
+		start_date: "",
+		end_date: "",
 		category: "",
 		description: "",
 		location: "",
-		hour: "",
-		minute: "",
+		time: "",
 		linked_survey: ""
 	}
 }
@@ -64,6 +59,7 @@ const CreateProgram = (props:AccountChildProps) => {
 	const keys = Object.keys(state.inputs);
 	for (let i=0; i<values.length; i++) {
 		if (values[i] === "" && keys[i]!=="linked_survey") {
+			console.log(keys[i])
 			complete = false
 		} else if (keys[i]==="linked_survey" && state.booleanInputs.linkSurvey && values[i]=== "") {
 			complete = false;
@@ -113,31 +109,15 @@ const CreateProgram = (props:AccountChildProps) => {
 					</div>
 					<div className={"formQuestion"}>
 						<p>Start Date</p>
-						<div className={"singleLineMultiInput"}>
-							<input name={"start_day"} className={"createProgramMiniInput"} placeholder={"DD"} value={state.inputs.start_day} onChange={handleInputChange} />
-							<h6>/</h6>
-							<input name={"start_month"} className={"createProgramMiniInput"} placeholder={"MM"} value={state.inputs.start_month} onChange={handleInputChange} />
-							<h6>/</h6>
-							<input name={"start_year"} className={"createProgramMiniInput"} placeholder={"YY"} value={state.inputs.start_year} onChange={handleInputChange} />
-						</div>
+						<input type={"date"} name={"start_date"} value={state.inputs.start_date} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
 						<p>End Date</p>
-						<div className={"singleLineMultiInput"}>
-							<input name={"end_day"} className={"createProgramMiniInput"} placeholder={"DD"} value={state.inputs.end_day} onChange={handleInputChange} />
-							<h6>/</h6>
-							<input name={"end_month"} className={"createProgramMiniInput"} placeholder={"MM"} value={state.inputs.end_month} onChange={handleInputChange} />
-							<h6>/</h6>
-							<input name={"end_year"} className={"createProgramMiniInput"} placeholder={"YY"} value={state.inputs.end_year} onChange={handleInputChange} />
-						</div>
+						<input type={"date"} name={"end_date"}  value={state.inputs.end_date} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>Time</p>
-						<div className={"singleLineMultiInput"}>
-							<input name={"hour"} className={"createProgramMiniInput"} placeholder={"12"} value={state.inputs.hour} onChange={handleInputChange} />
-							<h6>:</h6>
-							<input name={"minute"} className={"createProgramMiniInput"} placeholder={"30"} value={state.inputs.minute} onChange={handleInputChange} />
-						</div>
+						<p>Time (ie: 12:15 am)</p>
+						<input type={"time"} name={"time"} value={state.inputs.time} onChange={handleInputChange} />
 					</div>
 					<div className="formQuestion">
 						<p>Category</p>

@@ -116,9 +116,7 @@ const contactOptions = [
 	{ value: "Other", label: "Other" },
 ]
 type ProfileFormGridState = {
-	day: string,
-	month: string,
-	year: string,
+	birth_day: string,
 	gender: string,
 	height: string,
 	weight: string,
