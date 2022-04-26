@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import pool from "../database/db";
+import pool from "../database/database";
 import {userData, postUserInfo as postUserInfoObj, userInfoData} from "../database/userData";
 import {orgData, postOrg as postOrgObj} from "../database/orgData";
 import {programData, postProgram as postProgramObj} from "../database/programData";
@@ -33,6 +33,7 @@ const postEntry = async (entry: object, tableName:string ):Promise<PostDataRetur
 	} catch (e: any) {
 		const knownErrorCodes = ["22P02", "23505", "23503"];
 		if (knownErrorCodes.includes(e.code)) errors.push(e.detail);
+		else if (e.code == 22008) errors.push("invalid date");
 		else errors.push("database error");
 		console.log(e);
 	}

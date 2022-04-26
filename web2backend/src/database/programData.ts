@@ -5,6 +5,7 @@ const baseProgram = {
 	max_age: "",
 	start_date: "",
 	end_date: "",
+	time: "",
 	location: "",
 	category: "",
 	description: "",

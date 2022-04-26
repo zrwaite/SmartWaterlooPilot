@@ -72,12 +72,12 @@ export default class programController {
 	}
 	static async postProgram(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success:programSuccess, params:programParams, errors:programErrors} = await getBodyParams(req, programData.baseProgramKeys);
+		let {success:programSuccess, params:programParams, errors:programErrors} = getBodyParams(req, programData.baseProgramKeys);
 		if (programSuccess) {
 			let orgId = programParams[0];
 			let {success: tokenSuccess, error: tokenError} = await verifyOrgMember(orgId, getToken(req.headers));
 			if (tokenSuccess ){
-				let {params: additionalParams} = await getBodyParams(req, programData.nullableProgramKeys);
+				let {params: additionalParams} = getBodyParams(req, programData.nullableProgramKeys);
 				let postResult = await postProgram([...programParams, ...additionalParams]);
 				if (postResult.success) {
 					result.status = 201;

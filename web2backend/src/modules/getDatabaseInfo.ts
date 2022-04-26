@@ -1,4 +1,4 @@
-import pool from "../database/db";
+import pool from "../database/database";
 import {userData, userInfoData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import {programData} from "../database/programData";
@@ -52,7 +52,6 @@ const getUserOrgs = async (userId: number) => {
 	} catch (e) {
 		console.log(e)
 		errors.push("database error");
-		status = 400;
 	}
 	// const {status, entries, errors} = await getEntries(true, "owner_id", ownerId, "orgs", orgData.orgKeys);
 	return {status: status, orgs: orgs, errors: errors};
@@ -122,9 +121,10 @@ const getProgramOrg = async (programId:number) => {
 const getSurveyOrg = async (surveyId:number) => {
 	let errors: string[] = [];
 	let orgNickname = "";
-	const {status, entries:survey, errors:surveysErrors} = await getEntries(false, "id", surveyId, "surveys", ["org"]);
+	let {status, entries:survey, errors:surveysErrors} = await getEntries(false, "id", surveyId, "surveys", ["org"]);
 	if (survey.length) {
-		const {status, entries:org, errors:orgErrors} = await getEntries(false, "id", survey[0].org, "orgs", ["nickname"]);
+		const {status:orgStatus, entries:org, errors:orgErrors} = await getEntries(false, "id", survey[0].org, "orgs", ["nickname"]);
+		status = orgStatus;
 		if (org.length) {
 			orgNickname = org[0].nickname
 		} else errors.push(...orgErrors);
@@ -188,7 +188,7 @@ const parseSurvey = async (questionIds: number[]) => {
 			errors.push(...getQuestionResponse.errors);
 		} else questions.push(getQuestionResponse.question)
 	}
-	return {questions: questions, success: success};
+	return {questions: questions, success: success, errors: errors};
 }
 const getAnswer = async (id:string) => {
 	const {status, entries, errors} = await getEntries(false, "id", id, "answers", answerKeys);

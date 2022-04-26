@@ -2,23 +2,26 @@ import React from 'react';
 import "./ProgramDetails.css";
 
 interface ProgramData {
-    name: string;
-    id: string;
-    age_group: string;
-    start_date: string;
-    end_date: string;
+	name: string;
+	id: string;
+	age_group: string;
+	start_date: string;
+	end_date: string;
 	min_age: string,
 	max_age: string;
+	time: string;
 	linked_survey_id: string;
-    category: string;
-    signed_up: boolean;
-    description: string;
+	category: string;
+	signed_up: boolean;
+	description: string;
 	location: string
-    image: string;
+	image: string;
 	attendees: string;
-    org: boolean;
+	org: boolean;
 }
 const ProgramInfo = (props: ProgramData): any => {
+	const startDate = (new Date(props.start_date)).toDateString();
+	const endDate = (new Date(props.end_date)).toDateString();
 	return (
 		<>
 			<div className="DesktopPanelNoBorder">
@@ -27,7 +30,8 @@ const ProgramInfo = (props: ProgramData): any => {
 				<h5 className="programTitle">{props.name}</h5>
 				<h6 className="programTitle">{props.location}</h6>
 				<p className="greytext">For Ages {props.min_age}-{props.max_age}</p>
-				<p className="greytext">{props.start_date} {props.end_date}</p>
+				<p className="greytext">{startDate} to {endDate}</p>
+				<p className={"greytext"}>{props.time}</p>
 				<br></br>
 				<p >{props.description}</p>
 				{

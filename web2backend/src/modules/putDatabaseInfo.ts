@@ -1,5 +1,4 @@
-import { unchangedTextChangeRange } from "typescript";
-import pool from "../database/db";
+import pool from "../database/database";
 import { getProgramOrg, getSurveyOrg, getUser } from "./getDatabaseInfo";
 const foundOrgMembers = async (orgId:number, userId: number):Promise<{success: boolean, error: string}> => {
 	try {
@@ -101,7 +100,6 @@ const addUserOrg = async (orgName:string, userId: number) => {
 		if (result && result.rowCount) status = 201;
 		else status = 404;
 	} catch (e) {
-		status = 400;
 		console.log(e);
 	}
 	return {status: status, result: result};
@@ -150,7 +148,6 @@ const updateAnswersArray = async (userId:number, answerIds:number[]) => {
 		if (result && result.rowCount) status = 201;
 		else status = 404;
 	} catch (e) {
-		status = 400;
 		console.log(e);
 	}
 	return {status: status, result: result};
@@ -167,7 +164,6 @@ const updateOrgVerification = async (businessNumber: string) => {
 		if (result && result.rowCount) status = 201;
 		else status = 404;
 	} catch (e) {
-		status = 400;
 		console.log(e);
 	}
 	return {status: status, result: result};
