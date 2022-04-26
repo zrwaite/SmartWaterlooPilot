@@ -65,7 +65,7 @@ const addUserProgram = async (programId:number, userId: number) => {
 		try {
 			result = await pool.query(
 				"UPDATE users SET programs = array_append(programs, $1), orgs = array_append(orgs, $2) WHERE user_id = $3",
-				[programId, orgNickname, userId]
+				[programId, orgNickname + " - Events", userId]
 			);
 			if (result && result.rowCount) {
 				let {user} = await getUser(userId.toString());
@@ -95,7 +95,7 @@ const addUserOrg = async (orgName:string, userId: number) => {
 	try {
 		result = await pool.query(
 			"UPDATE users SET orgs = array_append(orgs, $1) WHERE user_id = $2",
-			[orgName, userId]
+			[orgName + " - Org Member", userId]
 		);
 		if (result && result.rowCount) status = 201;
 		else status = 404;
@@ -114,7 +114,7 @@ const addUserSurvey = async (surveyId:number, userId: number) => {
 		try {
 			result = await pool.query(
 				"UPDATE users SET surveys = array_append(surveys, $1), orgs = array_append(orgs, $2) WHERE user_id = $3",
-				[surveyId, orgNickname, userId]
+				[surveyId, orgNickname + " - Surveys", userId]
 			);
 			if (result && result.rowCount) {
 				let {user} = await getUser(userId.toString());
