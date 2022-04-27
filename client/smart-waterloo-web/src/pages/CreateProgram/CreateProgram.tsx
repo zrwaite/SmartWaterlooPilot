@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { MobileContext } from "../../App";
 import { programCategories } from "./CreateProgramData";
 import Select, { ActionMeta } from "react-select";
-import { useNavigate, useParams } from "react-router-dom";
+import {Link, useNavigate, useParams } from "react-router-dom";
 import { postProgram } from "../../data/postData";
 import cookies from "../../modules/cookies";
 import { forceNavigate } from "../../modules/navigate";
@@ -139,13 +139,20 @@ const CreateProgram = (props:AccountChildProps) => {
 						<div className={"linkedSurvey"}>
 							<p>Link Survey:</p>
 							{
-								props.surveysData.surveys.map((survey, i) => {return (
-									<div className={"questionChoice"} key={i}>
-										<input name={"linked_survey"} type="radio" value={survey.id} checked={survey.id==state.inputs.linked_survey} onChange={handleInputChange}/>
-										Name:"{survey.name}"  Id:"{survey.id}"
-									</div>
-								)})
+								props.surveysData.surveys.length?(
+									props.surveysData.surveys.map((survey, i) => {return (
+										<div className={"questionChoice"} key={i}>
+											<input name={"linked_survey"} type="radio" value={survey.id} checked={survey.id==state.inputs.linked_survey} onChange={handleInputChange}/>
+											Name:"{survey.name}"  Id:"{survey.id}"
+										</div>
+									)})
+								):(<div>
+									<p>You don't have any surveys - create one:</p>
+								</div>)
 							}
+							<div className={"createSurveyLinkPadding"}>
+								<Link  to={"/createsurvey"}>Create new survey</Link>
+							</div>
 						</div>
 					)}
 					<p>*All fields are required to continue</p>
