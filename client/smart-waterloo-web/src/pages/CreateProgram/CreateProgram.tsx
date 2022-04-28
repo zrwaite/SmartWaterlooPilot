@@ -23,7 +23,8 @@ const DefaultCreateProgramState = {
 		category: "",
 		description: "",
 		location: "",
-		time: "",
+		start_time: "",
+		end_time: "",
 		linked_survey: ""
 	}
 }
@@ -112,12 +113,16 @@ const CreateProgram = (props:AccountChildProps) => {
 						<input type={"date"} name={"start_date"} value={state.inputs.start_date} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
+						<p>Start Time (ie: 12:15 am)</p>
+						<input type={"time"} name={"start_time"} value={state.inputs.start_time} onChange={handleInputChange} />
+					</div>
+					<div className={"formQuestion"}>
 						<p>End Date</p>
 						<input type={"date"} name={"end_date"}  value={state.inputs.end_date} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>Time (ie: 12:15 am)</p>
-						<input type={"time"} name={"time"} value={state.inputs.time} onChange={handleInputChange} />
+						<p>End Time (ie: 12:15 am)</p>
+						<input type={"time"} name={"end_time"} value={state.inputs.end_time} onChange={handleInputChange} />
 					</div>
 					<div className="formQuestion">
 						<p>Category</p>

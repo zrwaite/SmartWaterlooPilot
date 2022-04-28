@@ -13,7 +13,8 @@ interface ProgramPanelProps {
 	index: number,
 	isOrg: boolean,
 	orgId: string|undefined;
-	time: string;
+	start_time: string;
+	end_time: string;
 }
 
 const ProgramPanel = (props: ProgramPanelProps) => {
@@ -37,8 +38,7 @@ const ProgramPanel = (props: ProgramPanelProps) => {
 			</div>
 			<h6>{props.name}</h6>
 			<p style={greyText}>For Ages {props.age_group}</p>
-			<p style={greyText}>{startDate} to {endDate}</p>
-			<p style={greyText}>{props.time}</p>
+			<p style={greyText}>{startDate}, {props.start_time} to {endDate}, {props.end_time}</p>
 		</div>
 	)
 }	

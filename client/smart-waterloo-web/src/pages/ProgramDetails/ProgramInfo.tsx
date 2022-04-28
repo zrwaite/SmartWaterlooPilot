@@ -9,7 +9,8 @@ interface ProgramData {
 	end_date: string;
 	min_age: string,
 	max_age: string;
-	time: string;
+	start_time: string;
+	end_time: string;
 	linked_survey_id: string;
 	category: string;
 	signed_up: boolean;
@@ -30,8 +31,7 @@ const ProgramInfo = (props: ProgramData): any => {
 				<h5 className="programTitle">{props.name}</h5>
 				<h6 className="programTitle">{props.location}</h6>
 				<p className="greytext">For Ages {props.min_age}-{props.max_age}</p>
-				<p className="greytext">{startDate} to {endDate}</p>
-				<p className={"greytext"}>{props.time}</p>
+				<p className="greytext">{startDate}, {props.start_time} to {endDate}, {props.end_time}</p>
 				<br></br>
 				<p >{props.description}</p>
 				{
