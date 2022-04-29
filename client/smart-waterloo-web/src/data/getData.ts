@@ -40,7 +40,6 @@ const getUserAddress = async (): Promise<string> => {
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
 
-
 //All user questions and responses
 const getQuestionsAndAnswers = async (
   answerIds: number[]
@@ -61,12 +60,16 @@ const web3GetQuestionsAndAnswers = async (): Promise<{
   errors: string[];
 }> => {
   const loggedAddress = await getUserAddress();
-  const surveyResponses = await responseContract.methods.getSurveyResponsesByUser(loggedAddress).call();
-  let surveyIDs = surveyResponses[1].toNumber();
+  const surveyResponses = await responseContract.methods
+    .getSurveyResponsesByUser(loggedAddress)
+    .call();
+  let surveyIDs = surveyResponses[1];
   let answers = surveyResponses[0];
   let questions = [];
-  for(let i = 0; i < surveyIDs.length; i++){
-    let survey = await surveyContract.methods.getSurveyInfoById(surveyIDs[i].toString()).call();
+  for (let i = 0; i < surveyIDs.length; i++) {
+    let survey = await surveyContract.methods
+      .getSurveyInfoById(surveyIDs[i].toString())
+      .call();
     questions.push(survey[2]);
   }
   console.log(questions + " " + answers);
@@ -77,7 +80,6 @@ const web3GetQuestionsAndAnswers = async (): Promise<{
     errors: [],
   };
 };
-
 
 //Basic Initial sign up User Data
 const getUserData = async (): Promise<{
@@ -145,37 +147,43 @@ const web3GetSurveysData = async (): Promise<{
 }> => {
   let surveys: typeof defaultSurvey[] = [];
   let survey: typeof defaultSurvey;
-  let numberSurveys = await orgContract.methods.getNumberofSurveys().call();
+  let numberSurveys = await surveyContract.methods.getNumberofSurveys().call();
   for (let i = 0; i < numberSurveys; i++) {
-	let surveyInfo = await surveyContract.methods.getSurveyInfoByID(i.toString()).call();
-	let orgName = await orgContract.methods.getOrgInfo(surveyInfo[0]).call();
-	let questions:any[] = surveyInfo[2];
-	let surveyResponders = await surveyContract.methods.getSurveyResponders(i.toString()).call();
-	let _userInfo:userInfo;
-	let userInfos = [];
-	for (let j = 0; j < surveyResponders.length; j++) {
-		let member = await userContract.methods.getInfo(surveyResponders[j]).call();
-    _userInfo = {
-      birth_day: member[1],
-      gender: member[2],
-      religion: member[7],
-      sexuality: member[8],
-      race: member[6],
-      grade: member[4],
-      postal_code: member[5],
+    let surveyInfo = await surveyContract.methods
+      .getSurveyInfoByID(i.toString())
+      .call();
+    let orgName = await orgContract.methods.getOrgInfo(surveyInfo[0]).call();
+    let questions: any[] = surveyInfo[2];
+    let surveyResponders = await surveyContract.methods
+      .getSurveyResponders(i.toString())
+      .call();
+    let _userInfo: userInfo;
+    let userInfos = [];
+    for (let j = 0; j < surveyResponders.length; j++) {
+      let member = await userContract.methods
+        .getInfo(surveyResponders[j])
+        .call();
+      _userInfo = {
+        birth_day: member[1],
+        gender: member[2],
+        religion: member[7],
+        sexuality: member[8],
+        race: member[6],
+        grade: member[4],
+        postal_code: member[5],
+      };
+      userInfos.push(_userInfo);
+    }
+    survey = {
+      id: surveyInfo.toString(),
+      name: surveyInfo[1],
+      org: orgName[2].substring(0, orgName[2].length - 8),
+      length: questions.length.toString(),
+      description: surveyInfo[3],
+      questions: questions,
+      user_info: userInfos,
     };
-    userInfos.push(_userInfo);
-}
-	survey = {
-		id: surveyInfo.toString(),
-		name: surveyInfo[1],
-		org: orgName[2].substring(0, orgName[2].length - 8),
-		length: (questions.length).toString(),
-		description: surveyInfo[3],
-		questions: questions,
-		user_info: userInfos,	
-  }
-  surveys.push(survey);
+    surveys.push(survey);
   }
   return { success: true, surveys: surveys, errors: [] };
 };
@@ -193,7 +201,7 @@ const web3GetEventsData = async (): Promise<{
 }> => {
   const allEvents = await eventContract.methods.getNumberOfEvents().call();
   console.log(allEvents);
-  if (allEvents.length == 0) {
+  if (allEvents.length === 0) {
     return {
       success: false,
       events: [],
@@ -202,11 +210,23 @@ const web3GetEventsData = async (): Promise<{
   } else {
     const events: any[] = [];
     for (let i = 0; i < allEvents.length; i++) {
-      const event = await eventContract.methods
-        .getEventInfoById(allEvents[i].to_string())
+      let event = await eventContract.methods
+        .getEventInfoById(allEvents[i].toString())
         .call();
+      let organiser = await eventContract.methods.getEventOrganiserByEventId(allEvents[i].toString()).call();
+      let orgName = await orgContract.methods.getOrgInfo(organiser).call();
       console.log(event);
-      events.push(event);
+      let eventFormat = {
+        id: allEvents[i].toString(),
+        name: event[0],
+        org: orgName[2],
+        age_range: event[1],
+        start_date: event[2],
+        end_date: event[3],
+        category: event[4],
+        signed_up: false,
+      };
+      events.push(eventFormat);
     }
     return {
       success: true,
@@ -238,37 +258,45 @@ const web3GetOrgSurveysData = async (
 }> => {
   let surveys: typeof defaultSurvey[] = [];
   let survey: typeof defaultSurvey;
-  let numberSurveys = await orgContract.methods.getSurveyIDs(web3.eth.defaultAccount).call();
+  let numberSurveys = await surveyContract.methods
+    .getSurveyIDs(web3.eth.defaultAccount)
+    .call();
   for (let i = 0; i < numberSurveys; i++) {
-	let surveyInfo = await surveyContract.methods.getSurveyInfoByID(i.toString()).call();
-	let orgName = await orgContract.methods.getOrgInfo(surveyInfo[0]).call();
-	let questions:any[] = surveyInfo[2];
-	let surveyResponders = await surveyContract.methods.getSurveyResponders(i.toString()).call();
-	let _userInfo:userInfo;
-	let userInfos = [];
-	for (let j = 0; j < surveyResponders.length; j++) {
-		let member = await userContract.methods.getInfo(surveyResponders[j]).call();
-    _userInfo = {
-      birth_day: member[1],
-      gender: member[2],
-      religion: member[7],
-      sexuality: member[8],
-      race: member[6],
-      grade: member[4],
-      postal_code: member[5],
+    let surveyInfo = await surveyContract.methods
+      .getSurveyInfoByID(i.toString())
+      .call();
+    let orgName = await orgContract.methods.getOrgInfo(surveyInfo[0]).call();
+    let questions: any[] = surveyInfo[2];
+    let surveyResponders = await surveyContract.methods
+      .getSurveyResponders(i.toString())
+      .call();
+    let _userInfo: userInfo;
+    let userInfos = [];
+    for (let j = 0; j < surveyResponders.length; j++) {
+      let member = await userContract.methods
+        .getInfo(surveyResponders[j])
+        .call();
+      _userInfo = {
+        birth_day: member[1],
+        gender: member[2],
+        religion: member[7],
+        sexuality: member[8],
+        race: member[6],
+        grade: member[4],
+        postal_code: member[5],
+      };
+      userInfos.push(_userInfo);
+    }
+    survey = {
+      id: surveyInfo.toString(),
+      name: surveyInfo[1],
+      org: orgName[2].substring(0, orgName[2].length - 8),
+      length: questions.length.toString(),
+      description: surveyInfo[3],
+      questions: questions,
+      user_info: userInfos,
     };
-    userInfos.push(_userInfo);
-}
-	survey = {
-		id: surveyInfo.toString(),
-		name: surveyInfo[1],
-		org: orgName[2].substring(0, orgName[2].length - 8),
-		length: (questions.length).toString(),
-		description: surveyInfo[3],
-		questions: questions,
-		user_info: userInfos,	
-  }
-  surveys.push(survey);
+    surveys.push(survey);
   }
   return { success: true, surveys: surveys, errors: [] };
 };
@@ -291,22 +319,38 @@ const web3GetOrgEventsData = async (
   events: typeof defaultEvent[];
   errors: string[];
 }> => {
-  const allEvents = await eventContract.methods.getOrgEventIDs(web3.eth.defaultAccount).call();
-  console.log(allEvents);
+  const loggedAddress = await getUserAddress();
+  web3.eth.defaultAccount = loggedAddress;
+  const orgDetails = await orgContract.methods
+    .getOrgInfo(web3.eth.defaultAccount)
+    .call();
+  const allEvents = await eventContract.methods
+    .getOrgEventIDs(web3.eth.defaultAccount)
+    .call();
   if (allEvents.length == 0) {
-    return {  
-      success: false,
+    return {
+      success: true,
       events: [],
-      errors: ["not implemented"],
+      errors: ["no events yet"],
     };
   } else {
     const events: any[] = [];
     for (let i = 0; i < allEvents.length; i++) {
-      const event = await eventContract.methods
+      let event = await eventContract.methods
         .getEventInfoById(allEvents[i].toString())
         .call();
       console.log(event);
-      events.push(event);
+      let eventFormat = {
+        id: allEvents[i].toString(),
+        name: event[0],
+        org: orgDetails[2],
+        age_range: event[1],
+        start_date: event[2],
+        end_date: event[3],
+        category: event[4],
+        signed_up: false,
+      };
+      events.push(eventFormat);
     }
     return {
       success: true,
@@ -359,7 +403,6 @@ const web3GetOrgEventsData = async (
 //   return { success: false, survey: {}, errors: [] };
 // };
 
-
 // Orgs a user's involved with
 const getUserOrgs = async (
   id: string
@@ -378,15 +421,24 @@ const web3GetUserOrgs = async (
   orgs: typeof defaultOrg[];
   errors: string[];
 }> => {
-  const userOrg = await orgContract.methods.getOrgInfo(web3.eth.defaultAccount).call();
+  const loggedAddress = await getUserAddress();
+  web3.eth.defaultAccount = loggedAddress;
+  const userOrg = await orgContract.methods
+    .getOrgInfo(web3.eth.defaultAccount)
+    .call();
   console.log(userOrg);
-  const userData = await userContract.methods.getInfo(web3.eth.defaultAccount).call();
+  const userData = await userContract.methods
+    .getInfo(web3.eth.defaultAccount)
+    .call();
   if (userOrg == "" || userOrg == null) {
-  return { success: false, orgs: [], errors: ["not implemented"] };
-  }
-  else{
-    const verify = await orgContract.methods.getOrgVerification(web3.eth.defaultAccount).call();
-    let member = await userContract.methods.getInfo(web3.eth.defaultAccount).call();
+    return { success: false, orgs: [], errors: ["not implemented"] };
+  } else {
+    const verify = await orgContract.methods
+      .getOrgVerification(web3.eth.defaultAccount)
+      .call();
+    let member = await userContract.methods
+      .getInfo(web3.eth.defaultAccount)
+      .call();
     let _userInfo = [
       member[1],
       member[2],
@@ -400,12 +452,12 @@ const web3GetUserOrgs = async (
       nickname: userOrg[2].substring(0, userOrg[2].length - 8),
       business_number: userOrg[1],
       avatar_string: userOrg[2].substring(userOrg[2].length - 8),
-      owner_id: userData[0].toNumber(),
+      owner_id: parseInt(userData[0]),
       verified: verify,
       id: userOrg[0],
       members: userOrg[3],
       user_info: _userInfo,
-    }
+    };
     return { success: true, orgs: [org], errors: [] };
   }
 };
@@ -430,25 +482,28 @@ const web3GetBasicOrgData = async (
   org: typeof defaultOrg | {};
   errors: string[];
 }> => {
+  const loggedAddress = await getUserAddress();
+  web3.eth.defaultAccount = loggedAddress;
   const org = await orgContract.methods
     .getOrgInfo(web3.eth.defaultAccount)
     .call();
   let ownerqr = await userContract.methods
     .getInfo(web3.eth.defaultAccount)
     .call();
+  let orgId = await orgContract.methods.getTotalOrganisations().call();
   ownerqr = ownerqr[0];
   console.log(org);
-  if (org == "" || org == null) {
+  if (org === "" || org === null) {
     return { success: false, org: {}, errors: ["org not found"] };
   }
   const verify = await orgContract.methods
     .getOrgVerification(web3.eth.defaultAccount)
     .call();
-  let _userInfo = {} as any;
   let userInfos: userInfo[] = [];
-  for (let i = 0; i < org.members.length; i++) {
-    let member = await userContract.methods.getInfo(org.members[i]).call();
-    _userInfo = {
+  for (let i = 0; i < org[3].length; i++) {
+    console.log(org[3][i]);
+    let member = await userContract.methods.getInfo(org[3][i]).call();
+    let _userInfo = {
       birth_day: member[1],
       gender: member[2],
       religion: member[7],
@@ -457,17 +512,20 @@ const web3GetBasicOrgData = async (
       grade: member[4],
       postal_code: member[5],
     };
+    console.log(_userInfo); 
     userInfos.push(_userInfo);
   }
+  console.log(orgId);
+  console.log(userInfos);
   return {
     success: true,
     org: {
-      nickname: org[2].substring(0, org[0].length - 8),
+      nickname: org[2].substring(0, org[2].length - 8),
       avatar_string: org[2].substring(org[2].length - 8),
       business_number: org[1],
       owner_id: ownerqr,
       verified: verify,
-      id: ownerqr,
+      id: orgId,
       members: org[3],
       user_info: userInfos,
     },

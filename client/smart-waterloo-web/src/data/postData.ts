@@ -61,7 +61,7 @@ const postOrgWeb3 = async (inputData: postOrgType) => {
         userData[0],
         inputData.businessNumber,
         inputData.nickname + inputData.avatar_string,
-        []
+        [web3.eth.defaultAccount]
       )
       .send({ from: web3.eth.defaultAccount });
     let orgNumber = await orgContract.methods.getTotalOrganisations().call();
@@ -91,7 +91,8 @@ const postUser = async (inputData: postUserType): Promise<string[]> => {
 //Web3 SmartUser initial data post
 const postUserWeb3 = async (inputData: postUserType): Promise<string[]> => {
   try {
-    console.log(userContract.methods.getInfo(web3.eth.defaultAccount).call());
+    web3.eth.defaultAccount = await getUserAddress();
+    console.log(web3.eth.defaultAccount);
     console.log(web3.eth.defaultAccount);
     await userContract.methods
       .addInfo(web3.eth.defaultAccount, [

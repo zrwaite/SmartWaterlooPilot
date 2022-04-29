@@ -7,10 +7,14 @@ import cookies from "../../modules/cookies";
 import { useNavigate } from "react-router-dom";
 import {isSignedIn} from "../../data/account";
 //Todo change buttons to links
+let signedIn:any;
+async function signIn() {
+	signedIn = await isSignedIn();
+}
 function SplashPage() {
 	cookies.set("back", "/");
 	const navigate = useNavigate();
-	const signedIn = isSignedIn();
+	signIn();
     return (
 		<>
 			<Navbar signedIn={false} root={true}/>

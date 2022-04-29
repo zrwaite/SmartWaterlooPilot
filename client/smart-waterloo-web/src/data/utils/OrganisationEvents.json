@@ -192,6 +192,25 @@
 			"type": "function"
 		},
 		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_eID",
+					"type": "string"
+				}
+			],
+			"name": "getEventOrganiserByEventId",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
 			"inputs": [],
 			"name": "getNumberOfEvents",
 			"outputs": [

@@ -8,7 +8,10 @@ import {
 import Web3 from "web3";
 import { forceNavigate } from "../modules/navigate";
 
-const isSignedIn = (): boolean => {
+let web3 = new Web3(Web3.givenProvider);
+declare var window: any;
+
+const isSignedIn = async (): Promise<boolean> => {
   return USE_WEB3 ? metamaskConnected() : web2IsSignedIn();
 };
 const accountExists = async (userId: number): Promise<boolean> => {
@@ -20,23 +23,34 @@ const logout = () => {
   USE_WEB3 ? web3logout() : web2logout();
 };
 
-let web3 = new Web3(Web3.givenProvider);
-declare var window: any;
-
 const web3logout = () => {};
-const metamaskConnected = (): boolean => {
-  if(typeof window.ethereum !== 'undefined') {
-    return true;
+const metamaskConnected = async (): Promise<boolean> => {
+  if (typeof window.ethereum !== "undefined") {
+    const accounts = await web3.eth.getAccounts();
+    web3.eth.defaultAccount = accounts[0];
+    console.log(web3.eth.defaultAccount);
+    const userData = await userContract.methods
+      .getInfo(web3.eth.defaultAccount)
+      .call();
+    console.log(userData);
+    if (!userData) {
+      return true;
+    } else {
+      return false;
+    }
   }
   return false;
 };
 const web3AccountExists = async (userId: number): Promise<boolean> => {
-  //return if user exists with that userId, so whether they sign in or sign up
+  //return if user exists with that userId, so whether they sign in or sign up\const accounts = await web3.eth.getAccounts();
+  const accounts = await web3.eth.getAccounts();
+  web3.eth.defaultAccount = accounts[0];
+  console.log(web3.eth.defaultAccount);
   const userData = await userContract.methods
-    .getUser(web3.eth.defaultAccount)
+    .getInfo(web3.eth.defaultAccount)
     .call();
   console.log(userData);
-  if (userData !== null) {
+  if (!userData) {
     return true;
   } else {
     return false;
