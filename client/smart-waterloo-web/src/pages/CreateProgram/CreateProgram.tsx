@@ -156,7 +156,7 @@ const CreateProgram = (props:AccountChildProps) => {
 								</div>)
 							}
 							<div className={"createSurveyLinkPadding"}>
-								<Link  to={"/createsurvey"}>Create new survey</Link>
+								<Link  to={"/createsurvey/"+orgId}>Create new survey</Link>
 							</div>
 						</div>
 					)}
