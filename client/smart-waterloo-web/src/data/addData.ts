@@ -42,7 +42,7 @@ const web3VerifyOrg = async (business_number: string, password:string):Promise<s
 	}
 }
 
-const web3AddEventtoUser = async (userId: string, eventId: string):Promise<successErrorsReturn> => {
+const web3AddProgramtoUser = async (userId: string, eventId: string):Promise<successErrorsReturn> => {
 	const userAddress = await getUserAddress();
 	const addUser = await eventContract.methods.addNewAttendee(userAddress, eventId).send({from: userAddress});
 	return {success: addUser, errors: []};

@@ -1,4 +1,4 @@
-import { defaultEvent } from "./types/events";
+import { defaultProgram } from "./types/programs";
 import { defaultAnswer, defaultSurvey } from "./types/surveys";
 import Web3 from "web3";
 import {
@@ -15,13 +15,11 @@ import {
   web2GetAnswersData,
   web2GetUserOrgs,
   web2GetOrgSurveysData,
-  web2GetOrgEventsData,
+  web2GetOrgProgramsData,
   web2GetUserData,
-  web2GetSurveysData,
   web2GetBasicOrgData,
-  web2GetEventsData,
-  getWeb2EventData,
-  getWeb2SurveyData,
+  web2GetProgramsData,
+  web2GetSurveysData,
   web2GetQuestionsAndAnswers,
 } from "./web2/web2GetData";
 import { defaultOrg } from "./types/orgs";
@@ -163,7 +161,7 @@ const web3GetSurveysData = async (): Promise<{
       let member = await userContract.methods
         .getInfo(surveyResponders[j])
         .call();
-      _userInfo = {
+      _userInfo = { //Change for new sign up data
         birth_day: member[1],
         gender: member[2],
         religion: member[7],
@@ -189,14 +187,14 @@ const web3GetSurveysData = async (): Promise<{
 };
 
 //All events
-const getEventsData = async (): Promise<
-  { success: boolean; events: typeof defaultEvent[]; errors: string[] } | any
+const getProgramsData = async (): Promise<
+  { success: boolean; events: typeof defaultProgram[]; errors: string[] } | any
 > => {
-  return USE_WEB3 ? await web3GetEventsData() : await web2GetEventsData();
+  return USE_WEB3 ? await web3GetProgramsData() : await web2GetProgramsData();
 };
-const web3GetEventsData = async (): Promise<{
+const web3GetProgramsData = async (): Promise<{
   success: boolean;
-  events: typeof defaultEvent[];
+  events: typeof defaultProgram[];
   errors: string[];
 }> => {
   const allEvents = await eventContract.methods.getNumberOfEvents().call();
@@ -276,7 +274,7 @@ const web3GetOrgSurveysData = async (
       let member = await userContract.methods
         .getInfo(surveyResponders[j])
         .call();
-      _userInfo = {
+      _userInfo = { //update sign up info
         birth_day: member[1],
         gender: member[2],
         religion: member[7],
@@ -302,21 +300,21 @@ const web3GetOrgSurveysData = async (
 };
 
 //All events for a specific org
-const getOrgEventsData = async (
+const getOrgProgramsData = async (
   id: string | undefined
 ): Promise<
-  { success: boolean; events: typeof defaultEvent[]; errors: string[] } | any
+  { success: boolean; events: typeof defaultProgram[]; errors: string[] } | any
 > => {
   return USE_WEB3
-    ? await web3GetOrgEventsData(id)
-    : await web2GetOrgEventsData(id);
+    ? await web3GetOrgProgramsData(id)
+    : await web2GetOrgProgramsData(id);
 };
 
-const web3GetOrgEventsData = async (
+const web3GetOrgProgramsData = async (
   id: string | undefined
 ): Promise<{
   success: boolean;
-  events: typeof defaultEvent[];
+  events: typeof defaultProgram[];
   errors: string[];
 }> => {
   const loggedAddress = await getUserAddress();
@@ -556,12 +554,12 @@ const web3GetAnswersData = async (
 export {
   getQuestionsAndAnswers,
   getAnswersData,
-  getOrgEventsData,
+  getOrgProgramsData,
   getOrgSurveysData,
   getBasicOrgData,
   getUserOrgs,
   getUserData,
-  getEventsData,
+  getProgramsData,
   // getEventData,
   getSurveysData,
   // getSurveyData,

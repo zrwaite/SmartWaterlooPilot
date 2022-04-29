@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {icons} from "../../images/icons";
 import "./Settings.css";
 import {logout} from "../../data/account";
+import { USE_WEB3 } from "../../data/dataConstants";
 
 interface settingsProps {
 	orgId: string|undefined;
@@ -31,7 +32,7 @@ const Settings = (props: settingsProps) => {
 					<img className="h4 imageButton" onClick={props.closeModal} src={icons.close} alt="close"></img>
 				</div>
 				<div>
-					<button className={"blackButton settingsButton"} onClick={logout}>Logout</button>
+					{!USE_WEB3&&<button className={"blackButton settingsButton"} onClick={logout}>Logout</button>}
 					<button className={"blackButton settingsButton"} onClick={() => navigate("/createorg")}>Create Organization</button>
 					{props.org&&<button className={"blackButton settingsButton"} onClick={() => {props.closeModal(); navigate(`/addorgmember/${props.orgId}`)}}>Add Org Member</button>}
 				</div>
