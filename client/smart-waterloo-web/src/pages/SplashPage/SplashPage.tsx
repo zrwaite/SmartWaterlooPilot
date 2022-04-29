@@ -11,6 +11,10 @@ import { useContext } from "react";
 import { MobileContext } from "../../App";
 import {USE_WEB3} from "../../data/dataConstants";
 //Todo change buttons to links
+let signedIn:any;
+async function signIn() {
+	signedIn = await isSignedIn();
+}
 function SplashPage() {
 	cookies.set("back", "/");
 	const navigate = useNavigate();

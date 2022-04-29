@@ -6,7 +6,7 @@ const web2logout = () => {
     document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
 
-const web2IsSignedIn = ():boolean => {
+const web2IsSignedIn = async():Promise<boolean> => {
 	if (cookies.get("token") && cookies.get("userId")) return true;
 	web2logout();
 	return false;
