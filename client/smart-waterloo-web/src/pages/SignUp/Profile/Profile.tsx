@@ -9,6 +9,7 @@ type ProfileProps = {
 	nextStep: () => void,
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => void,
 	handleParentSelectChange:  (newValue: null|{ value: string; label: string; }, actionMeta: ActionMeta<{value: string,label: string}>) => void,
+	handleParentCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
 	formData: ProfileFormGridState
 };
 type ProfileState = { };

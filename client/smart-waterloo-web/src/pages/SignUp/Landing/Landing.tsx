@@ -17,7 +17,7 @@ function Landing(props:LandingProps) {
 					<img src={QRCard} alt="QRCard" className="QRCardIcon"/>
 					<p style={redText}>Important Notice: In the case of losing your card you will never be able to get your account back.</p>
 				</div>
-				<button onClick={props.nextStep}className={"blackButton signUpButton"}>Let's get started</button>
+				<button onClick={props.nextStep} className={"blackButton signUpButton"}>Let's get started</button>
 			</div>
 		</>
     );

@@ -532,7 +532,6 @@ const web3GetBasicOrgData = async (
     errors: [],
   };
 };
-
 //get survey answers
 const getAnswersData = async (
   id: string | undefined

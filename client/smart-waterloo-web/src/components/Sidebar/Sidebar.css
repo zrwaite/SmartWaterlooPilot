@@ -19,6 +19,7 @@
 	border: 0.3rem solid black;
 	width: 8rem;
 	height: 8rem;
+	aspect-ratio: 1;
 }
 .topSidebar{
 	width: 100%;

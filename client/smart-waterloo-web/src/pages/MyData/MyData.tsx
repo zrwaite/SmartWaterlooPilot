@@ -12,9 +12,9 @@ const MyData = (props: AccountChildProps) => {
 			<div className={mobile? "":"fullScreenPanel"}>
 				<h4>My Data 📊</h4>
 				<hr/>
-				<p>A brief description about what the events listed here are and any other info that is required.</p>
+				<p>A brief description about what the programs listed here are and any other info that is required.</p>
 				<div className="myDataGrid">
-					<DataPanels orgId={props.orgId} org={props.org}/>
+					<DataPanels {...props.accountData.account} orgId={props.orgId} org={props.org}/>
 				</div>
 			</div>
 		</div>

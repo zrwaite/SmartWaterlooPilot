@@ -1,20 +1,20 @@
 import "./CreateSurvey.css";
-import {useContext} from "react";
+import {ChangeEvent, useContext} from "react";
 import {MobileContext} from "../../App";
-// import {eventCategories} from "./CreateSurveyData";
-// import Select, {ActionMeta} from "react-select";
 import { useNavigate, useParams } from "react-router-dom";
 import {useState} from "react";
 import { postSurvey } from "../../data/postData";
 import cookies from "../../modules/cookies";
 import { forceNavigate } from "../../modules/navigate";
+import { AccountChildProps } from "../AccountParent";
 //Todo change buttons to links
 
 
 interface Question {
 	id: string;
 	prompt: string;
-    answer_type: "short"|"long"|"mc"|"check";
+	optional: boolean;
+    answer_type: "text"|"mc";
 	choices: string[];
 }
 const DefaultStandardInput = {
@@ -23,30 +23,40 @@ const DefaultStandardInput = {
 }
 const DefaultQuestionArray:Question[] = [];
 
-const CreateSurvey = () => {
+const CreateSurvey = (props:AccountChildProps) => {
 	const navigate = useNavigate();
 	let {mobile} = useContext(MobileContext);
 	let {orgId} = useParams();
 	const [standardInputs, setStandardInputs] = useState(DefaultStandardInput);
 	const [questionInputs, setQuestionInputs] = useState(DefaultQuestionArray);
-	const handleStandardInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>) => {
+	const [canSubmit, setCanSubmit] = useState(true);
+
+	const handleStandardInputChange = (event: ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLTextAreaElement>) => {
 		let inputKeys: keyof typeof standardInputs;
         const name = event.target.name as typeof inputKeys;
         let partialInput = {...standardInputs};
 		partialInput[name] = event.target.value;
         setStandardInputs(partialInput);
     }
-	const handleQuestionInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, index: number, name: "prompt"|"answer_type") => {
+	const handleQuestionBooleanChange = (event: ChangeEvent<HTMLInputElement>, index:number, name: "optional") => {
         let partialInput = [...questionInputs];
-		if (name==="answer_type") {
-			partialInput[index][name] = event.target.value as "short"|"long"|"mc"|"check";
-			if (partialInput[index].choices.length===0) partialInput[index].choices = ["", ""];
-		} else {
-			partialInput[index][name] = event.target.value;
+		if (name==="optional") {
+			partialInput[index][name] = event.target.checked;
 		}
         setQuestionInputs(partialInput);
+	}
+
+	const handleQuestionInputChange = (event: ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLTextAreaElement>, index: number, name: "prompt"|"answer_type") => {
+        let partialInput = [...questionInputs];
+		if (name==="answer_type") {
+			partialInput[index][name] = event.target.value as "text"|"mc";
+			if (partialInput[index].choices.length===0) partialInput[index].choices = ["", ""];
+		} else if (name==="prompt"){
+			partialInput[index][name] = event.target.value;
+		} 
+        setQuestionInputs(partialInput);
     }
-	const handleAnswerInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, qindex: number, aindex: number) => {
+	const handleAnswerInputChange = (event: ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLTextAreaElement>, qindex: number, aindex: number) => {
         let answers = questionInputs[qindex].choices;
 		if (answers) {
 			let partialInput = [...questionInputs];
@@ -60,8 +70,9 @@ const CreateSurvey = () => {
 		let previousQuestions = [...questionInputs];
 		previousQuestions.push({
 			id: "",
+			optional: false,
 			prompt: "",
-			answer_type: "short",
+			answer_type: "text",
 			choices: []
 		});
 		setQuestionInputs(previousQuestions);
@@ -84,10 +95,14 @@ const CreateSurvey = () => {
 	const greyText = {color: "grey"};
 	const link = {cursor: "pointer"};
 	const tryPostSurvey = async () => {
+		setCanSubmit(false);
 		if (orgId) {
 			let {success, errors, surveyId} = await postSurvey(orgId, {name: standardInputs.name, description: standardInputs.description, questions: questionInputs}) 
 			if (success && surveyId) forceNavigate(`/survey/${surveyId}/org/${orgId}`);
-			else alert(JSON.stringify(errors));
+			else {
+				alert(JSON.stringify(errors));
+				setCanSubmit(true);
+			}
 		}
 	}
 	return (
@@ -104,7 +119,7 @@ const CreateSurvey = () => {
 					</div>
 					<h2 className={"createEventHeader"}>Create New Survey 📝</h2>
 					<div className={"formQuestion"}>
-						<h6>Name of Event</h6>
+						<h6>Name of Survey</h6>
 						<input name={"name"} className={"createEventInput"} placeholder={"Enter Text"} value={standardInputs.name} onChange={handleStandardInputChange} />
 					</div>
 					<div className={"formQuestion"}>
@@ -125,10 +140,10 @@ const CreateSurvey = () => {
 										<div className={"tabbedSection"}>	
 											<div className={"questionTypeMCSection"} >
 													{[
-														{shortName:"short",fullName:"Short Text"},
+														{shortName:"text",fullName:"Text"},
 														{shortName:"mc",fullName:"Multiple Choice"},
-														{shortName:"long",fullName:"Long Text"},
-														{shortName:"check",fullName:"Checkboxes"},
+														// {shortName:"long",fullName:"Long Text"},
+														// {shortName:"check",fullName:"Checkboxes"},
 													].map((questionType, i2) => {
 														return (<div key={i2}>
 															<input name={`type${i}`} type="radio" value={questionType.shortName} checked={question.answer_type===questionType.shortName} onChange={(e) => handleQuestionInputChange(e, i, "answer_type")}/>
@@ -136,7 +151,7 @@ const CreateSurvey = () => {
 														</div>)
 													})}
 											</div>
-											{(questionInputs[i].answer_type==="mc"||questionInputs[i].answer_type==="check")?(
+											{(questionInputs[i].answer_type==="mc")?(
 												<div className={"questionChoiceCreator"}>
 													{questionInputs[i].choices.map((choice, i2) => {
 														return (
@@ -148,10 +163,14 @@ const CreateSurvey = () => {
 														)
 													})}
 													<div className={"horizontal"}>
-														<button onClick={() => addChoice(i)}className={"addChoiceButton blackButton"}>+ Add Choice</button>
+														<button onClick={() => addChoice(i)} className={"addChoiceButton blackButton"}>+ Add Choice</button>
 													</div>
 												</div>
 											):null}
+										</div>
+										<div className={"horizontal"}>
+											<h6>Optional?</h6>
+											<input type={"checkbox"} name={"optional"} className={"createEventInput"} checked={questionInputs[i].optional} onChange={(e) => handleQuestionBooleanChange(e, i, "optional")} />
 										</div>
 									</div>
 								)
@@ -159,10 +178,10 @@ const CreateSurvey = () => {
 						}</div>
 					</div>
 					<div className={"horizontal"}>
-						<button onClick={() => addQuestion()}className={"addQuestionButton blackButton"}>+ Add Question</button>
+						<button onClick={() => addQuestion()} className={"addQuestionButton blackButton"}>+ Add Question</button>
 					</div>
 					<div className={"horizontal"}>
-						<button onClick={tryPostSurvey}className={"addQuestionButton blackButton"}>Submit Survey!</button>
+						<button onClick={canSubmit?tryPostSurvey:undefined} className={`addQuestionButton ${canSubmit?"blackButton":"disabledButton"}`}>Submit Survey!</button>
 					</div>
 				</div>
 			</div>	

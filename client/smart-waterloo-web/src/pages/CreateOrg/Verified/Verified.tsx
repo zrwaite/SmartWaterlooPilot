@@ -1,9 +1,10 @@
 import "./Verified.css";
+import {ChangeEvent} from "react";
 
 type VerifiedProps = {
 	backStep: () => void,
 	nextStep: () => void,
-	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void
+	handleParentInputChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void
 	verifiedData: { businessNumber: string }
 };
 function Verified(props: VerifiedProps) {

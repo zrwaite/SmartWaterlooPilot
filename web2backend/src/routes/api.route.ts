@@ -1,10 +1,11 @@
 import express from 'express';
 import userCtrl from '../api/user';
 import orgCtrl from '../api/org';
-import eventCtrl from '../api/event';
+import programCtrl from '../api/program';
 import surveyCtrl from '../api/survey';
 import questionCtrl from '../api/question';
 import answerCtrl from '../api/answer';
+import notFound from '../api/notfound';
 const router = express.Router();
 router.route('/user')
 	.get(userCtrl.getUser)
@@ -18,11 +19,11 @@ router.route('/org')
 	.put(orgCtrl.putOrg)
 	.delete(orgCtrl.deleteOrg)
 
-router.route('/event')
-	.get(eventCtrl.getEvent)
-	.post(eventCtrl.postEvent)
-	.put(eventCtrl.putEvent)
-	.delete(eventCtrl.deleteEvent)
+router.route(['/program', '/program'])
+	.get(programCtrl.getProgram)
+	.post(programCtrl.postProgram)
+	.put(programCtrl.putProgram)
+	.delete(programCtrl.deleteProgram)
 
 router.route('/survey')
 	.get(surveyCtrl.getSurvey)
@@ -38,8 +39,14 @@ router.route('/question')
 
 router.route('/answer')
 	.get(answerCtrl.getAnswer)
-	.post(answerCtrl.postAnswer)
+	.post(answerCtrl.postAnswers)
 	.put(answerCtrl.putAnswer)
 	.delete(answerCtrl.deleteAnswer)
+
+router.route('*')
+	.get(notFound)
+	.post(notFound)
+	.put(notFound)
+	.delete(notFound);
 
 export default router;

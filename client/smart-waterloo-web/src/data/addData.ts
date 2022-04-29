@@ -1,6 +1,6 @@
 import { USE_WEB3, userContract, orgContract, eventContract } from "./dataConstants";
 import { successErrorsReturn } from "./types/generics";
-import { web2VerifyOrg, web2AddEventtoUser, web2AddSurveytoUser, web2AddUserToOrg } from "./web2/web2AddData";
+import { web2VerifyOrg, web2AddProgramtoUser, web2AddSurveytoUser, web2AddUserToOrg } from "./web2/web2AddData";
 import Web3 from "web3";
 
 let web3 = new Web3(Web3.givenProvider);
@@ -17,14 +17,15 @@ const getUserAddress = async (): Promise<string> => {
 	}
   };
 
+
 const addUserToOrg = async (userId: number, orgId: number):Promise<successErrorsReturn> => {
 	return USE_WEB3?(await web3AddUserToOrg(userId, orgId)):(await web2AddUserToOrg(userId, orgId));
 }
 const addSurveytoUser = async (userId: string, surveyId: string):Promise<successErrorsReturn> => {
 	return await web2AddSurveytoUser(userId, surveyId);
 }
-const addEventtoUser = async (userId: string, eventId: string):Promise<successErrorsReturn> => {
-	return USE_WEB3?(await web3AddEventtoUser(userId, eventId)):(await web2AddEventtoUser(userId, eventId));
+const addProgramtoUser = async (userId: string, programId: string):Promise<successErrorsReturn> => {
+	return USE_WEB3?(await web3AddProgramtoUser(userId, programId)):(await web2AddProgramtoUser(userId, programId));
 }
 const verifyOrg = async (business_number: string, password:string):Promise<successErrorsReturn> => {
 	return USE_WEB3?(await web3VerifyOrg(business_number, password)):(await web2VerifyOrg(business_number, password));
@@ -40,6 +41,7 @@ const web3VerifyOrg = async (business_number: string, password:string):Promise<s
 		return {success: false, errors: ["Incorrect password"]};
 	}
 }
+
 const web3AddEventtoUser = async (userId: string, eventId: string):Promise<successErrorsReturn> => {
 	const userAddress = await getUserAddress();
 	const addUser = await eventContract.methods.addNewAttendee(userAddress, eventId).send({from: userAddress});
@@ -50,4 +52,4 @@ const web3AddUserToOrg = async (userId: number, orgId: number):Promise<successEr
 	return {success: false, errors: ["not implemented"]}
 }
 
-export {verifyOrg, addUserToOrg, addSurveytoUser, addEventtoUser}
+export {verifyOrg, addUserToOrg, addSurveytoUser, addProgramtoUser}

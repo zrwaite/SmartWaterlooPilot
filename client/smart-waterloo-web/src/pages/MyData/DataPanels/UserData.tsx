@@ -4,6 +4,9 @@ import "./DataPanel.css";
 // import { useContext } from "react";
 
 interface MyDataPanelProps {
+	religion: string,
+	gender:string,
+	race: string
 }
 
 
@@ -13,14 +16,13 @@ const UserDataPanel = (props: MyDataPanelProps) => {
 	return (
 		<div onClick={() => navigate("/userdata")} className={`dataPanel`}>
 			<div className="dataPanelInfo">
-				<h5>User Data</h5>
-				<p>Your data from the signup process</p>
+				<h5>Your Data</h5>
 			</div>
 			<div className="dataPanelPreview">
 				<ul>
-					<li>Age</li>
-					<li>Gender</li>
-					<li>Race</li>
+					<li>Religion: {props.religion}</li>
+					<li>Gender: {props.gender}</li>
+					<li>Race: {props.race}</li>
 					<li>...</li>
 				</ul>
 			</div>
@@ -29,3 +31,4 @@ const UserDataPanel = (props: MyDataPanelProps) => {
 }	
 
 export default UserDataPanel;
+export type {MyDataPanelProps}

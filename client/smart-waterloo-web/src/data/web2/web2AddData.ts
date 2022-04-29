@@ -33,9 +33,9 @@ const web2AddSurveytoUser = async (userId: string, surveyId: string):Promise<suc
 	} else return {success: false, errors: ["request failed"]};
 }
 
-const web2AddEventtoUser = async (userId: string, eventId: string):Promise<successErrorsReturn> => {
+const web2AddProgramtoUser = async (userId: string, programId: string):Promise<successErrorsReturn> => {
 	let json = await httpReq("/api/user/", "PUT", {
-		event_id: eventId,
+		program_id: programId,
 		user_id: userId
 	})
 	if (json) {
@@ -64,4 +64,4 @@ const web2VerifyOrg = async (business_number: string, password:string):Promise<s
 	} else return {success: false, errors: ["request failed"]};
 }
 
-export {web2VerifyOrg, web2AddUserToOrg, web2AddSurveytoUser, web2AddEventtoUser}
+export {web2VerifyOrg, web2AddUserToOrg, web2AddSurveytoUser, web2AddProgramtoUser}

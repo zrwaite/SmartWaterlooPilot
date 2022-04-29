@@ -1,0 +1,55 @@
+.createNavbar{
+	width: 100%;
+	display: flex;
+	justify-content:space-between;
+	align-items: center;
+	margin-bottom: 3rem;
+}
+.createProgramHeader{
+	margin: 1rem 0;
+}
+.createProgramInput{
+	width: 100%;
+	box-sizing: border-box;
+}
+.singleLineMultiInput{
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+.singleLineMultiInput>*{
+	margin: 0 0.2rem
+}
+.createProgramMiniInput{
+	width: 2rem;
+}
+.createProgramTextArea{
+	width: 100%;
+}
+.createProgramButton{
+	width: 80%;
+	margin: auto;
+	height: 2rem;
+}
+.disclaimer{
+	background-color: #FFEDCA;
+	display:flex;
+	width: calc(100% + 2rem);
+	margin-left: -2rem;
+	margin-top: -2rem;
+	padding: 1rem;
+}
+.infoBubble{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	border: 0.2rem solid black;
+	border-radius: 50%;
+	height: 1rem;
+	aspect-ratio: 1;
+	width: 1rem;
+	margin: 0.5rem;
+}
+.createSurveyLinkPadding {
+	padding: 1rem 0 1rem 1rem;
+}

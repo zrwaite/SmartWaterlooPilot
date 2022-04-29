@@ -10,23 +10,27 @@ const UserData = (props:AccountChildProps) => {
 	avatar_string varchar(100),
 	*/
 	const account = props.accountData.account
+	const age = Math.floor(((new Date()).getTime() - (new Date(account.birth_day)).getTime()) / (1000*60*60*24*365));
 	return (
 		<>
 			<Navbar root={false}/>
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanel"}>
-					{mobile?<h6>User Data</h6>:<h4 className={"UserDataHeader"}>User Data</h4>}
+					{mobile?<h6>Your Data</h6>:<h4 className={"UserDataHeader"}>Your Data</h4>}
 					<p>Nickname: {account.nickname}</p>
-					<p>Birthday: {account.birth_day}/{account.birth_month}/{account.birth_year}</p>
+					<p>Age: {age}</p>
 					<p>Gender: {account.gender}</p>
 					<p>Race: {account.race}</p>
 					<p>Religion: {account.religion}</p>
-					<p>Sexuality: {account.sexuality}</p>
-					{/* <p>Height: {account.height}</p>
-					<p>Weight: {account.weight}</p> */}
+					<p>Sexual Orientation: {account.sexuality}</p>
+					<p>Height: {account.height}</p>
+					<p>Weight: {account.weight}</p>
+					<p>Primary Language: {account.primary_language}</p>
+					<p>Secondary Language: {account.secondary_language}</p>
+					<p>Combined Household Income: {account.household_income}</p>
 					<p>Postal Code: {account.postal_code}</p>
 					<p>Grade: {account.grade}</p>
-					<p>Number of Events: {account.events.length}</p>
+					<p>Number of Programs: {account.programs.length}</p>
 					<p>Number of Surveys: {account.surveys.length}</p>
 					<p></p>
 				</div>

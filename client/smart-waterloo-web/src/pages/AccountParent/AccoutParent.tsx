@@ -1,8 +1,8 @@
 import "./AccountParent.css";
 import cookies from "../../modules/cookies";
 import { useState} from "react";
-import { defaultEventsState } from "../../data/types/events";
-import {getUserOrgs, getEventsData, getUserData, getSurveysData, getBasicOrgData, getOrgEventsData, getOrgSurveysData} from "../../data/getData"
+import { defaultProgramsState } from "../../data/types/programs";
+import {getUserOrgs, getProgramsData, getUserData, getSurveysData, getBasicOrgData, getOrgProgramsData, getOrgSurveysData} from "../../data/getData"
 import Settings from "../../components/Settings";
 import { defaultSurveysState } from "../../data/types/surveys";
 import { useNavigate, useParams } from "react-router-dom";
@@ -12,22 +12,24 @@ import { defaultOrgsState } from "../../data/types/orgs";
 import OrgsModal from "../../components/OrgsModal";
 import PrimaryPage from "../PrimaryPage";
 import AddOrgMember from "../AddOrgMember";
-import EventDetails from "../EventDetails";
+import ProgramDetails from "../ProgramDetails";
 import Survey from "../Survey";
 import OrgData from "../OrgData";
 import UserData from "../UserData";
 import UserAnswers from "../UserAnswers";
 import UserAccess from "../UserAccess";
+import CreateProgram from "../CreateProgram";
+import CreateSurvey from "../CreateSurvey";
 
 interface AccountParentProps {
 	org: boolean;
-	page: "dashboard"|"events"|"data"|"surveys"|"addorgmember"|"eventdetails"|"survey"|"orgdata"|"userdata"|"useranswers"|"useraccess"
+	page: "createprogram"|"createsurvey"|"dashboard"|"programs"|"data"|"surveys"|"addorgmember"|"programdetails"|"survey"|"orgdata"|"userdata"|"useranswers"|"useraccess"
 }
 
 const AccountParent = (props:AccountParentProps) => {
 	const [prevOrgId, setPrevOrgId] = useState<string|undefined>("");
 	const [orgsData, setOrgsData] = useState(defaultOrgsState);
-	const [eventsData, setEventData] = useState(defaultEventsState);
+	const [programsData, setProgramData] = useState(defaultProgramsState);
 	const [surveysData, setSurveyData] = useState(defaultSurveysState);
 	const [accountData, setAccountData] = useState(defaultAccountState);
 	const [verified, setVerified] = useState(false);
@@ -59,10 +61,10 @@ const AccountParent = (props:AccountParentProps) => {
 		else if ('nickname' in userData) setAccountData({account: userData, set: true});
 		else console.error("invalid userData response");
 	}
-	const getSetEventsData = async () => {
-		let {success, events, errors} = await getEventsData();
+	const getSetProgramsData = async () => {
+		let {success, programs, errors} = await getProgramsData();
 		if (!success && errors.length) alert(JSON.stringify(errors));
-		else setEventData({events: events, set: true })
+		else setProgramData({programs: programs, set: true })
 	}
 	const getSetSurveysData = async () => {
 		let {success, surveys, errors} = await getSurveysData();
@@ -89,10 +91,10 @@ const AccountParent = (props:AccountParentProps) => {
 		}
 		else console.error("invalid userData response");
 	}
-	const getSetOrgEventsData = async () => {
-		let {success, events, errors} = await getOrgEventsData(orgId);
+	const getSetOrgProgramsData = async () => {
+		let {success, programs, errors} = await getOrgProgramsData(orgId);
 		if (!success) alert(JSON.stringify(errors));
-		else setEventData({events: events, set: true })
+		else setProgramData({programs: programs, set: true })
 	}
 	const getSetOrgSurveysData = async () => {
 		let {success, surveys, errors} = await getOrgSurveysData(orgId);
@@ -105,10 +107,10 @@ const AccountParent = (props:AccountParentProps) => {
 		getSetOrgsData();
 		if (props.org){
 			getSetOrgData();
-			getSetOrgEventsData();
+			getSetOrgProgramsData();
 			getSetOrgSurveysData();
 		} else {
-			getSetEventsData();
+			getSetProgramsData();
 			getSetUserData();
 			getSetSurveysData();
 		}
@@ -117,7 +119,7 @@ const AccountParent = (props:AccountParentProps) => {
 	}
 
 	const allDataObj = {
-		eventsData: eventsData,
+		programsData: programsData,
 		accountData: accountData,
 		surveysData: surveysData,
 		orgsData: orgsData,
@@ -134,17 +136,18 @@ const AccountParent = (props:AccountParentProps) => {
 			<Settings org={props.org} orgId={orgId} open={settingsOpen} closeModal={() => setSettingsOpen(false)}/>
 			<OrgsModal org={props.org&&orgId?orgId:false} orgs={orgsData.orgs} open={orgsModalOpen} closeModal={() => setOrgsModalOpen(false)}/>
 			{props.page==="dashboard"&&<PrimaryPage {...allDataObj} page={"dashboard"}/>}
-			{props.page==="events"&&<PrimaryPage {...allDataObj} page={"events"}/>}
+			{props.page==="programs"&&<PrimaryPage {...allDataObj} page={"programs"}/>}
 			{props.page==="data"&&<PrimaryPage {...allDataObj} page={"data"}/>}
 			{props.page==="surveys"&&<PrimaryPage {...allDataObj} page={"surveys"}/>}
 			{props.page==="addorgmember"&&<AddOrgMember {...allDataObj}/>}
-			{props.page==="eventdetails"&&<EventDetails {...allDataObj}/>}
+			{props.page==="programdetails"&&<ProgramDetails {...allDataObj}/>}
 			{props.page==="survey"&&<Survey {...allDataObj}/>}
 			{props.page==="orgdata"&&<OrgData {...allDataObj}/>}
 			{props.page==="userdata"&&<UserData {...allDataObj}/>}
 			{props.page==="useranswers"&&<UserAnswers {...allDataObj}/>}
 			{props.page==="useraccess"&&<UserAccess {...allDataObj}/>}
-			
+			{props.page==="createprogram"&&<CreateProgram {...allDataObj}/>}
+			{props.page==="createsurvey"&&<CreateSurvey {...allDataObj}/>}
 		</>
     );
 }
@@ -153,7 +156,7 @@ export default AccountParent;
 interface AccountChildProps {
 	openSettings: () => void;
 	openOrgsModal: () => void;
-	eventsData: typeof defaultEventsState,
+	programsData: typeof defaultProgramsState,
 	surveysData: typeof defaultSurveysState,
 	orgsData: typeof defaultOrgsState,
 	accountData: typeof defaultAccountState

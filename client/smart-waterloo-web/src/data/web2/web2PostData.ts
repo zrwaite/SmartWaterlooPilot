@@ -1,16 +1,16 @@
 import cookies from "../../modules/cookies";
 import {httpReq} from "./httpRequest";
 import {postUserType} from "../types/account";
-import {postEventType, postEventReturn} from "../types/events"
+import {postProgramType, postProgramReturn} from "../types/programs"
 import { postSurveyReturn} from "../types/surveys"
 import { postOrgType, postOrgReturn} from "../types/orgs"
 import { postSurveyType } from "../types/surveys";
 
-const web2PostAnswer = async (questionId: string, answer: string):Promise<string[]> => {
+const web2PostAnswers = async (questionIds: string[], answers: string[]):Promise<string[]> => {
 	let json = await httpReq("/api/answer/", "POST", {
 		user_id: cookies.get("userId"),
-		answer: answer,
-		question_id: questionId,
+		answers: answers,
+		question_ids: questionIds,
 		link: true
 	})
 	if (json) {
@@ -37,25 +37,30 @@ const web2PostSurvey = async (id:string, inputData:postSurveyType):Promise<postS
 	} else return {success: false, errors: ["request failed"], surveyId: ""};
 }
 
-const postEventWeb2 = async (id:string, inputData:postEventType):Promise<postEventReturn> => {
-	let json = await httpReq("/api/event/", "POST", {
+const postProgramWeb2 = async (id:string, inputData:postProgramType, linkedSurvey:string|null):Promise<postProgramReturn> => {
+	let json = await httpReq("/api/program/", "POST", {
 		org: id,
 		name: inputData.name,
-		age_group: inputData.age,
-		start_date: inputData.start_day+"/"+inputData.start_month+"/"+inputData.start_year,
-		end_date: inputData.end_day+"/"+inputData.end_month+"/"+inputData.end_year,
+		min_age: inputData.min_age,
+		max_age: inputData.max_age,
+		start_date: inputData.start_date,
+		end_date: inputData.end_date,
+		start_time: inputData.start_time,
+		end_time: inputData.end_time,
 		category: inputData.category,
+		location: inputData.location,
+		linked_survey_id: linkedSurvey,
 		description: inputData.description,
 		image: "1",
 	})
 	if (json) {
 		let response = JSON.parse(json);
 		if (response.success) {
-			return {success: true, errors: [], eventId: response.response.eventData}
+			return {success: true, errors: [], programId: response.response.programData}
 		} else {
-			return {success: false, errors: response.errors, eventId: ""}
+			return {success: false, errors: response.errors, programId: ""}
 		}
-	} else return {success: false, errors: ["request failed"], eventId: ""};
+	} else return {success: false, errors: ["request failed"], programId: ""};
 }
 const postOrgWeb2 = async (inputData:postOrgType):Promise<postOrgReturn> => {
 	let json = await httpReq("/api/org/", "POST", {
@@ -78,7 +83,7 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 		user_id: inputData.qrId,
 		password: inputData.password,
 		nickname: inputData.nickname,
-		birth_day: `${inputData.year}-${inputData.month}-${inputData.day}`,
+		birth_day: inputData.birth_day,
 		gender: inputData.gender,
 		height: inputData.height,
 		weight: inputData.weight,
@@ -88,6 +93,13 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 		grade: inputData.grade,
 		postal_code: inputData.postalCode,
 		avatar_string: inputData.avatar_string,
+		household_income: inputData.household_income,
+		household_composition: inputData.household_composition,
+		primary_language: inputData.primary_language,
+		secondary_language: inputData.secondary_language,
+		heard: inputData.heard,
+		contact: inputData.contact,
+		city: inputData.city
 	})
 	if (json) {
 		let response = JSON.parse(json);
@@ -102,4 +114,4 @@ const postUserWeb2 = async (inputData:postUserType):Promise<string[]> => {
 	} else return ["request failed"];
 }
 
-export {web2PostAnswer, web2PostSurvey, postEventWeb2, postOrgWeb2, postUserWeb2};
+export {web2PostAnswers, web2PostSurvey, postProgramWeb2, postOrgWeb2, postUserWeb2};

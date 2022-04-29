@@ -6,6 +6,7 @@ import { AccountChildProps } from "../AccountParent";
 import { defaultOrg } from "../../data/types/orgs";
 import { useParams } from "react-router-dom";
 import { getDefaultUserInfoLists } from "../../data/types/account";
+import {USE_WEB3} from "../../data/dataConstants";
 const OrgData = (props:AccountChildProps) => {
 	let {orgId} = useParams();
 	let {mobile} = useContext(MobileContext);
@@ -27,7 +28,8 @@ const OrgData = (props:AccountChildProps) => {
 		const newUserInfoLists = getDefaultUserInfoLists();
 		console.log(orgData.org.user_info);
 		orgData.org.user_info.forEach((user) => {
-			incrementMap(newUserInfoLists.birthdays, user.birth_day);
+			const age = Math.floor(((new Date()).getTime() - (new Date(user.birth_day)).getTime()) / (1000*60*60*24*365));
+			incrementMap(newUserInfoLists.ages, age.toString());
 			incrementMap(newUserInfoLists.genders, user.gender);
 			incrementMap(newUserInfoLists.races, user.race);
 			incrementMap(newUserInfoLists.religions, user.religion);
@@ -37,7 +39,7 @@ const OrgData = (props:AccountChildProps) => {
 	}
 
 	if (!orgData.set) {
-		const newOrgData = props.orgsData.orgs.find(org => org.id.toString() === orgId)
+		const newOrgData = USE_WEB3?props.orgsData.orgs[0]:props.orgsData.orgs.find(org => org.id.toString() === orgId)
 		if (newOrgData) setOrgData({org:newOrgData, set: true});
 	}else if (!userInfoParsed) {
 		parseUserInfoLists();
@@ -48,17 +50,17 @@ const OrgData = (props:AccountChildProps) => {
 		religions: JSX.Element[]
 		genders: JSX.Element[]
 		races: JSX.Element[]
-		birthdays: JSX.Element[]
+		ages: JSX.Element[]
 		sexualities: JSX.Element[]
 	}= {
 		religions: [],
 		genders: [],
 		races: [],
-		birthdays: [],
+		ages: [],
 		sexualities: []
 	}
-	userInfoLists.birthdays.forEach((value, key) => {
-		userInfoComponents.birthdays.push(<p>{key}: {value}</p>)
+	userInfoLists.ages.forEach((value, key) => {
+		userInfoComponents.ages.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.religions.forEach((value, key) => {
 		userInfoComponents.religions.push(<p>{key}: {value}</p>)
@@ -84,9 +86,9 @@ const OrgData = (props:AccountChildProps) => {
 					<p>Num Members: {orgData.org.members.length+1}</p>
 					{<>
 						<h6>Member info:</h6>
-						<p>Birthdays:</p>
+						<p>Ages:</p>
 						<ul>
-							{userInfoComponents.birthdays.map((component, key) => <li key={key}>{component}</li>)}
+							{userInfoComponents.ages.map((component, key) => <li key={key}>{component}</li>)}
 						</ul>
 						<p>Genders:</p>
 						<ul>
@@ -96,7 +98,7 @@ const OrgData = (props:AccountChildProps) => {
 						<ul>
 							{userInfoComponents.religions.map((component, key) => <li key={key}>{component}</li>)}
 						</ul>
-						<p>Sexualities:</p>
+						<p>Sexual Orientations:</p>
 						<ul>
 							{userInfoComponents.sexualities.map((component, key) => <li key={key}>{component}</li>)}
 						</ul>

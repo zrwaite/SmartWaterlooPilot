@@ -4,12 +4,12 @@ import Sidebar from "../../components/Sidebar";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
 import Dashboard from "../Dashboard";
-import Events from "../Events";
+import Programs from "../Programs";
 import MyData from "../MyData";
 import Surveys from "../Surveys";
 import { AccountChildProps } from "../AccountParent";
 interface PrimaryPageProps extends AccountChildProps {
-	page:  "dashboard"|"events"|"data"|"surveys"
+	page:  "dashboard"|"programs"|"data"|"surveys"
 }
 
 const AccountParent = (props:PrimaryPageProps) => {
@@ -39,7 +39,7 @@ const AccountParent = (props:PrimaryPageProps) => {
 					page={props.page} 
 				/>}
 				{props.page==="dashboard"&&<Dashboard {...props}/>}
-				{props.page==="events"&&<Events {...props}/>}
+				{props.page==="programs"&&<Programs {...props}/>}
 				{props.page==="data"&&<MyData {...props}/>}
 				{props.page==="surveys"&&<Surveys {...props}/>}
 			</div>

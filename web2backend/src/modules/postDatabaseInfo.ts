@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt";
-import pool from "../database/db";
+import pool from "../database/database";
 import {userData, postUserInfo as postUserInfoObj, userInfoData} from "../database/userData";
 import {orgData, postOrg as postOrgObj} from "../database/orgData";
-import {eventData, postEvent as postEventObj} from "../database/eventData";
+import {programData, postProgram as postProgramObj} from "../database/programData";
 import {surveyKeys, questionKeys, questionValues, surveyValues, postSurveyValues, postQuestionValues, answerKeys, answerValues} from "../database/surveyData";
 import {verifyOrgVerification} from "./getDatabaseInfo";
 interface PostDataReturn {
@@ -33,6 +33,7 @@ const postEntry = async (entry: object, tableName:string ):Promise<PostDataRetur
 	} catch (e: any) {
 		const knownErrorCodes = ["22P02", "23505", "23503"];
 		if (knownErrorCodes.includes(e.code)) errors.push(e.detail);
+		else if (e.code == 22008) errors.push("invalid date");
 		else errors.push("database error");
 		console.log(e);
 	}
@@ -107,11 +108,11 @@ const postUser = async (password:string, userInfoId: number, userParams: string[
 
 
 
-const postEvent = async (eventParams:string[]) => {
-	if (!(await verifyOrgVerification(eventParams[0]))) return {success: false, errors: ["org not verified"], id: 0};
-	let newPostEventObj = {...postEventObj};
-	for (let i = 0; i<eventParams.length; i++) newPostEventObj[eventData.postEventKeys[i]] = eventParams[i];
-	return await postEntry(newPostEventObj, "events");
+const postProgram = async (programParams:string[]) => {
+	if (!(await verifyOrgVerification(programParams[0]))) return {success: false, errors: ["org not verified"], id: 0};
+	let newPostProgramObj = {...postProgramObj};
+	for (let i = 0; i<programParams.length; i++) newPostProgramObj[programData.postProgramKeys[i]] = programParams[i];
+	return await postEntry(newPostProgramObj, "programs");
 }
 
 const postSurvey = async (surveyParams:(surveyValues)) => {
@@ -129,14 +130,17 @@ const postSurvey = async (surveyParams:(surveyValues)) => {
 			break;
 		}
 	}
-	let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`];
-	if (questionIds.length) postSurveyArray[3] = `{"${questionIds.join("\", \"")}"}`;
-	let {errors:postEntryErrors, success:postEntrySuccess, id} = await postEntryArrays({keys:surveyKeys, values: postSurveyArray}, "surveys");
-	return {success: success && postEntrySuccess, errors: [...errors, ...postEntryErrors], id: id};
+	if (success) {
+		let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`];
+		if (questionIds.length) postSurveyArray[3] = `{"${questionIds.join("\", \"")}"}`;
+		let {errors:postEntryErrors, success:postEntrySuccess, id} = await postEntryArrays({keys:surveyKeys, values: postSurveyArray}, "surveys");
+		return {success: success && postEntrySuccess, errors: [...errors, ...postEntryErrors], id: id};
+	}
+	return {success: success, errors: errors, id: 0}
 }
 
 const postQuestion = async (questionParams:(questionValues)) => {
-	let postQuestionArray:postQuestionValues = [questionParams[0], questionParams[1], `{}`];
+	let postQuestionArray:postQuestionValues = [questionParams[0], questionParams[1], `{}`, questionParams[3]];
 	if (questionParams[2]?.length) postQuestionArray[2] = `{"${questionParams[2]?.join("\", \"")}"}`;
 	return await postEntryArrays({keys:questionKeys, values: postQuestionArray}, "questions");
 }
@@ -144,6 +148,23 @@ const postAnswer = async (answer:string, question_id:number) => {
 	let postAnswerArray:answerValues = [answer, question_id];
 	// if (answerParams[2]?.length) postAnswerArray[2] = `{"${answerParams[2]?.join("\", \"")}"}`;
 	return await postEntryArrays({keys:answerKeys, values: postAnswerArray}, "answers");
+}
+const postAnswers = async (answers:string[], question_ids:number[]) => {
+	if (answers.length !== question_ids.length) return {errors: ["questions and answers don't match"], success: false, ids: []}
+	let errors:string[] = [];
+	let success = true;
+	let ids:number[] = [];
+	for (let i=0; i<answers.length;i++) {
+		if (answers[i]!==""&&answers[i]!==null) {
+			let {errors:singleErrors, success:singleSuccess, id} = await postAnswer(answers[i], question_ids[i])
+			if (!singleSuccess) {
+				errors.push(...singleErrors);
+				success = false;
+				break;
+			} else ids.push(id);
+		}
+	}
+	return {errors: errors, ids: ids, success: success};
 }
 
 const postOrg = async (orgParams:string[]) => {
@@ -159,4 +180,4 @@ const postUserInfo = async (userInfoParams:string[]) => {
 }
 
 
-export {postAnswer, postUser, postOrg, postEvent, postSurvey, postUserInfo}
+export {postAnswers, postUser, postOrg, postProgram, postSurvey, postUserInfo}

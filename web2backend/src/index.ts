@@ -1,6 +1,6 @@
 import env from "dotenv";
 import app from "./server";
-import pool from "./database/db"
+import pool from "./database/database"
 import fs from "fs";
 import path from "path";
 
@@ -14,6 +14,6 @@ const initializeDB = async () => {
 }
 
 app.listen(port, () => {
-	// initializeDB(); 
+	// initializeDB();
 	console.log(`listening on port ${port}`);
 });

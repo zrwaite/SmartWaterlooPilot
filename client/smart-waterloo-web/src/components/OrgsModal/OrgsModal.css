@@ -8,8 +8,7 @@
 .orgsModalHeader{
 	display: flex;
 	justify-content: space-between;
-	margin: 0;
-	margin-bottom: 1rem;
+	margin: 0 0 1rem;
 }
 .orgsModalButton {
 	margin: 0.5rem 2rem;

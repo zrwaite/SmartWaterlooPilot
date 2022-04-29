@@ -1,7 +1,7 @@
-import pool from "../database/db";
+import pool from "../database/database";
 import {userData, userInfoData} from "../database/userData";
 import {orgData} from "../database/orgData";
-import {eventData} from "../database/eventData";
+import {programData} from "../database/programData";
 import {answerKeys, getQuestionKeys, getSurveyKeys} from "../database/surveyData";
 
 const getEntries = async (multi: boolean, idKey:string, idValue:string|number, tableName: string, columns: readonly string[]) => {
@@ -52,7 +52,6 @@ const getUserOrgs = async (userId: number) => {
 	} catch (e) {
 		console.log(e)
 		errors.push("database error");
-		status = 400;
 	}
 	// const {status, entries, errors} = await getEntries(true, "owner_id", ownerId, "orgs", orgData.orgKeys);
 	return {status: status, orgs: orgs, errors: errors};
@@ -79,20 +78,21 @@ const getUserHash = async (userId:string) => {
 // 	const {status, entries, errors} = await getEntries(true, "", "", "users", userData.getKeys);
 // 	return {status: status, users: entries, errors: errors}
 // }
-const parseEvents = async (eventId:number) => {
-
+const getUserInfoByUserId = async (userId:number) => {
+	const {status, entries, errors} = await getEntries(false, "user_id", userId, "users", ["user_info_id"]);
+	return {status: status, user_info: entries.length?entries[0]:{}, errors: errors};
 }
-const getEvent = async (eventId:number) => {
-	const {status, entries, errors} = await getEntries(false, "id", eventId, "events", eventData.allEventKeys);
-	return {status: status, event: entries.length?entries[0]:{}, errors: errors};
+const getProgram = async (programId:number) => {
+	const {status, entries, errors} = await getEntries(false, "id", programId, "programs", programData.allProgramKeys);
+	return {status: status, program: entries.length?entries[0]:{}, errors: errors};
 }
-const getEvents = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "events", eventData.allEventKeys);
-	return {status: status, events: entries, errors: errors};
+const getPrograms = async () => {
+	const {status, entries, errors} = await getEntries(true, "", "", "programs", programData.allProgramKeys);
+	return {status: status, programs: entries, errors: errors};
 }
-const getOrgEvents = async (org_id:string) => {
-	const {status, entries, errors} = await getEntries(true, "org", org_id, "events", eventData.allEventKeys);
-	return {status: status, events: entries, errors: errors};
+const getOrgPrograms = async (org_id:string) => {
+	const {status, entries, errors} = await getEntries(true, "org", org_id, "programs", programData.allProgramKeys);
+	return {status: status, programs: entries, errors: errors};
 }
 const getOrg = async (id:string) => {
 	const {status, entries, errors} = await getEntries(false, "id", id, "orgs", orgData.orgKeys);
@@ -106,24 +106,25 @@ const getOrgs = async () => {
 	const {status, entries, errors} = await getEntries(true, "", "", "orgs", orgData.orgKeys);
 	return {status: status, orgs: entries, errors: errors};
 }
-const getEventOrg = async (eventId:number) => {
+const getProgramOrg = async (programId:number) => {
 	let errors: string[] = [];
 	let orgNickname = "";
-	const {status, entries:event, errors:eventErrors} = await getEntries(false, "id", eventId, "events", ["org"]);
-	if (event.length) {
-		const {entries:org, errors:orgErrors} = await getEntries(false, "id", event[0].org, "orgs", ["nickname"]);
+	const {status, entries:program, errors:programErrors} = await getEntries(false, "id", programId, "programs", ["org"]);
+	if (program.length) {
+		const {entries:org, errors:orgErrors} = await getEntries(false, "id", program[0].org, "orgs", ["nickname"]);
 		if (org.length) {
 			orgNickname = org[0].nickname
 		} else errors.push(...orgErrors);
-	} else errors.push(...eventErrors);
+	} else errors.push(...programErrors);
 	return {status: status, orgNickname: orgNickname, errors: errors};
 }
 const getSurveyOrg = async (surveyId:number) => {
 	let errors: string[] = [];
 	let orgNickname = "";
-	const {status, entries:survey, errors:surveysErrors} = await getEntries(false, "id", surveyId, "surveys", ["org"]);
+	let {status, entries:survey, errors:surveysErrors} = await getEntries(false, "id", surveyId, "surveys", ["org"]);
 	if (survey.length) {
-		const {status, entries:org, errors:orgErrors} = await getEntries(false, "id", survey[0].org, "orgs", ["nickname"]);
+		const {status:orgStatus, entries:org, errors:orgErrors} = await getEntries(false, "id", survey[0].org, "orgs", ["nickname"]);
+		status = orgStatus;
 		if (org.length) {
 			orgNickname = org[0].nickname
 		} else errors.push(...orgErrors);
@@ -187,14 +188,35 @@ const parseSurvey = async (questionIds: number[]) => {
 			errors.push(...getQuestionResponse.errors);
 		} else questions.push(getQuestionResponse.question)
 	}
-	return {questions: questions, success: success};
+	return {questions: questions, success: success, errors: errors};
 }
 const getAnswer = async (id:string) => {
 	const {status, entries, errors} = await getEntries(false, "id", id, "answers", answerKeys);
 	return {status: status, answer: entries.length?entries[0]:{}, errors: errors};
 }
+const getAnswersAndQuestions = async (answerIds: string[]) => {
+	let answers: string[] = [];
+	let questions: string[] = [];
+	let errors: string[] = [];
+	for (let i=0; i<answerIds.length; i++) {
+		let {status: answerStatus, answer, errors: answerErrors} = await getAnswer(answerIds[i]);
+		if (answerStatus === 200) {
+			answers.push(answer.answer);
+			let {status: questionStatus, question, errors: questionErrors} = await getQuestion(answer.question_id);
+			if (questionStatus === 200) questions.push(question.prompt);
+			else {
+				errors.push(...questionErrors);
+				break;
+			}
+		} else {
+			errors.push(...answerErrors);
+			break;
+		}
+	}
+	return {status: errors.length?400:200, answers: answers, questions:questions, errors: errors};
+}
 const getQuestionAnswers = async (questionId: string) => {
 	const {status, entries, errors} = await getEntries(true, "question_id", questionId, "answers", answerKeys);
 	return {status: status, answers: entries, errors: errors};
 }
-export {getUserInfo, getEventOrg, getSurveyOrg, getUserOrgs, getAnswer, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getEvent, getEvents, getOrgEvents, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getUserInfoByUserId, getUserInfo, getProgramOrg, getSurveyOrg, getUserOrgs, getAnswersAndQuestions, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getProgram, getPrograms, getOrgPrograms, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}

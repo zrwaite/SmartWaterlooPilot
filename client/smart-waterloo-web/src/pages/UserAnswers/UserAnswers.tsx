@@ -30,13 +30,12 @@ const UserAnswers = (props:AccountChildProps) => {
 			</div>
 		)
 	}
-	console.log(questionsAndAnswers);
 	return (
 		<>
 			<Navbar root={false}/>
 			<div className={"PageContainer"}>
 				<div className={mobile? "":"DesktopPanel"}>
-					{mobile?<h6>User Answers</h6>:<h4 className={"UserAnswersHeader"}>User Data</h4>}
+					{mobile?<h6>Your Surveys</h6>:<h4 className={"UserAnswersHeader"}>Your Surveys</h4>}
 					{questionAnswerPairs}
 				</div>
 			</div>	

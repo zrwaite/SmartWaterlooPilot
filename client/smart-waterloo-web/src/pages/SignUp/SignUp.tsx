@@ -21,12 +21,8 @@ import {USE_WEB3} from "../../data/dataConstants";
 
 
 const defaultAvatarString = randomString();
-type SignUpProps = {
-};
 const defaultProfileProps = {
-	day: "",
-	month: "",
-	year: "",
+	birth_day: "",
 	gender: "",
 	height: "",
 	weight: "",
@@ -35,6 +31,13 @@ const defaultProfileProps = {
 	race: "",
 	religion: "",
 	sexuality: "",
+	household_income: "",
+	household_composition: "",
+	primary_language: "",
+	secondary_language: "",
+	contact: "",
+	city: "",
+	heard: "",
 }
 const defaultPasswordProps = {
 	password: "",
@@ -50,6 +53,9 @@ const defaultVerifiedProps = {
 const defaultAvatarProps = {
 	avatar_string: defaultAvatarString
 }
+const booleanFormInputs = {
+	code_of_conduct: false,
+}
 const defaultSignUpState = {
 	step: 0,
 	formInputs: {
@@ -58,11 +64,14 @@ const defaultSignUpState = {
 		...defaultAvatarProps,
 		...defaultVerifiedProps,
 		...defaultPasswordProps
+	},
+	booleanFormInputs: {
+		...booleanFormInputs
 	}
 }
 
 
-const SignUp = (props: SignUpProps) => {
+const SignUp = () => {
 	const { id: qrId } = useContext(IdContext);
 	// const { address, setAddress } = useContext(AddressContext);
 	const [state, setState] = useState(defaultSignUpState);
@@ -76,6 +85,13 @@ const SignUp = (props: SignUpProps) => {
 		let partialInputs = { ...state.formInputs };
 		partialInputs[key] = value;
 		setState({ ...state, formInputs: partialInputs });
+	}
+	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		let inputKeys: keyof typeof state.booleanFormInputs;
+		const name = event.target.name as typeof inputKeys;
+		let partialInput = { ...state.booleanFormInputs };
+		partialInput[name] = event.target.checked;
+		setState({ ...state, booleanFormInputs: partialInput });
 	}
 	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
 		let inputKeys: keyof typeof state.formInputs;
@@ -92,9 +108,14 @@ const SignUp = (props: SignUpProps) => {
 		setState({ ...state, formInputs: partialInput });
 	}
 	const getProfileProps = () => {
-		let profileProps = defaultProfileProps;
+		let profileProps = {
+			...defaultProfileProps,
+			...booleanFormInputs
+		};
 		let profilePropKeys = Object.keys(defaultProfileProps) as [keyof typeof defaultProfileProps];
 		profilePropKeys.forEach(key => profileProps[key] = state.formInputs[key]);
+		let profileBooleanPropKeys = Object.keys(booleanFormInputs) as [keyof typeof booleanFormInputs];
+		profileBooleanPropKeys.forEach(key => profileProps[key] = state.booleanFormInputs[key]);
 		return profileProps;
 	}
 	const getNicknameProps = () => {
@@ -116,13 +137,15 @@ const SignUp = (props: SignUpProps) => {
 		return avatarProps;
 	}
 	const submitForm = async () => {
-		let errors = await postUser({...state.formInputs, qrId: qrId});
+		let errors = await postUser({...state.formInputs, ...state.booleanFormInputs, qrId: qrId});
 		if (errors.length) {
 			console.log(errors);
 		} else {
 			let path = `/dashboard/user`;
 			navigate(path);
+			return true;
 		}
+		return false;
 	}
 
 	let stepSection: any;
@@ -130,6 +153,7 @@ const SignUp = (props: SignUpProps) => {
 	const userInputFunctions = {
 		handleParentInputChange: handleInputChange,
 		handleParentSelectChange: handleSelectChange,
+		handleParentCheckboxChange: handleCheckboxChange,
 	}
 
 	useEffect(() => {

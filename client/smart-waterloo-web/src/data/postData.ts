@@ -21,7 +21,7 @@ import {
   submitSurveyReturn,
 } from "./types/surveys";
 import { postOrgReturn, postOrgType } from "./types/orgs";
-import { postEventReturn, postEventType } from "./types/events";
+import { postProgramReturn, postProgramType } from "./types/programs";
 import { postUserType } from "./types/account";
 import { addSurveytoUser } from "./addData";
 import cookies from "../modules/cookies";
@@ -201,7 +201,6 @@ const web3PostSurvey = async (id: string, inputData: postSurveyType) => {
     };
   }
 };
-
 
 const submitSurvey = async (
   surveyId: string,

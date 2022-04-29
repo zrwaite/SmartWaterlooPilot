@@ -1,0 +1,190 @@
+p{
+	padding: 0.2rem;
+}
+.greytext{
+	color: grey;
+}
+.programTitle{
+	text-align: left;
+}
+.navbarProgramDetails{
+	display:flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: white;
+	padding: 1rem;
+	margin: 0 0 0.5rem 0;
+}
+.lightblue{
+	padding: 0.4rem;
+	display: inline-block;
+	background-color: #4294dc;
+	color: white;
+	border-radius: 0.6rem;
+	font-weight: bold;
+}
+.lightbluetext{
+	padding: 0.4rem;
+	color: #4294dc;
+	display: inline-block;
+	font-weight: bold;
+}
+.programBackButton{
+	display: flex;
+	text-align: left;
+	/* display: inline-block; */
+}
+.programImage {
+	display: block;
+	/* margin-left: auto;
+	margin-right: auto; */
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	border-radius: 0.8rem 0.8rem 0 0;
+}
+.DesktopPanelNoPadding{
+	background-color: #F8F8F8;
+	border: 0.3rem solid black;
+	border-radius: 1rem;
+	margin: 0;
+	padding: 0;
+	width: min(90%, 40rem);
+	box-sizing: border-box;
+}
+.DesktopPanelNoBorder{
+	background-color: #F8F8F8;
+	border: 0 solid black;
+	border-radius: 1rem;
+	margin: 1rem 2rem 2rem;
+	padding: 0;
+	width: min(90%, 40rem);
+	box-sizing: border-box;
+	text-align: left;
+}
+.DesktopPanelNoBorder>*{
+	padding: 0.3rem;
+}
+
+/* Buttons */
+.signupButton{
+	align-items: center;
+	height: 100%;
+	padding-right: 0.5rem;
+	background-color: black;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: right;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+	display: inline-block;
+}
+.signupButton:hover, .signupButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: black;
+}
+.signupLightBlueButton{
+	align-items: center;
+	height: 100%;
+	padding-right: 0.5rem;
+	background-color: #4294dc;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: right;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+	display: inline-block;
+}
+.signupLightBlueButton:hover, .signupLightBlueButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: #4294dc;
+}
+.bottomButton{
+	background-color: black;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: center;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+}
+.bottomButton:hover, .bottomButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: black;
+}
+.popupButton{
+	/* display:flex; */
+	display: inline;
+	align-items: center;
+	height: 100%;
+	padding-right: 0.5rem;
+	background-color: black;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: right;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+}
+.popupButton:hover, .popupButton:active{
+	cursor: pointer;
+	background-color: white;
+	color: black;
+}
+.bottomLightBlueButton{
+	background-color: #4294dc;
+	color: white;
+	border-radius: 0.5rem;
+	text-align: center;
+	border: 0.2rem solid black;
+	transition: color 0.3s, background-color 0.3s;
+}
+.bottomLightBlueButton:hover, .bottomLightBlueButto:active{
+	cursor: pointer;
+	background-color: white;
+	color: #4294dc;
+}
+
+/* Popup Panel */
+.popupPanel{
+	position: fixed;
+    left: 40%;
+    top: 20%;
+	display:flex;
+	align-items: center;
+	background-color: white;
+	border: 0.2rem solid black;
+	border-radius: 0.5rem;
+	width: 20%;
+	min-width: 15rem;
+	max-width: 25rem;
+	box-sizing: border-box;
+	justify-content: center;
+} 
+.messagePanel{
+	display:flex;
+	align-items: center;
+	background-color: white;
+	bottom: auto;
+	box-sizing: border-box;
+	justify-content: center;
+} 
+.popupMessage{
+	display: flex;
+	padding: 1rem;
+}
+
+/* Others */
+.rightNavProgramDetails{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	padding-right: 0.5rem;
+}
+.leftNavProgramDetails{
+	display:flex;
+	align-items: center;
+	justify-content: center;
+}

@@ -15,9 +15,9 @@ const topElements = [
 
 	},
 	{
-		pageName: "events",
-		title: "Events",
-		link: "/events/",
+		pageName: "programs",
+		title: "Programs",
+		link: "/programs/",
 		icon: icons.rightArrow
 
 	},
@@ -33,7 +33,7 @@ const topElements = [
 const orgElements = [
 	{
 		modalName: "orgs",
-		title: "Orgs",
+		title: "Accounts",
 		icon: icons.group
 	},
 ]

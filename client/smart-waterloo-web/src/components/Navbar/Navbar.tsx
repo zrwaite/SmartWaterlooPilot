@@ -11,6 +11,7 @@ import {MobileContext} from "../../App";
 import MobileNavItem from "./MobileNavItem";
 import SWRLogo from "../../images/SWRLogo.png"
 import { defaultOrg } from "../../data/types/orgs";
+import { isSignedIn } from "../../data/account";
 
 
 type NavbarProps = {
@@ -51,6 +52,7 @@ const Navbar = (props:NavbarProps) => {
 	// if (props.root && props.signedIn) {
 	// 	allNavItems = [...primaryNavItems, ...primarySidebarItems];
 	// }
+	const signedIn = isSignedIn()
 
 	const openModal = () => {
 		setState({...state, open:true});
@@ -65,7 +67,7 @@ const Navbar = (props:NavbarProps) => {
 			{({mobile}) => (
 				<div className="navbar">
 					<div className="leftNav">
-						<img src={SWRLogo} alt={"SWR Logo"} className={"navbarLogo"}/>
+						<img src={SWRLogo} alt={"SWR Logo"} onClick={()=>navigate(`${signedIn?"/dashboard/user":"/"}`)} className={"navbarLogo"}/>
 						{/* <h4 onClick={() => setOrg(!org)}>{org?"Org":"User"}</h4> */}
 					</div>
 					<div className="rightNav">
@@ -97,12 +99,12 @@ const Navbar = (props:NavbarProps) => {
 								)
 							}
 							{
-								(props.root && props.signedIn && props.orgs.length) && (
+								(props.root && props.signedIn && props.orgs.length)?(
 									orgElements.map((item,i) =>{
 										let onClick = () => { closeModal(); props.openOrgsModal();}
 										return <MobileNavItem onClick={onClick} {...item}  i={1} key={i}/>
 									})
-								)
+								):null
 							}
 							{
 								(props.root && props.signedIn) && (

@@ -3,7 +3,7 @@ import {response, responseInterface} from "../models/response"; //Created pre-fo
 import {postUser, postUserInfo} from "../modules/postDatabaseInfo";
 import {getUser} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
-import {addUserEvent, addUserSurvey, addUserOrg} from "../modules/putDatabaseInfo";
+import {addUserProgram, addUserSurvey, addUserOrg} from "../modules/putDatabaseInfo";
 import {userData, userInfoData} from "../database/userData";
 import {orgData} from "../database/orgData";
 import { createToken, getToken, verifyUser } from "../auth/tokenFunctions";
@@ -75,11 +75,11 @@ export default class userController {
 		if (userSuccess) {
 			let {success: tokenSuccess, error: tokenError } = await verifyUser(userParams[0], getToken(req.headers));
 			if (tokenSuccess) {
-				let {success:eventSuccess, params:eventParams } = await getBodyParams(req, ["event_id"]);
+				let {success:programSuccess, params:programParams } = await getBodyParams(req, ["program_id"]);
 				let {success:surveySuccess, params:surveyParams } = await getBodyParams(req, ["survey_id"]);
 				let {success:orgSuccess, params:orgParams } = await getBodyParams(req, ["org_name"]);
-				if (eventSuccess) {
-					let putResult = await addUserEvent(eventParams[0], userParams[0]);
+				if (programSuccess) {
+					let putResult = await addUserProgram(programParams[0], userParams[0]);
 					result.status = putResult.status;
 					if (result.status == 201) {
 						result.success = true;
@@ -96,7 +96,7 @@ export default class userController {
 					if (result.status == 201) {
 						result.success = true;
 					} else result.errors.push("put database error");
-				} else result.errors.push("missing survey_id, event_id, and org_name");
+				} else result.errors.push("missing survey_id, program_id, and org_name");
 			} else {
 				result.errors.push(tokenError)
 				result.status = 401;

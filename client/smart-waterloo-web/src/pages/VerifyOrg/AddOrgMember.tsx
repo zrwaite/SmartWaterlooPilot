@@ -1,6 +1,6 @@
 import Navbar from "../../components/Navbar";
 import "./VerifyOrg.css";
-import { useState } from "react";
+import {ChangeEvent, useState} from "react";
 import {useContext} from "react";
 import {MobileContext} from "../../App";
 import { verifyOrg } from "../../data/addData";
@@ -9,7 +9,7 @@ const ScanQR = () => {
 	let [inputs, setInputs] = useState({business_number: "", password: ""});
 
 
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+	const handleInputChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
 		let inputKeys: keyof typeof inputs;
 		const name = event.target.name as typeof inputKeys;
 		let partialInput = { ...inputs };

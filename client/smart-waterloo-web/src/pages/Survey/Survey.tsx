@@ -10,6 +10,7 @@ import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";
 import { AccountChildProps } from "../AccountParent";
 import { getDefaultUserInfoLists } from "../../data/types/account";
+import { forceNavigate } from "../../modules/navigate";
 
 const defaultSurveyData:SurveyDataType = {
 	id: "",
@@ -28,6 +29,7 @@ const Survey = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
 	const [answers, setAnswers] = useState(defaultAnswers);
+	const [canSubmit, setCanSubmit] = useState(true);
 	const greyText = {color: "grey"};
 	const childSetProgress = (newVal: boolean) => {
 		setProgess(newVal);
@@ -51,18 +53,20 @@ const Survey = (props: AccountChildProps) => {
 	const questions = surveyData.survey.questions.map((question, i) => {
 		return <SurveyQuestion owner={owner} key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
 	});
-	const complete = answers.every(answer => answer!=="");
+	const complete = answers.every((answer, i) => (answer!=="")||surveyData.survey.questions[i].optional);
 	const trySubmitSurvey = async () => {
+		setCanSubmit(false);
 		let {success, errors} = await submitSurvey(surveyData.survey.id, surveyData.survey.questions, answers);
-		if (success) {
-			alert("Submitted!");
-			window.location.href=`/surveys/${props.org?`org/${orgId}`:"user"}`;
-		} else alert(JSON.stringify(errors));
+		if (success) forceNavigate(`/surveys/${props.org?`org/${orgId}`:"user"}`);
+		else {
+			alert(JSON.stringify(errors));
+			setCanSubmit(true);
+		}
+		
 	}
 	if (notFound || !id) return <NotFound />
 	const completed = (props.accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
 
-	
 
 	const incrementMap = (map: Map<string, number>, key:string) => {
 		let numValues = map.get(key)||0;
@@ -72,7 +76,8 @@ const Survey = (props: AccountChildProps) => {
 	const parseUserInfoLists = () => {
 		const newUserInfoLists = getDefaultUserInfoLists();
 		surveyData.survey.user_info.forEach((user) => {
-			incrementMap(newUserInfoLists.birthdays, user.birth_day);
+			const age = Math.floor(((new Date()).getTime() - (new Date(user.birth_day)).getTime()) / (1000*60*60*24*365));
+			incrementMap(newUserInfoLists.ages, age.toString());
 			incrementMap(newUserInfoLists.genders, user.gender);
 			incrementMap(newUserInfoLists.races, user.race);
 			incrementMap(newUserInfoLists.religions, user.religion);
@@ -85,17 +90,17 @@ const Survey = (props: AccountChildProps) => {
 		religions: JSX.Element[]
 		genders: JSX.Element[]
 		races: JSX.Element[]
-		birthdays: JSX.Element[]
+		ages: JSX.Element[]
 		sexualities: JSX.Element[]
 	}= {
 		religions: [],
 		genders: [],
 		races: [],
-		birthdays: [],
+		ages: [],
 		sexualities: []
 	}
-	userInfoLists.birthdays.forEach((value, key) => {
-		userInfoComponents.birthdays.push(<p>{key}: {value}</p>)
+	userInfoLists.ages.forEach((value, key) => {
+		userInfoComponents.ages.push(<p>{key}: {value}</p>)
 	})
 	userInfoLists.religions.forEach((value, key) => {
 		userInfoComponents.religions.push(<p>{key}: {value}</p>)
@@ -131,9 +136,9 @@ const Survey = (props: AccountChildProps) => {
 							{owner&&(
 								<>
 								<h6>User info:</h6>
-								<p>Birthdays:</p>
+								<p>Ages:</p>
 								<ul>
-									{userInfoComponents.birthdays.map((component, key) => <li key={key}>{component}</li>)}
+									{userInfoComponents.ages.map((component, key) => <li key={key}>{component}</li>)}
 								</ul>
 								<p>Genders:</p>
 								<ul>
@@ -143,7 +148,7 @@ const Survey = (props: AccountChildProps) => {
 								<ul>
 									{userInfoComponents.religions.map((component, key) => <li key={key}>{component}</li>)}
 								</ul>
-								<p>Sexualities:</p>
+								<p>Sexual Orientations:</p>
 								<ul>
 									{userInfoComponents.sexualities.map((component, key) => <li key={key}>{component}</li>)}
 								</ul>
@@ -154,7 +159,7 @@ const Survey = (props: AccountChildProps) => {
 								</>
 							)}
 							{questions}
-							{!owner&&<button onClick={complete?trySubmitSurvey:()=>{}} className={complete?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
+							{!owner&&<button onClick={complete&&canSubmit?trySubmitSurvey:()=>{}} className={complete&&canSubmit?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
 						</div>
 						):<SurveyLanding set={surveyData.set} completed={completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
 				</div>

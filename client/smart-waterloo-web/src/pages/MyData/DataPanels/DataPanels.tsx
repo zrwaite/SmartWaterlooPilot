@@ -1,19 +1,24 @@
 import OrgDataPanel from "./OrgData";
-import OrgEventsPanel from "./OrgEvents";
+import OrgProgramsPanel from "./OrgPrograms";
 import OrgSurveysPanel from "./OrgSurveys";
 import UserAccessPanel from "./UserAccess";
 import UserAnswersPanel from "./UserAnswers";
-import UserDataPanel from "./UserData";
+import UserDataPanel, { MyDataPanelProps } from "./UserData";
 
-const DataPanels = (props: {org: boolean, orgId: string|undefined}) => {
+interface DataPanelsProps extends MyDataPanelProps {
+	org: boolean, 
+	orgId: string|undefined
+}
+
+const DataPanels = (props: DataPanelsProps) => {
 	return (
 		<>{
 			props.org?(<>
 				<OrgDataPanel/>
-				<OrgEventsPanel orgId={props.orgId} />
+				<OrgProgramsPanel orgId={props.orgId} />
 				<OrgSurveysPanel orgId={props.orgId} />
 			</>):(<>
-				<UserDataPanel/>
+				<UserDataPanel religion={props.religion} gender={props.gender} race={props.race} />
 				<UserAnswersPanel/>
 				<UserAccessPanel/>
 			</>)

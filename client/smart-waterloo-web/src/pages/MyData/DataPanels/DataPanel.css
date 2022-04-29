@@ -3,7 +3,7 @@
 	display:grid;
 	align-items: flex-start;
 	justify-content: flex-start;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: repeat( auto-fit, minmax(15rem, auto) );
 	border: solid black 0.3rem;
 	border-radius: 1rem;
 	padding: 0.5rem;

@@ -1,3 +1,3 @@
-const mobileWidth = 600;
+const mobileWidth = 820;
 
 export {mobileWidth};

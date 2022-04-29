@@ -10,18 +10,17 @@ import TestPage from "./pages/TestPage";
 import SignUp from "./pages/SignUp";
 import About from "./pages/About";
 import SharedData from "./pages/SharedData";
-import Survey from "./pages/Survey";
-import CreateEvent from "./pages/CreateEvent";
-import CreateSurvey from "./pages/CreateSurvey";
+// import Survey from "./pages/Survey";
 import CreateOrg from "./pages/CreateOrg";
-import EventDetails from "./pages/EventDetails";
+// import ProgramDetails from "./pages/ProgramDetails";
 import { useEffect } from 'react';
 import "./styles/styles.css";
 import {mobileWidth} from "./constants";
 import AccountParent from "./pages/AccountParent";
 import React, {useState} from "react";
-import AddOrgMember from "./pages/AddOrgMember";
+// import AddOrgMember from "./pages/AddOrgMember";
 import VerifyOrg from "./pages/VerifyOrg";
+import CodeOfConduct from "./pages/CodeOfConduct";
 
 
 const MobileContext = React.createContext<{mobile: boolean; setMobile: Function;}>({
@@ -71,6 +70,7 @@ function App() {
 							<Route path="/qr" element={<ScanQR />}></Route>
 
 							<Route path="/about" element={<About />}></Route>
+							<Route path="/codeofconduct" element={<CodeOfConduct />}></Route>
 							<Route path="/shareddata" element={<SharedData />}></Route>
 							<Route path="/privacy" element={<Privacy />}></Route>
 							<Route path="/forgotpassword" element={<ForgotPassword />}></Route>
@@ -82,7 +82,7 @@ function App() {
 							<Route path="/dashboard/user" element={<AccountParent page={"dashboard"} org={false} />}></Route>
 							<Route path="/data/user" element={<AccountParent page={"data"} org={false} />}></Route>
 							<Route path="/surveys/user" element={<AccountParent page={"surveys"} org={false} />}></Route>
-							<Route path="/events/user" element={<AccountParent page={"events"} org={false} />}></Route>
+							<Route path="/programs/user" element={<AccountParent page={"programs"} org={false} />}></Route>
 							<Route path="/userdata" element={<AccountParent page={"userdata"} org={false} />}></Route>
 							<Route path="/useranswers" element={<AccountParent page={"useranswers"} org={false} />}></Route>
 							<Route path="/useraccess" element={<AccountParent page={"useraccess"} org={false} />}></Route>
@@ -90,15 +90,15 @@ function App() {
 							<Route path="/dashboard/org/:orgId" element={<AccountParent page={"dashboard"} org={true} />}></Route>
 							<Route path="/data/org/:orgId" element={<AccountParent page={"data"} org={true} />}></Route>
 							<Route path="/surveys/org/:orgId" element={<AccountParent page={"surveys"} org={true} />}></Route>
-							<Route path="/events/org/:orgId" element={<AccountParent page={"events"} org={true} />}></Route>
+							<Route path="/programs/org/:orgId" element={<AccountParent page={"programs"} org={true} />}></Route>
 
 							<Route path="/survey/:id/user" element={<AccountParent page={"survey"} org={false} />}></Route>
 							<Route path="/survey/:id/org/:orgId" element={<AccountParent page={"survey"} org={true} />}></Route>
-							<Route path="/eventdetails/:id/user" element={<AccountParent page={"eventdetails"} org={false} />}></Route>
-							<Route path="/eventdetails/:id/org/:orgId" element={<AccountParent page={"eventdetails"} org={true} />}></Route>
+							<Route path="/programdetails/:id/user" element={<AccountParent page={"programdetails"} org={false} />}></Route>
+							<Route path="/programdetails/:id/org/:orgId" element={<AccountParent page={"programdetails"} org={true} />}></Route>
 
-							<Route path="/createevent/:orgId" element={<CreateEvent />}></Route>
-							<Route path="/createsurvey/:orgId" element={<CreateSurvey />}></Route>
+							<Route path="/createprogram/:orgId" element={<AccountParent page={"createprogram"} org={true} />}></Route>
+							<Route path="/createsurvey/:orgId" element={<AccountParent page={"createsurvey"} org={true} />}></Route>
 							<Route path="/addorgmember/:orgId" element={<AccountParent page={"addorgmember"} org={true} />}></Route>
 							<Route path="/orgdata/:orgId" element={<AccountParent page={"orgdata"} org={true} />}></Route>
 
