@@ -8,11 +8,11 @@ import {
 } from "./dataConstants";
 import Web3 from "web3";
 import {
-  postEventWeb2,
+  postProgramWeb2,
   postOrgWeb2,
   postUserWeb2,
   web2PostSurvey,
-  web2PostAnswer,
+  web2PostAnswers,
 } from "./web2/web2PostData";
 import {
   postSurveyReturn,
@@ -97,15 +97,24 @@ const postUserWeb3 = async (inputData: postUserType): Promise<string[]> => {
     await userContract.methods
       .addInfo(web3.eth.defaultAccount, [
         inputData.qrId,
-        inputData.day + inputData.month + inputData.year,
+        inputData.birth_day,
         inputData.gender,
-        inputData.height + inputData.weight,
+        inputData.height,
         inputData.grade,
         inputData.postalCode,
         inputData.race,
         inputData.religion,
         inputData.sexuality,
         inputData.nickname + inputData.avatar_string,
+        "",
+        inputData.household_income,
+        inputData.household_composition,
+        inputData.primary_language,
+        inputData.secondary_language,
+        inputData.heard,
+        inputData.contact,
+        inputData.city,
+        inputData.weight
       ])
       .send({ from: web3.eth.defaultAccount })
       .then((receipt: any) => console.log(receipt));
@@ -116,16 +125,17 @@ const postUserWeb3 = async (inputData: postUserType): Promise<string[]> => {
   }
 };
 
-const postEvent = async (
+const postProgram = async (
   id: string,
-  inputData: postEventType
-): Promise<postEventReturn> => {
+  inputData: postProgramType,
+  linkedSurvey: string,
+): Promise<postProgramReturn> => {
   return USE_WEB3
-    ? await postEventWeb3(id, inputData)
-    : await postEventWeb2(id, inputData);
+    ? await postEventWeb3(id, inputData, linkedSurvey)
+    : await postProgramWeb2(id, inputData, linkedSurvey);
 };
 
-const postEventWeb3 = async (id: string, inputData: postEventType) => {
+const postEventWeb3 = async (id: string, inputData: postProgramType, linkedSurvey: string) => {
   web3.eth.defaultAccount = await getUserAddress();
   try {
     console.log(web3.eth.defaultAccount);
@@ -136,27 +146,23 @@ const postEventWeb3 = async (id: string, inputData: postEventType) => {
     const eventCreated = await eventContract.methods
       .createOrgEvent(
         web3.eth.defaultAccount,
-        inputData.name,
-        inputData.age,
-        (inputData.start_day + inputData.start_month + inputData.start_year),
-        (inputData.end_day + inputData.end_month + inputData.end_year),
-        inputData.category,
-        inputData.description,
-        eventID.toString()
+        [inputData.name,inputData.min_age,inputData.max_age,inputData.start_date,inputData.end_date,inputData.start_time,inputData.end_time,inputData.location,inputData.category,inputData.description],
+        linkedSurvey,
+        eventID.toString(),
       )
       .send({ from: web3.eth.defaultAccount });
     console.log(eventCreated);
     return {
       success: true,
       errors: [],
-      eventId: eventID.toString(),
+      programId: eventID.toString(),
     };
   } catch (e) {
     console.log(e);
     return {
       success: false,
       errors: ["Error creating an event"],
-      eventId: ""
+      programId:""
     };
   }
 };  
@@ -202,42 +208,32 @@ const web3PostSurvey = async (id: string, inputData: postSurveyType) => {
   }
 };
 
-const submitSurvey = async (
-  surveyId: string,
-  questions: Question[],
-  answers: string[]
-): Promise<submitSurveyReturn> => {
-  if(USE_WEB3)
-  {
-    web3submitSurvey(surveyId, answers);
-    return { success: true, errors: [] };
-  }
-  else
-  {
-  if (questions.length !== answers.length)
-    return { success: false, errors: ["invalid answers"] };
-  questions.forEach((question, i) => {
-    if (question.choices?.length && !question.choices.includes(answers[i]))
-      return { success: false, errors: ["invalid answer " + answers[i]] };
-  });
-  for (let i = 0; i < questions.length; i++) {
-    let postAnswerErrors = await postAnswer(questions[i].id, answers[i]);
-    if (postAnswerErrors.length)
-      return { success: false, errors: postAnswerErrors };
-  }
-  let { success, errors } = await addSurveytoUser(
-    cookies.get("userId"),
-    surveyId
-  );
-  return { success: success, errors: errors };
-  }
-};
-const postAnswer = async (
-  questionId: string,
-  answer: string
-): Promise<string[]> => {
-  return await web2PostAnswer(questionId, answer);
-};
+const submitSurvey = async (surveyId: string, questions: Question[], answers: string[]):Promise<submitSurveyReturn> => {
+	if (questions.length !== answers.length) return {success: false, errors: ["invalid answers"]};
+	questions.forEach((question, i) => {
+		if (question.choices?.length && !question.choices.includes(answers[i])) return {success: false, errors: ["invalid answer "+answers[i]]};
+	});
+	let questionIds = questions.map((question) => question.id)
+	let postAnswersErrors = await postAnswers(questionIds, answers)
+	if (postAnswersErrors.length) return {success: false, errors: postAnswersErrors}; 
+	let {success, errors} = await addSurveytoUser(cookies.get("userId"), surveyId)
+	return {success: success, errors: errors};
+}
+
+const postAnswers = async (questionIds: string[], answers: string[]):Promise<string[]> => {
+	return USE_WEB3?(await web3PostAnswers(questionIds, answers)):(await web2PostAnswers(questionIds, answers)); 
+}
+
+const web3PostAnswers = async (questionIds: string[], answers: string[]):Promise<string[]> => {
+	return ["function not implemented"]; 
+}
+
+// const postAnswer = async (
+//   questionId: string,
+//   answer: string
+// ): Promise<string[]> => {
+//   return await web2PostAnswer(questionId, answer);
+// };
 
 //web3 implementation of posting a survey response
 const web3submitSurvey = async (
@@ -247,4 +243,4 @@ const web3submitSurvey = async (
   return ["function not implemented"];
 };
 
-export { submitSurvey, postSurvey, postUser, postEvent, postOrg };
+export { submitSurvey, postSurvey, postUser, postProgram, postOrg };

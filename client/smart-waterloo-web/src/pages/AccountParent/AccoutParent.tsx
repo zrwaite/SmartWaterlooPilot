@@ -20,6 +20,7 @@ import UserAnswers from "../UserAnswers";
 import UserAccess from "../UserAccess";
 import CreateProgram from "../CreateProgram";
 import CreateSurvey from "../CreateSurvey";
+import { USE_WEB3 } from "../../data/dataConstants";
 
 interface AccountParentProps {
 	org: boolean;
@@ -40,7 +41,7 @@ const AccountParent = (props:AccountParentProps) => {
 	const { orgId } = useParams();
 	const navigate = useNavigate();
 
-	if (!isSignedIn()) {
+	if (!USE_WEB3 && !isSignedIn()) {
 		window.location.href= "/";
 		navigate("/"); //navigate wasn't working, so i did it the old fashioned way
 		return <></>;

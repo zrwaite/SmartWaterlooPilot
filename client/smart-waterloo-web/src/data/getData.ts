@@ -1,4 +1,4 @@
-import { defaultEvent } from "./types/events";
+import { defaultProgram } from "./types/programs";
 import { defaultAnswer, defaultSurvey } from "./types/surveys";
 import Web3 from "web3";
 import {
@@ -15,13 +15,11 @@ import {
   web2GetAnswersData,
   web2GetUserOrgs,
   web2GetOrgSurveysData,
-  web2GetOrgEventsData,
+  web2GetOrgProgramsData,
   web2GetUserData,
-  web2GetSurveysData,
   web2GetBasicOrgData,
-  web2GetEventsData,
-  getWeb2EventData,
-  getWeb2SurveyData,
+  web2GetProgramsData,
+  web2GetSurveysData,
   web2GetQuestionsAndAnswers,
 } from "./web2/web2GetData";
 import { defaultOrg } from "./types/orgs";
@@ -119,9 +117,18 @@ const web3GetUserData = async (): Promise<{
         religion: userData[7],
         sexuality: userData[8],
         race: userData[6],
+        household_income: userData[11],
+        num_family_members: userData[12],
+        primary_language: userData[13],
+        secondary_language: userData[14],
+        city: userData[17],
+        heard: userData[15],
+        contact: userData[16],
+        height: userData[3],
+        weight: userData[18],
         answers: [],
         surveys: [],
-        events: events,
+        programs: [],
         orgs: [],
       },
       errors: [],
@@ -171,6 +178,15 @@ const web3GetSurveysData = async (): Promise<{
         race: member[6],
         grade: member[4],
         postal_code: member[5],
+        household_income: member[11],
+        num_family_members: member[12],
+        height: member[3],
+        weight: member[18],
+        primary_language: member[13],
+        secondary_language: member[14],
+        city: member[17],
+        heard: member[15],
+        contact: member[16],
       };
       userInfos.push(_userInfo);
     }
@@ -189,14 +205,14 @@ const web3GetSurveysData = async (): Promise<{
 };
 
 //All events
-const getEventsData = async (): Promise<
-  { success: boolean; events: typeof defaultEvent[]; errors: string[] } | any
+const getProgramsData = async (): Promise<
+  { success: boolean; events: typeof defaultProgram[]; errors: string[] } | any
 > => {
-  return USE_WEB3 ? await web3GetEventsData() : await web2GetEventsData();
+  return USE_WEB3 ? await web3GetProgramsData() : await web2GetProgramsData();
 };
-const web3GetEventsData = async (): Promise<{
+const web3GetProgramsData = async (): Promise<{
   success: boolean;
-  events: typeof defaultEvent[];
+  events: typeof defaultProgram[];
   errors: string[];
 }> => {
   const allEvents = await eventContract.methods.getNumberOfEvents().call();
@@ -213,7 +229,9 @@ const web3GetEventsData = async (): Promise<{
       let event = await eventContract.methods
         .getEventInfoById(allEvents[i].toString())
         .call();
-      let organiser = await eventContract.methods.getEventOrganiserByEventId(allEvents[i].toString()).call();
+      let organiser = await eventContract.methods
+        .getEventOrganiserByEventId(allEvents[i].toString())
+        .call();
       let orgName = await orgContract.methods.getOrgInfo(organiser).call();
       console.log(event);
       let eventFormat = {
@@ -277,6 +295,7 @@ const web3GetOrgSurveysData = async (
         .getInfo(surveyResponders[j])
         .call();
       _userInfo = {
+        //update sign up info
         birth_day: member[1],
         gender: member[2],
         religion: member[7],
@@ -284,6 +303,15 @@ const web3GetOrgSurveysData = async (
         race: member[6],
         grade: member[4],
         postal_code: member[5],
+        household_income: member[11],
+        num_family_members: member[12],
+        height: member[3],
+        weight: member[18],
+        primary_language: member[13],
+        secondary_language: member[14],
+        city: member[17],
+        heard: member[15],
+        contact: member[16],
       };
       userInfos.push(_userInfo);
     }
@@ -302,21 +330,21 @@ const web3GetOrgSurveysData = async (
 };
 
 //All events for a specific org
-const getOrgEventsData = async (
+const getOrgProgramsData = async (
   id: string | undefined
 ): Promise<
-  { success: boolean; events: typeof defaultEvent[]; errors: string[] } | any
+  { success: boolean; events: typeof defaultProgram[]; errors: string[] } | any
 > => {
   return USE_WEB3
-    ? await web3GetOrgEventsData(id)
-    : await web2GetOrgEventsData(id);
+    ? await web3GetOrgProgramsData(id)
+    : await web2GetOrgProgramsData(id);
 };
 
-const web3GetOrgEventsData = async (
+const web3GetOrgProgramsData = async (
   id: string | undefined
 ): Promise<{
   success: boolean;
-  events: typeof defaultEvent[];
+  events: typeof defaultProgram[];
   errors: string[];
 }> => {
   const loggedAddress = await getUserAddress();
@@ -359,49 +387,6 @@ const web3GetOrgEventsData = async (
     };
   }
 };
-
-//Specific for an event
-// const getEventData = async (
-//   id: string
-// ): Promise<
-//   { success: boolean; event: typeof defaultEvent | {}; errors: string[] } | any
-// > => {
-//   return USE_WEB3 ? await getWeb3EventData(id) : await getWeb2EventData(id);
-// };
-// const getWeb3EventData = async (
-//   id: string
-// ): Promise<{
-//   success: boolean;
-//   answers: string[];
-//   questions: string[];
-//   errors: string[];
-// }> => {
-//   return {
-//     success: false,
-//     questions: [],
-//     answers: [],
-//     errors: ["not implemented"],
-//   };
-// };
-
-// const getSurveyData = async (
-//   id: string
-// ): Promise<
-//   | { success: boolean; survey: typeof defaultSurvey | {}; errors: string[] }
-//   | any
-// > => {
-//   return USE_WEB3 ? await getWeb3SurveyData(id) : await getWeb2SurveyData(id);
-// };
-
-// const getWeb3SurveyData = async (
-//   id: string
-// ): Promise<{
-//   success: boolean;
-//   survey: typeof defaultSurvey | {};
-//   errors: string[];
-// }> => {
-//   return { success: false, survey: {}, errors: [] };
-// };
 
 // Orgs a user's involved with
 const getUserOrgs = async (
@@ -499,11 +484,12 @@ const web3GetBasicOrgData = async (
   const verify = await orgContract.methods
     .getOrgVerification(web3.eth.defaultAccount)
     .call();
+  let _userInfo;
   let userInfos: userInfo[] = [];
   for (let i = 0; i < org[3].length; i++) {
     console.log(org[3][i]);
     let member = await userContract.methods.getInfo(org[3][i]).call();
-    let _userInfo = {
+    _userInfo = {
       birth_day: member[1],
       gender: member[2],
       religion: member[7],
@@ -511,8 +497,17 @@ const web3GetBasicOrgData = async (
       race: member[6],
       grade: member[4],
       postal_code: member[5],
+      household_income: member[11],
+      num_family_members: member[12],
+      height: member[3],
+      weight: member[18],
+      primary_language: member[13],
+      secondary_language: member[14],
+      city: member[17],
+      heard: member[15],
+      contact: member[16],
     };
-    console.log(_userInfo); 
+    console.log(_userInfo);
     userInfos.push(_userInfo);
   }
   console.log(orgId);
@@ -556,13 +551,11 @@ const web3GetAnswersData = async (
 export {
   getQuestionsAndAnswers,
   getAnswersData,
-  getOrgEventsData,
+  getOrgProgramsData,
   getOrgSurveysData,
   getBasicOrgData,
   getUserOrgs,
   getUserData,
-  getEventsData,
-  // getEventData,
+  getProgramsData,
   getSurveysData,
-  // getSurveyData,
 };

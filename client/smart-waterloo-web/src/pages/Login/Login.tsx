@@ -104,12 +104,12 @@ const tryLogin = async (id: string, password: string) => {
 }
 
 useEffect(() => {
-	if (USE_WEB3) {
-		// checkConnectedWallet();
-		connectWallet();
-	} else {
+	// if (USE_WEB3) {
+	// 	// checkConnectedWallet();
+	// 	connectWallet();
+	// } else {
 	if (id === "") navigate("/qr");
-	}
+	// }
 });
 
 return (
