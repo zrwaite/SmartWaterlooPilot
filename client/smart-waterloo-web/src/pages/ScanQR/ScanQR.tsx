@@ -4,11 +4,12 @@ import QRDesktopPNG from "../../images/QRDesktop.png";
 import QRMobilePNG from "../../images/QRMobile.png";
 import "./ScanQR.css";
 import {useEffect, useState} from "react";
-import {Html5QrcodeScanner, Html5Qrcode} from "html5-qrcode";
+import { Html5Qrcode} from "html5-qrcode";
 import cookies from "../../modules/cookies";
 import {useContext} from "react";
 import {MobileContext, IdContext} from "../../App";
 import {accountExists} from "../../data/account";
+import {USE_WEB3} from "../../data/dataConstants";
 const ScanQR = () => {
 	let {mobile} = useContext(MobileContext);
 	let {setId} = useContext(IdContext);
@@ -27,32 +28,34 @@ const ScanQR = () => {
 						.start(
 							cameraId,
 							{fps: 10, qrbox: {width: 250, height: 250}},
-							async (decodedText, decodedResult) => {
+							async (decodedText) => {
 								html5QrCode.stop().catch((err) => {
 									alert("Failed to close camera");
+									console.error(err);
 								});
 								setId(decodedText);
 								let scannedId = parseInt(decodedText);
-								if (typeof decodedText === "string" && scannedId > 0 && scannedId < 10000) {
-									let login = await accountExists(scannedId);
+								if (scannedId > 0 && scannedId < 10000) {
+									let login = USE_WEB3?false:(await accountExists(scannedId));
 									if (login) navigate("/login");
 									else navigate("/signup");
 								} else alert("invalid qr code");
 							},
-							(errorMessage) => {}
+							() => {}
 						)
-						.catch((err) => alert("Failed to open camera"))
+						.catch((err) => {alert("Failed to open camera"); console.error(err);})
 						.finally(() => {
 							setCloseCam({close: () => {
 								html5QrCode.stop().catch((err) => {
 									alert("Failed to close camera");
+									console.error(err);
 								})
 								setCamOpen(false);
 							}})
 						})
 				}
 			})
-			.catch((err) => alert("camera error"))
+			.catch((err) => {alert("camera error"); console.error(err)})
 			
 	};
 	useEffect(() => {
