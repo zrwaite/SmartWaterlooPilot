@@ -12,7 +12,7 @@ const DEV = true;
 
 let web3 = new Web3(Web3.givenProvider);
 declare var window: any;
-const userContractAddress = "0xE71019811EaBB6e848D99fC54132BE758EFD17f9";
+const userContractAddress = "0x67C99d13fb11b42638CB9Ad797b72A2fC04c28A6";
 const userContractABI = userABI.abi;
 const userContract = new web3.eth.Contract(userContractABI as AbiItem[], userContractAddress);
 const orgContractAddress = "0x25B3d938A76f5effbC272B0B5b1d136CE595419D";
@@ -21,7 +21,7 @@ const orgContract = new web3.eth.Contract(orgContractABI as AbiItem[], orgContra
 const responseContractAddress = "0xfD91fF86a1B6A6C1A8e13707ea1212bC45c25eaC";
 const responseContractABI = responseABI.abi;
 const responseContract = new web3.eth.Contract(responseContractABI as AbiItem[], responseContractAddress);
-const eventContractAddress = "0xD89304f82B8Ea758793b64AB8e51864E588568a5";
+const eventContractAddress = "0x21A0a16294f3D3813a411F073a5D26a80baa6Ab6";
 const eventContractABI = eventABI.abi;
 const eventContract = new web3.eth.Contract(eventContractABI as AbiItem[], eventContractAddress);
 const surveyContractAddresss = "0x93a6E6F777F87D6A71783942731Fef8Ef00fA65B";

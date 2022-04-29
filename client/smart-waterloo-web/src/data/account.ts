@@ -23,25 +23,15 @@ declare var window: any;
 const isSignedIn = (): boolean => {
   return web2IsSignedIn();
 };
-const metaMaskInstalled = async (): Promise<boolean> => {
-  if (typeof window.ethereum !== "undefined") {
-    const accounts = await web3.eth.getAccounts();
-    web3.eth.defaultAccount = accounts[0];
-    console.log(web3.eth.defaultAccount);
-    const userData = await userContract.methods
-      .getInfo(web3.eth.defaultAccount)
-      .call();
-    console.log(userData);
-    if (!userData) {
+const metaMaskInstalled = ():boolean => {
+    if (typeof window.ethereum !== 'undefined') {
       return true;
-    } else {
+    } 
+    else {
       return false;
     }
-  }
-  return false;
 };
 const hasWeb3Account = async (): Promise<boolean> => {
-  //return if user exists with that userId, so whether they sign in or sign up\const accounts = await web3.eth.getAccounts();
   const accounts = await web3.eth.getAccounts();
   web3.eth.defaultAccount = accounts[0];
   console.log(web3.eth.defaultAccount);
@@ -49,7 +39,7 @@ const hasWeb3Account = async (): Promise<boolean> => {
     .getInfo(web3.eth.defaultAccount)
     .call();
   console.log(userData);
-  if (!userData) {
+  if (parseInt(userData[0]) >= 0) {
     return true;
   } else {
     return false;

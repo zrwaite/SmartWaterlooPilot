@@ -89,38 +89,18 @@
 					"type": "address"
 				},
 				{
+					"internalType": "string[]",
+					"name": "_eventInfo",
+					"type": "string[]"
+				},
+				{
 					"internalType": "string",
-					"name": "eventName",
+					"name": "linkedSurvey",
 					"type": "string"
 				},
 				{
 					"internalType": "string",
-					"name": "ageGroup",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "startDate",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "endDate",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "activityType",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "description",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "eventId",
+					"name": "programID",
 					"type": "string"
 				}
 			],
@@ -147,6 +127,11 @@
 				{
 					"internalType": "string",
 					"name": "eID",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "linkedSurvey",
 					"type": "string"
 				}
 			],
@@ -183,9 +168,9 @@
 			"name": "getEventInfoById",
 			"outputs": [
 				{
-					"internalType": "string[6]",
+					"internalType": "string[]",
 					"name": "",
-					"type": "string[6]"
+					"type": "string[]"
 				}
 			],
 			"stateMutability": "view",

@@ -72,7 +72,7 @@ const CreateProgram = (props:AccountChildProps) => {
 	const ProgramCreation = async () => {
 		setCanSubmit(false);
 		if (orgId) {
-			const linkedSurvey = state.booleanInputs.linkSurvey?state.inputs.linked_survey:null;
+			const linkedSurvey = state.booleanInputs.linkSurvey?state.inputs.linked_survey:"";
 			let {success, errors, programId} = await postProgram(orgId, {...state.inputs}, linkedSurvey );
 			if (success) forceNavigate(`/Programdetails/${programId}/org/${orgId}`);
 			else {

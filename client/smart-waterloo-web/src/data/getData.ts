@@ -117,9 +117,18 @@ const web3GetUserData = async (): Promise<{
         religion: userData[7],
         sexuality: userData[8],
         race: userData[6],
+        household_income: userData[11],
+        num_family_members: userData[12],
+        primary_language: userData[13],
+        secondary_language: userData[14],
+        city: userData[17],
+        heard: userData[15],
+        contact: userData[16],
+        height: userData[3],
+        weight: userData[18],
         answers: [],
         surveys: [],
-        events: events,
+        programs: [],
         orgs: [],
       },
       errors: [],
@@ -161,7 +170,7 @@ const web3GetSurveysData = async (): Promise<{
       let member = await userContract.methods
         .getInfo(surveyResponders[j])
         .call();
-      _userInfo = { //Change for new sign up data
+      _userInfo = {
         birth_day: member[1],
         gender: member[2],
         religion: member[7],
@@ -169,6 +178,15 @@ const web3GetSurveysData = async (): Promise<{
         race: member[6],
         grade: member[4],
         postal_code: member[5],
+        household_income: member[11],
+        num_family_members: member[12],
+        height: member[3],
+        weight: member[18],
+        primary_language: member[13],
+        secondary_language: member[14],
+        city: member[17],
+        heard: member[15],
+        contact: member[16],
       };
       userInfos.push(_userInfo);
     }
@@ -211,7 +229,9 @@ const web3GetProgramsData = async (): Promise<{
       let event = await eventContract.methods
         .getEventInfoById(allEvents[i].toString())
         .call();
-      let organiser = await eventContract.methods.getEventOrganiserByEventId(allEvents[i].toString()).call();
+      let organiser = await eventContract.methods
+        .getEventOrganiserByEventId(allEvents[i].toString())
+        .call();
       let orgName = await orgContract.methods.getOrgInfo(organiser).call();
       console.log(event);
       let eventFormat = {
@@ -274,7 +294,8 @@ const web3GetOrgSurveysData = async (
       let member = await userContract.methods
         .getInfo(surveyResponders[j])
         .call();
-      _userInfo = { //update sign up info
+      _userInfo = {
+        //update sign up info
         birth_day: member[1],
         gender: member[2],
         religion: member[7],
@@ -282,6 +303,15 @@ const web3GetOrgSurveysData = async (
         race: member[6],
         grade: member[4],
         postal_code: member[5],
+        household_income: member[11],
+        num_family_members: member[12],
+        height: member[3],
+        weight: member[18],
+        primary_language: member[13],
+        secondary_language: member[14],
+        city: member[17],
+        heard: member[15],
+        contact: member[16],
       };
       userInfos.push(_userInfo);
     }
@@ -357,49 +387,6 @@ const web3GetOrgProgramsData = async (
     };
   }
 };
-
-//Specific for an event
-// const getEventData = async (
-//   id: string
-// ): Promise<
-//   { success: boolean; event: typeof defaultEvent | {}; errors: string[] } | any
-// > => {
-//   return USE_WEB3 ? await getWeb3EventData(id) : await getWeb2EventData(id);
-// };
-// const getWeb3EventData = async (
-//   id: string
-// ): Promise<{
-//   success: boolean;
-//   answers: string[];
-//   questions: string[];
-//   errors: string[];
-// }> => {
-//   return {
-//     success: false,
-//     questions: [],
-//     answers: [],
-//     errors: ["not implemented"],
-//   };
-// };
-
-// const getSurveyData = async (
-//   id: string
-// ): Promise<
-//   | { success: boolean; survey: typeof defaultSurvey | {}; errors: string[] }
-//   | any
-// > => {
-//   return USE_WEB3 ? await getWeb3SurveyData(id) : await getWeb2SurveyData(id);
-// };
-
-// const getWeb3SurveyData = async (
-//   id: string
-// ): Promise<{
-//   success: boolean;
-//   survey: typeof defaultSurvey | {};
-//   errors: string[];
-// }> => {
-//   return { success: false, survey: {}, errors: [] };
-// };
 
 // Orgs a user's involved with
 const getUserOrgs = async (
@@ -497,11 +484,12 @@ const web3GetBasicOrgData = async (
   const verify = await orgContract.methods
     .getOrgVerification(web3.eth.defaultAccount)
     .call();
+  let _userInfo;
   let userInfos: userInfo[] = [];
   for (let i = 0; i < org[3].length; i++) {
     console.log(org[3][i]);
     let member = await userContract.methods.getInfo(org[3][i]).call();
-    let _userInfo = {
+    _userInfo = {
       birth_day: member[1],
       gender: member[2],
       religion: member[7],
@@ -509,8 +497,17 @@ const web3GetBasicOrgData = async (
       race: member[6],
       grade: member[4],
       postal_code: member[5],
+      household_income: member[11],
+      num_family_members: member[12],
+      height: member[3],
+      weight: member[18],
+      primary_language: member[13],
+      secondary_language: member[14],
+      city: member[17],
+      heard: member[15],
+      contact: member[16],
     };
-    console.log(_userInfo); 
+    console.log(_userInfo);
     userInfos.push(_userInfo);
   }
   console.log(orgId);
@@ -560,7 +557,5 @@ export {
   getUserOrgs,
   getUserData,
   getProgramsData,
-  // getEventData,
   getSurveysData,
-  // getSurveyData,
 };

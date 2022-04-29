@@ -99,13 +99,22 @@ const postUserWeb3 = async (inputData: postUserType): Promise<string[]> => {
         inputData.qrId,
         inputData.birth_day,
         inputData.gender,
-        inputData.height + inputData.weight,
+        inputData.height,
         inputData.grade,
         inputData.postalCode,
         inputData.race,
         inputData.religion,
         inputData.sexuality,
         inputData.nickname + inputData.avatar_string,
+        "",
+        inputData.household_income,
+        inputData.household_composition,
+        inputData.primary_language,
+        inputData.secondary_language,
+        inputData.heard,
+        inputData.contact,
+        inputData.city,
+        inputData.weight
       ])
       .send({ from: web3.eth.defaultAccount })
       .then((receipt: any) => console.log(receipt));
@@ -118,14 +127,15 @@ const postUserWeb3 = async (inputData: postUserType): Promise<string[]> => {
 
 const postProgram = async (
   id: string,
-  inputData: postProgramType
+  inputData: postProgramType,
+  linkedSurvey: string,
 ): Promise<postProgramReturn> => {
   return USE_WEB3
-    ? await postEventWeb3(id, inputData)
-    : await postEventWeb2(id, inputData);
+    ? await postEventWeb3(id, inputData, linkedSurvey)
+    : await postProgramWeb2(id, inputData, linkedSurvey);
 };
 
-const postEventWeb3 = async (id: string, inputData: postEventType) => {
+const postEventWeb3 = async (id: string, inputData: postProgramType, linkedSurvey: string) => {
   web3.eth.defaultAccount = await getUserAddress();
   try {
     console.log(web3.eth.defaultAccount);
@@ -136,27 +146,23 @@ const postEventWeb3 = async (id: string, inputData: postEventType) => {
     const eventCreated = await eventContract.methods
       .createOrgEvent(
         web3.eth.defaultAccount,
-        inputData.name,
-        inputData.age,
-        (inputData.start_day + inputData.start_month + inputData.start_year),
-        (inputData.end_day + inputData.end_month + inputData.end_year),
-        inputData.category,
-        inputData.description,
-        eventID.toString()
+        [inputData.name,inputData.min_age,inputData.max_age,inputData.start_date,inputData.end_date,inputData.start_time,inputData.end_time,inputData.location,inputData.category,inputData.description],
+        linkedSurvey,
+        eventID.toString(),
       )
       .send({ from: web3.eth.defaultAccount });
     console.log(eventCreated);
     return {
       success: true,
       errors: [],
-      eventId: eventID.toString(),
+      programId: eventID.toString(),
     };
   } catch (e) {
     console.log(e);
     return {
       success: false,
       errors: ["Error creating an event"],
-      eventId: ""
+      programId:""
     };
   }
 };  
@@ -237,4 +243,4 @@ const web3submitSurvey = async (
   return ["function not implemented"];
 };
 
-export { submitSurvey, postSurvey, postUser, postEvent, postOrg };
+export { submitSurvey, postSurvey, postUser, postProgram, postOrg };
