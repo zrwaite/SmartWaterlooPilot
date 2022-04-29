@@ -56,15 +56,6 @@ const web2GetSurveysData = async ():Promise<{success:boolean, surveys:typeof def
 	} else return {success: false, surveys: [], errors:["request failed"]};
 }
 
-const getWeb2SurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurvey|{}, errors: string[]}> => {
-	let json = await httpReq("/api/survey/?survey_id="+id);
-	if (json) {
-		let response = JSON.parse(json);
-		if (response.success) return {success: true, survey:response.response, errors: []};
-		else return {success: false, survey:{}, errors: response.errors}
-	} else return {success: false, survey: {}, errors:["request failed"]};
-};
-
 
 const web2GetProgramsData = async ():Promise<{success:boolean, programs:typeof defaultProgram[], errors: string[]}> => {
 	let json = await httpReq("/api/program/")
@@ -94,18 +85,6 @@ const web2GetOrgSurveysData = async (id:string|undefined):Promise<{success:boole
 		else return {success: false, surveys:[], errors: response.errors}
 	} else return {success: false, surveys: [], errors:["request failed"]};
 }
-
-const getWeb2ProgramData = async (id:string):Promise<{success:boolean, program:typeof defaultProgram|{}, errors: string[]}> => {
-	let json = await httpReq("/api/program/?program_id="+id)
-	if (json) {
-		let response = JSON.parse(json);
-		if (response.success) {
-			return {success: true, program:response.response, errors: []};
-		} else {
-			return {success: false, program:{}, errors: response.errors}
-		}
-	} else return {success: false, program: {}, errors:["request failed"]};
-}; 
 
 const web2GetUserOrgs = async (id:string):Promise<{success:boolean, orgs: typeof defaultOrg[], errors:string[]}> => {
 	let json = await httpReq("/api/org/?user_id="+id)
@@ -138,4 +117,4 @@ const web2GetQuestionsAndAnswers = async (answerIds: number[]):Promise<{success:
 
 
 
-export { web2GetQuestionsAndAnswers, web2GetAnswersData, web2GetOrgProgramsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetUserData, web2GetUserOrgs, web2GetSurveysData, web2GetProgramsData, getWeb2ProgramData, getWeb2SurveyData};
+export { web2GetQuestionsAndAnswers, web2GetAnswersData, web2GetOrgProgramsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetUserData, web2GetUserOrgs, web2GetSurveysData, web2GetProgramsData};
