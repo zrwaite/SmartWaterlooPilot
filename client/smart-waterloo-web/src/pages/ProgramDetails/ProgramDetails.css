@@ -54,7 +54,7 @@ p{
 }
 .DesktopPanelNoBorder{
 	background-color: #F8F8F8;
-	border: 0rem solid black;
+	border: 0 solid black;
 	border-radius: 1rem;
 	margin: 1rem 2rem 2rem;
 	padding: 0;
@@ -68,7 +68,6 @@ p{
 
 /* Buttons */
 .signupButton{
-	display:flex;
 	align-items: center;
 	height: 100%;
 	padding-right: 0.5rem;
@@ -86,7 +85,6 @@ p{
 	color: black;
 }
 .signupLightBlueButton{
-	display:flex;
 	align-items: center;
 	height: 100%;
 	padding-right: 0.5rem;
@@ -173,7 +171,6 @@ p{
 	justify-content: center;
 } 
 .popupMessage{
-	padding: 0.2rem;
 	display: flex;
 	padding: 1rem;
 }

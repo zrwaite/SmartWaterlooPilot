@@ -8,11 +8,6 @@
 .createEventHeader{
 	margin: 1rem 0;
 }
-.mcInputs{
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-}
 .createEventInput{
 	width: 100%;
 	box-sizing: border-box;
@@ -25,16 +20,8 @@
 .singleLineMultiInput>*{
 	margin: 0 0.2rem
 }
-.createEventMiniInput{
-	width: 2rem;
-}
 .createEventTextArea{
 	width: 100%;
-}
-.createEventButton{
-	width: 80%;
-	margin: auto;
-	height: 2rem;
 }
 .disclaimer{
 	background-color: #FFEDCA;
@@ -101,11 +88,6 @@
 	margin: 1rem auto;
 	height: 1.75rem;
 	font-size: 1.25rem;
-}
-.addQuestionButtonSection{
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 .tabbedSection{
 	margin-left: 3rem;

@@ -5,15 +5,6 @@ h3, p{
 header>h2, header>p{
 	margin: 0.7rem 0.5rem;
 }
-#gradeInput{
-	width: 1.5rem;
-}
-#dayInput, #monthInput{
-	width: 2rem;
-}
-#yearInput {
-	width: 3.5rem;
-}
 .pill{
 	display:flex;
 	margin: 0.2rem;
@@ -36,12 +27,6 @@ header>h2, header>p{
 .pillText{
 	line-height: 2rem;
 	padding: 0 0.5rem;
-}
-#heightInput, #weightInput {
-	width: 3rem;
-}
-#postalCodeInput{
-	width: 5rem;
 }
 .formDiv{
 	margin: 1rem;

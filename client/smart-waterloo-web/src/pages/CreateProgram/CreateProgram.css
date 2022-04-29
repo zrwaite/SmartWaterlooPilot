@@ -8,11 +8,6 @@
 .createProgramHeader{
 	margin: 1rem 0;
 }
-.mcInputs{
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-}
 .createProgramInput{
 	width: 100%;
 	box-sizing: border-box;

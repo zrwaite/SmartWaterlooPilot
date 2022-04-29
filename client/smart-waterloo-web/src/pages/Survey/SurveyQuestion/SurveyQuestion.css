@@ -8,7 +8,7 @@
 	background-color: black;
 	color: white;
 }
-.questionInput, .questionTextarea{
+.questionTextarea{
 	width: 100%;
 }
 .questionChoice{
@@ -25,5 +25,5 @@
 .questionPrompt{
 	display:flex;
 	align-items: center;
-	justify-content: flex-left;
+	justify-content: flex-start;
 }
