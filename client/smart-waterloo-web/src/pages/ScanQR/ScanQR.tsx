@@ -22,7 +22,7 @@ const ScanQR = () => {
 		Html5Qrcode.getCameras()
 			.then((devices) => {
 				if (devices && devices.length) {
-					var cameraId = devices[0].id;
+					let cameraId = devices[0].id;
 					const html5QrCode = new Html5Qrcode("qr-reader");
 					html5QrCode
 						.start(

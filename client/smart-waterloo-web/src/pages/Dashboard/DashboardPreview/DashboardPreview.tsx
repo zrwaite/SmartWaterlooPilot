@@ -5,8 +5,6 @@ import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
 import { defaultProgram } from "../../../data/types/programs";
 import {defaultSurvey} from "../../../data/types/surveys"
-import { userDataPanels, orgDataPanels } from "../../MyData/MyDataPanel/MyDataPanels";
-import MyDataPanel from "../../MyData/MyDataPanel";
 import ProgramPanel from "../../Programs/ProgramPanel"
 import SurveyPanel from "../../Surveys/SurveyPanel"
 import { useNavigate } from "react-router-dom";
@@ -50,9 +48,9 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 	const {mobile} = useContext(MobileContext);
 	const color = Data[props.name].color;
 	const linkTo = `${Data[props.name].link}${props.org?`org/${props.orgId}`:"user"}`;
-	const dataPanelsData = props.org?orgDataPanels:userDataPanels;
+	// const dataPanelsData = props.org?orgDataPanels:userDataPanels;
 	if (mobile) return (
-		<button onClick={()=> navigate(linkTo)}className={`dashboardLinkSection ${color}`}>
+		<button onClick={()=> navigate(linkTo)} className={`dashboardLinkSection ${color}`}>
 			<DashboardPreviewHeader mobile={true} name={props.name}/>
 		</button>
 	);

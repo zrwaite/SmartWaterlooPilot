@@ -11,13 +11,14 @@ import {
 } from "./FormGridData";
 import Select, { ActionMeta } from "react-select";
 import { Link } from "react-router-dom";
+import {ChangeEvent} from "react";
 
 
 type ProfileFormGridProps = {
 	nextStep: () => void,
-	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void,
+	handleParentInputChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void,
 	handleParentSelectChange: (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => void,
-	handleParentCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
+	handleParentCheckboxChange: (event: ChangeEvent<HTMLInputElement>) => void,
 	formData: ProfileFormGridState
 }
 function ProfileFormGrid(props: ProfileFormGridProps) {

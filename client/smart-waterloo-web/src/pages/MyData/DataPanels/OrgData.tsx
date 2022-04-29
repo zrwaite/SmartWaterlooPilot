@@ -3,11 +3,8 @@ import "./DataPanel.css";
 // import {MobileContext} from "../../../App";
 // import { useContext } from "react";
 
-interface DataPanelProps {
-}
 
-
-const OrgDataPanel = (props: DataPanelProps) => {
+const OrgDataPanel = () => {
 	const {orgId} = useParams();
 	// const mobile = useContext(MobileContext);
 	const navigate = useNavigate();

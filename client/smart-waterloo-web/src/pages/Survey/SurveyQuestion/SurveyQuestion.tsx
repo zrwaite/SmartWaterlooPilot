@@ -1,6 +1,6 @@
 import "./SurveyQuestion.css";
 import {Question} from "../../../data/types/surveys"
-import { useState } from "react";
+import {ChangeEvent, useState} from "react";
 import { getAnswersData } from "../../../data/getData";
 interface SurveyQuestionProps extends Question {
 	index: number;
@@ -15,7 +15,7 @@ const defaultAnswers: {answer: string, question_id: number}[] = []
 const SurveyQuestion = (props: SurveyQuestionProps) => {
 	const [answers, setAnswers] = useState(defaultAnswers);
 	const [dataPulled, setDataPulled] = useState(false);
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>|React.ChangeEvent<HTMLTextAreaElement>) => {
+	const handleInputChange = (event: ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLSelectElement>|ChangeEvent<HTMLTextAreaElement>) => {
 		props.setParentAnswer(props.index, event.target.value);
     }
 	const getSetAnswers = async () => {

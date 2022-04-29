@@ -1,10 +1,10 @@
-import { useState } from "react";
+import {ChangeEvent, useState} from "react";
 import "./Nickname.css";
 
 
 type NicknameProps = {
 	backStep: () => void,
-	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => void
+	handleParentInputChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void
 	nicknameData: { nickname: string, avatar_string: string };
 	submit: () => Promise<boolean>;
 	org: boolean;

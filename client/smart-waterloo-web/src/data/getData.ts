@@ -11,7 +11,7 @@ import surveyABI from "./utils/OrgSurvey.json";
 import {USE_WEB3} from "./dataConstants";
 
 import {defaultAccount} from "./types/account";
-import {web2GetAnswersData, web2GetUserOrgs, web2GetOrgSurveysData, web2GetOrgProgramsData, web2GetUserData, web2GetSurveysData, web2GetBasicOrgData, web2GetProgramsData, getWeb2ProgramData, getWeb2SurveyData, web2GetQuestionsAndAnswers} from "./web2/web2GetData";
+import {web2GetAnswersData, web2GetUserOrgs, web2GetOrgSurveysData, web2GetOrgProgramsData, web2GetUserData, web2GetSurveysData, web2GetBasicOrgData, web2GetProgramsData, web2GetQuestionsAndAnswers} from "./web2/web2GetData";
 import {defaultOrg} from "./types/orgs";
 
 let web3 = new Web3(Web3.givenProvider);
@@ -71,16 +71,7 @@ const getOrgSurveysData = async (id:string|undefined):Promise<{success:boolean, 
 const getOrgProgramsData = async (id:string|undefined):Promise<{success:boolean, events:typeof defaultProgram[], errors: string[]}|any> => {
 	return USE_WEB3 ? (await web3GetOrgProgramsData(id)) : (await web2GetOrgProgramsData(id));
 };
-const getProgramData = async (id:string):Promise<{success:boolean, event:typeof defaultProgram|{}, errors: string[]}|any> => {
-	return USE_WEB3 ? (await getWeb3ProgramData(id)) : (await getWeb2ProgramData(id));
-};
-const getWeb3ProgramData = async (id:string):Promise<{success:boolean, answers: string[], questions:string[], errors: string[]}> =>{
-	return {success: false, questions: [], answers: [], errors: ["not implemented"]};
-}
 
-const getSurveyData = async (id:string):Promise<{success:boolean, survey:typeof defaultSurvey|{}, errors: string[]}|any> => {
-	return USE_WEB3 ? (await getWeb3SurveyData(id)) : (await getWeb2SurveyData(id));
-};
 const getUserOrgs = async (id:string):Promise<{success:boolean, orgs: (typeof defaultOrg)[], errors:string[]}> => {
 	return USE_WEB3 ? (await web3GetUserOrgs(id)) : (await web2GetUserOrgs(id));
 }
@@ -158,4 +149,4 @@ const getUserAddress = async ():Promise<string> => {
 // };
 
 
-export { getQuestionsAndAnswers, getAnswersData, getOrgProgramsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getUserData, getProgramsData, getProgramData, getSurveysData, getSurveyData};
+export { getQuestionsAndAnswers, getAnswersData, getOrgProgramsData, getOrgSurveysData, getBasicOrgData, getUserOrgs, getUserData, getProgramsData, getSurveysData};

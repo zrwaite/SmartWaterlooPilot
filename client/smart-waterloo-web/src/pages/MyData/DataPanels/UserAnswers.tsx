@@ -1,13 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import "./DataPanel.css";
-// import {MobileContext} from "../../../App";
-// import { useContext } from "react";
 
-interface MyDataPanelProps {
-}
-
-
-const UserAnswersPanel = (props: MyDataPanelProps) => {
+const UserAnswersPanel = () => {
 	// const mobile = useContext(MobileContext);
 	const navigate = useNavigate();
 	return (

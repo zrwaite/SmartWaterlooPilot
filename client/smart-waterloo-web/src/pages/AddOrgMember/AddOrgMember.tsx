@@ -19,18 +19,19 @@ const ScanQR = (props:AccountChildProps) => {
 		Html5Qrcode.getCameras()
 			.then((devices) => {
 				if (devices && devices.length) {
-					var cameraId = devices[0].id;
+					let cameraId = devices[0].id;
 					const html5QrCode = new Html5Qrcode("qr-reader");
 					html5QrCode
 						.start(
 							cameraId,
 							{fps: 10, qrbox: {width: 250, height: 250}},
-							async (decodedText, decodedResult) => {
+							async (decodedText) => {
 								html5QrCode.stop().catch((err) => {
 									alert("Failed to close camera");
+									console.error(err);
 								});
 								let scannedId = parseInt(decodedText);
-								if (typeof decodedText === "string" && scannedId>0 && scannedId<10000) {
+								if (scannedId>0 && scannedId<10000) {
 									let exists = await accountExists(scannedId);
 									if (exists) {
 										if (orgId){
@@ -46,13 +47,17 @@ const ScanQR = (props:AccountChildProps) => {
 									} else alert("User has not created an account");
 								} else alert("invalid qr code");
 							},
-							(errorMessage) => {}
+							() => {}
 						)
-						.catch((err) => alert("Failed to open camera"))
+						.catch((err) => {
+							alert("Failed to open camera");
+							console.error(err);
+						})
 						.finally(() => {
 							setCloseCam({close: () => {
 								html5QrCode.stop().catch((err) => {
 									alert("Failed to close camera");
+									console.error(err);
 								})
 								setCamOpen(false);
 							}})
@@ -60,7 +65,10 @@ const ScanQR = (props:AccountChildProps) => {
 					// 
 				}
 			})
-			.catch((err) => alert("camera error"));
+			.catch((err) => {
+				alert("camera error");
+				console.error(err);
+			});
 	};
 
 	return (

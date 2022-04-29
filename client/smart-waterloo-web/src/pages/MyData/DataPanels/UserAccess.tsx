@@ -3,11 +3,9 @@ import "./DataPanel.css";
 // import {MobileContext} from "../../../App";
 // import { useContext } from "react";
 
-interface MyDataPanelProps {
-}
 
 
-const UserAccessPanel = (props: MyDataPanelProps) => {
+const UserAccessPanel = () => {
 	// const mobile = useContext(MobileContext);
 	const navigate = useNavigate();
 	return (

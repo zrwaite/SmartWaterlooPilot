@@ -1,5 +1,5 @@
 import "./CreateSurvey.css";
-import {useContext} from "react";
+import {ChangeEvent, useContext} from "react";
 import {MobileContext} from "../../App";
 import { useNavigate, useParams } from "react-router-dom";
 import {useState} from "react";
@@ -31,14 +31,14 @@ const CreateSurvey = (props:AccountChildProps) => {
 	const [questionInputs, setQuestionInputs] = useState(DefaultQuestionArray);
 	const [canSubmit, setCanSubmit] = useState(true);
 
-	const handleStandardInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>) => {
+	const handleStandardInputChange = (event: ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLTextAreaElement>) => {
 		let inputKeys: keyof typeof standardInputs;
         const name = event.target.name as typeof inputKeys;
         let partialInput = {...standardInputs};
 		partialInput[name] = event.target.value;
         setStandardInputs(partialInput);
     }
-	const handleQuestionBooleanChange = (event: React.ChangeEvent<HTMLInputElement>, index:number, name: "optional") => {
+	const handleQuestionBooleanChange = (event: ChangeEvent<HTMLInputElement>, index:number, name: "optional") => {
         let partialInput = [...questionInputs];
 		if (name==="optional") {
 			partialInput[index][name] = event.target.checked;
@@ -46,7 +46,7 @@ const CreateSurvey = (props:AccountChildProps) => {
         setQuestionInputs(partialInput);
 	}
 
-	const handleQuestionInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, index: number, name: "prompt"|"answer_type") => {
+	const handleQuestionInputChange = (event: ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLTextAreaElement>, index: number, name: "prompt"|"answer_type") => {
         let partialInput = [...questionInputs];
 		if (name==="answer_type") {
 			partialInput[index][name] = event.target.value as "text"|"mc";
@@ -56,7 +56,7 @@ const CreateSurvey = (props:AccountChildProps) => {
 		} 
         setQuestionInputs(partialInput);
     }
-	const handleAnswerInputChange = (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>, qindex: number, aindex: number) => {
+	const handleAnswerInputChange = (event: ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLTextAreaElement>, qindex: number, aindex: number) => {
         let answers = questionInputs[qindex].choices;
 		if (answers) {
 			let partialInput = [...questionInputs];
@@ -163,7 +163,7 @@ const CreateSurvey = (props:AccountChildProps) => {
 														)
 													})}
 													<div className={"horizontal"}>
-														<button onClick={() => addChoice(i)}className={"addChoiceButton blackButton"}>+ Add Choice</button>
+														<button onClick={() => addChoice(i)} className={"addChoiceButton blackButton"}>+ Add Choice</button>
 													</div>
 												</div>
 											):null}
@@ -178,10 +178,10 @@ const CreateSurvey = (props:AccountChildProps) => {
 						}</div>
 					</div>
 					<div className={"horizontal"}>
-						<button onClick={() => addQuestion()}className={"addQuestionButton blackButton"}>+ Add Question</button>
+						<button onClick={() => addQuestion()} className={"addQuestionButton blackButton"}>+ Add Question</button>
 					</div>
 					<div className={"horizontal"}>
-						<button onClick={canSubmit?tryPostSurvey:undefined}className={`addQuestionButton ${canSubmit?"blackButton":"disabledButton"}`}>Submit Survey!</button>
+						<button onClick={canSubmit?tryPostSurvey:undefined} className={`addQuestionButton ${canSubmit?"blackButton":"disabledButton"}`}>Submit Survey!</button>
 					</div>
 				</div>
 			</div>	

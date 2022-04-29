@@ -1,5 +1,5 @@
 import "./CreateProgram.css";
-import { useContext, useState } from "react";
+import {ChangeEvent, useContext, useState} from "react";
 import { MobileContext } from "../../App";
 import { programCategories } from "./CreateProgramData";
 import Select, { ActionMeta } from "react-select";
@@ -34,14 +34,14 @@ const CreateProgram = (props:AccountChildProps) => {
 	let {orgId} = useParams();
 	const [state, setState] = useState(DefaultCreateProgramState)
 	const [canSubmit, setCanSubmit] = useState(true);
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+	const handleInputChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
 		let inputKeys: keyof typeof state.inputs;
 		const name = event.target.name as typeof inputKeys;
 		let partialInput = { ...state.inputs };
 		partialInput[name] = event.target.value;
 		setState({ ...state, inputs: partialInput });
 	}
-	const handleBooleanInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleBooleanInputChange = (event: ChangeEvent<HTMLInputElement>) => {
 		let inputKeys: keyof typeof state.booleanInputs;
 		const name = event.target.name as typeof inputKeys;
 		let partialInput = { ...state.booleanInputs };
@@ -147,7 +147,7 @@ const CreateProgram = (props:AccountChildProps) => {
 								props.surveysData.surveys.length?(
 									props.surveysData.surveys.map((survey, i) => {return (
 										<div className={"questionChoice"} key={i}>
-											<input name={"linked_survey"} type="radio" value={survey.id} checked={survey.id==state.inputs.linked_survey} onChange={handleInputChange}/>
+											<input name={"linked_survey"} type="radio" value={survey.id} checked={survey.id.toString()===state.inputs.linked_survey.toString()} onChange={handleInputChange}/>
 											Name:"{survey.name}"  Id:"{survey.id}"
 										</div>
 									)})

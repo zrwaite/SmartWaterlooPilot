@@ -7,7 +7,6 @@ import { useContext, useState } from "react";
 import { IdContext, MobileContext } from "../../App";
 import { useNavigate, Link } from "react-router-dom";
 import userABI from "../../data/utils/SmartUser.json";
-import { AbiItem } from "web3-utils";
 import Web3 from "web3";
 import {USE_WEB3} from "../../data/dataConstants";
 import {web2Login} from "../../data/account";

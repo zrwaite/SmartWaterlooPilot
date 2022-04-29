@@ -11,8 +11,6 @@ import SignUp from "./pages/SignUp";
 import About from "./pages/About";
 import SharedData from "./pages/SharedData";
 // import Survey from "./pages/Survey";
-import CreateProgram from "./pages/CreateProgram";
-import CreateSurvey from "./pages/CreateSurvey";
 import CreateOrg from "./pages/CreateOrg";
 // import ProgramDetails from "./pages/ProgramDetails";
 import { useEffect } from 'react';

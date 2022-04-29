@@ -1,5 +1,4 @@
 // import {Link} from "react-router-dom";
-import QRCard from "../../../images/cardIcon.png";
 import "./Landing.css";
 
 //Todo change buttons to links
@@ -15,7 +14,7 @@ function Landing(props:LandingProps) {
 				<div className="QRCardContainer">
 					<p style={redText}>Organizations require a valid business number to be verified</p>
 				</div>
-				<button onClick={props.nextStep}className={"blackButton createOrgButton"}>Let's get started</button>
+				<button onClick={props.nextStep} className={"blackButton createOrgButton"}>Let's get started</button>
 			</div>
 		</>
     );

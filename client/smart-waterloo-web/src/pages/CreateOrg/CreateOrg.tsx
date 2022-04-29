@@ -7,16 +7,12 @@ import MeetAvatar from "../SignUp/MeetAvatar";
 import Nickname from "../SignUp/Nickname";
 import Verified from "./Verified";
 import StepBubbles from "../../components/StepBubbles";
-import cookies from "../../modules/cookies";
 import { ActionMeta } from "react-select";
-import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
 import { postOrg } from "../../data/postData";
 import { forceNavigate } from "../../modules/navigate";
 
 const defaultAvatarString = randomString();
-type SignUpProps = {
-};
 const defaultNicknameProps = {
 	nickname: "",
 	avatar_string: defaultAvatarString
@@ -36,10 +32,9 @@ const defaultSignUpState = {
 	}
 }
 
-const CreateOrg = (props: SignUpProps) => {
+const CreateOrg = () => {
 	const [state, setState] = useState(defaultSignUpState);
 	const {mobile} = useContext(MobileContext);
-	const navigate = useNavigate();
 	const updateStep = (step: number) => {
 		setState({ ...state, step: step });
 	}
