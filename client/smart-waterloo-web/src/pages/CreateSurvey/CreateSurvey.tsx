@@ -9,6 +9,7 @@ import { forceNavigate } from "../../modules/navigate";
 import { AccountChildProps } from "../AccountParent";
 //Todo change buttons to links
 
+import QuestionController from "../../components/QuestionController";
 
 interface Question {
 	id: string;
@@ -38,60 +39,7 @@ const CreateSurvey = (props:AccountChildProps) => {
 		partialInput[name] = event.target.value;
         setStandardInputs(partialInput);
     }
-	const handleQuestionBooleanChange = (event: ChangeEvent<HTMLInputElement>, index:number, name: "optional") => {
-        let partialInput = [...questionInputs];
-		if (name==="optional") {
-			partialInput[index][name] = event.target.checked;
-		}
-        setQuestionInputs(partialInput);
-	}
 
-	const handleQuestionInputChange = (event: ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLTextAreaElement>, index: number, name: "prompt"|"answer_type") => {
-        let partialInput = [...questionInputs];
-		if (name==="answer_type") {
-			partialInput[index][name] = event.target.value as "text"|"mc";
-			if (partialInput[index].choices.length===0) partialInput[index].choices = ["", ""];
-		} else if (name==="prompt"){
-			partialInput[index][name] = event.target.value;
-		} 
-        setQuestionInputs(partialInput);
-    }
-	const handleAnswerInputChange = (event: ChangeEvent<HTMLInputElement>|ChangeEvent<HTMLTextAreaElement>, qindex: number, aindex: number) => {
-        let answers = questionInputs[qindex].choices;
-		if (answers) {
-			let partialInput = [...questionInputs];
-			let qChoices = partialInput[qindex].choices
-			if (qChoices) qChoices[aindex] = event.target.value;
-			partialInput[qindex].choices = qChoices;
-			setQuestionInputs(partialInput);
-		}
-    }
-	const addQuestion = () => {
-		let previousQuestions = [...questionInputs];
-		previousQuestions.push({
-			id: "",
-			optional: false,
-			prompt: "",
-			answer_type: "text",
-			choices: []
-		});
-		setQuestionInputs(previousQuestions);
-	}
-	const removeQuestion = (qindex: number) => {
-		let previousQuestions = [...questionInputs];
-		previousQuestions.splice(qindex,1);
-		setQuestionInputs(previousQuestions);
-	}
-	const addChoice = (qindex: number) => {
-		let previousQuestions = [...questionInputs];
-		previousQuestions[qindex].choices.push("");
-		setQuestionInputs(previousQuestions);
-	}
-	const removeChoice = (qindex: number, aindex:number) => {
-		let previousQuestions = [...questionInputs];
-		previousQuestions[qindex].choices.splice(aindex,1);
-		setQuestionInputs(previousQuestions);
-	}
 	const greyText = {color: "grey"};
 	const link = {cursor: "pointer"};
 	const tryPostSurvey = async () => {
@@ -126,60 +74,7 @@ const CreateSurvey = (props:AccountChildProps) => {
 						<h6>Description</h6>
 						<textarea name={"description"} className={"questionTextarea createEventTextArea"} value={standardInputs.description} onChange={handleStandardInputChange} />
 					</div>
-					<div className={"formQuestion"}>
-						<h6>Questions</h6>
-						<div className="createSurveyQuestions">{
-							questionInputs.map((question, i) => {
-								return (
-									<div key={i} className={"createSurveyQuestionSection"}>
-										<div className={"horizontal"}>
-											<div className={"questionNumber"}>{i}</div>
-											<input name={"prompt"} className={"createEventInput"} placeholder={`Enter Question ${i}`} value={questionInputs[i].prompt} onChange={(e) => handleQuestionInputChange(e, i, "prompt")} />
-											<button onClick={() => removeQuestion(i)} className={"blackButton"}>Remove</button>
-										</div>
-										<div className={"tabbedSection"}>	
-											<div className={"questionTypeMCSection"} >
-													{[
-														{shortName:"text",fullName:"Text"},
-														{shortName:"mc",fullName:"Multiple Choice"},
-														// {shortName:"long",fullName:"Long Text"},
-														// {shortName:"check",fullName:"Checkboxes"},
-													].map((questionType, i2) => {
-														return (<div key={i2}>
-															<input name={`type${i}`} type="radio" value={questionType.shortName} checked={question.answer_type===questionType.shortName} onChange={(e) => handleQuestionInputChange(e, i, "answer_type")}/>
-															<p>{questionType.fullName}</p>
-														</div>)
-													})}
-											</div>
-											{(questionInputs[i].answer_type==="mc")?(
-												<div className={"questionChoiceCreator"}>
-													{questionInputs[i].choices.map((choice, i2) => {
-														return (
-															<div className={"horizontal"} key={i2}>
-																<div className={"choiceNumber"}>{i2}</div>
-																<input name={`choice${i}-${i2}`} className={"createEventInput"} placeholder={`Choice ${i2}`} value={choice} onChange={(e) => handleAnswerInputChange(e,i,i2)} />
-																<button onClick={() => removeChoice(i, i2)} className={"blackButton"}>Remove</button>
-															</div>
-														)
-													})}
-													<div className={"horizontal"}>
-														<button onClick={() => addChoice(i)} className={"addChoiceButton blackButton"}>+ Add Choice</button>
-													</div>
-												</div>
-											):null}
-										</div>
-										<div className={"horizontal"}>
-											<h6>Optional?</h6>
-											<input type={"checkbox"} name={"optional"} className={"createEventInput"} checked={questionInputs[i].optional} onChange={(e) => handleQuestionBooleanChange(e, i, "optional")} />
-										</div>
-									</div>
-								)
-							})
-						}</div>
-					</div>
-					<div className={"horizontal"}>
-						<button onClick={() => addQuestion()} className={"addQuestionButton blackButton"}>+ Add Question</button>
-					</div>
+					<QuestionController questions={questionInputs} setQuestions={setQuestionInputs}/>
 					<div className={"horizontal"}>
 						<button onClick={canSubmit?tryPostSurvey:undefined} className={`addQuestionButton ${canSubmit?"blackButton":"disabledButton"}`}>Submit Survey!</button>
 					</div>

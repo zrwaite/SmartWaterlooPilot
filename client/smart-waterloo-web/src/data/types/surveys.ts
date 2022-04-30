@@ -3,7 +3,7 @@ import { userInfo } from "./account";
 interface Question {
 	prompt: string;
     answer_type: "text"|"mc";
-	choices?: string[];
+	choices: string[];
 	optional: boolean;
 	id: string;
 }

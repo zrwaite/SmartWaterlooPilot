@@ -3,7 +3,7 @@ services:
   server: 
     env_file: "./web2backend/.env"
     build: ./
-    image: "zrwaite/smartwaterloo"
+    image: "zrwaite/smartwaterloo:2.0"
     ports: 
       - "8006:8006"
     

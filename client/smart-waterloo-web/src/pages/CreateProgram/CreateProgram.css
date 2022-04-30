@@ -5,6 +5,9 @@
 	align-items: center;
 	margin-bottom: 3rem;
 }
+.addProgramQuestionsSection{
+	border: 0.2rem solid black;
+}
 .createProgramHeader{
 	margin: 1rem 0;
 }

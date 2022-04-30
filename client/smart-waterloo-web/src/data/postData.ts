@@ -131,14 +131,14 @@ const postUserWeb3 = async (inputData: postUserType): Promise<string[]> => {
 const postProgram = async (
   id: string,
   inputData: postProgramType,
-  linkedSurvey: string,
+  questions: Question[]
 ): Promise<postProgramReturn> => {
   return USE_WEB3
-    ? await postEventWeb3(id, inputData, linkedSurvey)
-    : await postProgramWeb2(id, inputData, linkedSurvey);
+    ? await postEventWeb3(id, inputData, questions)
+    : await postProgramWeb2(id, inputData, questions);
 };
 
-const postEventWeb3 = async (id: string, inputData: postProgramType, linkedSurvey: string): Promise<postProgramReturn> => {
+const postEventWeb3 = async (id: string, inputData: postProgramType, questions: Question[]): Promise<postProgramReturn> => {
   if (!USE_WEB3 || !web3 || !userContract || !eventContract) return {success: false, errors: ["web3 method called in web2 mode"], programId: ""};
   web3.eth.defaultAccount = await getUserAddress();
   try {
@@ -151,7 +151,7 @@ const postEventWeb3 = async (id: string, inputData: postProgramType, linkedSurve
       .createOrgEvent(
         web3.eth.defaultAccount,
         [inputData.name,inputData.min_age,inputData.max_age,inputData.start_date,inputData.end_date,inputData.start_time,inputData.end_time,inputData.location,inputData.category,inputData.description],
-        linkedSurvey,
+        // linkedSurvey,
         eventID.toString(),
       )
       .send({ from: web3.eth.defaultAccount });

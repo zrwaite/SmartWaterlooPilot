@@ -2,7 +2,7 @@ import cookies from "../../modules/cookies";
 import {httpReq} from "./httpRequest";
 import {postUserType} from "../types/account";
 import {postProgramType, postProgramReturn} from "../types/programs"
-import { postSurveyReturn} from "../types/surveys"
+import {postSurveyReturn, Question} from "../types/surveys"
 import { postOrgType, postOrgReturn} from "../types/orgs"
 import { postSurveyType } from "../types/surveys";
 
@@ -37,7 +37,7 @@ const web2PostSurvey = async (id:string, inputData:postSurveyType):Promise<postS
 	} else return {success: false, errors: ["request failed"], surveyId: ""};
 }
 
-const postProgramWeb2 = async (id:string, inputData:postProgramType, linkedSurvey:string|null):Promise<postProgramReturn> => {
+const postProgramWeb2 = async (id:string, inputData:postProgramType, questions: Question[]):Promise<postProgramReturn> => {
 	let json = await httpReq("/api/program/", "POST", {
 		org: id,
 		name: inputData.name,
@@ -49,7 +49,6 @@ const postProgramWeb2 = async (id:string, inputData:postProgramType, linkedSurve
 		end_time: inputData.end_time,
 		category: inputData.category,
 		location: inputData.location,
-		linked_survey_id: linkedSurvey,
 		description: inputData.description,
 		image: "1",
 	})

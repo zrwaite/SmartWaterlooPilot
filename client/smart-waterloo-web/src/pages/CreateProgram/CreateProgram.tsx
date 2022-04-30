@@ -3,16 +3,20 @@ import {ChangeEvent, useContext, useState} from "react";
 import { MobileContext } from "../../App";
 import { programCategories } from "./CreateProgramData";
 import Select, { ActionMeta } from "react-select";
-import {Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { postProgram } from "../../data/postData";
 import cookies from "../../modules/cookies";
 import { forceNavigate } from "../../modules/navigate";
 import { AccountChildProps } from "../AccountParent";
+import {Question} from "../../data/types/surveys";
+import QuestionController from "../../components/QuestionController";
+
 
 //Todo change buttons to links
+const DefaultQuestionArray:Question[] = [];
 const DefaultCreateProgramState = {
 	booleanInputs: {
-		linkSurvey: false
+		addQuestions: false
 	},
 	inputs: {
 		name: "",
@@ -25,8 +29,8 @@ const DefaultCreateProgramState = {
 		location: "",
 		start_time: "",
 		end_time: "",
-		linked_survey: ""
-	}
+	},
+	questionInputs: [...DefaultQuestionArray]
 }
 const CreateProgram = (props:AccountChildProps) => {
 	const navigate = useNavigate();
@@ -57,13 +61,10 @@ const CreateProgram = (props:AccountChildProps) => {
 	}
 	let complete = true;
 	const values = Object.values(state.inputs);
-	const keys = Object.keys(state.inputs);
+	// const keys = Object.keys(state.inputs);
 	for (let i=0; i<values.length; i++) {
-		if (values[i] === "" && keys[i]!=="linked_survey") {
-			console.log(keys[i])
+		if (values[i] === "") {
 			complete = false
-		} else if (keys[i]==="linked_survey" && state.booleanInputs.linkSurvey && values[i]=== "") {
-			complete = false;
 		}
 	}
 	const greyText = { color: "grey" };
@@ -71,15 +72,17 @@ const CreateProgram = (props:AccountChildProps) => {
 
 	const ProgramCreation = async () => {
 		setCanSubmit(false);
-		if (orgId) {
-			const linkedSurvey = state.booleanInputs.linkSurvey?state.inputs.linked_survey:"";
-			let {success, errors, programId} = await postProgram(orgId, {...state.inputs}, linkedSurvey );
-			if (success) forceNavigate(`/Programdetails/${programId}/org/${orgId}`);
-			else {
-				alert(JSON.stringify(errors));
-				setCanSubmit(true);
-			}
+		const validStartDate = (new Date(state.inputs.start_date)) < (new Date("3001-01-01"));
+		const validEndDate = (new Date(state.inputs.end_date)) < (new Date("3001-01-01"));
+		if (!validStartDate) alert("Invalid Start Date");
+		else if (!validEndDate) alert("Invalid End Date");
+		else if (!orgId) alert("missing orgId");
+		else {
+			let {success, errors, programId} = await postProgram(orgId, {...state.inputs}, state.booleanInputs.addQuestions?state.questionInputs:[] );
+			if (success) return forceNavigate(`/Programdetails/${programId}/org/${orgId}`);
+			else alert(JSON.stringify(errors));
 		}
+		setCanSubmit(true);
 	}
 	
 	return (
@@ -137,28 +140,11 @@ const CreateProgram = (props:AccountChildProps) => {
 						<textarea name={"description"} className={"questionTextarea createProgramTextArea"} value={state.inputs.description} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>Link Survey?</p>
-						<input type={"checkbox"} name={"linkSurvey"} className={"createProgramIput"} checked={state.booleanInputs.linkSurvey} onChange={handleBooleanInputChange} />
+						<p>Add Questions?</p>
+						<input type={"checkbox"} name={"addQuestions"} checked={state.booleanInputs.addQuestions} onChange={handleBooleanInputChange} />
 					</div>
-					{state.booleanInputs.linkSurvey&&(
-						<div className={"linkedSurvey"}>
-							<p>Link Survey:</p>
-							{
-								props.surveysData.surveys.length?(
-									props.surveysData.surveys.map((survey, i) => {return (
-										<div className={"questionChoice"} key={i}>
-											<input name={"linked_survey"} type="radio" value={survey.id} checked={survey.id.toString()===state.inputs.linked_survey.toString()} onChange={handleInputChange}/>
-											Name:"{survey.name}"  Id:"{survey.id}"
-										</div>
-									)})
-								):(<div>
-									<p>You don't have any surveys - create one:</p>
-								</div>)
-							}
-							<div className={"createSurveyLinkPadding"}>
-								<Link  to={"/createsurvey/"+orgId}>Create new survey</Link>
-							</div>
-						</div>
+					{state.booleanInputs.addQuestions&&(
+						<QuestionController questions={state.questionInputs} setQuestions={(newQuestions:Question[]) => {setState({...state, questionInputs: newQuestions})}}/>
 					)}
 					<p>*All fields are required to continue</p>
 					<button onClick={canSubmit&&complete?ProgramCreation:undefined} className={`createProgramButton ${canSubmit&&complete ? "blackButton" : "disabledButton"}`}>Create Program</button>
