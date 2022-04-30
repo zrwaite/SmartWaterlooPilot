@@ -98,5 +98,6 @@ create table if not exists "programs"(
 	linked_survey_id int null,
 	FOREIGN KEY (linked_survey_id) REFERENCES surveys(id),
 	user_info int[] default array[]::integer[],
+	questions integer[],
 	attendees int default 0
 );

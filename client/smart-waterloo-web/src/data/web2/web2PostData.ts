@@ -50,7 +50,7 @@ const postProgramWeb2 = async (id:string, inputData:postProgramType, questions: 
 		category: inputData.category,
 		location: inputData.location,
 		description: inputData.description,
-		image: "1",
+		questions: questions
 	})
 	if (json) {
 		let response = JSON.parse(json);

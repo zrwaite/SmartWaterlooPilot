@@ -83,15 +83,37 @@ const getUserInfoByUserId = async (userId:number) => {
 	return {status: status, user_info: entries.length?entries[0]:{}, errors: errors};
 }
 const getProgram = async (programId:number) => {
-	const {status, entries, errors} = await getEntries(false, "id", programId, "programs", programData.allProgramKeys);
+	let {status, entries, errors} = await getEntries(false, "id", programId, "programs", programData.allProgramKeys);
+	let program = entries.length?entries[0]:{};
+	if (status == 200) {
+		let {questions, success} = await parseSurvey(program.questions);
+		if (success) program.questions = questions;
+		else status = 400;
+	}
 	return {status: status, program: entries.length?entries[0]:{}, errors: errors};
 }
 const getPrograms = async () => {
-	const {status, entries, errors} = await getEntries(true, "", "", "programs", programData.allProgramKeys);
+	let {status, entries, errors} = await getEntries(true, "", "", "programs", programData.allProgramKeys);
+	if (status == 200) {
+		for (let i=0; i<entries.length; i++) {
+			let program = entries[i];
+			let {questions, success} = await parseSurvey(program.questions);
+			if (success) program.questions = questions;
+			else status = 400;
+		}
+	}
 	return {status: status, programs: entries, errors: errors};
 }
 const getOrgPrograms = async (org_id:string) => {
-	const {status, entries, errors} = await getEntries(true, "org", org_id, "programs", programData.allProgramKeys);
+	let {status, entries, errors} = await getEntries(true, "org", org_id, "programs", programData.allProgramKeys);
+	if (status == 200) {
+		for (let i=0; i<entries.length; i++) {
+			let program = entries[i];
+			let {questions, success} = await parseSurvey(program.questions);
+			if (success) program.questions = questions;
+			else status = 400;
+		}
+	}
 	return {status: status, programs: entries, errors: errors};
 }
 const getOrg = async (id:string) => {

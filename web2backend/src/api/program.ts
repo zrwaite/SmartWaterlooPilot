@@ -2,10 +2,12 @@ import {Request, Response} from "express"; //Typescript types
 import {response, responseInterface} from "../models/response"; //Created pre-formatted uniform response
 import {postProgram} from "../modules/postDatabaseInfo";
 import {getProgram, getPrograms, getOrgPrograms} from "../modules/getDatabaseInfo";
-import {getBodyParams, getQueryParams} from "../modules/getParams";
+import {getBodyParams, getParams, getQueryParams} from "../modules/getParams";
 import {programData} from "../database/programData";
 import {verifyOrgMember, getToken} from "../auth/tokenFunctions";
 import { parseOrgProgram } from "../modules/parseData";
+import {isQuestionArray} from "../modules/typeAssertions";
+import {questionKeys, questionValues} from "../database/surveyData";
 
 /* register controller */
 export default class programController {
@@ -74,18 +76,32 @@ export default class programController {
 		let result:responseInterface = new response(); //Create new standardized response
 		let {success:programSuccess, params:programParams, errors:programErrors} = getBodyParams(req, programData.baseProgramKeys);
 		if (programSuccess) {
-			let orgId = programParams[0];
+			let orgId = programParams[1];
 			let {success: tokenSuccess, error: tokenError} = await verifyOrgMember(orgId, getToken(req.headers));
 			if (tokenSuccess ){
-				let {params: additionalParams} = getBodyParams(req, programData.nullableProgramKeys);
-				let postResult = await postProgram([...programParams, ...additionalParams]);
-				if (postResult.success) {
-					result.status = 201;
-					result.success = true;
-					result.response = {
-						programData: postResult.id,
-					}
-				} else postResult.errors.forEach((error) => {result.errors.push(error)});
+				const questionsInput = programParams[0] as questionValues[]
+				let questions:questionValues[] = [];
+				if (Array.isArray(questionsInput)){
+					questionsInput.forEach((question, i) => {
+						let {success:questionSuccess, params: questionParams, errors:questionErrors} = getParams(question, questionKeys);
+						if (questionSuccess)
+							if (isQuestionArray(questionParams))
+								questions.push(questionParams as questionValues)
+							else result.errors.push(`invalid question at index ${i}`);
+						else questionErrors.forEach(error => result.errors.push(`missing ${error} in question at index ${i}`));
+					});
+					programParams[0] = questions;
+				} else result.errors.push(`invalid questions type`);
+				if (result.errors.length === 0){
+					let postResult = await postProgram(programParams);
+					if (postResult.success) {
+						result.status = 201;
+						result.success = true;
+						result.response = {
+							programData: postResult.id,
+						}
+					} else postResult.errors.forEach((error) => {result.errors.push(error)});
+				}
 			} else {
 				result.errors.push(tokenError)
 				result.status = 401;

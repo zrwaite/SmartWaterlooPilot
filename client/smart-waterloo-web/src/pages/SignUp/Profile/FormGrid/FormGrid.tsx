@@ -50,12 +50,6 @@ function ProfileFormGrid(props: ProfileFormGridProps) {
 					<div className="formDiv">
 						<p>Date of Birth<span style={redText}>*</span></p>
 						<input name="birth_day" type={"date"} value={props.formData.birth_day} onChange={props.handleParentInputChange} />
-						{/*<div className="horizontal">*/}
-						{/*	<pre> / </pre>*/}
-						{/*	<input name="month" id="monthInput" placeholder="MM" type={"text"} value={props.formData.month} onChange={props.handleParentInputChange} />*/}
-						{/*	<pre> / </pre>*/}
-						{/*	<input name="year" id="yearInput" placeholder="YYYY" type={"text"} value={props.formData.year} onChange={props.handleParentInputChange} />*/}
-						{/*</div>*/}
 					</div>
 					<div className="formDiv">
 						<p>Grade <span style={greyText}>(Optional)</span></p>

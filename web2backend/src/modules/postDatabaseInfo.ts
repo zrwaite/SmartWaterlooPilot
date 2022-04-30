@@ -108,11 +108,28 @@ const postUser = async (password:string, userInfoId: number, userParams: string[
 
 
 
-const postProgram = async (programParams:string[]) => {
-	if (!(await verifyOrgVerification(programParams[0]))) return {success: false, errors: ["org not verified"], id: 0};
-	let newPostProgramObj = {...postProgramObj};
-	for (let i = 0; i<programParams.length; i++) newPostProgramObj[programData.postProgramKeys[i]] = programParams[i];
-	return await postEntry(newPostProgramObj, "programs");
+const postProgram = async (programParams:any[]) => {
+	if (!(await verifyOrgVerification(programParams[1]))) return {success: false, errors: ["org not verified"], id: 0};
+	let questionIds = [];
+	let errors: string[] = [];
+	let success = true;
+	for (let i=0; i<programParams[0].length; i++) {
+		let {success: questionSuccess, errors: questionErrors, id: questionId} = await postQuestion(programParams[0][i])
+		if (questionSuccess) {
+			questionIds.push(questionId.toString());
+		} else {
+			errors.push(...questionErrors);
+			success = false;
+			break;
+		}
+	}
+	if (success) {
+		let newPostProgramObj = {...postProgramObj};
+		for (let i = 0; i<programParams.length; i++) newPostProgramObj[programData.postProgramKeys[i]] = programParams[i];
+		if (questionIds.length) newPostProgramObj.questions = `{"${questionIds.join("\", \"")}"}`;
+		return await postEntry(newPostProgramObj, "programs");
+	}
+	return {success: success, errors: errors, id: 0}
 }
 
 const postSurvey = async (surveyParams:(surveyValues)) => {

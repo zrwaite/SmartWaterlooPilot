@@ -5,6 +5,13 @@ h3, p{
 header>h2, header>p{
 	margin: 0.7rem 0.5rem;
 }
+
+#heightInput{
+	max-width: 4rem;
+}
+#weightInput{
+	max-width: 4rem;
+}
 .pill{
 	display:flex;
 	margin: 0.2rem;
