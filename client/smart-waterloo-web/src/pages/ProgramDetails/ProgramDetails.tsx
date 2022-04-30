@@ -9,7 +9,7 @@ import "./ProgramDetails.css";
 import ProgramInfo from "./ProgramInfo";
 import ClipLoader from "react-spinners/ClipLoader";
 import NotFound from "../NotFound";
-import {useParams,useNavigate} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultProgram } from '../../data/types/programs';
 import cookies from "../../modules/cookies";
@@ -200,12 +200,14 @@ const ProgramsDetails = (props: AccountChildProps) => {
 								</ul>
 								</>
 							)}
-							{props.org?null:(<div className="DesktopPanelNoBorder">
-								{programData.program.questions.map((question, i) => {
+							<div className="DesktopPanelNoBorder">
+								{!signedUp&&programData.program.questions.map((question, i) => {
 									return <SurveyQuestion owner={owner} key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
 								})}
-								<p className={complete?bottomButtonClass:"disabledButton"} onClick={canSubmit&&complete?trySignUp:undefined}>{buttonText}</p>
-							</div>)}
+								{props.org?null:(
+									<p className={complete||signedUp?bottomButtonClass:"disabledButton"} onClick={canSubmit&&complete?trySignUp:undefined}>{buttonText}</p>
+								)}
+							</div>
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>
 						)
