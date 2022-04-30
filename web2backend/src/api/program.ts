@@ -13,7 +13,7 @@ import {questionKeys, questionValues} from "../database/surveyData";
 export default class programController {
 	static async getProgram(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
-		let {success:programSuccess, params:programParams, errors:programErrors} = await getQueryParams(req, ["program_id"]);
+		let {success:programSuccess, params:programParams, errors:programErrors} = getQueryParams(req, ["program_id"]);
 		if (programSuccess) {
 			const programId = programParams[0];
 			if (!isNaN(programId)){				

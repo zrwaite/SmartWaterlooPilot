@@ -1,4 +1,5 @@
 import { userInfo } from "./account";
+import {Question} from "./surveys";
 
 interface defaultProgramType {
 	id: string,
@@ -16,8 +17,8 @@ interface defaultProgramType {
 	max_age: string,
 	location: string,
 	image: string,
+	questions: Question[],
 	attendees: string,
-	linked_survey_id: string,
 	user_info: userInfo[]
 }
 const defaultProgram:defaultProgramType = {
@@ -37,7 +38,7 @@ const defaultProgram:defaultProgramType = {
 	description: "",
 	image: "",
 	attendees: "",
-	linked_survey_id: "",
+	questions: [],
 	user_info: []
 }
 

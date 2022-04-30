@@ -5,7 +5,7 @@ import { SurveyDataType } from "../../data/types/surveys";
 import SurveyLanding from "./SurveyLanding";
 import "./Survey.css";
 import { useParams } from "react-router-dom";
-import SurveyQuestion from "./SurveyQuestion";
+import SurveyQuestion from "../../components/AnswerInput";
 import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";
 import { AccountChildProps } from "../AccountParent";
@@ -50,9 +50,6 @@ const Survey = (props: AccountChildProps) => {
 		setAnswers(newAnswers);
 	}
 	const owner = (orgId===surveyData.survey.org.toString());
-	const questions = surveyData.survey.questions.map((question, i) => {
-		return <SurveyQuestion owner={owner} key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
-	});
 	const complete = answers.every((answer, i) => (answer!=="")||surveyData.survey.questions[i].optional);
 	const trySubmitSurvey = async () => {
 		setCanSubmit(false);
@@ -158,7 +155,9 @@ const Survey = (props: AccountChildProps) => {
 								</ul>
 								</>
 							)}
-							{questions}
+							{surveyData.survey.questions.map((question, i) => {
+								return <SurveyQuestion owner={owner} key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
+							})}
 							{!owner&&<button onClick={complete&&canSubmit?trySubmitSurvey:()=>{}} className={complete&&canSubmit?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
 						</div>
 						):<SurveyLanding set={surveyData.set} completed={completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}

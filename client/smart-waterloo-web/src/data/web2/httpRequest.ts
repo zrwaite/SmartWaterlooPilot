@@ -1,5 +1,5 @@
 import cookies from "../../modules/cookies"
-const baseURL = "https://bookmark-spy-dame-fridge.trycloudflare.com";
+const baseURL = "https://header-tutorials-malaysia-tablets.trycloudflare.com";
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
     url = baseURL + url;

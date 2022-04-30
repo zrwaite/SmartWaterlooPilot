@@ -9,21 +9,21 @@ import "./ProgramDetails.css";
 import ProgramInfo from "./ProgramInfo";
 import ClipLoader from "react-spinners/ClipLoader";
 import NotFound from "../NotFound";
-import {useParams,useNavigate, Link,} from "react-router-dom";
+import {useParams,useNavigate} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultProgram } from '../../data/types/programs';
 import cookies from "../../modules/cookies";
-import { addProgramtoUser } from '../../data/addData';
 import { AccountChildProps } from '../AccountParent';
 import { getDefaultUserInfoLists } from '../../data/types/account';
-import { looseIncludes } from '../../modules/other';
+import SurveyQuestion from "../../components/AnswerInput";
+import {submitProgram} from "../../data/postData";
 
 Modal.setAppElement("#root");
 
 const ProgramsDetails = (props: AccountChildProps) => {
 	let {mobile} = useContext(MobileContext);
 	const navigate = useNavigate();
-	const { id } = useParams();
+	const { id, orgId } = useParams();
 	const [buttonText, setText] = useState("Sign Up");
 	const [signupButtonClass, setClass] = useState("signupButton");
 	const [bottomButtonClass, setBottomClass] = useState("bottomButton");
@@ -35,8 +35,13 @@ const ProgramsDetails = (props: AccountChildProps) => {
 	const [notFound, setNotFound] = useState(false);
 	const [programData, setProgramData] = useState({program: defaultProgram, set: false});
 	const [canSubmit, setCanSubmit] = useState(true);
-	
-	
+	const [answers, setAnswers] = useState<string[]>([]);
+	const childSetAnswer = (index: number, newVal: string) => {
+		let newAnswers = [...answers];
+		newAnswers[index] = newVal;
+		setAnswers(newAnswers);
+	}
+
 	if (notFound || !id) return <NotFound />
 
 	function openModal() {
@@ -46,16 +51,11 @@ const ProgramsDetails = (props: AccountChildProps) => {
 	function closeModal() {
 		setIsOpen(false);
 	}
-	console.log(programData.program);
-	let filledSurvey = false;
-	if (!programData.program.linked_survey_id) filledSurvey = true;
-	else if (looseIncludes(props.accountData.account.surveys, programData.program.linked_survey_id)) filledSurvey = true;
-	console.log(filledSurvey);
 	const signedUp = props.accountData.account.programs.includes(parseInt(programData.program.id));
 	const trySignUp = async () => {
 		setCanSubmit(false);
 		if (!signedUp) {
-			let {success, errors} = await addProgramtoUser(cookies.get("userId"), programData.program.id)
+			let {success, errors} = await submitProgram(programData.program.id, programData.program.questions, answers)
 			if (success) {
 				openModal();
 				setText("Signed Up ✓");
@@ -99,6 +99,12 @@ const ProgramsDetails = (props: AccountChildProps) => {
 		setUserInfoParsed(true);
 	}
 
+	if (answers.length !== programData.program.questions.length) {
+		const newAnswers = [];
+		for (let i = 0; i<programData.program.questions.length; i++) newAnswers.push("");
+		setAnswers(newAnswers);
+	}
+
 	let userInfoComponents:{
 		religions: JSX.Element[]
 		genders: JSX.Element[]
@@ -127,6 +133,13 @@ const ProgramsDetails = (props: AccountChildProps) => {
 	userInfoLists.genders.forEach((value, key) => {
 		userInfoComponents.genders.push(<p>{key}: {value}</p>)
 	})
+
+	const complete = answers.every((answer, i) => (answer!=="")||programData.program.questions[i].optional);
+	console.log(complete);
+	console.log(answers);
+	console.log(programData.program.questions)
+
+	const owner = (orgId===programData.program.org.toString());
 
 	return (
 		<>
@@ -188,14 +201,10 @@ const ProgramsDetails = (props: AccountChildProps) => {
 								</>
 							)}
 							{props.org?null:(<div className="DesktopPanelNoBorder">
-								{
-									!filledSurvey&&(
-										<div>
-											<h6>You have to fill out this survey first: <Link to={`/survey/${programData.program.linked_survey_id}/user`}>Survey</Link></h6>
-										</div>
-									)
-								}
-								<p className={filledSurvey?bottomButtonClass:"disabledButton"} onClick={canSubmit&&filledSurvey?trySignUp:undefined}>{buttonText}</p>
+								{programData.program.questions.map((question, i) => {
+									return <SurveyQuestion owner={owner} key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
+								})}
+								<p className={complete?bottomButtonClass:"disabledButton"} onClick={canSubmit&&complete?trySignUp:undefined}>{buttonText}</p>
 							</div>)}
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>

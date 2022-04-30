@@ -1,5 +1,6 @@
 import React from 'react';
 import "./ProgramDetails.css";
+import {Question} from "../../data/types/surveys";
 
 interface ProgramData {
 	name: string;
@@ -11,7 +12,7 @@ interface ProgramData {
 	max_age: string;
 	start_time: string;
 	end_time: string;
-	linked_survey_id: string;
+	questions: Question[];
 	category: string;
 	signed_up: boolean;
 	description: string;

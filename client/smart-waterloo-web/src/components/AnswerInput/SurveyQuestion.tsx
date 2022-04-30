@@ -1,7 +1,7 @@
 import "./SurveyQuestion.css";
-import {Question} from "../../../data/types/surveys"
+import {Question} from "../../data/types/surveys"
 import {ChangeEvent, useState} from "react";
-import { getAnswersData } from "../../../data/getData";
+import { getAnswersData } from "../../data/getData";
 interface SurveyQuestionProps extends Question {
 	index: number;
 	setParentAnswer: (arg0: number, arg1: string) => void;

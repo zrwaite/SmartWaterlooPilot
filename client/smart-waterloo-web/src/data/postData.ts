@@ -23,7 +23,7 @@ import {
 import { postOrgReturn, postOrgType } from "./types/orgs";
 import { postProgramReturn, postProgramType } from "./types/programs";
 import { postUserType } from "./types/account";
-import { addSurveytoUser } from "./addData";
+import {addProgramtoUser, addSurveytoUser} from "./addData";
 import cookies from "../modules/cookies";
 
 declare var window: any;
@@ -213,6 +213,18 @@ const web3PostSurvey = async (id: string, inputData: postSurveyType): Promise<po
   }
 };
 
+const submitProgram = async (programId: string, questions: Question[], answers: string[]):Promise<submitSurveyReturn> => {
+  if (questions.length !== answers.length) return {success: false, errors: ["invalid answers"]};
+  questions.forEach((question, i) => {
+    if (question.choices?.length && !question.choices.includes(answers[i])) return {success: false, errors: ["invalid answer "+answers[i]]};
+  });
+  let questionIds = questions.map((question) => question.id)
+  let postAnswersErrors = await postAnswers(questionIds, answers)
+  if (postAnswersErrors.length) return {success: false, errors: postAnswersErrors};
+  let {success, errors} = await addProgramtoUser(cookies.get("userId"), programId)
+  return {success: success, errors: errors};
+}
+
 const submitSurvey = async (surveyId: string, questions: Question[], answers: string[]):Promise<submitSurveyReturn> => {
 	if (questions.length !== answers.length) return {success: false, errors: ["invalid answers"]};
 	questions.forEach((question, i) => {
@@ -248,4 +260,4 @@ const web3submitSurvey = async (
   return ["function not implemented"];
 };
 
-export { submitSurvey, postSurvey, postUser, postProgram, postOrg };
+export { submitProgram, submitSurvey, postSurvey, postUser, postProgram, postOrg };
