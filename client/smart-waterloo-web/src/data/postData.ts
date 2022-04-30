@@ -27,10 +27,11 @@ import { addSurveytoUser } from "./addData";
 import cookies from "../modules/cookies";
 
 declare var window: any;
-const web3 = new Web3(Web3.givenProvider);
-window.ethereum.enable();
+let web3 = USE_WEB3?(new Web3(Web3.givenProvider)):null;
+if (USE_WEB3) window.ethereum.enable();
 
 const getUserAddress = async (): Promise<string> => {
+  if (!web3) return "";
   try {
     const accounts = await web3.eth.getAccounts();
     web3.eth.defaultAccount = accounts[0];
@@ -48,7 +49,8 @@ const postOrg = async (inputData: postOrgType): Promise<postOrgReturn> => {
 };
 
 //Web3 Implementation of Organisation Creation
-const postOrgWeb3 = async (inputData: postOrgType) => {
+const postOrgWeb3 = async (inputData: postOrgType): Promise<postOrgReturn> => {
+  if (!USE_WEB3 || !web3 || !userContract || !orgContract) return {success: false, orgId:"", errors: ["web3 method called in web2 mode"]};
   web3.eth.defaultAccount = await getUserAddress();
   try {
     console.log(web3.eth.defaultAccount);
@@ -90,6 +92,7 @@ const postUser = async (inputData: postUserType): Promise<string[]> => {
 
 //Web3 SmartUser initial data post
 const postUserWeb3 = async (inputData: postUserType): Promise<string[]> => {
+  if (!USE_WEB3 || !web3 || !userContract) return ["web3 method called in web2 mode"];
   try {
     web3.eth.defaultAccount = await getUserAddress();
     console.log(web3.eth.defaultAccount);
@@ -135,7 +138,8 @@ const postProgram = async (
     : await postProgramWeb2(id, inputData, linkedSurvey);
 };
 
-const postEventWeb3 = async (id: string, inputData: postProgramType, linkedSurvey: string) => {
+const postEventWeb3 = async (id: string, inputData: postProgramType, linkedSurvey: string): Promise<postProgramReturn> => {
+  if (!USE_WEB3 || !web3 || !userContract || !eventContract) return {success: false, errors: ["web3 method called in web2 mode"], programId: ""};
   web3.eth.defaultAccount = await getUserAddress();
   try {
     console.log(web3.eth.defaultAccount);
@@ -177,7 +181,8 @@ const postSurvey = async (
 };
 
 //web3 implementation of creating a survey
-const web3PostSurvey = async (id: string, inputData: postSurveyType) => {
+const web3PostSurvey = async (id: string, inputData: postSurveyType): Promise<postSurveyReturn> => {
+  if (!USE_WEB3 || !web3 || !userContract || !surveyContract) return {success: false, errors: ["web3 method called in web2 mode"], surveyId: ""};
   web3.eth.defaultAccount = await getUserAddress();
   try {
     console.log(web3.eth.defaultAccount);

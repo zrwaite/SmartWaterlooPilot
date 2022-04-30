@@ -24,14 +24,10 @@ const isSignedIn = (): boolean => {
   return web2IsSignedIn();
 };
 const metaMaskInstalled = ():boolean => {
-    if (typeof window.ethereum !== 'undefined') {
-      return true;
-    } 
-    else {
-      return false;
-    }
+    return typeof window.ethereum !== 'undefined';
 };
 const hasWeb3Account = async (): Promise<boolean> => {
+  if (!USE_WEB3 || !userContract) return false;
   const accounts = await web3.eth.getAccounts();
   web3.eth.defaultAccount = accounts[0];
   console.log(web3.eth.defaultAccount);
@@ -39,11 +35,7 @@ const hasWeb3Account = async (): Promise<boolean> => {
     .getInfo(web3.eth.defaultAccount)
     .call();
   console.log(userData);
-  if (parseInt(userData[0]) >= 0) {
-    return true;
-  } else {
-    return false;
-  }
+  return (parseInt(userData[0]) >= 0)
 };
 
 

@@ -23,6 +23,7 @@ import {
   web2GetQuestionsAndAnswers,
 } from "./web2/web2GetData";
 import { defaultOrg } from "./types/orgs";
+import survey from "../pages/Survey";
 
 const getUserAddress = async (): Promise<string> => {
   try {
@@ -57,6 +58,7 @@ const web3GetQuestionsAndAnswers = async (): Promise<{
   questions: string[];
   errors: string[];
 }> => {
+  if (!USE_WEB3 || !responseContract || !surveyContract) return {success: false, answers: [], questions: [], errors: ["method called in web2 mode"]}
   const loggedAddress = await getUserAddress();
   const surveyResponses = await responseContract.methods
     .getSurveyResponsesByUser(loggedAddress)
@@ -92,6 +94,7 @@ const web3GetUserData = async (): Promise<{
   userData: typeof defaultAccount | {};
   errors: string[];
 }> => {
+  if (!USE_WEB3 || !userContract || !eventContract) return {success: false, userData: {}, errors: ["web3 method called in web2 mode"]}
   const loggedAddress = await getUserAddress();
   console.log(loggedAddress);
   let userData = await userContract.methods
@@ -152,6 +155,8 @@ const web3GetSurveysData = async (): Promise<{
   surveys: typeof defaultSurvey[];
   errors: string[];
 }> => {
+  if (!USE_WEB3 || !userContract || !surveyContract || !orgContract) return {success: false, surveys: [], errors: ["web3 method called in web2 mode"]}
+
   let surveys: typeof defaultSurvey[] = [];
   let survey: typeof defaultSurvey;
   let numberSurveys = await surveyContract.methods.getNumberofSurveys().call();
@@ -215,6 +220,8 @@ const web3GetProgramsData = async (): Promise<{
   events: typeof defaultProgram[];
   errors: string[];
 }> => {
+  if (!USE_WEB3 || !eventContract || !orgContract) return {success: false, events: [], errors: ["web3 method called in web2 mode"]}
+
   const allEvents = await eventContract.methods.getNumberOfEvents().call();
   console.log(allEvents);
   if (allEvents.length === 0) {
@@ -274,6 +281,7 @@ const web3GetOrgSurveysData = async (
   surveys: typeof defaultSurvey[];
   errors: string[];
 }> => {
+  if (!USE_WEB3 || !userContract || !surveyContract || !orgContract) return {success: false, surveys: [], errors: ["web3 method called in web2 mode"]};
   let surveys: typeof defaultSurvey[] = [];
   let survey: typeof defaultSurvey;
   let numberSurveys = await surveyContract.methods
@@ -347,6 +355,7 @@ const web3GetOrgProgramsData = async (
   events: typeof defaultProgram[];
   errors: string[];
 }> => {
+  if (!USE_WEB3 || !eventContract || !orgContract) return {success: false, events: [], errors: ["web3 method called in web2 mode"]};
   const loggedAddress = await getUserAddress();
   web3.eth.defaultAccount = loggedAddress;
   const orgDetails = await orgContract.methods
@@ -406,6 +415,8 @@ const web3GetUserOrgs = async (
   orgs: typeof defaultOrg[];
   errors: string[];
 }> => {
+  if (!USE_WEB3 || !userContract || !orgContract) return {success: false, orgs: [], errors: ["web3 method called in web2 mode"]};
+
   const loggedAddress = await getUserAddress();
   web3.eth.defaultAccount = loggedAddress;
   const userOrg = await orgContract.methods
@@ -467,6 +478,7 @@ const web3GetBasicOrgData = async (
   org: typeof defaultOrg | {};
   errors: string[];
 }> => {
+  if (!USE_WEB3 || !userContract || !orgContract) return {success: false, org: {}, errors: ["web3 method called in web2 mode"]};
   const loggedAddress = await getUserAddress();
   web3.eth.defaultAccount = loggedAddress;
   const org = await orgContract.methods

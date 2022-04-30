@@ -11,9 +11,6 @@ import Password from "./Password";
 import StepBubbles from "../../components/StepBubbles";
 import cookies from "../../modules/cookies";
 import { ActionMeta } from "react-select";
-
-// import orgABI from "./utils/SmartOrganisation.json"
-// import { ethers } from "ethers";
 import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
 import { postUser } from "../../data/postData";
@@ -73,7 +70,6 @@ const defaultSignUpState = {
 
 const SignUp = () => {
 	const { id: qrId } = useContext(IdContext);
-	// const { address, setAddress } = useContext(AddressContext);
 	const [state, setState] = useState(defaultSignUpState);
 	const navigate = useNavigate();
 	cookies.set("back", "/signup");

@@ -64,6 +64,7 @@ const Login = () => {
 	}
 
 	const connectWallet = async () => {
+		if (!USE_WEB3 || !userContract) return console.error("Web3 method called in web2 mode");
 		try {
 			if (!window.ethereum) {
 				console.log("No metamask account found!");

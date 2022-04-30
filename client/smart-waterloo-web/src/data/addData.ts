@@ -32,6 +32,7 @@ const verifyOrg = async (business_number: string, password:string):Promise<succe
 }
 
 const web3VerifyOrg = async (business_number: string, password:string):Promise<successErrorsReturn> => {
+	if (!USE_WEB3 || !orgContract) return {success: false, errors: ['called in web2 mode']}
 	const userAddress = await getUserAddress();
 	if(password == "0x709bF6355a8dEE0020dBA161C1c39220a55019b1"){
 		const verified = await orgContract.methods.addVerifiedBusiness(business_number).send({from: userAddress});
@@ -43,6 +44,7 @@ const web3VerifyOrg = async (business_number: string, password:string):Promise<s
 }
 
 const web3AddProgramtoUser = async (userId: string, eventId: string):Promise<successErrorsReturn> => {
+	if (!USE_WEB3 || !eventContract) return {success: false, errors: ["method called in web2 modes"]}
 	const userAddress = await getUserAddress();
 	const addUser = await eventContract.methods.addNewAttendee(userAddress, eventId).send({from: userAddress});
 	return {success: addUser, errors: []};
