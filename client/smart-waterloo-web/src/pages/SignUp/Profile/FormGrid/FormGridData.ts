@@ -117,22 +117,25 @@ const contactOptions = [
 ]
 type ProfileFormGridState = {
 	birth_day: string,
-	gender: string,
 	height: string,
 	weight: string,
 	grade: string,
 	postalCode: string,
-	race: string,
-	religion: string,
-	sexuality: string,
-	household_income: string,
 	primary_language: string,
 	secondary_language: string,
 	city: string,
-	heard: string,
-	household_composition:string,
-	contact: string,
 	code_of_conduct: boolean,
 }
+type ProfileFormGridSelectState = {
+	race: {select: string, text: string},
+	religion: {select: string, text: string},
+	sexuality: {select: string, text: string},
+	household_income: {select: string, text: string},
+	heard: {select: string, text: string},
+	household_composition:{select: string, text: string},
+	contact: {select: string, text: string},
+	gender: {select: string, text: string},
+
+}
 export {contactOptions, heardOptions, genderOptions, religionOptions, sexualityOptions, raceOptions, incomeOptions, householdCompositionOptions}
-export type {ProfileFormGridState}
+export type {ProfileFormGridState, ProfileFormGridSelectState}

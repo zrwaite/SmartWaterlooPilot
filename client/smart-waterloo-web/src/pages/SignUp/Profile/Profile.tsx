@@ -1,6 +1,6 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 import {ActionMeta} from "react-select";
-import {ProfileFormGridState} from "./FormGrid/FormGridData";
+import {ProfileFormGridSelectState, ProfileFormGridState} from "./FormGrid/FormGridData";
 import ProfileFormGrid from "./FormGrid"
 import "./Profile.css";
 
@@ -10,7 +10,9 @@ type ProfileProps = {
 	handleParentInputChange: (event: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLSelectElement>) => void,
 	handleParentSelectChange:  (newValue: null|{ value: string; label: string; }, actionMeta: ActionMeta<{value: string,label: string}>) => void,
 	handleParentCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
-	formData: ProfileFormGridState
+	handleParentSelectTextChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void,
+	formData: ProfileFormGridState,
+	selectFormData: ProfileFormGridSelectState
 };
 type ProfileState = { };
 class Profile extends React.Component<ProfileProps, ProfileState> {

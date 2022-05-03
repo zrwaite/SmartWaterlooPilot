@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {ChangeEvent, useContext, useEffect, useState} from "react";
 import Navbar from "../../components/Navbar";
 import { MobileContext, IdContext } from "../../App";
 import "./SignUp.css";
@@ -15,26 +15,30 @@ import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
 import { postUser } from "../../data/postData";
 import {USE_WEB3} from "../../data/dataConstants";
+import {ProfileFormGridSelectState} from "./Profile/FormGrid/FormGridData";
 
 
 const defaultAvatarString = randomString();
 const defaultProfileProps = {
 	birth_day: "",
-	gender: "",
 	height: "",
 	weight: "",
 	grade: "",
 	postalCode: "",
-	race: "",
-	religion: "",
-	sexuality: "",
-	household_income: "",
-	household_composition: "",
 	primary_language: "",
 	secondary_language: "",
-	contact: "",
 	city: "",
-	heard: "",
+}
+const defaultSelectInputs:ProfileFormGridSelectState = {
+	religion: {select: "", text: ""},
+	sexuality: {select: "", text: ""},
+	household_income: {select: "", text: ""},
+	race: {select: "", text: ""},
+	household_composition:{select: "", text: ""},
+	contact:{select: "", text: ""},
+	gender: {select: "", text: ""},
+	heard: {select: "", text: ""},
+
 }
 const defaultPasswordProps = {
 	password: "",
@@ -55,6 +59,9 @@ const booleanFormInputs = {
 }
 const defaultSignUpState = {
 	step: 0,
+	selectInputs: {
+		...defaultSelectInputs,
+	},
 	formInputs: {
 		...defaultProfileProps,
 		...defaultNicknameProps,
@@ -97,11 +104,19 @@ const SignUp = () => {
 		setState({ ...state, formInputs: partialInput });
 	}
 	const handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
-		let inputKeys: keyof typeof state.formInputs;
+		let inputKeys: keyof typeof state.selectInputs;
 		const name = actionMeta.name as typeof inputKeys;
-		let partialInput = { ...state.formInputs };
-		partialInput[name] = newValue?.value || "";
-		setState({ ...state, formInputs: partialInput });
+		let partialInput = { ...state.selectInputs };
+		if (newValue?.value==="Other") partialInput[name] = {"select": "Other", "text":newValue?.value || ""};
+		else partialInput[name] = {"select": newValue?.value || "", "text":""};
+		setState({ ...state, selectInputs: partialInput });
+	}
+	const handleParentSelectTextChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
+		let inputKeys: keyof typeof state.selectInputs;
+		const name = event.target.name as typeof inputKeys;
+		let partialInput = { ...state.selectInputs };
+		partialInput[name] = {"select": "Other", "text":event.target.value};
+		setState({ ...state, selectInputs: partialInput });
 	}
 	const getProfileProps = () => {
 		let profileProps = {
@@ -114,6 +129,12 @@ const SignUp = () => {
 		profileBooleanPropKeys.forEach(key => profileProps[key] = state.booleanFormInputs[key]);
 		return profileProps;
 	}
+	// const getSelectProfileProps = () => {
+	// 	return {
+	// 		...defaultSelectInputs
+	// 	}
+	// 	// return selectProfileProps;
+	// }
 	const getNicknameProps = () => {
 		let nicknameProps = defaultNicknameProps;
 		let nicknamePropKeys = Object.keys(defaultNicknameProps) as [keyof typeof defaultNicknameProps];
@@ -132,8 +153,26 @@ const SignUp = () => {
 		avatarPropKeys.forEach(key => avatarProps[key] = state.formInputs[key]);
 		return avatarProps;
 	}
+	const getSelectInputs = () => {
+		let newSelectInputs = {
+			gender: "",
+			religion: "",
+			sexuality: "",
+			household_income: "",
+			race: "",
+			household_composition:"",
+			contact: "",
+			heard: ""
+		}
+		let selectInputKeys = Object.keys(newSelectInputs) as [keyof typeof newSelectInputs];
+		selectInputKeys.forEach(key => {
+			let value = state.selectInputs[key];
+			newSelectInputs[key] = (value.select==="Other"?value.text:value.select);
+		})
+		return newSelectInputs;
+	}
 	const submitForm = async () => {
-		let errors = await postUser({...state.formInputs, ...state.booleanFormInputs, qrId: qrId});
+		let errors = await postUser({...state.formInputs, ...state.booleanFormInputs, ...getSelectInputs(), qrId: qrId});
 		if (errors.length) {
 			console.log(errors);
 		} else {
@@ -150,6 +189,7 @@ const SignUp = () => {
 		handleParentInputChange: handleInputChange,
 		handleParentSelectChange: handleSelectChange,
 		handleParentCheckboxChange: handleCheckboxChange,
+		handleParentSelectTextChange: handleParentSelectTextChange,
 	}
 
 	useEffect(() => {
@@ -165,7 +205,7 @@ const SignUp = () => {
 			USE_WEB3?<MetaMask backStep={() => updateStep(0)} nextStep={() => updateStep(2)} />:
 			<Password {...userInputFunctions} backStep={() => updateStep(0)} nextStep={() => updateStep(2)} passwordData={getPasswordProps()}/>
 		); break; case 2: stepSection = (
-			<Profile backStep={() => updateStep(1)} nextStep={() => updateStep(3)} {...userInputFunctions} formData={getProfileProps()} />
+			<Profile backStep={() => updateStep(1)} nextStep={() => updateStep(3)} {...userInputFunctions} formData={getProfileProps()} selectFormData={state.selectInputs} />
 		); break; case 3: stepSection = (
 			<MeetAvatar backStep={() => updateStep(2)} nextStep={() => updateStep(4)} avatarData={getAvatarProps()} updateParentState={childSetState} />
 		); break; case 4: stepSection = (
