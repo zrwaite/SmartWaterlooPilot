@@ -4,7 +4,7 @@ import "./Nickname.css";
 
 type NicknameProps = {
 	backStep: () => void,
-	handleParentInputChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void
+	handleParentInputChange: (event: ChangeEvent<HTMLInputElement> ) => void
 	nicknameData: { nickname: string, avatar_string: string };
 	submit: () => Promise<boolean>;
 	org: boolean;

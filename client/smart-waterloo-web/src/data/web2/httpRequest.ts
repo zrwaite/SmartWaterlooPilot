@@ -1,5 +1,5 @@
 import cookies from "../../modules/cookies"
-const baseURL = "https://theories-moment-lightbox-resume.trycloudflare.com";
+const baseURL = "https://swrdataplayground.ca";
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {
     url = baseURL + url;

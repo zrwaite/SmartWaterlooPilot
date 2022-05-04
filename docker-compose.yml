@@ -1,9 +1,9 @@
-version: '2.0'
+version: '2.2'
 services: 
   server: 
     env_file: "./web2backend/.env"
     build: ./
-    image: "zrwaite/smartwaterloo:2.0"
+    image: "zrwaite/smartwaterloo:2.2"
     ports: 
-      - "8006:8006"
+      - "8080:8080"
     

@@ -15,7 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { randomString } from "../../modules/randomData";
 import { postUser } from "../../data/postData";
 import {USE_WEB3} from "../../data/dataConstants";
-import {ProfileFormGridSelectState} from "./Profile/FormGrid/FormGridData";
+import {ProfileFormGridSelectState} from "./Profile/FormGridData";
+import {handleCheckboxChange, handleInputChange, handleSelectTextChange, handleSelectChange} from "../../modules/handleInput";
 
 
 const defaultAvatarString = randomString();
@@ -54,7 +55,7 @@ const defaultVerifiedProps = {
 const defaultAvatarProps = {
 	avatar_string: defaultAvatarString
 }
-const booleanFormInputs = {
+const booleanInputs = {
 	code_of_conduct: false,
 }
 const defaultSignUpState = {
@@ -69,8 +70,8 @@ const defaultSignUpState = {
 		...defaultVerifiedProps,
 		...defaultPasswordProps
 	},
-	booleanFormInputs: {
-		...booleanFormInputs
+	booleanInputs: {
+		...booleanInputs
 	}
 }
 
@@ -89,52 +90,19 @@ const SignUp = () => {
 		partialInputs[key] = value;
 		setState({ ...state, formInputs: partialInputs });
 	}
-	const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		let inputKeys: keyof typeof state.booleanFormInputs;
-		const name = event.target.name as typeof inputKeys;
-		let partialInput = { ...state.booleanFormInputs };
-		partialInput[name] = event.target.checked;
-		setState({ ...state, booleanFormInputs: partialInput });
-	}
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-		let inputKeys: keyof typeof state.formInputs;
-		const name = event.target.name as typeof inputKeys;
-		let partialInput = { ...state.formInputs };
-		partialInput[name] = event.target.value;
-		setState({ ...state, formInputs: partialInput });
-	}
-	const handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
-		let inputKeys: keyof typeof state.selectInputs;
-		const name = actionMeta.name as typeof inputKeys;
-		let partialInput = { ...state.selectInputs };
-		if (newValue?.value==="Other") partialInput[name] = {"select": "Other", "text":newValue?.value || ""};
-		else partialInput[name] = {"select": newValue?.value || "", "text":""};
-		setState({ ...state, selectInputs: partialInput });
-	}
-	const handleParentSelectTextChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => {
-		let inputKeys: keyof typeof state.selectInputs;
-		const name = event.target.name as typeof inputKeys;
-		let partialInput = { ...state.selectInputs };
-		partialInput[name] = {"select": "Other", "text":event.target.value};
-		setState({ ...state, selectInputs: partialInput });
-	}
+	
 	const getProfileProps = () => {
 		let profileProps = {
 			...defaultProfileProps,
-			...booleanFormInputs
+			...booleanInputs
 		};
 		let profilePropKeys = Object.keys(defaultProfileProps) as [keyof typeof defaultProfileProps];
 		profilePropKeys.forEach(key => profileProps[key] = state.formInputs[key]);
-		let profileBooleanPropKeys = Object.keys(booleanFormInputs) as [keyof typeof booleanFormInputs];
-		profileBooleanPropKeys.forEach(key => profileProps[key] = state.booleanFormInputs[key]);
+		let profileBooleanPropKeys = Object.keys(booleanInputs) as [keyof typeof booleanInputs];
+		profileBooleanPropKeys.forEach(key => profileProps[key] = state.booleanInputs[key]);
 		return profileProps;
 	}
-	// const getSelectProfileProps = () => {
-	// 	return {
-	// 		...defaultSelectInputs
-	// 	}
-	// 	// return selectProfileProps;
-	// }
+
 	const getNicknameProps = () => {
 		let nicknameProps = defaultNicknameProps;
 		let nicknamePropKeys = Object.keys(defaultNicknameProps) as [keyof typeof defaultNicknameProps];
@@ -172,7 +140,7 @@ const SignUp = () => {
 		return newSelectInputs;
 	}
 	const submitForm = async () => {
-		let errors = await postUser({...state.formInputs, ...state.booleanFormInputs, ...getSelectInputs(), qrId: qrId});
+		let errors = await postUser({...state.formInputs, ...state.booleanInputs, ...getSelectInputs(), qrId: qrId});
 		if (errors.length) {
 			console.log(errors);
 		} else {
@@ -186,10 +154,10 @@ const SignUp = () => {
 	let stepSection: any;
 
 	const userInputFunctions = {
-		handleParentInputChange: handleInputChange,
-		handleParentSelectChange: handleSelectChange,
-		handleParentCheckboxChange: handleCheckboxChange,
-		handleParentSelectTextChange: handleParentSelectTextChange,
+		handleParentInputChange:  (e: React.ChangeEvent<HTMLInputElement>) => handleInputChange(e, state, setState),
+		handleParentSelectTextChange: (e: ChangeEvent<HTMLInputElement>) => handleSelectTextChange(e, state, setState),
+		handleParentSelectChange: (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => handleSelectChange(newValue, actionMeta, state, setState),
+		handleParentCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => handleCheckboxChange(e, state, setState),
 	}
 
 	useEffect(() => {

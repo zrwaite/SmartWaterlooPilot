@@ -4,7 +4,7 @@ import {ChangeEvent} from "react";
 
 //Todo change buttons to links
 type PasswordProps = {
-	handleParentInputChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void
+	handleParentInputChange: (event: ChangeEvent<HTMLInputElement>) => void
 	backStep: () => void,
 	nextStep: () => void,
 	passwordData: { password: string, password2: string };
