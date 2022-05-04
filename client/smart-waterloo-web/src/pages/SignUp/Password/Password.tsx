@@ -16,6 +16,7 @@ function Password(props:PasswordProps) {
 			<div className={"passwordContainer"}>
 				<h4>Set up your Password 🔐</h4>
 				<p>Do not share your password with anyone</p>
+				<p>Please don't lose your password, or you will not be able to access/re-create a new account.</p>
 				<div className="passwordFormInput">
 					<p>Password</p>
 					<input value={props.passwordData.password} type="password" className="passwordInput" id="passwordInput" name="password" placeholder="Password" onChange={props.handleParentInputChange}/>

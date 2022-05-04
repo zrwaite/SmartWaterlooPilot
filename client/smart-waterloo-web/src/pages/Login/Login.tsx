@@ -128,7 +128,6 @@ return (
 						<div className="passwordInput">
 							<h4>Password</h4>
 							<input name="password" id="passwordInput" placeholder="Password" type={"password"} value={state.inputs.password} onChange={handleInputChange} />
-							<Link to={"/forgotpassword"}>Forgot your password?</Link>
 							<button onClick={() => tryLogin(id, state.inputs.password)} className="blackButton loginButton">Login</button>
 						</div>
 					</>)
