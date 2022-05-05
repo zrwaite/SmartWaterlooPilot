@@ -47,7 +47,7 @@ const ProgramsDetails = (props: AccountChildProps) => {
 
 	function openModal() {
 		setIsOpen(true);
-	  }
+	}
 
 	function closeModal() {
 		setIsOpen(false);
@@ -94,11 +94,14 @@ const ProgramsDetails = (props: AccountChildProps) => {
 	}
 
 	if (!programData.set) {
-		const newProgramData = props.programsData.programs.find(program => program.id == id)
-		if (newProgramData) setProgramData({program: newProgramData, set: true})
+		if (props.programsData.set){
+			const newProgramData = props.programsData.programs.find(program => program.id == id)
+			if (newProgramData) setProgramData({program: newProgramData, set: true})
+			else setNotFound(true);
+		}
 	} else if (!userInfoParsed) {
 		parseUserInfoLists();
-		setUserInfoParsed(true);
+		setUserInfoParsed(true);	
 	}
 
 	if (answers.length !== programData.program.questions.length) {
@@ -137,9 +140,6 @@ const ProgramsDetails = (props: AccountChildProps) => {
 	})
 
 	const complete = answers.every((answer, i) => (answer!=="")||programData.program.questions[i].optional);
-	console.log(complete);
-	console.log(answers);
-	console.log(programData.program.questions)
 
 	const owner = (orgId===programData.program.org.toString());
 

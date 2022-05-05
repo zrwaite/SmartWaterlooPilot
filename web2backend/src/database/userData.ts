@@ -21,7 +21,8 @@ const nullableUserInfo = {
 	primary_language: "",
 	secondary_language: "",
 	heard: "",
-	contact: ""
+	contact: "",
+	contact_info: ""
 }
 const postUserInfo = {
 	...baseUserInfo,

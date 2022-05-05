@@ -113,9 +113,11 @@ const Survey = (props: AccountChildProps) => {
 	})
 
 	if (!surveyData.set) {
-		const newSurveyData = props.surveysData.surveys.find(survey => survey.id == id)
-		if (newSurveyData) setSurveyData({survey: newSurveyData, set: true});
-		// else setNotFound(true);
+		if (props.surveysData.set) {
+			const newSurveyData = props.surveysData.surveys.find(survey => survey.id == id)
+			if (newSurveyData) setSurveyData({survey: newSurveyData, set: true});
+			else setNotFound(true);
+		}
 	} else if (!userInfoParsed){
 		parseUserInfoLists();
 		setUserInfoParsed(true);

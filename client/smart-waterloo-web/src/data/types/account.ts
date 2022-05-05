@@ -92,6 +92,7 @@ interface postUserType {
 	heard: string,
 	contact: string,
 	city: string,
+	contact_info: string
 }
 export {getDefaultUserInfoLists, defaultAccountState, defaultAccount}
 export type {postUserType, userInfo}

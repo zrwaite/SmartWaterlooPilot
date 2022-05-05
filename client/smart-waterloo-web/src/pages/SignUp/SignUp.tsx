@@ -29,6 +29,7 @@ const defaultProfileProps = {
 	primary_language: "",
 	secondary_language: "",
 	city: "",
+	contact_info: ""
 }
 const defaultSelectInputs:ProfileFormGridSelectState = {
 	religion: {select: "", text: ""},
@@ -39,7 +40,6 @@ const defaultSelectInputs:ProfileFormGridSelectState = {
 	contact:{select: "", text: ""},
 	gender: {select: "", text: ""},
 	heard: {select: "", text: ""},
-
 }
 const defaultPasswordProps = {
 	password: "",

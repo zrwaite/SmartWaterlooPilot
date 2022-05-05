@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS "user_info"(
 	secondary_language varchar(100),
 	city varchar(100),
 	heard text,
-	contact varchar(100)
+	contact varchar(100),
+	contact_info text
 );
 
 CREATE TABLE IF NOT EXISTS "users"(

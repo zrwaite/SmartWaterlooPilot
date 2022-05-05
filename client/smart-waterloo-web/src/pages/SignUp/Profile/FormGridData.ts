@@ -125,6 +125,7 @@ type ProfileFormGridState = {
 	secondary_language: string,
 	city: string,
 	code_of_conduct: boolean,
+	contact_info: string
 }
 type ProfileFormGridSelectState = {
 	race: {select: string, text: string},

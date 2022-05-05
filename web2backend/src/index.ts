@@ -13,7 +13,12 @@ const initializeDB = async () => {
 	console.log(await pool.query(initializeSQL));
 }
 
+const deleteData = async () => {
+	console.log(await pool.query("DELETE FROM users WHERE user_id=023"));
+}
+
 app.listen(port, () => {
 	// initializeDB();
+	// deleteData();
 	console.log(`listening on port ${port}`);
 });

@@ -133,6 +133,12 @@ const Profile = (props: ProfileProps) => {
 						<SelectOther options={contactOptions} data={props.selectFormData.contact} name={"contact"} handleParentSelectChange={props.handleParentSelectChange} handleParentSelectTextChange={props.handleParentSelectTextChange}/>
 					</div>
 					<div className="formDiv">
+						{props.selectFormData.contact.select!==""&&(<>
+							<p>Enter your contact information for the above: <span style={redText}>*</span></p>
+							<input name="contact_info"  type={"text"} value={props.formData.contact_info} onChange={props.handleParentInputChange} />
+						</>)}
+					</div>
+					<div className="formDiv">
 						<p>Please Read the <Link to={"/codeofconduct"}>Code of Conduct</Link></p>
 						<div className={"horizontal"}>
 							<p>I have read and agree with the Code of Conduct<span style={redText}>*</span></p>

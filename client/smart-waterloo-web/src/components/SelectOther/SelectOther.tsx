@@ -12,7 +12,7 @@ interface SelectOtherProps {
 const SelectOther = (props: SelectOtherProps) => {
 	return (<>
 		<Select className={"selectComponent"} defaultInputValue={props.data.select} name={props.name} onChange={props.handleParentSelectChange} options={props.options} />
-		{props.data.select==="Other"&&<input name={props.name} value={props.data.text} onChange={props.handleParentSelectTextChange} />}
+		{props.data.select==="Other"&&<input name={props.name} placeholder={"Enter new value"} value={props.data.text} onChange={props.handleParentSelectTextChange} />}
 	</>);
 }
 
