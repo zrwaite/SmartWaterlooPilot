@@ -4,7 +4,7 @@ import {ChangeEvent} from "react";
 type VerifiedProps = {
 	backStep: () => void,
 	nextStep: () => void,
-	handleParentInputChange: (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>) => void
+	handleParentInputChange: (event: ChangeEvent<HTMLInputElement>) => void
 	verifiedData: { businessNumber: string }
 };
 function Verified(props: VerifiedProps) {

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import Navbar from "../../components/Navbar";
 import { MobileContext } from "../../App";
 import "./CreateOrg.css";
@@ -11,6 +11,7 @@ import { ActionMeta } from "react-select";
 import { randomString } from "../../modules/randomData";
 import { postOrg } from "../../data/postData";
 import { forceNavigate } from "../../modules/navigate";
+import {handleInputChange} from "../../modules/handleInput";
 
 const defaultAvatarString = randomString();
 const defaultNicknameProps = {
@@ -25,7 +26,7 @@ const defaultAvatarProps = {
 }
 const defaultSignUpState = {
 	step: 0,
-	formInputs: {
+	inputs: {
 		...defaultNicknameProps,
 		...defaultAvatarProps,
 		...defaultVerifiedProps
@@ -38,45 +39,45 @@ const CreateOrg = () => {
 	const updateStep = (step: number) => {
 		setState({ ...state, step: step });
 	}
-	const childSetState = (key: keyof typeof defaultSignUpState.formInputs, value: string) => {
-		let partialInputs = { ...state.formInputs };
+	const childSetState = (key: keyof typeof defaultSignUpState.inputs, value: string) => {
+		let partialInputs = { ...state.inputs };
 		partialInputs[key] = value;
-		setState({ ...state, formInputs: partialInputs });
+		setState({ ...state, inputs: partialInputs });
 	}
-	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
-		let inputKeys: keyof typeof state.formInputs;
-		const name = event.target.name as typeof inputKeys;
-		let partialInput = { ...state.formInputs };
-		partialInput[name] = event.target.value;
-		setState({ ...state, formInputs: partialInput });
-	}
-	const handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
-		let inputKeys: keyof typeof state.formInputs;
-		const name = actionMeta.name as typeof inputKeys;
-		let partialInput = { ...state.formInputs };
-		partialInput[name] = newValue?.value || "";
-		setState({ ...state, formInputs: partialInput });
-	}
+	// const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) => {
+	// 	let inputKeys: keyof typeof state.inputs;
+	// 	const name = event.target.name as typeof inputKeys;
+	// 	let partialInput = { ...state.inputs };
+	// 	partialInput[name] = event.target.value;
+	// 	setState({ ...state, inputs: partialInput });
+	// }
+	// const handleSelectChange = (newValue: null | { value: string; label: string; }, actionMeta: ActionMeta<{ value: string, label: string }>) => {
+	// 	let inputKeys: keyof typeof state.inputs;
+	// 	const name = actionMeta.name as typeof inputKeys;
+	// 	let partialInput = { ...state.inputs };
+	// 	partialInput[name] = newValue?.value || "";
+	// 	setState({ ...state, inputs: partialInput });
+	// }
 	const getNicknameProps = () => {
 		let nicknameProps = defaultNicknameProps;
 		let nicknamePropKeys = Object.keys(defaultNicknameProps) as [keyof typeof defaultNicknameProps];
-		nicknamePropKeys.forEach(key => nicknameProps[key] = state.formInputs[key]);
+		nicknamePropKeys.forEach(key => nicknameProps[key] = state.inputs[key]);
 		return nicknameProps;
 	}
 	const getAvatarProps = () => {
 		let avatarProps = defaultAvatarProps;
 		let avatarPropKeys = Object.keys(defaultAvatarProps) as [keyof typeof defaultAvatarProps];
-		avatarPropKeys.forEach(key => avatarProps[key] = state.formInputs[key]);
+		avatarPropKeys.forEach(key => avatarProps[key] = state.inputs[key]);
 		return avatarProps;
 	}
 	const getVerifiedProps = () => {
 		let verifiedProps = defaultVerifiedProps;
 		let avatarPropKeys = Object.keys(defaultVerifiedProps) as [keyof typeof defaultVerifiedProps];
-		avatarPropKeys.forEach(key => verifiedProps[key] = state.formInputs[key]);
+		avatarPropKeys.forEach(key => verifiedProps[key] = state.inputs[key]);
 		return verifiedProps;
 	}
 	const submitForm = async () => {
-		let {success, errors, orgId} = await postOrg({...state.formInputs});
+		let {success, errors, orgId} = await postOrg({...state.inputs});
 		if (success) {
 			setTimeout(() => forceNavigate(`/dashboard/org/${orgId}`),500);
 			return true;
@@ -89,14 +90,13 @@ const CreateOrg = () => {
 	let stepSection: any;
 
 	const userInputFunctions = {
-		handleParentInputChange: handleInputChange,
-		handleParentSelectChange: handleSelectChange,
+		handleParentInputChange: (e: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => handleInputChange(e, state, setState),
 	}
 	switch (state.step) {
 		case 0: stepSection = (
 			<Landing nextStep={() => updateStep(1)} />
 		); break; case 1: stepSection = (
-			<Verified backStep={() => updateStep(0)} nextStep={() => updateStep(2)}{...userInputFunctions} verifiedData={getVerifiedProps()}/>
+			<Verified backStep={() => updateStep(0)} nextStep={() => updateStep(2)} {...userInputFunctions} verifiedData={getVerifiedProps()}/>
 		); break; case 2: stepSection = (
 			<MeetAvatar backStep={() => updateStep(1)} nextStep={() => updateStep(3)} avatarData={getAvatarProps()} updateParentState={childSetState} />
 		); break; case 3: stepSection = (

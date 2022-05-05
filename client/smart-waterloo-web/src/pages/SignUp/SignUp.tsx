@@ -63,7 +63,7 @@ const defaultSignUpState = {
 	selectInputs: {
 		...defaultSelectInputs,
 	},
-	formInputs: {
+	inputs: {
 		...defaultProfileProps,
 		...defaultNicknameProps,
 		...defaultAvatarProps,
@@ -85,10 +85,10 @@ const SignUp = () => {
 	const updateStep = (step: number) => {
 		setState({ ...state, step: step });
 	}
-	const childSetState = (key: keyof typeof defaultSignUpState.formInputs, value: string) => {
-		let partialInputs = { ...state.formInputs };
+	const childSetState = (key: keyof typeof defaultSignUpState.inputs, value: string) => {
+		let partialInputs = { ...state.inputs };
 		partialInputs[key] = value;
-		setState({ ...state, formInputs: partialInputs });
+		setState({ ...state, inputs: partialInputs });
 	}
 	
 	const getProfileProps = () => {
@@ -97,7 +97,7 @@ const SignUp = () => {
 			...booleanInputs
 		};
 		let profilePropKeys = Object.keys(defaultProfileProps) as [keyof typeof defaultProfileProps];
-		profilePropKeys.forEach(key => profileProps[key] = state.formInputs[key]);
+		profilePropKeys.forEach(key => profileProps[key] = state.inputs[key]);
 		let profileBooleanPropKeys = Object.keys(booleanInputs) as [keyof typeof booleanInputs];
 		profileBooleanPropKeys.forEach(key => profileProps[key] = state.booleanInputs[key]);
 		return profileProps;
@@ -106,19 +106,19 @@ const SignUp = () => {
 	const getNicknameProps = () => {
 		let nicknameProps = defaultNicknameProps;
 		let nicknamePropKeys = Object.keys(defaultNicknameProps) as [keyof typeof defaultNicknameProps];
-		nicknamePropKeys.forEach(key => nicknameProps[key] = state.formInputs[key]);
+		nicknamePropKeys.forEach(key => nicknameProps[key] = state.inputs[key]);
 		return nicknameProps;
 	}
 	const getPasswordProps = () => {
 		let passwordProps = defaultPasswordProps;
 		let passwordPropKeys = Object.keys(defaultPasswordProps) as [keyof typeof defaultPasswordProps];
-		passwordPropKeys.forEach(key => passwordProps[key] = state.formInputs[key]);
+		passwordPropKeys.forEach(key => passwordProps[key] = state.inputs[key]);
 		return passwordProps;
 	}
 	const getAvatarProps = () => {
 		let avatarProps = defaultAvatarProps;
 		let avatarPropKeys = Object.keys(defaultAvatarProps) as [keyof typeof defaultAvatarProps];
-		avatarPropKeys.forEach(key => avatarProps[key] = state.formInputs[key]);
+		avatarPropKeys.forEach(key => avatarProps[key] = state.inputs[key]);
 		return avatarProps;
 	}
 	const getSelectInputs = () => {
@@ -140,7 +140,7 @@ const SignUp = () => {
 		return newSelectInputs;
 	}
 	const submitForm = async () => {
-		let errors = await postUser({...state.formInputs, ...state.booleanInputs, ...getSelectInputs(), qrId: qrId});
+		let errors = await postUser({...state.inputs, ...state.booleanInputs, ...getSelectInputs(), qrId: qrId});
 		if (errors.length) {
 			console.log(errors);
 		} else {
