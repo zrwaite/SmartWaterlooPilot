@@ -17,6 +17,7 @@ interface ProgramPanelProps {
 	end_time: string;
 }
 
+//Todo: Change name to organization name
 const ProgramPanel = (props: ProgramPanelProps) => {
 	const activeColour = {
 		backgroundColor: props.upcoming?"#F9EEF3":"#6ec6f933"
