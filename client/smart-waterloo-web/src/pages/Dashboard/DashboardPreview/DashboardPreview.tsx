@@ -3,14 +3,12 @@ import { MobileContext } from "../../../App";
 import arrowIcon from "../../../images/arrow.png";
 import Data from "./DashboardPreviewData";
 import "./DashboardPreviewHeader.css";
-import { defaultProgram } from "../../../data/types/programs";
-import {defaultSurvey} from "../../../data/types/surveys"
 import ProgramPanel from "../../Programs/ProgramPanel"
 import SurveyPanel from "../../Surveys/SurveyPanel"
 import { useNavigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import { defaultAccount } from "../../../data/types/account";
 import DataPanels from "../../MyData/DataPanels/DataPanels";
+import { AccountChildProps } from "../../AccountParent";
 
 interface DashboardPreviewHeaderProps {
 	name: keyof typeof Data;
@@ -31,17 +29,8 @@ const DashboardPreviewHeader = (props:DashboardPreviewHeaderProps) => {
 		</div>
 	)
 }
-
-interface DashboardPreviewProps {
-	name: keyof typeof Data;
-	programs: typeof defaultProgram[];
-	programsSet: boolean;
-	surveys: typeof defaultSurvey[];
-	surveysSet: boolean;
-	account: typeof defaultAccount;
-	org: boolean;
-	orgId: string|undefined;
-	verified: boolean;
+interface DashboardPreviewProps extends AccountChildProps {
+	name: "data"|"programs"|"surveys"
 }
 const DashboardPreview = (props:DashboardPreviewProps) => {
 	const navigate = useNavigate();
@@ -58,8 +47,8 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 	switch (props.name) {
 		case "programs": panelList = (<> 
 			{
-				props.programsSet?
-				props.programs.map((program, i) => {return (
+				props.programsData.set?
+				props.programsData.programs.map((program, i) => {return (
 					i<5?<ProgramPanel isOrg={props.org} orgId={props.orgId} key={i} index={i} {...program}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
@@ -68,13 +57,13 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				<button onClick={() => navigate(`/createprogram/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Program</button>
 			</div>:null}
 		</>
-		); break; case "data": panelList = (<DataPanels {...props.account} orgId={props.orgId} org={props.org} />
+		); break; case "data": panelList = (<DataPanels {...props} />
 		);break; case "surveys": 
 			panelList = (<>
 			{
-				props.surveysSet?
-				props.surveys.map((survey, i) => {
-					const surveyCompleted = props.account.surveys.includes(parseInt(survey.id));
+				props.surveysData.set?
+				props.surveysData.surveys.map((survey, i) => {
+					const surveyCompleted = props.accountData.account.surveys.includes(parseInt(survey.id));
 					return (
 					i<5?<SurveyPanel completed={surveyCompleted} numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} key={i} index={i} {...survey}/>:null
 				);}):

@@ -14,16 +14,6 @@ const Dashboard = (props: AccountChildProps) => {
 	let {mobile} = useContext(MobileContext);
 	const { orgId } = useParams();
 	cookies.set("back", `/dashboard/${props.org?`org/${orgId}`:"user"}`);
-	const dashboardPreviewData = {
-		...props.accountData,
-		...props.programsData,
-		...props.surveysData, 
-		programsSet:props.programsData.set,
-		surveysSet:props.surveysData.set,
-		org:props.org ,
-		orgId:orgId,
-		verified: props.verified,
-	}
     return (
 		<>
 			{mobile&&(
@@ -36,9 +26,9 @@ const Dashboard = (props: AccountChildProps) => {
 			<div className={"besideAside"}> 
 				<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
 					{/* {props.org?null:<DashboardPreview {...prop.accountData} org={props.org} {...programsData} {...surveysData} name="upcoming"/>} */}
-					<DashboardPreview {...dashboardPreviewData} name="data"/>
-					<DashboardPreview {...dashboardPreviewData} name="programs"/>
-					<DashboardPreview {...dashboardPreviewData} name="surveys"/>
+					<DashboardPreview {...props} name="data"/>
+					<DashboardPreview {...props} name="programs"/>
+					<DashboardPreview {...props} name="surveys"/>
 				</div>
 			</div>
 		</>

@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import { AccountChildProps } from "../../AccountParent";
 import "./DataPanel.css";
 // import {MobileContext} from "../../../App";
 // import { useContext } from "react";
 
 
 
-const UserAccessPanel = () => {
+const UserAccessPanel = (props:AccountChildProps) => {
 	// const mobile = useContext(MobileContext);
 	const navigate = useNavigate();
 	return (
@@ -16,8 +17,9 @@ const UserAccessPanel = () => {
 			</div>
 			<div className="dataPanelPreview">
 				<ul>
-					<li>Surveys</li>
-					<li>Programs</li>
+					{props.accountData.account.orgs.map((org, i) => {
+						return (i<4)?<li key={i}>{org}</li>:null;
+					})}
 				</ul>
 			</div>
 		</div>

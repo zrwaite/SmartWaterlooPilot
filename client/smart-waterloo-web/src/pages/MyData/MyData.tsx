@@ -14,7 +14,7 @@ const MyData = (props: AccountChildProps) => {
 				<hr/>
 				<p>A brief description about what the programs listed here are and any other info that is required.</p>
 				<div className="myDataGrid">
-					<DataPanels {...props.accountData.account} orgId={props.orgId} org={props.org}/>
+					<DataPanels {...props} orgId={props.orgId} org={props.org}/>
 				</div>
 			</div>
 		</div>
