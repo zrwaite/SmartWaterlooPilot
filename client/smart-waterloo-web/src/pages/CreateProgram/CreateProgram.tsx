@@ -116,7 +116,7 @@ const CreateProgram = (props:AccountChildProps) => {
 						<input type={"date"} name={"start_date"} value={state.inputs.start_date} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>Start Time (ie: 12:15 am)</p>
+						<p>Start Time (ie: 12:15)</p>
 						<input type={"time"} name={"start_time"} value={state.inputs.start_time} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
@@ -124,7 +124,7 @@ const CreateProgram = (props:AccountChildProps) => {
 						<input type={"date"} name={"end_date"}  value={state.inputs.end_date} onChange={handleInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>End Time (ie: 12:15 am)</p>
+						<p>End Time (ie: 16:15)</p>
 						<input type={"time"} name={"end_time"} value={state.inputs.end_time} onChange={handleInputChange} />
 					</div>
 					<div className="formQuestion">

@@ -31,8 +31,7 @@ const ProgramPanel = (props: ProgramPanelProps) => {
 		<div onClick={() => navigate(`/programdetails/${props.id}/${props.isOrg?`org/${props.orgId}`:"user"}`)} style={props.signed_up?activeColour:{}} className={`programPanel`}>
 			<div className="programPanelHeader">
 				<div className="horizontal">
-					<p style={colorDiv} className={"programBubble"}>NEW</p>
-					<p style={colorText}>{props.category}</p>
+					<p style={colorText}>{props.org} | {props.category}</p>
 				</div>
 				{props.signed_up?<div  style={colorDiv} className={"programBubble"}>Signed Up</div>:<div></div>}
 			</div>

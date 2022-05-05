@@ -23,7 +23,7 @@ const handleSelectChange = (newValue: null | { value: string; label: string; }, 
 	let inputKeys: keyof typeof state.selectInputs;
 	const name = actionMeta.name as typeof inputKeys;
 	let partialInput = { ...state.selectInputs };
-	if (newValue?.value==="Other") partialInput[name] = {"select": "Other", "text":"Enter Other Value"};
+	if (newValue?.value==="Other") partialInput[name] = {"select": "Other", "text":"Specify your response"};
 	else partialInput[name] = {"select": newValue?.value || "", "text":""};
 	setState({ ...state, selectInputs: partialInput });
 }

@@ -17,6 +17,7 @@ import { AccountChildProps } from '../AccountParent';
 import { getDefaultUserInfoLists } from '../../data/types/account';
 import SurveyQuestion from "../../components/AnswerInput";
 import {submitProgram} from "../../data/postData";
+import { forceNavigate } from '../../modules/navigate';
 
 Modal.setAppElement("#root");
 
@@ -61,7 +62,8 @@ const ProgramsDetails = (props: AccountChildProps) => {
 				setText("Signed Up ✓");
 				setClass("signupLightBlueButton");
 				setBottomClass("bottomLightBlueButton");
-				setTimeout(() => window.location.reload(), 800);
+				setTimeout(() => window.location.reload(), 1500);
+				forceNavigate('/dashboard/user');
 			} else alert(JSON.stringify(errors));
 		}
 	}

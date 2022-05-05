@@ -21,8 +21,8 @@ const QuestionController = (props: QuestionControllerProps) => {
                         return (
                             <div key={i} className={"createSurveyQuestionSection"}>
                                 <div className={"horizontal"}>
-                                    <div className={"questionNumber"}>{i}</div>
-                                    <input name={"prompt"} className={"createEventInput"} placeholder={`Enter Question ${i}`} value={props.questions[i].prompt} onChange={(e) => handleQuestionInputChange(e, i, "prompt", props.questions, props.setQuestions)} />
+                                    <div className={"questionNumber"}>{i+1}</div>
+                                    <input name={"prompt"} className={"createEventInput"} placeholder={`Enter Question ${i+1}`} value={props.questions[i].prompt} onChange={(e) => handleQuestionInputChange(e, i, "prompt", props.questions, props.setQuestions)} />
                                     <button onClick={() => removeQuestion(i, props.questions, props.setQuestions)} className={"blackButton"}>Remove</button>
                                 </div>
                                 <div className={"tabbedSection"}>

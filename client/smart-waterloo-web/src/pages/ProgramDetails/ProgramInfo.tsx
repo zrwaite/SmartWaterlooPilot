@@ -21,14 +21,15 @@ interface ProgramData {
 	attendees: string;
 	org: boolean;
 }
+
+//Todo: Change name to organization name
 const ProgramInfo = (props: ProgramData): any => {
 	const startDate = (new Date(props.start_date)).toDateString();
 	const endDate = (new Date(props.end_date)).toDateString();
 	return (
 		<>
 			<div className="DesktopPanelNoBorder">
-				<p className="lightblue">NEW</p>
-				<p className="lightbluetext">{props.category}</p>
+				<p className="lightbluetext">{props.name} | {props.category}</p> 
 				<h5 className="programTitle">{props.name}</h5>
 				<h6 className="programTitle">{props.location}</h6>
 				<p className="greytext">For Ages {props.min_age}-{props.max_age}</p>
