@@ -35,6 +35,28 @@ const getEntries = async (multi: boolean, idKey:string, idValue:string|number, t
 	return {status: status, entries: entries, errors: errors};
 }
 
+const getOrgNames = async (orgIds: number[]) => {
+	let status = 400;
+	let idsString = orgIds.join(", ");
+	let names:string[] = [];
+	let nameObjects:any;
+	let errors = [];
+	try {
+		nameObjects = await pool.query(
+			`SELECT id, nickname FROM "orgs" WHERE "id" in ( $1 )`,
+			[idsString]
+		)
+		if (nameObjects.rows && nameObjects.rows.length) {
+			names = nameObjects.rows;
+			status = 200;
+		} else status = 404;
+	} catch (e) {
+		console.log(e)
+		errors.push("database error");
+	}
+	return {status: status, names: names, errors: errors};
+}
+
 
 const getUserOrgs = async (userId: number) => {
 	let status = 400;
@@ -241,4 +263,4 @@ const getQuestionAnswers = async (questionId: string) => {
 	const {status, entries, errors} = await getEntries(true, "question_id", questionId, "answers", answerKeys);
 	return {status: status, answers: entries, errors: errors};
 }
-export {getUserInfoByUserId, getUserInfo, getProgramOrg, getSurveyOrg, getUserOrgs, getAnswersAndQuestions, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getProgram, getPrograms, getOrgPrograms, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}
+export {getOrgNames, getUserInfoByUserId, getUserInfo, getProgramOrg, getSurveyOrg, getUserOrgs, getAnswersAndQuestions, getQuestionAnswers, getSurvey, getSurveys,getUserHash, getQuestions, getOrgSurveys, getUser, getProgram, getPrograms, getOrgPrograms, getOrg, getOwnerOrgs, getOrgs, getQuestion,  verifyOrgVerification}

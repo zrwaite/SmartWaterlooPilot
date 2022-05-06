@@ -21,9 +21,27 @@ import {
   web2GetProgramsData,
   web2GetSurveysData,
   web2GetQuestionsAndAnswers,
+  web2GetOrgsNames
 } from "./web2/web2GetData";
 import { defaultOrg } from "./types/orgs";
 import survey from "../pages/Survey";
+
+const getOrgsNames = async (orgIds: string[]):Promise<{
+  success: boolean,
+  names: {id: number, nickname: string}[],
+  errors: string[],
+}> => {
+  if (orgIds.length) return USE_WEB3?web3GetOrgsNames(orgIds):web2GetOrgsNames(orgIds);
+  else return {success: true, names: [], errors: []};
+}
+
+const web3GetOrgsNames = async (orgIds: string[]):Promise<{
+  success: boolean,
+  names: {id: number, nickname: string}[],
+  errors: string[],
+}> => {
+  return {success: false, names: [], errors: ["function not implemented"]};
+}
 
 const getUserAddress = async (): Promise<string> => {
   try {
@@ -570,4 +588,5 @@ export {
   getUserData,
   getProgramsData,
   getSurveysData,
+  getOrgsNames
 };

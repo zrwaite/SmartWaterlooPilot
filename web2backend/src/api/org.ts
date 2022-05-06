@@ -1,7 +1,7 @@
 import {Request, Response} from "express"; //Typescript types
 import {response, responseInterface} from "../models/response"; //Created pre-formatted uniform response
 import {postOrg} from "../modules/postDatabaseInfo";
-import {getOrg, getOrgs, getUserOrgs} from "../modules/getDatabaseInfo";
+import {getOrg, getOrgNames, getOrgs, getUserOrgs} from "../modules/getDatabaseInfo";
 import {getBodyParams, getQueryParams} from "../modules/getParams";
 import {addOrgMember} from "../modules/putDatabaseInfo";
 import {orgData} from "../database/orgData";
@@ -61,10 +61,29 @@ export default class orgController {
 					result.status = 404;
 				}
 			} else {
-				//Development only
-				const getOrgResponse = await getOrgs();
-				result.response = getOrgResponse.orgs;
-				result.status = getOrgResponse.status;
+				let {success, params, errors} = await getQueryParams(req, ["ids"]);
+				if (success) {
+					try {
+						let ids = JSON.parse(params[0])
+						const validOrgIds = ids.every((id:any) => !isNaN(id));
+						if (validOrgIds){
+							const getOrgNamesResponse = await getOrgNames(ids);
+							result.status = getOrgNamesResponse.status;
+							if (result.status == 200) {
+								result.success = true;
+								result.response = getOrgNamesResponse.names;
+							} else result.errors.push(...errors);
+						} else result.errors.push("invalid ids");
+					} catch (e) {
+						console.log(e);
+						result.errors.push("JSON error");
+					}
+				} else {
+					//Development only
+					const getOrgResponse = await getOrgs();
+					result.response = getOrgResponse.orgs;
+					result.status = getOrgResponse.status;
+				}
 			}
 		}
 		// errors.forEach((error) => result.errors.push(error));

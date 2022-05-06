@@ -20,6 +20,7 @@ interface ProgramData {
 	image: string;
 	attendees: string;
 	org: boolean;
+	orgName: string|null;
 }
 
 //Todo: Change name to organization name
@@ -29,7 +30,7 @@ const ProgramInfo = (props: ProgramData): any => {
 	return (
 		<>
 			<div className="DesktopPanelNoBorder">
-				<p className="lightbluetext">{props.name} | {props.category}</p> 
+				<p className="lightbluetext">{props.orgName} | {props.category}</p> 
 				<h5 className="programTitle">{props.name}</h5>
 				<h6 className="programTitle">{props.location}</h6>
 				<p className="greytext">For Ages {props.min_age}-{props.max_age}</p>

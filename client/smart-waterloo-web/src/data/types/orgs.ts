@@ -27,6 +27,16 @@ const defaultOrgsState:{orgs: typeof defaultOrg[], set: boolean} = {
 	set: false
 }
 
+interface defaultNameObject {
+	id: number,
+	nickname: string
+}
+
+const defaultOrgNamesState:{names:defaultNameObject[], set: boolean} = {
+	names: [],
+	set: false
+}
+
 interface postOrgType {
 	avatar_string:string, 
 	nickname: string, 
@@ -34,5 +44,5 @@ interface postOrgType {
 }
 type postOrgReturn = {success:boolean, errors: string[], orgId:string}
 
-export {defaultOrg, defaultOrgsState};
+export {defaultOrg, defaultOrgsState, defaultOrgNamesState};
 export type {postOrgType, postOrgReturn}

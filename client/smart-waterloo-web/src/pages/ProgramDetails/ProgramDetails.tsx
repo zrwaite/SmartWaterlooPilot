@@ -43,6 +43,9 @@ const ProgramsDetails = (props: AccountChildProps) => {
 		setAnswers(newAnswers);
 	}
 
+	const orgNameObj = props.orgNames.set?props.orgNames.names.find(org => org.id.toString() == programData.program.org):null;
+	const orgName = orgNameObj?orgNameObj.nickname:null;
+
 	if (notFound || !id) return <NotFound />
 
 	function openModal() {
@@ -176,7 +179,7 @@ const ProgramsDetails = (props: AccountChildProps) => {
 							<div className={"programDetails"}>
 								<img src={CNOLogo} alt={programData.program.name} className="programImage" />
 							</div>
-							<ProgramInfo {...programData.program} org={props.org} />
+							<ProgramInfo {...programData.program} org={props.org} orgName={orgName}/>
 							{props.org&&(
 								<>
 								<h6>User info:</h6>

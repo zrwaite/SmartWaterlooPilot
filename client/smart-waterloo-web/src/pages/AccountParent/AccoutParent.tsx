@@ -2,13 +2,13 @@ import "./AccountParent.css";
 import cookies from "../../modules/cookies";
 import { useState} from "react";
 import { defaultProgramsState } from "../../data/types/programs";
-import {getUserOrgs, getProgramsData, getUserData, getSurveysData, getBasicOrgData, getOrgProgramsData, getOrgSurveysData} from "../../data/getData"
+import {getUserOrgs, getProgramsData, getUserData, getSurveysData, getBasicOrgData, getOrgProgramsData, getOrgSurveysData, getOrgsNames} from "../../data/getData"
 import Settings from "../../components/Settings";
 import { defaultSurveysState } from "../../data/types/surveys";
 import { useNavigate, useParams } from "react-router-dom";
 import { isSignedIn } from "../../data/account";
 import {defaultAccount, defaultAccountState} from "../../data/types/account";
-import { defaultOrgsState } from "../../data/types/orgs";
+import { defaultOrgNamesState, defaultOrgsState } from "../../data/types/orgs";
 import OrgsModal from "../../components/OrgsModal";
 import PrimaryPage from "../PrimaryPage";
 import AddOrgMember from "../AddOrgMember";
@@ -33,9 +33,11 @@ const AccountParent = (props:AccountParentProps) => {
 	const [programsData, setProgramData] = useState(defaultProgramsState);
 	const [surveysData, setSurveyData] = useState(defaultSurveysState);
 	const [accountData, setAccountData] = useState(defaultAccountState);
+	const [orgNames, setOrgNames] = useState(defaultOrgNamesState);
 	const [verified, setVerified] = useState(false);
 
 	const [dataCalled, setDataCalled] = useState(false);
+	const [dataCalled2, setDataCalled2] = useState(false);
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [orgsModalOpen, setOrgsModalOpen] = useState(false);
 	const { orgId } = useParams();
@@ -103,6 +105,17 @@ const AccountParent = (props:AccountParentProps) => {
 		else setSurveyData({surveys: surveys, set: true })
 	}
 
+	const getSetOrgNames = async () => {
+		let orgIds:string[] = [];
+		programsData.programs.forEach(program => orgIds.push(program.org));
+		let {success, names, errors} = await getOrgsNames(orgIds);
+		if (!success) {
+			alert(JSON.stringify(errors));
+			console.log("Not successful getting org names");
+		}
+		else setOrgNames({names: names, set: true })
+	}
+
 
 	if (!dataCalled || prevOrgId!==orgId) {
 		getSetOrgsData();
@@ -119,6 +132,11 @@ const AccountParent = (props:AccountParentProps) => {
 		setPrevOrgId(orgId);
 	}
 
+	if (programsData.set && !dataCalled2) {
+		getSetOrgNames();
+		setDataCalled2(true);
+	}
+
 	const allDataObj = {
 		programsData: programsData,
 		accountData: accountData,
@@ -129,6 +147,7 @@ const AccountParent = (props:AccountParentProps) => {
 		verified: verified,
 		openSettings: () => setSettingsOpen(true),
 		openOrgsModal: () => setOrgsModalOpen(true),
+		orgNames: orgNames,
 		page: props.page
 	}
 
@@ -160,10 +179,11 @@ interface AccountChildProps {
 	programsData: typeof defaultProgramsState,
 	surveysData: typeof defaultSurveysState,
 	orgsData: typeof defaultOrgsState,
-	accountData: typeof defaultAccountState
+	accountData: typeof defaultAccountState,
+	orgNames: typeof defaultOrgNamesState,
 	org: boolean,
 	orgId: string|undefined,
-	verified: boolean
+	verified: boolean,
 }
 export type {AccountChildProps}
 

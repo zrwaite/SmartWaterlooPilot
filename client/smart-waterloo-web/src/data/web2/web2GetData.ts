@@ -15,6 +15,20 @@ interface getUserDataResponse extends apitype{
 	response: typeof defaultAccount;
 }
 
+const web2GetOrgsNames = async (orgIds: string[]):Promise<{
+	success: boolean,
+	names: {id: number, nickname: string}[],
+	errors: string[],
+  }> => {
+	let json = await httpReq("/api/org/?ids="+JSON.stringify(orgIds))
+	if (json) {
+		let response = JSON.parse(json);
+		if (response.success) return {success: true, names:response.response, errors: []};
+		else if (response.status === 404) return {success: true, names:[], errors: []};
+		else return {success: false, names:[], errors: response.errors}
+	} else return {success: false, names: [], errors:["request failed"]};
+}
+
 const web2GetAnswersData = async (id:string|undefined):Promise<{success:boolean, answers: typeof defaultAnswer[], errors:string[]}> => {
 	let json = await httpReq("/api/answer/?question_id="+id)
 	if (json) {
@@ -117,4 +131,4 @@ const web2GetQuestionsAndAnswers = async (answerIds: number[]):Promise<{success:
 
 
 
-export { web2GetQuestionsAndAnswers, web2GetAnswersData, web2GetOrgProgramsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetUserData, web2GetUserOrgs, web2GetSurveysData, web2GetProgramsData};
+export { web2GetOrgsNames, web2GetQuestionsAndAnswers, web2GetAnswersData, web2GetOrgProgramsData, web2GetOrgSurveysData, web2GetBasicOrgData, web2GetUserData, web2GetUserOrgs, web2GetSurveysData, web2GetProgramsData};
