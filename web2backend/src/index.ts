@@ -7,6 +7,7 @@ import path from "path";
 env.config();
 
 const port = process.env.PORT || 2000;
+if (process.env.ENV_INSTALLED !== "Yep") throw Error("Environment variable not properly defined");
 const initializeDB = async () => {
 	const filePath = path.resolve(__dirname, "./database/initialize.sql");
 	const initializeSQL = fs.readFileSync(filePath).toString();
