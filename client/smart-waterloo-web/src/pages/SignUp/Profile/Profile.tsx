@@ -134,7 +134,7 @@ const Profile = (props: ProfileProps) => {
 					</div>
 					<div className="formDiv">
 						{props.selectFormData.contact.select!==""&&(<>
-							<p>Enter your contact information for the above: <span style={redText}>*</span></p>
+							<p>Enter your contact information for the above: <span style={greyText}>(Optional)</span></p>
 							<input name="contact_info"  type={"text"} value={props.formData.contact_info} onChange={props.handleParentInputChange} />
 						</>)}
 					</div>

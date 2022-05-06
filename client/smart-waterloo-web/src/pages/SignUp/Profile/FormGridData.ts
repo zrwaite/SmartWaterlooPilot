@@ -112,8 +112,6 @@ const contactOptions = [
 	{ value: "Select", label: "--Select--", isDisabled: true},
 	{ value: "Email", label: "Email" },
 	{ value: "Phone", label: "Phone" },
-	{ value: "Mail", label: "Mail" },
-	{ value: "Other", label: "Other" },
 ]
 type ProfileFormGridState = {
 	birth_day: string,
