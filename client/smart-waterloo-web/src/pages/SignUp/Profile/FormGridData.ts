@@ -109,7 +109,7 @@ const heardOptions = [
 ]
 
 const contactOptions = [
-	{ value: "Select", label: "--Select--", isDisabled: true},
+	{ value: "Select", label: "--Select--"},
 	{ value: "Email", label: "Email" },
 	{ value: "Phone", label: "Phone" },
 ]

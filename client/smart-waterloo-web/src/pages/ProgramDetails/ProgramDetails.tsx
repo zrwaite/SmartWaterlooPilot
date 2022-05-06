@@ -43,8 +43,7 @@ const ProgramsDetails = (props: AccountChildProps) => {
 		setAnswers(newAnswers);
 	}
 
-	const orgNameObj = props.orgNames.set?props.orgNames.names.find(org => org.id.toString() == programData.program.org):null;
-	const orgName = orgNameObj?orgNameObj.nickname:null;
+	const orgName = props.orgNames.set?( props.orgNames.names.find(org => org.id.toString() == programData.program.org)?.nickname ||null ):null;
 
 	if (notFound || !id) return <NotFound />
 

@@ -15,9 +15,14 @@ const UserAnswersPanel = (props: AccountChildProps) => {
 			</div>
 			<div className="dataPanelPreview">
 				<ul>
-					{userSurveys.map((survey, i) => {
-						return (i<4)?<li key={i}>{survey.name}</li>:null;
-					})}
+					{userSurveys.length?
+						userSurveys.map((survey, i) => {
+							return (i<4)?<li key={i}>{survey.name}</li>:null;
+						}):(<>
+							<li>Questions</li>
+							<li>Answers</li>
+						</>)
+					}
 				</ul>
 			</div>
 		</div>

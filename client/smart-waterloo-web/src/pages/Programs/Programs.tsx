@@ -26,7 +26,7 @@ const Programs = (props: AccountChildProps) => {
 						props.programsData.set ?
 							props.programsData.programs.map((program, i) => {
 								return (
-									<ProgramPanel isOrg={props.org} orgId={props.orgId} index={i} key={i} {...program} />
+									<ProgramPanel {...props} orgId={props.orgId} key={i} program={program} />
 								);
 							}):
 							[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })

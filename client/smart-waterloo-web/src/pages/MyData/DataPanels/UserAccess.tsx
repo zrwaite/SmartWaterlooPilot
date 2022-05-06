@@ -17,9 +17,15 @@ const UserAccessPanel = (props:AccountChildProps) => {
 			</div>
 			<div className="dataPanelPreview">
 				<ul>
-					{props.accountData.account.orgs.map((org, i) => {
-						return (i<4)?<li key={i}>{org}</li>:null;
-					})}
+					{
+						props.accountData.account.orgs.length?
+						props.accountData.account.orgs.map((org, i) => {
+							return (i<4)?<li key={i}>{org}</li>:null;
+						}):(<>
+							<li>Programs</li>
+							<li>Surveys</li>
+						</>)
+					}
 				</ul>
 			</div>
 		</div>

@@ -1,44 +1,36 @@
 import { useNavigate } from "react-router-dom";
+import { defaultProgram } from "../../../data/types/programs";
+import { AccountChildProps } from "../../AccountParent";
 import "./ProgramPanel.css";
-interface ProgramPanelProps {
-	id: string,
-	org: string,
-	age_group: string,
-	start_date:string,
-	end_date: string,
-	category: string,
-	signed_up: boolean,
-	upcoming?: boolean,
-	name: string,
-	index: number,
-	isOrg: boolean,
+interface ProgramPanelProps extends AccountChildProps{
+	program: typeof defaultProgram
 	orgId: string|undefined;
-	start_time: string;
-	end_time: string;
 }
 
 //Todo: Change name to organization name
 const ProgramPanel = (props: ProgramPanelProps) => {
+	const signedUp = props.accountData.account.programs.includes(parseInt(props.program.id));
 	const activeColour = {
-		backgroundColor: props.upcoming?"#F9EEF3":"#6ec6f933"
+		backgroundColor: signedUp?"#6ec6f933":"white"
 	}
-	const colorText = {color: props.upcoming?"#EF276F":"#3FBAFF"};
+	const colorDiv = {backgroundColor: "#3FBAFF"};
 	const greyText = {color: "#848484"};
-	const colorDiv = {backgroundColor: props.upcoming?"#EF276F":"#3FBAFF"};
 	const navigate = useNavigate();
-	const startDate = (new Date(props.start_date)).toDateString();
-	const endDate = (new Date(props.end_date)).toDateString();
+	const startDate = (new Date(props.program.start_date)).toDateString();
+	const endDate = (new Date(props.program.end_date)).toDateString();
+	const orgName = props.orgNames.set?( props.orgNames.names.find(org => org.id.toString() == props.orgId)?.nickname ||null ):null;
+
 	return (
-		<div onClick={() => navigate(`/programdetails/${props.id}/${props.isOrg?`org/${props.orgId}`:"user"}`)} style={props.signed_up?activeColour:{}} className={`programPanel`}>
+		<div onClick={() => navigate(`/programdetails/${props.program.id}/${props.org?`org/${props.orgId}`:"user"}`)} style={activeColour} className={`programPanel`}>
 			<div className="programPanelHeader">
 				<div className="horizontal">
-					<p style={colorText}>{props.org} | {props.category}</p>
+					<p>{orgName} | {props.program.category}</p>
 				</div>
-				{props.signed_up?<div  style={colorDiv} className={"programBubble"}>Signed Up</div>:<div></div>}
+				{signedUp?<div  style={colorDiv} className={"programBubble"}>Signed Up</div>:<div></div>}
 			</div>
-			<h6>{props.name}</h6>
-			<p style={greyText}>For Ages {props.age_group}</p>
-			<p style={greyText}>{startDate}, {props.start_time} to {endDate}, {props.end_time}</p>
+			<h6>{props.program.name}</h6>
+			<p style={greyText}>For Ages {props.program.age_group}</p>
+			<p style={greyText}>{startDate}, {props.program.start_time} to {endDate}, {props.program.end_time}</p>
 		</div>
 	)
 }	

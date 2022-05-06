@@ -43,8 +43,7 @@ const getOrgNames = async (orgIds: number[]) => {
 	let errors = [];
 	try {
 		nameObjects = await pool.query(
-			`SELECT id, nickname FROM "orgs" WHERE "id" in ( $1 )`,
-			[idsString]
+			`SELECT id, nickname FROM "orgs" WHERE "id" in (`+idsString+`)`
 		)
 		if (nameObjects.rows && nameObjects.rows.length) {
 			names = nameObjects.rows;

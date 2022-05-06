@@ -1,6 +1,7 @@
 import React from 'react';
 import "./ProgramDetails.css";
 import {Question} from "../../data/types/surveys";
+import MaybeLink from '../../components/MaybeLink';
 
 interface ProgramData {
 	name: string;
@@ -32,7 +33,7 @@ const ProgramInfo = (props: ProgramData): any => {
 			<div className="DesktopPanelNoBorder">
 				<p className="lightbluetext">{props.orgName} | {props.category}</p> 
 				<h5 className="programTitle">{props.name}</h5>
-				<h6 className="programTitle">{props.location}</h6>
+				<MaybeLink className={"programTitle"} text={props.location}/>
 				<p className="greytext">For Ages {props.min_age}-{props.max_age}</p>
 				<p className="greytext">{startDate}, {props.start_time} to {endDate}, {props.end_time}</p>
 				<br></br>

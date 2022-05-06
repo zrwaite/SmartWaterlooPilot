@@ -24,6 +24,7 @@ const handleSelectChange = (newValue: null | { value: string; label: string; }, 
 	const name = actionMeta.name as typeof inputKeys;
 	let partialInput = { ...state.selectInputs };
 	if (newValue?.value==="Other") partialInput[name] = {"select": "Other", "text":""};
+	else if (newValue?.value==="Select") partialInput[name] = {"select": "", "text":""};
 	else partialInput[name] = {"select": newValue?.value || "", "text":""};
 	setState({ ...state, selectInputs: partialInput });
 }
