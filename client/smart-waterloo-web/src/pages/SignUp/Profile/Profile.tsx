@@ -46,9 +46,6 @@ const Profile = (props: ProfileProps) => {
 		<>
 			<header>
 				<h3>Complete Profile 📝</h3>
-				<p>
-					Explanation of why this information is being collected and how and why it will be used.
-				</p>
 				<p className="redtext">
 					Fields marked with a red * are required.
 				</p>
