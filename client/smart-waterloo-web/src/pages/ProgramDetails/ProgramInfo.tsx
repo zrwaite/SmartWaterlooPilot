@@ -26,6 +26,7 @@ interface ProgramData {
 
 //Todo: Change name to organization name
 const ProgramInfo = (props: ProgramData): any => {
+	console.log(props);
 	const startDate = (new Date(props.start_date)).toDateString();
 	const endDate = (new Date(props.end_date)).toDateString();
 	return (

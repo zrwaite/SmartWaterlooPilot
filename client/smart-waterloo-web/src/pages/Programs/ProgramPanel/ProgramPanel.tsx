@@ -13,12 +13,14 @@ const ProgramPanel = (props: ProgramPanelProps) => {
 	const activeColour = {
 		backgroundColor: signedUp?"#6ec6f933":"white"
 	}
+	console.log(props.program);
 	const colorDiv = {backgroundColor: "#3FBAFF"};
 	const greyText = {color: "#848484"};
 	const navigate = useNavigate();
 	const startDate = (new Date(props.program.start_date)).toDateString();
 	const endDate = (new Date(props.program.end_date)).toDateString();
-	const orgName = props.orgNames.set?( props.orgNames.names.find(org => org.id.toString() == props.orgId)?.nickname ||null ):null;
+	const orgName = props.orgNames.set?( props.orgNames.names.find(org => org.id.toString() == props.program.org)?.nickname ||null ):null;
+	console.log(orgName);
 
 	return (
 		<div onClick={() => navigate(`/programdetails/${props.program.id}/${props.org?`org/${props.orgId}`:"user"}`)} style={activeColour} className={`programPanel`}>
