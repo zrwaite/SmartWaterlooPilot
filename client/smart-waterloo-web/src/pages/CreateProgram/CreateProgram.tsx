@@ -87,7 +87,7 @@ const CreateProgram = (props:AccountChildProps) => {
 		}
 		setCanSubmit(true);
 	}
-	
+	let redText = {color: "red"};
 	return (
 		<>
 			<div className={"PageContainer"}>
@@ -102,44 +102,44 @@ const CreateProgram = (props:AccountChildProps) => {
 					</div>
 					<h2 className={"createProgramHeader"}>Create New Program ✏️</h2>
 					<div className={"formQuestion"}>
-						<p>Name of Program</p>
+						<p><span>Name of Program</span><span style={redText}>*</span></p>
 						<input name={"name"} className={"createProgramInput"} placeholder={"Enter Text"} value={state.inputs.name} onChange={handleParentInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>Which age group is this program</p>
+						<p><span>Which age group is this program</span><span style={redText}>*</span></p>
 						<div className={"singleLineMultiInput"}>
 							<p>Min age: </p>
 							<input name={"min_age"} className={"createProgramMiniInput"} placeholder={"4"} value={state.inputs.min_age} onChange={handleParentInputChange} />
-							<p>{"   Max age"}</p>
+							<p>Max age: </p>
 							<input name={"max_age"} className={"createProgramMiniInput"} placeholder={"8"} value={state.inputs.max_age} onChange={handleParentInputChange} />
 						</div>
 					</div>
 					<div className={"formQuestion"}>
-						<p>Start Date</p>
+						<p>Start Date<span style={redText}>*</span></p>
 						<input type={"date"} name={"start_date"} value={state.inputs.start_date} onChange={handleParentInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>Start Time (ie: 12:15 am)</p>
+						<p>Start Time (ie: 12:15 am)<span style={redText}>*</span></p>
 						<input type={"time"} name={"start_time"} value={state.inputs.start_time} onChange={handleParentInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>End Date</p>
+						<p>End Date<span style={redText}>*</span></p>
 						<input type={"date"} name={"end_date"}  value={state.inputs.end_date} onChange={handleParentInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>End Time (ie: 12:15 am)</p>
+						<p>End Time (ie: 12:15 am)<span style={redText}>*</span></p>
 						<input type={"time"} name={"end_time"} value={state.inputs.end_time} onChange={handleParentInputChange} />
 					</div>
 					<div className="formQuestion">
-						<p>Category</p>
+						<p>Category<span style={redText}>*</span></p>
 						<SelectOther data={state.selectInputs.category} name={"category"} {...selectInputChangeFunctions} options={programCategories} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>Location</p>
+						<p>Location<span style={redText}>*</span></p>
 						<input name={"location"} className={"createProgramInput"} value={state.inputs.location} onChange={handleParentInputChange} />
 					</div>
 					<div className={"formQuestion"}>
-						<p>Description</p>
+						<p>Description<span style={redText}>*</span></p>
 						<textarea name={"description"} className={"questionTextarea createProgramTextArea"} value={state.inputs.description} onChange={handleParentInputChange} />
 					</div> 
 					<div className={"formQuestion"}>
@@ -149,7 +149,7 @@ const CreateProgram = (props:AccountChildProps) => {
 					{state.booleanInputs.addQuestions&&(
 						<QuestionController questions={state.questionInputs} setQuestions={(newQuestions:Question[]) => {setState({...state, questionInputs: newQuestions})}}/>
 					)}
-					<p>*All fields are required to continue</p>
+					<p><span style={redText}>*</span>All fields are required to continue</p>
 					<button onClick={canSubmit&&complete?programCreation:undefined} className={`createProgramButton ${canSubmit&&complete ? "blackButton" : "disabledButton"}`}>Create Program</button>
 				</div>
 			</div>
