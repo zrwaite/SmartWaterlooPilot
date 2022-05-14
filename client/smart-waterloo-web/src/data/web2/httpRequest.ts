@@ -1,6 +1,6 @@
 import cookies from "../../modules/cookies"
-const baseURL = "https://swrdataplayground.ca";
-// const baseURL = "https://animals-trusted-ford-data.trycloudflare.com";
+import { DEV } from "../dataConstants";
+const baseURL = DEV?"https://marc-promotes-commons-gloves.trycloudflare.com":"https://swrdataplayground.ca";
 
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {

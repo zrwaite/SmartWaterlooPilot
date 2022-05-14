@@ -12,6 +12,7 @@ import MobileNavItem from "./MobileNavItem";
 import SWRLogo from "../../images/SWRLogo.png"
 import { defaultOrg } from "../../data/types/orgs";
 import { isSignedIn } from "../../data/account";
+import { DEV } from "../../data/dataConstants";
 
 
 type NavbarProps = {
@@ -68,6 +69,7 @@ const Navbar = (props:NavbarProps) => {
 				<div className="navbar">
 					<div className="leftNav">
 						<img src={SWRLogo} alt={"SWR Logo"} onClick={()=>navigate(`${signedIn?"/dashboard/user":"/"}`)} className={"navbarLogo"}/>
+						{DEV&&<h5>DEVELOPMENT</h5>}
 						{/* <h4 onClick={() => setOrg(!org)}>{org?"Org":"User"}</h4> */}
 					</div>
 					<div className="rightNav">
