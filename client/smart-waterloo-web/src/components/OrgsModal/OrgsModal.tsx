@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { useNavigate } from "react-router-dom";
 import { defaultOrg } from "../../data/types/orgs";
 import {icons} from "../../images/icons";
+import { forceNavigate } from "../../modules/navigate";
 import "./OrgsModal.css";
 
 interface orgsProps {
@@ -36,7 +37,7 @@ const OrgsModal = (props: orgsProps) => {
 							return props.org!==org.id.toString()?(
 								<div key={i} className={"orgPreview"}>
 									<h3>"{org.nickname}" | ID:{org.id}</h3>
-									<button className={"blackButton orgsModalButton"} onClick={() => {navigate(`/dashboard/org/${org.id}`); props.closeModal();}}>Open "{org.nickname}"</button>
+									<button className={"blackButton orgsModalButton"} onClick={() => {forceNavigate(`/dashboard/org/${org.id}`); props.closeModal();}}>Open "{org.nickname}"</button>
 								</div>
 							):null;
 						})
@@ -44,7 +45,7 @@ const OrgsModal = (props: orgsProps) => {
 				</div>
 				{props.org&&(<>
 					<hr/>
-					<button className={"blackButton orgsModalButton"} onClick={() => {navigate(`/dashboard/user`); props.closeModal();}}>Open User Account</button>
+					<button className={"blackButton orgsModalButton"} onClick={() => {forceNavigate(`/dashboard/user`); props.closeModal();}}>Open User Account</button>
 				</>)}
 				
 			</div>

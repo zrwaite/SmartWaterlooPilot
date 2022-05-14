@@ -59,10 +59,11 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 		</>
 		); break; case "data": panelList = (<DataPanels {...props} />
 		);break; case "surveys": 
+			const displayedSurveys = props.org?props.surveysData:props.mySurveysData;
 			panelList = (<>
 			{
-				props.mySurveysData.set?
-				props.mySurveysData.surveys.map((survey, i) => {
+				displayedSurveys.set?
+				displayedSurveys.surveys.map((survey, i) => {
 					return (
 					i<5?<SurveyPanel numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} key={i} index={i} {...survey}/>:null
 				);}):

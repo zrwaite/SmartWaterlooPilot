@@ -10,7 +10,7 @@ const Surveys = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
 	const navigate = useNavigate();
 	cookies.set("back", `/dashboard/${props.org?`org/${props.orgId}`:"user"}`);
-	
+	const displayedSurveys = props.org?props.surveysData:props.mySurveysData;
 	return (
 		<div className={"besideAside"}>
 			<div className={mobile? "":"fullScreenPanel"}>
@@ -22,8 +22,8 @@ const Surveys = (props: AccountChildProps) => {
 						<button onClick={() => navigate(`/createsurvey/${props.orgId}`)}  className={"blackButton addSurveyButton"}>Add Survey</button>
 					</div>:null}
 					{
-						props.mySurveysData.set?(
-							props.mySurveysData.surveys.map((survey, i) => {
+						displayedSurveys.set?(
+							displayedSurveys.surveys.map((survey, i) => {
 								return (
 								<SurveyPanel numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} index={i} key={i} {...survey}/>
 							);})
