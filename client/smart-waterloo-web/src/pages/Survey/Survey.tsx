@@ -18,6 +18,7 @@ const defaultSurveyData:SurveyDataType = {
 	org: "- - - - - - - - -",
 	description: "- - - - - - - - -",
 	length: "? mins",
+	completed: false,
 	questions: [],
 	user_info: []
 }
@@ -62,7 +63,7 @@ const Survey = (props: AccountChildProps) => {
 		
 	}
 	if (notFound || !id) return <NotFound />
-	const completed = (props.accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
+	// const completed = (props.accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
 
 
 	const incrementMap = (map: Map<string, number>, key:string) => {
@@ -162,7 +163,7 @@ const Survey = (props: AccountChildProps) => {
 							})}
 							{!owner&&<button onClick={complete&&canSubmit?trySubmitSurvey:()=>{}} className={complete&&canSubmit?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
 						</div>
-						):<SurveyLanding set={surveyData.set} completed={completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
+						):<SurveyLanding set={surveyData.set} completed={surveyData.survey.completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
 				</div>
 			</div>
 		</>

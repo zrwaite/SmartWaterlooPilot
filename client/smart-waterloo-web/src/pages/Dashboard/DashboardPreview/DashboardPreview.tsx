@@ -63,9 +63,8 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			{
 				props.surveysData.set?
 				props.surveysData.surveys.map((survey, i) => {
-					const surveyCompleted = props.accountData.account.surveys.includes(parseInt(survey.id));
 					return (
-					i<5?<SurveyPanel completed={surveyCompleted} numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} key={i} index={i} {...survey}/>:null
+					i<5?<SurveyPanel numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} key={i} index={i} {...survey}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			} 

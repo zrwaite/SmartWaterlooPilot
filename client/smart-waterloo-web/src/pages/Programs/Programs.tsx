@@ -8,7 +8,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 import {AccountChildProps} from "../AccountParent"
 const Programs = (props: AccountChildProps) => {
 	const { mobile } = useContext(MobileContext);
-	// let { address } = useContext(AddressContext);
 	let {orgId} = useParams();
 	const navigate = useNavigate();
 	cookies.set("back", `/programs/${props.org?`org/${orgId}`:"user"}`);

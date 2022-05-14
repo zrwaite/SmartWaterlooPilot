@@ -21,6 +21,8 @@ import UserAccess from "../UserAccess";
 import CreateProgram from "../CreateProgram";
 import CreateSurvey from "../CreateSurvey";
 import { USE_WEB3 } from "../../data/dataConstants";
+import { getMySurveys } from "../../data/parse/parseMySurveys";
+import { parseCompletedSurveys } from "../../data/parse/parseDone";
 
 interface AccountParentProps {
 	org: boolean;
@@ -32,12 +34,14 @@ const AccountParent = (props:AccountParentProps) => {
 	const [orgsData, setOrgsData] = useState(defaultOrgsState);
 	const [programsData, setProgramData] = useState(defaultProgramsState);
 	const [surveysData, setSurveyData] = useState(defaultSurveysState);
+	const [mySurveysData, setMySurveysData] = useState(defaultSurveysState);
 	const [accountData, setAccountData] = useState(defaultAccountState);
 	const [orgNames, setOrgNames] = useState(defaultOrgNamesState);
 	const [verified, setVerified] = useState(false);
 
 	const [dataCalled, setDataCalled] = useState(false);
 	const [dataCalled2, setDataCalled2] = useState(false);
+	const [dataParsed, setDataParsed] = useState(false);
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [orgsModalOpen, setOrgsModalOpen] = useState(false);
 	const { orgId } = useParams();
@@ -105,15 +109,17 @@ const AccountParent = (props:AccountParentProps) => {
 		else setSurveyData({surveys: surveys, set: true })
 	}
 
-	const getSetOrgNames = async () => {
-		let orgIds:string[] = [];
-		programsData.programs.forEach(program => orgIds.push(program.org));
+	const getSetOrgNames = async (orgIds:string[]) => {
 		let {success, names, errors} = await getOrgsNames(orgIds);
 		if (!success) {
 			alert(JSON.stringify(errors));
 			console.log("Not successful getting org names");
 		}
 		else setOrgNames({names: names, set: true })
+	}
+
+	const parseData = async () => {
+		parseCompletedSurveys(surveysData.surveys, accountData.account.surveys);
 	}
 
 
@@ -133,14 +139,23 @@ const AccountParent = (props:AccountParentProps) => {
 	}
 
 	if (programsData.set && !dataCalled2) {
-		getSetOrgNames();
+		let orgIds:string[] = [];
+		programsData.programs.forEach(program => orgIds.push(program.org));
+		getSetOrgNames(orgIds);
+		setMySurveysData({set: true, surveys: getMySurveys(surveysData.surveys, orgIds)});
 		setDataCalled2(true);
+	}
+
+	if (accountData.set && surveysData.set && !dataParsed) {
+		parseData();
+		setDataParsed(true);
 	}
 
 	const allDataObj = {
 		programsData: programsData,
 		accountData: accountData,
 		surveysData: surveysData,
+		mySurveysData: mySurveysData,
 		orgsData: orgsData,
 		org: props.org,
 		orgId: orgId,
@@ -177,6 +192,7 @@ interface AccountChildProps {
 	openSettings: () => void;
 	openOrgsModal: () => void;
 	programsData: typeof defaultProgramsState,
+	mySurveysData: typeof defaultSurveysState,
 	surveysData: typeof defaultSurveysState,
 	orgsData: typeof defaultOrgsState,
 	accountData: typeof defaultAccountState,

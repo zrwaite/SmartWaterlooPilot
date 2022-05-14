@@ -1,2 +1,2 @@
-export {default} from "./AccoutParent";
-export type {AccountChildProps} from "./AccoutParent";
+export {default} from "./AccountParent";
+export type {AccountChildProps} from "./AccountParent";

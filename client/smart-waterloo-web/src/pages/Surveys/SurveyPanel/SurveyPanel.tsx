@@ -14,6 +14,7 @@ const SurveyPanel = (props: SurveyPanelProps) => {
 	const colorDiv = {backgroundColor: "#7DE05A"};
 	const greyText = {color: "#848484"};
 	const navigate = useNavigate();
+	console.log(props.completed);
 	return (
 		<div onClick={() => navigate(`/survey/${props.id}/${props.isOrg?`org/${props.orgId}`:"user"}`)} className={`surveyPanel ${props.completed?"activeSurveyPanel":""}`}>
 			<div className="surveyPanelHeader">
