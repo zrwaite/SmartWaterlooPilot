@@ -25,7 +25,7 @@ const Surveys = (props: AccountChildProps) => {
 						displayedSurveys.set?(
 							displayedSurveys.surveys.map((survey, i) => {
 								return (
-								<SurveyPanel numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} index={i} key={i} {...survey}/>
+								<SurveyPanel {...props} key={i} survey={survey}/>
 							);})
 						):[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
 					}

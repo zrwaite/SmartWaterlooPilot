@@ -29,7 +29,7 @@ const ProgramPanel = (props: ProgramPanelProps) => {
 				{signedUp?<div  style={colorDiv} className={"programBubble"}>Signed Up</div>:<div></div>}
 			</div>
 			<h6>{props.program.name}</h6>
-			<p style={greyText}>For Ages {props.program.age_group}</p>
+			<p style={greyText}>For Ages {props.program.min_age} - {props.program.max_age}</p>
 			<p style={greyText}>{startDate}, {props.program.start_time} to {endDate}, {props.program.end_time}</p>
 		</div>
 	)
