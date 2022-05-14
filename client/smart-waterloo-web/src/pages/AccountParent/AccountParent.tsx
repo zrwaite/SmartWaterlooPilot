@@ -22,7 +22,7 @@ import CreateProgram from "../CreateProgram";
 import CreateSurvey from "../CreateSurvey";
 import { USE_WEB3 } from "../../data/dataConstants";
 import { getMySurveys } from "../../data/parse/parseMySurveys";
-import { parseCompletedSurveys } from "../../data/parse/parseDone";
+import { parseCompletedSurveys, parseSignedUpPrograms } from "../../data/parse/parseDone";
 
 interface AccountParentProps {
 	org: boolean;
@@ -120,6 +120,7 @@ const AccountParent = (props:AccountParentProps) => {
 
 	const parseData = async () => {
 		parseCompletedSurveys(surveysData.surveys, accountData.account.surveys);
+		parseSignedUpPrograms(programsData.programs, accountData.account.programs);
 	}
 
 
@@ -142,13 +143,17 @@ const AccountParent = (props:AccountParentProps) => {
 		let orgIds:string[] = [];
 		programsData.programs.forEach(program => orgIds.push(program.org));
 		getSetOrgNames(orgIds);
-		setMySurveysData({set: true, surveys: getMySurveys(surveysData.surveys, orgIds)});
 		setDataCalled2(true);
 	}
 
-	if (accountData.set && surveysData.set && !dataParsed) {
+	if (accountData.set && surveysData.set && programsData.set && !dataParsed) {
 		parseData();
 		setDataParsed(true);
+		let programOrgIds:string[] = [];
+		programsData.programs.forEach(program => {
+			if (program.signedUp) programOrgIds.push(program.org)
+		});
+		setMySurveysData({set: true, surveys: getMySurveys(surveysData.surveys, programOrgIds)});
 	}
 
 	const allDataObj = {

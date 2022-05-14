@@ -268,7 +268,7 @@ const web3GetProgramsData = async (): Promise<{
         start_date: event[2],
         end_date: event[3],
         category: event[4],
-        signed_up: false,
+        signedUp: false,
       };
       events.push(eventFormat);
     }
@@ -405,7 +405,7 @@ const web3GetOrgProgramsData = async (
         start_date: event[2],
         end_date: event[3],
         category: event[4],
-        signed_up: false,
+        signedUp: false,
       };
       events.push(eventFormat);
     }

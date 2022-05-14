@@ -39,7 +39,7 @@ export default function MetaMask(props: MetaMaskProps) {
 				setDisabled(false);
 			}
 		}
-	}, [accounts]);
+	}, [accounts, CONNECTED_TEXT]);
 
 	//handles changes in accounts
 	useEffect(() => {

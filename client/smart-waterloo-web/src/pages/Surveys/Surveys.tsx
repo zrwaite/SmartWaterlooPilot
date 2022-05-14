@@ -22,8 +22,8 @@ const Surveys = (props: AccountChildProps) => {
 						<button onClick={() => navigate(`/createsurvey/${props.orgId}`)}  className={"blackButton addSurveyButton"}>Add Survey</button>
 					</div>:null}
 					{
-						props.surveysData.set?(
-							props.surveysData.surveys.map((survey, i) => {
+						props.mySurveysData.set?(
+							props.mySurveysData.surveys.map((survey, i) => {
 								return (
 								<SurveyPanel numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} index={i} key={i} {...survey}/>
 							);})

@@ -7,7 +7,6 @@ interface MaybeLinkProps {
 
 const MaybeLink = (props:MaybeLinkProps) => {
 	const isLink = isUrl(props.text);
-	console.log(isLink);
 	return (<>
 		{isLink?
 			<a className={props.className} href={props.text} target="_blank" rel="noreferrer">{props.text}</a>:

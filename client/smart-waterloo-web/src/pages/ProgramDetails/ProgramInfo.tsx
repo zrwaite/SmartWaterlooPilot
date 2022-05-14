@@ -15,7 +15,7 @@ interface ProgramData {
 	end_time: string;
 	questions: Question[];
 	category: string;
-	signed_up: boolean;
+	signedUp: boolean;
 	description: string;
 	location: string
 	image: string;

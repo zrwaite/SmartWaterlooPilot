@@ -11,7 +11,7 @@ interface defaultProgramType {
 	start_time: string,
 	end_time: string,
 	category: string,
-	signed_up: boolean,
+	signedUp: boolean,
 	description: string,
 	min_age: string,
 	max_age: string,
@@ -34,7 +34,7 @@ const defaultProgram:defaultProgramType = {
 	max_age: "",
 	location: "",
 	category: "",
-	signed_up: false,
+	signedUp: false,
 	description: "",
 	image: "",
 	attendees: "",
@@ -63,4 +63,4 @@ interface postProgramType {
 type postProgramReturn = {success:boolean, errors: string[], programId:string}
 
 export { defaultProgram, defaultProgramsState}
-export type {postProgramType, postProgramReturn}
+export type {postProgramType, postProgramReturn, defaultProgramType}

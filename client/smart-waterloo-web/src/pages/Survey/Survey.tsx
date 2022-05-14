@@ -24,8 +24,6 @@ const defaultSurveyData:SurveyDataType = {
 }
 const defaultAnswers:string[] = [];
 const Survey = (props: AccountChildProps) => {
-	// const cookies = new Cookies()
-	// cookies.set("back", "/surveys/");
 	const { id, orgId } = useParams();
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
@@ -63,7 +61,6 @@ const Survey = (props: AccountChildProps) => {
 		
 	}
 	if (notFound || !id) return <NotFound />
-	// const completed = (props.accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
 
 
 	const incrementMap = (map: Map<string, number>, key:string) => {
