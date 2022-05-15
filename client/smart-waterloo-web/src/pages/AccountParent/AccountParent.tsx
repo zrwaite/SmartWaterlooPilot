@@ -23,6 +23,7 @@ import CreateSurvey from "../CreateSurvey";
 import { USE_WEB3 } from "../../data/dataConstants";
 import { getMySurveys } from "../../data/parse/parseMySurveys";
 import { parseCompletedSurveys, parseSignedUpPrograms } from "../../data/parse/parseDone";
+import { sortProgramsByDate } from "../../data/parse/sorting";
 
 interface AccountParentProps {
 	org: boolean;
@@ -147,6 +148,7 @@ const AccountParent = (props:AccountParentProps) => {
 	}
 
 	if (accountData.set && surveysData.set && programsData.set && !dataParsed) {
+		sortProgramsByDate(programsData.programs);
 		parseData();
 		setDataParsed(true);
 		let programOrgIds:string[] = [];
