@@ -79,7 +79,7 @@ const Survey = (props: AccountChildProps) => {
 					{progress?(
 						<div className={"surveyForm"}>
 							{owner&&(
-								<UserInfo userInfo={surveyData.survey.user_info}/>
+								<UserInfo dataParsed={props.doneParsing} userInfo={surveyData.survey.user_info}/>
 							)}
 							{surveyData.survey.questions.map((question, i) => {
 								return <SurveyQuestion owner={owner} key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>

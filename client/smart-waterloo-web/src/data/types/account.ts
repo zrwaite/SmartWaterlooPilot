@@ -29,6 +29,9 @@ const getDefaultUserInfoLists = (): {
 	heights: Map<string, number>,
 	weights: Map<string, number>,
 	household_compositions: Map<string, number>,
+	household_incomes: Map<string, number>,
+	primary_languages: Map<string, number>,
+	secondary_languages: Map<string, number>,
 } => {
 	return{
 		religions: new Map(),
@@ -41,6 +44,9 @@ const getDefaultUserInfoLists = (): {
 		heights: new Map(),
 		weights: new Map(),
 		household_compositions: new Map(),
+		household_incomes: new Map(),
+		primary_languages: new Map(),
+		secondary_languages: new Map(),
 	} as const;
 }
 

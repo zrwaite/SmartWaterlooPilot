@@ -129,7 +129,7 @@ const ProgramsDetails = (props: AccountChildProps) => {
 							</div>
 							<ProgramInfo {...programData.program} org={props.org} orgName={orgName}/>
 							{props.org&&(
-								<UserInfo userInfo={programData.program.user_info}/>
+								<UserInfo dataParsed={props.doneParsing} userInfo={programData.program.user_info}/>
 							)}
 							<div className="DesktopPanelNoBorder">
 								{!signedUp&&programData.program.questions.map((question, i) => {

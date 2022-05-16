@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { getDefaultUserInfoLists, userInfo } from '../../data/types/account';
 interface UserInfoProps {
-	userInfo:userInfo[]
+	userInfo:userInfo[],
+	dataParsed: boolean
 }
 
 const UserInfo = (props: UserInfoProps) => {
@@ -9,40 +10,38 @@ const UserInfo = (props: UserInfoProps) => {
 	const [userInfoParsed, setUserInfoParsed] = useState(false);
 
 	const incrementMap = (map: Map<string, number>, key:string) => {
-		let numValues = map.get(key)||0;
-		map.set(key, numValues+1);
+		if (key!=="" && key!==null && key!==undefined){
+			let numValues = map.get(key)||0;
+			map.set(key, numValues+1);
+		}
 	}
+
+	let dataList = [
+		{name:"Ages", key: "ages", singleKey:"age"} as const,
+		{name:"Genders", key: "genders", singleKey:"gender"} as const,
+		{name:"Religions", key: "religions", singleKey:"religion"} as const,
+		{name:"Sexual Orientations", key: "sexualities", singleKey:"sexuality"} as const,
+		{name:"Races", key: "races", singleKey:"race"} as const,
+		{name:"Cities", key: "cities", singleKey:"city"} as const,
+		{name:"Grades", key: "grades", singleKey:"grade"} as const,
+		{name:"Heights", key: "heights", singleKey:"height"} as const,
+		{name:"Weights", key: "weights", singleKey:"weight"} as const,
+		{name:"Household Compositions", key: "household_compositions", singleKey:"household_composition"} as const,
+		{name:"Household Income", key: "household_incomes", singleKey:"household_income"} as const,
+		{name:"Primary Language", key: "primary_languages", singleKey:"primary_language"} as const,
+		{name:"Secondary Language", key: "secondary_languages", singleKey:"secondary_language"} as const,
+	] as const;
 	
 	const parseUserInfoLists = () => {
 		const newUserInfoLists = getDefaultUserInfoLists();
 		props.userInfo.forEach((user) => {
-			const age = Math.floor(((new Date()).getTime() - (new Date(user.birth_day)).getTime()) / (1000*60*60*24*365));
-			incrementMap(newUserInfoLists.ages, age.toString());
-			incrementMap(newUserInfoLists.genders, user.gender);
-			incrementMap(newUserInfoLists.races, user.race);
-			incrementMap(newUserInfoLists.religions, user.religion);
-			incrementMap(newUserInfoLists.sexualities, user.sexuality);
-			incrementMap(newUserInfoLists.cities, user.city);
-			incrementMap(newUserInfoLists.grades, user.grade);
-			incrementMap(newUserInfoLists.heights, user.height);
-			incrementMap(newUserInfoLists.weights, user.weight);
-			incrementMap(newUserInfoLists.household_compositions, user.household_composition);
+			dataList.forEach((data) => {
+				incrementMap(newUserInfoLists[data.key], user[data.singleKey]);
+			});
 		})
 		setUserInfoLists(newUserInfoLists);
 	}
 
-	let dataList = [
-		{name:"Ages", key: "ages"} as const,
-		{name:"Genders", key: "genders"} as const,
-		{name:"Religions", key: "religions"} as const,
-		{name:"Sexual Orientations", key: "sexualities"} as const,
-		{name:"Races", key: "races"} as const,
-		{name:"Cities", key: "cities"} as const,
-		{name:"Grades", key: "grades"} as const,
-		{name:"Heights", key: "heights"} as const,
-		{name:"Weights", key: "weights"} as const,
-		{name:"Household Compositions", key: "household_compositions"} as const,
-	] as const;
 
 	let componentsList:JSX.Element[] = [];
 
@@ -52,14 +51,17 @@ const UserInfo = (props: UserInfoProps) => {
 			elementList.push(<p>{key}: {value}</p>)
 		)
 		componentsList.push(<div key={componentsList.length}>
-			<p>{data.name}</p>
-			<ul>
-				{elementList.map((component, key) => <li key={key}>{component}</li>)}
-			</ul>
+			{elementList.length?(<>
+				<p>{data.name}</p>
+				<ul>
+					{elementList.map((component, key) => <li key={key}>{component}</li>)}
+				</ul>
+			</>):null
+			}
 		</div>)
 	})
-
-	if (!userInfoParsed) {
+	console.log(props.userInfo);
+	if (!userInfoParsed && props.dataParsed) {
 		parseUserInfoLists();
 		setUserInfoParsed(true);	
 	}
