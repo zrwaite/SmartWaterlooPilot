@@ -40,6 +40,11 @@ const CreateSurvey = (props:AccountChildProps) => {
         setStandardInputs(partialInput);
     }
 
+	const submitEnabled = (
+		standardInputs.name!=="" &&
+		standardInputs.description!==""
+	)
+
 	const greyText = {color: "grey"};
 	const link = {cursor: "pointer"};
 	const tryPostSurvey = async () => {
@@ -76,7 +81,7 @@ const CreateSurvey = (props:AccountChildProps) => {
 					</div>
 					<QuestionController questions={questionInputs} setQuestions={setQuestionInputs}/>
 					<div className={"horizontal"}>
-						<button onClick={canSubmit?tryPostSurvey:undefined} className={`addQuestionButton ${canSubmit?"blackButton":"disabledButton"}`}>Submit Survey!</button>
+						<button onClick={canSubmit&&submitEnabled?tryPostSurvey:undefined} className={`addQuestionButton ${canSubmit&&submitEnabled?"blackButton":"disabledButton"}`}>Submit Survey!</button>
 					</div>
 				</div>
 			</div>	

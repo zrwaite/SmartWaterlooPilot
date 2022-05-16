@@ -17,6 +17,7 @@ interface SurveyDataType extends postSurveyType {
 	length: string;
 	org: string;
 	user_info: userInfo[];
+	completed: boolean;
 }
 const defaultSurvey:SurveyDataType = {
 	id: "",
@@ -24,6 +25,7 @@ const defaultSurvey:SurveyDataType = {
 	org: "",
 	length: "",
 	description: "",
+	completed: false,
 	questions: [],
 	user_info: []
 }

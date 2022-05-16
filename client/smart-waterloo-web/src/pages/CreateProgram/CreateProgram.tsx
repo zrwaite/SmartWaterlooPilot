@@ -64,7 +64,6 @@ const CreateProgram = (props:AccountChildProps) => {
 
 	let complete = true;
 	const values = Object.values(state.inputs);
-	// const keys = Object.keys(state.inputs);
 	for (let i=0; i<values.length; i++) {
 		if (values[i] === "") {
 			complete = false
