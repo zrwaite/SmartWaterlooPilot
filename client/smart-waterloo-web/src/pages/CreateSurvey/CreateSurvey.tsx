@@ -24,10 +24,14 @@ const DefaultStandardInput = {
 }
 const DefaultQuestionArray:Question[] = [];
 
-const CreateSurvey = (props:AccountChildProps) => {
+interface CreateSurveyProps extends AccountChildProps {
+	feedback: boolean;
+}
+
+const CreateSurvey = (props:CreateSurveyProps) => {
 	const navigate = useNavigate();
 	let {mobile} = useContext(MobileContext);
-	let {orgId} = useParams();
+	let {orgId, eventId} = useParams();
 	const [standardInputs, setStandardInputs] = useState(DefaultStandardInput);
 	const [questionInputs, setQuestionInputs] = useState(DefaultQuestionArray);
 	const [canSubmit, setCanSubmit] = useState(true);
@@ -50,7 +54,7 @@ const CreateSurvey = (props:AccountChildProps) => {
 	const tryPostSurvey = async () => {
 		setCanSubmit(false);
 		if (orgId) {
-			let {success, errors, surveyId} = await postSurvey(orgId, {name: standardInputs.name, description: standardInputs.description, questions: questionInputs}) 
+			let {success, errors, surveyId} = await postSurvey(orgId, {eventId: eventId, feedback: props.feedback, name: standardInputs.name, description: standardInputs.description, questions: questionInputs}) 
 			if (success && surveyId) forceNavigate(`/survey/${surveyId}/org/${orgId}`);
 			else {
 				alert(JSON.stringify(errors));

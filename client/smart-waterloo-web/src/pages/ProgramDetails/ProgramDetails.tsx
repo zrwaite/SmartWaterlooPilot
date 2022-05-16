@@ -9,7 +9,7 @@ import "./ProgramDetails.css";
 import ProgramInfo from "./ProgramInfo";
 import ClipLoader from "react-spinners/ClipLoader";
 import NotFound from "../NotFound";
-import {useParams, useNavigate} from "react-router-dom";
+import {useParams, useNavigate, Link} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultProgram } from '../../data/types/programs';
 import cookies from "../../modules/cookies";
@@ -138,6 +138,9 @@ const ProgramsDetails = (props: AccountChildProps) => {
 								{props.org?null:(
 									<p className={complete||signedUp?bottomButtonClass:"disabledButton"} onClick={canSubmit&&complete?trySignUp:undefined}>{buttonText}</p>
 								)}
+							</div>
+							<div>
+								<Link to={`/createfeedbacksurvey/${orgId}/${programData.program.id}`} >Create Feedback Survey</Link>
 							</div>
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>

@@ -27,6 +27,7 @@ import { sortProgramsByDate } from "../../data/parse/sorting";
 import { parseAge, parseUserInfo } from "../../data/parse/parseUser";
 
 interface AccountParentProps {
+	feedback?: boolean;
 	org: boolean;
 	page: "createprogram"|"createsurvey"|"dashboard"|"programs"|"data"|"surveys"|"addorgmember"|"programdetails"|"survey"|"orgdata"|"userdata"|"useranswers"|"useraccess"
 }
@@ -201,7 +202,7 @@ const AccountParent = (props:AccountParentProps) => {
 			{props.page==="useranswers"&&<UserAnswers {...allDataObj}/>}
 			{props.page==="useraccess"&&<UserAccess {...allDataObj}/>}
 			{props.page==="createprogram"&&<CreateProgram {...allDataObj}/>}
-			{props.page==="createsurvey"&&<CreateSurvey {...allDataObj}/>}
+			{props.page==="createsurvey"&&<CreateSurvey feedback={props.feedback?true:false} {...allDataObj}/>}
 		</>
     );
 }

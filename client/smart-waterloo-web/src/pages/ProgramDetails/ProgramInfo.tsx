@@ -41,7 +41,6 @@ const ProgramInfo = (props: ProgramData): any => {
 				{
 					props.org&&(<>
 						<p>Signed Up: {props.attendees}</p>
-						
 					</>)
 				}
 			</div>
