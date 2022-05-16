@@ -24,6 +24,7 @@ import { USE_WEB3 } from "../../data/dataConstants";
 import { getMySurveys } from "../../data/parse/parseMySurveys";
 import { parseCompletedSurveys, parseSignedUpPrograms } from "../../data/parse/parseDone";
 import { sortProgramsByDate } from "../../data/parse/sorting";
+import { parseAge } from "../../data/parse/parseUser";
 
 interface AccountParentProps {
 	org: boolean;
@@ -149,6 +150,7 @@ const AccountParent = (props:AccountParentProps) => {
 
 	if (accountData.set && surveysData.set && programsData.set && !dataParsed) {
 		sortProgramsByDate(programsData.programs);
+		parseAge(accountData.account);
 		parseData();
 		setDataParsed(true);
 		let programOrgIds:string[] = [];

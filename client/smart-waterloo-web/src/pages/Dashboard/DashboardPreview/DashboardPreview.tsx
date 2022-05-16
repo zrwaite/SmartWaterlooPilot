@@ -48,8 +48,11 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 		case "programs": panelList = (<> 
 			{
 				props.programsData.set?
-				props.programsData.programs.map((program, i) => {return (
-					i<5?<ProgramPanel {...props} orgId={props.orgId} key={i} program={program}/>:null
+				props.programsData.programs.map((program, i) => {
+					let validAge = (props.accountData.account.age < program.max_age) && (props.accountData.account.age > program.min_age)
+					return (
+					(props.org || validAge)&&
+					<ProgramPanel {...props} orgId={props.orgId} key={i} program={program}/>
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}

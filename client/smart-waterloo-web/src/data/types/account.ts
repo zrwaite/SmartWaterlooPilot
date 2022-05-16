@@ -15,6 +15,7 @@ interface userInfo {
 	city: string
 	heard: string,
 	contact: string,
+	age: string;
 }
 
 const getDefaultUserInfoLists = (): {
@@ -70,6 +71,7 @@ const defaultAccount:defaultAccountType = {
 	heard: "",
 	contact: "",
 	height: "",
+	age: "",
 	weight: "",
 	answers: [],
 	surveys: [],
@@ -105,4 +107,4 @@ interface postUserType {
 	contact_info: string
 }
 export {getDefaultUserInfoLists, defaultAccountState, defaultAccount}
-export type {postUserType, userInfo}
+export type { postUserType, userInfo, defaultAccountType }

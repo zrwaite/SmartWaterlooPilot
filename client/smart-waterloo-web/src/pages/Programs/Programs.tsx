@@ -24,8 +24,10 @@ const Programs = (props: AccountChildProps) => {
 					{
 						props.programsData.set ?
 							props.programsData.programs.map((program, i) => {
-								return (
-									<ProgramPanel {...props} orgId={props.orgId} key={i} program={program} />
+									let validAge = (props.accountData.account.age < program.max_age) && (props.accountData.account.age > program.min_age)
+									return (
+									(props.org || validAge)&&
+									<ProgramPanel {...props} orgId={props.orgId} key={i} program={program}/>
 								);
 							}):
 							[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })

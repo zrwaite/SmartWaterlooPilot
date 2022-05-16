@@ -210,6 +210,7 @@ const web3GetSurveysData = async (): Promise<{
         city: member[17],
         heard: member[15],
         contact: member[16],
+        age: ""
       };
       userInfos.push(_userInfo);
     }
@@ -339,6 +340,7 @@ const web3GetOrgSurveysData = async (
         city: member[17],
         heard: member[15],
         contact: member[16],
+        age: ""
       };
       userInfos.push(_userInfo);
     }
@@ -538,6 +540,7 @@ const web3GetBasicOrgData = async (
       city: member[17],
       heard: member[15],
       contact: member[16],
+      age: ""
     };
     console.log(_userInfo);
     userInfos.push(_userInfo);
