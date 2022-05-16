@@ -10,7 +10,6 @@ const UserData = (props:AccountChildProps) => {
 	avatar_string varchar(100),
 	*/
 	const account = props.accountData.account
-	const age = Math.floor(((new Date()).getTime() - (new Date(account.birth_day)).getTime()) / (1000*60*60*24*365));
 	return (
 		<>
 			<Navbar root={false}/>
@@ -18,7 +17,7 @@ const UserData = (props:AccountChildProps) => {
 				<div className={mobile? "":"DesktopPanel"}>
 					{mobile?<h6>Your Data</h6>:<h4 className={"UserDataHeader"}>Your Data</h4>}
 					<p>Nickname: {account.nickname}</p>
-					<p>Age: {age}</p>
+					<p>Age: {account.age}</p>
 					<p>Gender: {account.gender}</p>
 					<p>Race: {account.race}</p>
 					<p>Religion: {account.religion}</p>
