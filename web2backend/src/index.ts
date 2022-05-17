@@ -21,7 +21,7 @@ if (process.env.PRODUCTION && DEV) throw Error("PRODUCTION AND DEV MODE INVALID!
 app.listen(port, () => {
 	// initializeDB();
 	// forceQuery();
-	// migrateDB(1); 
+	migrateDB(1); 
 	if (DEV) console.log("DEV MODE - DEVELOPMENT ONLY");
 	else console.log("PROD MODE - PRODUCTION ONLY");
 	console.log(`Listening on port ${port}`);
