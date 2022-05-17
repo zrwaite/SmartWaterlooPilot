@@ -21,7 +21,6 @@ env.config();
 // utilities
 app.use(cors());
 app.use(express.json());
-app.use(devCheck);
 
 
 // routes
@@ -31,6 +30,10 @@ import authRoute from "./routes/auth.route";
 import functionRoute from "./routes/function.route";
 
 // api routing
+app.use("/api", devCheck);
+app.use("/auth", devCheck);
+app.use("/function", devCheck);
+
 app.use("/api", apiRoute);
 app.use("/auth", authRoute);
 app.use("/function", functionRoute);
