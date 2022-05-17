@@ -45,7 +45,7 @@ const QuestionController = (props: QuestionControllerProps) => {
                                                 return (
                                                     <div className={"horizontal"} key={i2}>
                                                         <div className={"choiceNumber"}>{i2+1}</div>
-                                                        <input name={`choice${i}-${i2}`} className={"createEventInput"} placeholder={`Choice ${i2}`} value={choice} onChange={(e) => handleAnswerInputChange(e,i,i2, props.questions, props.setQuestions)} />
+                                                        <input name={`choice${i}-${i2}`} className={"createEventInput"} placeholder={`Choice ${i2 + 1}`} value={choice} onChange={(e) => handleAnswerInputChange(e,i,i2, props.questions, props.setQuestions)} />
                                                         <button onClick={() => removeChoice(i, i2, props.questions, props.setQuestions)} className={"blackButton"}>Remove</button>
                                                     </div>
                                                 )

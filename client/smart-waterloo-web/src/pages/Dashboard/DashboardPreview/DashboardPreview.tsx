@@ -56,6 +56,10 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
+			{!props.org?
+			<div className={"dashboardPreviewAddSection"}>
+				<button onClick={() => navigate(`/surveys/user`)} className={"blackButton dashboardPreviewAddButton"}>View All</button>
+			</div>:null}
 			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate(`/createprogram/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Program</button>
 			</div>:null}
@@ -71,7 +75,11 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 					i<5?<SurveyPanel {...props} key={i} survey={survey}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
-			} 
+			}
+			{!props.org?
+			<div className={"dashboardPreviewAddSection"}>
+				<button onClick={() => navigate(`/surveys/user`)} className={"blackButton dashboardPreviewAddButton"}>View More</button>
+			</div> : null}
 			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate(`/createsurvey/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Survey</button>
 			</div>:null}
@@ -87,6 +95,10 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 				}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
+			{!props.org?
+			<div className={"dashboardPreviewAddSection"}>
+				<button onClick={() => navigate(`/programs/user`)} className={"blackButton dashboardPreviewAddButton"}>View More</button>
+			</div> : null}
 		</>
 		);
 	}
