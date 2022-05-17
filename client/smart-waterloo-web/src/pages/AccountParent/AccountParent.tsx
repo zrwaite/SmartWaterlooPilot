@@ -27,6 +27,7 @@ import { sortProgramsByDate } from "../../data/parse/sorting";
 import { parseAge, parseUserInfo } from "../../data/parse/parseUser";
 
 interface AccountParentProps {
+	feedback?: boolean;
 	org: boolean;
 	page: "createprogram"|"createsurvey"|"dashboard"|"programs"|"data"|"surveys"|"addorgmember"|"programdetails"|"survey"|"orgdata"|"userdata"|"useranswers"|"useraccess"
 }
@@ -165,7 +166,8 @@ const AccountParent = (props:AccountParentProps) => {
 		programsData.programs.forEach(program => {
 			if (program.signedUp) programOrgIds.push(program.org)
 		});
-		setMySurveysData({set: true, surveys: getMySurveys(surveysData.surveys, programOrgIds)});
+		let signedUpProgramIds =  programsData.programs.filter(program => program.signedUp).map(program => program.id);
+		setMySurveysData({set: true, surveys: getMySurveys(surveysData.surveys, programOrgIds, signedUpProgramIds)});
 		setDoneParsing(true);
 	}
 
@@ -201,7 +203,7 @@ const AccountParent = (props:AccountParentProps) => {
 			{props.page==="useranswers"&&<UserAnswers {...allDataObj}/>}
 			{props.page==="useraccess"&&<UserAccess {...allDataObj}/>}
 			{props.page==="createprogram"&&<CreateProgram {...allDataObj}/>}
-			{props.page==="createsurvey"&&<CreateSurvey {...allDataObj}/>}
+			{props.page==="createsurvey"&&<CreateSurvey feedback={props.feedback?true:false} {...allDataObj}/>}
 		</>
     );
 }

@@ -16,6 +16,7 @@ const postProgram = {
 	...baseProgram,
 }
 const getProgramParams = {
+	feedback_survey_id: "",
 	id: "",
 	attendees: "",
 	user_info: []

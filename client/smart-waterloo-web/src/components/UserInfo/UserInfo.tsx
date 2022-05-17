@@ -66,10 +66,10 @@ const UserInfo = (props: UserInfoProps) => {
 		setUserInfoParsed(true);	
 	}
 	return (
-		<>
+		<div style={{padding: "1rem"}}>
 			<h6>User info:</h6>
 			{componentsList}
-		</>
+		</div>
 	);
 }
 

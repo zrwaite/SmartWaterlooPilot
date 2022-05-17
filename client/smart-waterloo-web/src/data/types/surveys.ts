@@ -10,12 +10,15 @@ interface Question {
 interface postSurveyType {
 	name: string;
 	description: string;
+	feedback: boolean;
+	eventId?: string;
 	questions: Question[];
 }
 interface SurveyDataType extends postSurveyType {
 	id: string;
 	length: string;
 	org: string;
+	program_id: number|null;
 	user_info: userInfo[];
 	completed: boolean;
 }
@@ -25,6 +28,8 @@ const defaultSurvey:SurveyDataType = {
 	org: "",
 	length: "",
 	description: "",
+	program_id: null,
+	feedback: false,
 	completed: false,
 	questions: [],
 	user_info: []

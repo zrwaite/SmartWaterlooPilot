@@ -19,6 +19,7 @@ interface defaultProgramType {
 	image: string,
 	questions: Question[],
 	attendees: string,
+	feedback_survey_id: number|null,
 	user_info: userInfo[]
 }
 const defaultProgram:defaultProgramType = {
@@ -38,6 +39,7 @@ const defaultProgram:defaultProgramType = {
 	description: "",
 	image: "",
 	attendees: "",
+	feedback_survey_id: null,
 	questions: [],
 	user_info: []
 }

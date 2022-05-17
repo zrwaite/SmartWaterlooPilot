@@ -173,15 +173,17 @@ const postEventWeb3 = async (id: string, inputData: postProgramType, questions: 
 
 const postSurvey = async (
   id: string,
-  inputData: postSurveyType
+  inputData: postSurveyType,
+  programId: string|null|undefined
 ): Promise<postSurveyReturn> => {
+  if (programId === undefined) programId = null;
   return USE_WEB3
-    ? await web3PostSurvey(id, inputData)
-    : await web2PostSurvey(id, inputData);
+    ? await web3PostSurvey(id, inputData, programId)
+    : await web2PostSurvey(id, inputData, programId);
 };
 
 //web3 implementation of creating a survey
-const web3PostSurvey = async (id: string, inputData: postSurveyType): Promise<postSurveyReturn> => {
+const web3PostSurvey = async (id: string, inputData: postSurveyType, programId: string|null): Promise<postSurveyReturn> => {
   if (!USE_WEB3 || !web3 || !userContract || !surveyContract) return {success: false, errors: ["web3 method called in web2 mode"], surveyId: ""};
   web3.eth.defaultAccount = await getUserAddress();
   try {

@@ -1,7 +1,7 @@
 import cookies from "../../modules/cookies"
 import { addQueryParam } from "../../modules/other";
 import { DEV } from "../dataConstants";
-const baseURL = DEV?"https://valley-tmp-nation-editions.trycloudflare.com":"https://swrdataplayground.ca";
+const baseURL = DEV?"https://price-wv-subjects-configuring.trycloudflare.com":"https://swrdataplayground.ca";
 
 
 const httpReq = async (url:string, method:string = "GET", params:any = {}) => {

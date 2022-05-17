@@ -19,6 +19,8 @@ const defaultSurveyData:SurveyDataType = {
 	description: "- - - - - - - - -",
 	length: "? mins",
 	completed: false,
+	feedback: false,
+	program_id: null,
 	questions: [],
 	user_info: []
 }
