@@ -177,7 +177,13 @@ const updateFeedbackSurveyId = async (feedbackSurveyId: number, eventId: number)
 			"UPDATE programs SET feedback_survey_id = $1 WHERE id = $2",
 			[feedbackSurveyId, eventId]
 		);
-		if (result && result.rowCount) status = 201;
+		if (result && result.rowCount) {
+			result = await pool.query(
+				"UPDATE surveys SET program_id = $1 WHERE id = $2",
+				[eventId, feedbackSurveyId]
+			);
+			if (result && result.rowCount) status = 201;
+		}
 		else status = 404;
 	} catch (e) {
 		console.log(e);

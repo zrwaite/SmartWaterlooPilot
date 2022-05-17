@@ -13,7 +13,7 @@ if (process.env.ENV_INSTALLED !== "Yep") throw Error("Environment variable not p
 
 
 const forceQuery = async () => {
-	console.log(await pool.query("TRUNCATE TABLE version; INSERT INTO version (number) values (0)"));
+	// console.log(await pool.query("SELECT * from surveys;"));
 }
 
 if (process.env.PRODUCTION && DEV) throw Error("PRODUCTION AND DEV MODE INVALID!");

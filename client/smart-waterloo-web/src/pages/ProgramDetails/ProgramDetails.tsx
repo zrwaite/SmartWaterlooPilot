@@ -139,9 +139,14 @@ const ProgramsDetails = (props: AccountChildProps) => {
 									<p className={complete||signedUp?bottomButtonClass:"disabledButton"} onClick={canSubmit&&complete?trySignUp:undefined}>{buttonText}</p>
 								)}
 							</div>
-							<div>
-								<Link to={`/createfeedbacksurvey/${orgId}/${programData.program.id}`} >Create Feedback Survey</Link>
-							</div>
+							{props.org&&
+								<div style={{padding: "1rem"}}>
+									{programData.program.feedback_survey_id?
+										<Link to={`/survey/${programData.program.feedback_survey_id}/org/${orgId}`} >View Feedback Survey Results</Link>:
+										<Link to={`/createfeedbacksurvey/${orgId}/${programData.program.id}`} >Create Feedback Survey</Link>
+									}
+								</div>
+							}
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>
 						)
