@@ -30,7 +30,7 @@ const DashboardPreviewHeader = (props:DashboardPreviewHeaderProps) => {
 	)
 }
 interface DashboardPreviewProps extends AccountChildProps {
-	name: "data"|"programs"|"surveys"
+	name: "data"|"programs"|"surveys"|"upcoming"
 }
 const DashboardPreview = (props:DashboardPreviewProps) => {
 	const navigate = useNavigate();
@@ -48,8 +48,11 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 		case "programs": panelList = (<> 
 			{
 				props.programsData.set?
-				props.programsData.programs.map((program, i) => {return (
-					i<5?<ProgramPanel {...props} orgId={props.orgId} key={i} program={program}/>:null
+				props.programsData.programs.map((program, i) => {
+					let validAge = (props.accountData.account.age < program.max_age) && (props.accountData.account.age > program.min_age)
+					return (
+					(props.org || validAge)&&
+					<ProgramPanel {...props} orgId={props.orgId} key={i} program={program}/>
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			}
@@ -59,13 +62,13 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 		</>
 		); break; case "data": panelList = (<DataPanels {...props} />
 		);break; case "surveys": 
+			const displayedSurveys = props.org?props.surveysData:props.mySurveysData;
 			panelList = (<>
 			{
-				props.surveysData.set?
-				props.surveysData.surveys.map((survey, i) => {
-					const surveyCompleted = props.accountData.account.surveys.includes(parseInt(survey.id));
+				displayedSurveys.set?
+				displayedSurveys.surveys.map((survey, i) => {
 					return (
-					i<5?<SurveyPanel completed={surveyCompleted} numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} key={i} index={i} {...survey}/>:null
+					i<5?<SurveyPanel {...props} key={i} survey={survey}/>:null
 				);}):
 				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
 			} 
@@ -74,15 +77,18 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			</div>:null}
 		</>
 		); break; 
-		// case "upcoming": panelList = (<>
-		// 	{examplePrograms.map((program, i) => {
-		// 		if (program.signed_up) return (
-		// 			numUpcoming<5?<ProgramPanel index={i} key={i} upcoming={true} {...program}/>:null
-		// 		);
-		// 		else return null;
-		// 	})}
-		// </>
-		// );
+		case "upcoming": panelList = (<>
+			{
+				props.programsData.set?
+				props.programsData.programs.map((program, i) => {
+					if (program.signedUp) return (
+					<ProgramPanel {...props} orgId={props.orgId} key={i} program={program}/>)
+					else return null;
+				}):
+				[1,2,3,4,5].map((_, i) => {return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div>})
+			}
+		</>
+		);
 	}
 	return (
 		<div className={"panel"}>

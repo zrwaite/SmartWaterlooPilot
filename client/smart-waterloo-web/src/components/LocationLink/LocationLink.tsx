@@ -1,18 +1,18 @@
 import { isUrl } from "../../modules/other"
 
-interface MaybeLinkProps {
+interface LocationLinkProps {
 	text: string,
 	className: string
 }
 
-const MaybeLink = (props:MaybeLinkProps) => {
+const LocationLink = (props:LocationLinkProps) => {
 	const isLink = isUrl(props.text);
 	return (<>
 		{isLink?
 			<a className={props.className} href={props.text} target="_blank" rel="noreferrer">{props.text}</a>:
-			<p className={props.className}>{props.text}</p>
+			<a className={props.className} href={"https://www.google.com/maps/place/" + props.text} target="_blank" rel="noreferrer">{props.text}</a>
 		}
 	</>)
 }
 
-export default MaybeLink
+export default LocationLink

@@ -5,6 +5,7 @@ import {orgData, postOrg as postOrgObj} from "../database/orgData";
 import {programData, postProgram as postProgramObj} from "../database/programData";
 import {surveyKeys, questionKeys, questionValues, surveyValues, postSurveyValues, postQuestionValues, answerKeys, answerValues} from "../database/surveyData";
 import {verifyOrgVerification} from "./getDatabaseInfo";
+import { updateFeedbackSurveyId } from "./putDatabaseInfo";
 interface PostDataReturn {
 	success: boolean,
 	errors: string[],
@@ -132,7 +133,7 @@ const postProgram = async (programParams:any[]) => {
 	return {success: success, errors: errors, id: 0}
 }
 
-const postSurvey = async (surveyParams:(surveyValues)) => {
+const postSurvey = async (surveyParams:(surveyValues), programId:number) => {
 	let errors: string[] = [];
 	let success = true;
 	let questionIds = [];
@@ -148,10 +149,15 @@ const postSurvey = async (surveyParams:(surveyValues)) => {
 		}
 	}
 	if (success) {
-		let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`];
+		let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`, surveyParams[4]];
 		if (questionIds.length) postSurveyArray[3] = `{"${questionIds.join("\", \"")}"}`;
 		let {errors:postEntryErrors, success:postEntrySuccess, id} = await postEntryArrays({keys:surveyKeys, values: postSurveyArray}, "surveys");
-		return {success: success && postEntrySuccess, errors: [...errors, ...postEntryErrors], id: id};
+		if (postEntrySuccess && programId) {
+			let {status:programUpdateStatus } = await updateFeedbackSurveyId(id, programId)
+			if (programUpdateStatus==201) return {success: true , errors: [], id: id};
+			else return {success: false, errors: ["failed to update program"], id: id}
+		}
+		return {success: postEntrySuccess , errors: [...errors, ...postEntryErrors], id: id};
 	}
 	return {success: success, errors: errors, id: 0}
 }

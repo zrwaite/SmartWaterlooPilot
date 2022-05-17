@@ -21,8 +21,13 @@ import UserAccess from "../UserAccess";
 import CreateProgram from "../CreateProgram";
 import CreateSurvey from "../CreateSurvey";
 import { USE_WEB3 } from "../../data/dataConstants";
+import { getMySurveys } from "../../data/parse/parseMySurveys";
+import { parseCompletedSurveys, parseSignedUpPrograms } from "../../data/parse/parseDone";
+import { sortProgramsByDate } from "../../data/parse/sorting";
+import { parseAge, parseUserInfo } from "../../data/parse/parseUser";
 
 interface AccountParentProps {
+	feedback?: boolean;
 	org: boolean;
 	page: "createprogram"|"createsurvey"|"dashboard"|"programs"|"data"|"surveys"|"addorgmember"|"programdetails"|"survey"|"orgdata"|"userdata"|"useranswers"|"useraccess"
 }
@@ -32,12 +37,15 @@ const AccountParent = (props:AccountParentProps) => {
 	const [orgsData, setOrgsData] = useState(defaultOrgsState);
 	const [programsData, setProgramData] = useState(defaultProgramsState);
 	const [surveysData, setSurveyData] = useState(defaultSurveysState);
+	const [mySurveysData, setMySurveysData] = useState(defaultSurveysState);
 	const [accountData, setAccountData] = useState(defaultAccountState);
 	const [orgNames, setOrgNames] = useState(defaultOrgNamesState);
 	const [verified, setVerified] = useState(false);
+	const [doneParsing, setDoneParsing] = useState(false);
 
 	const [dataCalled, setDataCalled] = useState(false);
 	const [dataCalled2, setDataCalled2] = useState(false);
+	const [dataParsed, setDataParsed] = useState(false);
 	const [settingsOpen, setSettingsOpen] = useState(false);
 	const [orgsModalOpen, setOrgsModalOpen] = useState(false);
 	const { orgId } = useParams();
@@ -48,6 +56,7 @@ const AccountParent = (props:AccountParentProps) => {
 		navigate("/"); //navigate wasn't working, so i did it the old fashioned way
 		return <></>;
 	}
+
 
 	const getSetOrgsData = async () => {
 		let {success, orgs, errors} = await getUserOrgs(cookies.get("userId"));
@@ -105,15 +114,18 @@ const AccountParent = (props:AccountParentProps) => {
 		else setSurveyData({surveys: surveys, set: true })
 	}
 
-	const getSetOrgNames = async () => {
-		let orgIds:string[] = [];
-		programsData.programs.forEach(program => orgIds.push(program.org));
+	const getSetOrgNames = async (orgIds:string[]) => {
 		let {success, names, errors} = await getOrgsNames(orgIds);
 		if (!success) {
 			alert(JSON.stringify(errors));
 			console.log("Not successful getting org names");
 		}
 		else setOrgNames({names: names, set: true })
+	}
+
+	const parseData = async () => {
+		parseCompletedSurveys(surveysData.surveys, accountData.account.surveys);
+		parseSignedUpPrograms(programsData.programs, accountData.account.programs);
 	}
 
 
@@ -133,22 +145,46 @@ const AccountParent = (props:AccountParentProps) => {
 	}
 
 	if (programsData.set && !dataCalled2) {
-		getSetOrgNames();
+		let orgIds:string[] = [];
+		programsData.programs.forEach(program => orgIds.push(program.org));
+		getSetOrgNames(orgIds);
 		setDataCalled2(true);
 	}
 
+	if (accountData.set && surveysData.set && programsData.set && !dataParsed) {
+		sortProgramsByDate(programsData.programs);
+		parseAge(accountData.account);
+		if (props.org) {
+			[...programsData.programs, ...surveysData.surveys].forEach((infoParent) => {
+				console.log(infoParent.user_info);
+				parseUserInfo(infoParent.user_info);
+			})
+		}
+		parseData();
+		setDataParsed(true);
+		let programOrgIds:string[] = [];
+		programsData.programs.forEach(program => {
+			if (program.signedUp) programOrgIds.push(program.org)
+		});
+		let signedUpProgramIds =  programsData.programs.filter(program => program.signedUp).map(program => program.id);
+		setMySurveysData({set: true, surveys: getMySurveys(surveysData.surveys, programOrgIds, signedUpProgramIds)});
+		setDoneParsing(true);
+	}
+
 	const allDataObj = {
-		programsData: programsData,
-		accountData: accountData,
-		surveysData: surveysData,
-		orgsData: orgsData,
+		programsData,
+		accountData,
+		surveysData,
+		mySurveysData,
+		orgsData,
 		org: props.org,
-		orgId: orgId,
-		verified: verified,
+		orgId,
+		verified,
 		openSettings: () => setSettingsOpen(true),
 		openOrgsModal: () => setOrgsModalOpen(true),
-		orgNames: orgNames,
-		page: props.page
+		orgNames,
+		page: props.page,
+		doneParsing
 	}
 
 	return (
@@ -167,7 +203,7 @@ const AccountParent = (props:AccountParentProps) => {
 			{props.page==="useranswers"&&<UserAnswers {...allDataObj}/>}
 			{props.page==="useraccess"&&<UserAccess {...allDataObj}/>}
 			{props.page==="createprogram"&&<CreateProgram {...allDataObj}/>}
-			{props.page==="createsurvey"&&<CreateSurvey {...allDataObj}/>}
+			{props.page==="createsurvey"&&<CreateSurvey feedback={props.feedback?true:false} {...allDataObj}/>}
 		</>
     );
 }
@@ -177,6 +213,7 @@ interface AccountChildProps {
 	openSettings: () => void;
 	openOrgsModal: () => void;
 	programsData: typeof defaultProgramsState,
+	mySurveysData: typeof defaultSurveysState,
 	surveysData: typeof defaultSurveysState,
 	orgsData: typeof defaultOrgsState,
 	accountData: typeof defaultAccountState,
@@ -184,6 +221,7 @@ interface AccountChildProps {
 	org: boolean,
 	orgId: string|undefined,
 	verified: boolean,
+	doneParsing: boolean
 }
 export type {AccountChildProps}
 

@@ -25,10 +25,10 @@ const Dashboard = (props: AccountChildProps) => {
 			)}
 			<div className={"besideAside"}> 
 				<div className={mobile?"dashboardFlexContainer":"dashboardGridContainer"}> 
-					{/* {props.org?null:<DashboardPreview {...prop.accountData} org={props.org} {...programsData} {...surveysData} name="upcoming"/>} */}
 					<DashboardPreview {...props} name="data"/>
 					<DashboardPreview {...props} name="programs"/>
 					<DashboardPreview {...props} name="surveys"/>
+					{props.org?null:<DashboardPreview {...props} name="upcoming"/>}
 				</div>
 			</div>
 		</>

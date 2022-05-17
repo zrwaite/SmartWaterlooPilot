@@ -1,6 +1,7 @@
 import ticketImg from "../../../images/ticket.png";
 import dataImg from "../../../images/data.png";
 import clipboardImg from "../../../images/clipboard.png";
+import calendarImg from "../../../images/calender.png";
 
 const DashboardPreviewData =  {
 	programs: {
@@ -29,6 +30,15 @@ const DashboardPreviewData =  {
 		iconName: "clipboard",
 		color: "green",
 		link: "/surveys/"
+	},
+	upcoming: {
+		title: "My Programs",
+		short: "Your signed up programs",
+		long: "See all the programs you have signed up for.",
+		icon: calendarImg,
+		iconName: "calendar",
+		color: "pink",
+		link: "/programs/"
 	}
 }
 export default DashboardPreviewData;

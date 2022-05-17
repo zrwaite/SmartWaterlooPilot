@@ -202,7 +202,7 @@ const web3GetSurveysData = async (): Promise<{
         grade: member[4],
         postal_code: member[5],
         household_income: member[11],
-        num_family_members: member[12],
+        household_composition: member[12],
         height: member[3],
         weight: member[18],
         primary_language: member[13],
@@ -210,6 +210,7 @@ const web3GetSurveysData = async (): Promise<{
         city: member[17],
         heard: member[15],
         contact: member[16],
+        age: ""
       };
       userInfos.push(_userInfo);
     }
@@ -221,6 +222,9 @@ const web3GetSurveysData = async (): Promise<{
       description: surveyInfo[3],
       questions: questions,
       user_info: userInfos,
+      completed: false,
+      feedback: false,
+      program_id: null
     };
     surveys.push(survey);
   }
@@ -267,7 +271,7 @@ const web3GetProgramsData = async (): Promise<{
         start_date: event[2],
         end_date: event[3],
         category: event[4],
-        signed_up: false,
+        signedUp: false,
       };
       events.push(eventFormat);
     }
@@ -330,7 +334,7 @@ const web3GetOrgSurveysData = async (
         grade: member[4],
         postal_code: member[5],
         household_income: member[11],
-        num_family_members: member[12],
+        household_composition: member[12],
         height: member[3],
         weight: member[18],
         primary_language: member[13],
@@ -338,6 +342,7 @@ const web3GetOrgSurveysData = async (
         city: member[17],
         heard: member[15],
         contact: member[16],
+        age: ""
       };
       userInfos.push(_userInfo);
     }
@@ -349,6 +354,9 @@ const web3GetOrgSurveysData = async (
       description: surveyInfo[3],
       questions: questions,
       user_info: userInfos,
+      completed: false,
+      feedback: false,
+      program_id: null
     };
     surveys.push(survey);
   }
@@ -403,7 +411,7 @@ const web3GetOrgProgramsData = async (
         start_date: event[2],
         end_date: event[3],
         category: event[4],
-        signed_up: false,
+        signedUp: false,
       };
       events.push(eventFormat);
     }
@@ -528,7 +536,7 @@ const web3GetBasicOrgData = async (
       grade: member[4],
       postal_code: member[5],
       household_income: member[11],
-      num_family_members: member[12],
+      household_composition: member[12],
       height: member[3],
       weight: member[18],
       primary_language: member[13],
@@ -536,6 +544,7 @@ const web3GetBasicOrgData = async (
       city: member[17],
       heard: member[15],
       contact: member[16],
+      age: ""
     };
     console.log(_userInfo);
     userInfos.push(_userInfo);

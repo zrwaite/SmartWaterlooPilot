@@ -79,11 +79,23 @@ export default class surveyController {
 	static async postSurvey(req: Request, res: Response) {
 		let result:responseInterface = new response(); //Create new standardized response
 		let {success:surveySuccess, params, errors:surveyErrors} = getBodyParams(req, surveyKeys);
+		let programId = 0;
 		if (surveySuccess) {
 			let orgId = params[0];
 			let {success: tokenSuccess, error: tokenError} = await verifyOrgMember(orgId, getToken(req.headers));
 			if (tokenSuccess ){
 				let surveyParams = params as surveyValues;
+				let feedback = surveyParams[4]?true:false;
+				if (feedback) {
+					let {success:programIdSuccess, params:programIdParams, errors:programIdErrors} = getBodyParams(req, ["program_id"]);
+					if (programIdSuccess) {
+						try {
+							programId = parseInt(programIdParams[0]);
+						} catch (e) {
+							result.errors.push("Invalid program_id");
+						}
+					} else result.errors.push("Missing program_id");
+				}
 				let questions:questionValues[] = [];
 				if (isSurveyArray(params)){
 					surveyParams[3].forEach((question, i) => {
@@ -97,7 +109,7 @@ export default class surveyController {
 					surveyParams[3] = questions;
 				} else result.errors.push(`invalid survey type`);
 				if (result.errors.length === 0){
-					let postResult = await postSurvey(surveyParams);
+					let postResult = await postSurvey(surveyParams, programId);
 					if (postResult.success) {
 						result.status = 201;
 						result.success = true;

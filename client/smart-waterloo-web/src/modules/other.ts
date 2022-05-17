@@ -16,4 +16,9 @@ const isUrl = (maybeUrl: string) => {
 	return url.protocol === "http:" || url.protocol === "https:";
 };
 
-export {looseIncludes, isUrl};
+const addQueryParam = (url:string, key:string, value:string) => {
+	if (url.includes("?"))return `${url}&${key}=${value}`;
+	else return `${url}?${key}=${value}`;
+}
+
+export {looseIncludes, isUrl, addQueryParam};

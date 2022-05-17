@@ -1,7 +1,7 @@
 import React from 'react';
 import "./ProgramDetails.css";
 import {Question} from "../../data/types/surveys";
-import MaybeLink from '../../components/MaybeLink';
+import LocationLink from '../../components/LocationLink';
 
 interface ProgramData {
 	name: string;
@@ -15,7 +15,7 @@ interface ProgramData {
 	end_time: string;
 	questions: Question[];
 	category: string;
-	signed_up: boolean;
+	signedUp: boolean;
 	description: string;
 	location: string
 	image: string;
@@ -26,7 +26,6 @@ interface ProgramData {
 
 //Todo: Change name to organization name
 const ProgramInfo = (props: ProgramData): any => {
-	console.log(props);
 	const startDate = (new Date(props.start_date)).toDateString();
 	const endDate = (new Date(props.end_date)).toDateString();
 	return (
@@ -34,7 +33,7 @@ const ProgramInfo = (props: ProgramData): any => {
 			<div className="DesktopPanelNoBorder">
 				<p className="lightbluetext">{props.orgName} | {props.category}</p> 
 				<h5 className="programTitle">{props.name}</h5>
-				<MaybeLink className={"programTitle"} text={props.location}/>
+				<LocationLink className={"programTitle"} text={props.location}/>
 				<p className="greytext">For Ages {props.min_age}-{props.max_age}</p>
 				<p className="greytext">{startDate}, {props.start_time} to {endDate}, {props.end_time}</p>
 				<br></br>
@@ -42,7 +41,6 @@ const ProgramInfo = (props: ProgramData): any => {
 				{
 					props.org&&(<>
 						<p>Signed Up: {props.attendees}</p>
-						
 					</>)
 				}
 			</div>

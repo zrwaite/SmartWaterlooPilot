@@ -9,15 +9,15 @@ import "./ProgramDetails.css";
 import ProgramInfo from "./ProgramInfo";
 import ClipLoader from "react-spinners/ClipLoader";
 import NotFound from "../NotFound";
-import {useParams, useNavigate} from "react-router-dom";
+import {useParams, useNavigate, Link} from "react-router-dom";
 import Modal from "react-modal";
 import { defaultProgram } from '../../data/types/programs';
 import cookies from "../../modules/cookies";
 import { AccountChildProps } from '../AccountParent';
-import { getDefaultUserInfoLists } from '../../data/types/account';
 import SurveyQuestion from "../../components/AnswerInput";
 import {submitProgram} from "../../data/postData";
 import { forceNavigate } from '../../modules/navigate';
+import UserInfo from '../../components/UserInfo';
 
 Modal.setAppElement("#root");
 
@@ -29,8 +29,6 @@ const ProgramsDetails = (props: AccountChildProps) => {
 	const [signupButtonClass, setClass] = useState("signupButton");
 	const [bottomButtonClass, setBottomClass] = useState("bottomButton");
 	const [isOpen, setIsOpen] = React.useState(false);
-	const [userInfoLists, setUserInfoLists] = useState(getDefaultUserInfoLists())
-	const [userInfoParsed, setUserInfoParsed] = useState(false);
 
 	// const program = programDataRaw.find(program => program.id === id);
 	const [notFound, setNotFound] = useState(false);
@@ -76,34 +74,12 @@ const ProgramsDetails = (props: AccountChildProps) => {
 	}
 
 
-	const incrementMap = (map: Map<string, number>, key:string) => {
-		let numValues = map.get(key)||0;
-		map.set(key, numValues+1);
-	}
-
-	const parseUserInfoLists = () => {
-		const newUserInfoLists = getDefaultUserInfoLists();
-		console.log(programData.program.user_info);
-		programData.program.user_info.forEach((user) => {
-			const age = Math.floor(((new Date()).getTime() - (new Date(user.birth_day)).getTime()) / (1000*60*60*24*365));
-			incrementMap(newUserInfoLists.ages, age.toString());
-			incrementMap(newUserInfoLists.genders, user.gender);
-			incrementMap(newUserInfoLists.races, user.race);
-			incrementMap(newUserInfoLists.religions, user.religion);
-			incrementMap(newUserInfoLists.sexualities, user.sexuality);
-		})
-		setUserInfoLists(newUserInfoLists);
-	}
-
 	if (!programData.set) {
 		if (props.programsData.set){
 			const newProgramData = props.programsData.programs.find(program => program.id == id)
 			if (newProgramData) setProgramData({program: newProgramData, set: true})
 			else setNotFound(true);
 		}
-	} else if (!userInfoParsed) {
-		parseUserInfoLists();
-		setUserInfoParsed(true);	
 	}
 
 	if (answers.length !== programData.program.questions.length) {
@@ -112,34 +88,7 @@ const ProgramsDetails = (props: AccountChildProps) => {
 		setAnswers(newAnswers);
 	}
 
-	let userInfoComponents:{
-		religions: JSX.Element[]
-		genders: JSX.Element[]
-		races: JSX.Element[]
-		ages: JSX.Element[]
-		sexualities: JSX.Element[]
-	}= {
-		religions: [],
-		genders: [],
-		races: [],
-		ages: [],
-		sexualities: []
-	}
-	userInfoLists.ages.forEach((value, key) => {
-		userInfoComponents.ages.push(<p>{key}: {value}</p>)
-	})
-	userInfoLists.religions.forEach((value, key) => {
-		userInfoComponents.religions.push(<p>{key}: {value}</p>)
-	})
-	userInfoLists.sexualities.forEach((value, key) => {
-		userInfoComponents.sexualities.push(<p>{key}: {value}</p>)
-	})
-	userInfoLists.races.forEach((value, key) => {
-		userInfoComponents.races.push(<p>{key}: {value}</p>)
-	})
-	userInfoLists.genders.forEach((value, key) => {
-		userInfoComponents.genders.push(<p>{key}: {value}</p>)
-	})
+	
 
 	const complete = answers.every((answer, i) => (answer!=="")||programData.program.questions[i].optional);
 
@@ -180,29 +129,7 @@ const ProgramsDetails = (props: AccountChildProps) => {
 							</div>
 							<ProgramInfo {...programData.program} org={props.org} orgName={orgName}/>
 							{props.org&&(
-								<>
-								<h6>User info:</h6>
-								<p>Ages:</p>
-								<ul>
-									{userInfoComponents.ages.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								<p>Genders:</p>
-								<ul>
-									{userInfoComponents.genders.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								<p>Religions:</p>
-								<ul>
-									{userInfoComponents.religions.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								<p>Sexual Orientations:</p>
-								<ul>
-									{userInfoComponents.sexualities.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								<p>Races:</p>
-								<ul>
-									{userInfoComponents.races.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								</>
+								<UserInfo dataParsed={props.doneParsing} userInfo={programData.program.user_info}/>
 							)}
 							<div className="DesktopPanelNoBorder">
 								{!signedUp&&programData.program.questions.map((question, i) => {
@@ -212,6 +139,14 @@ const ProgramsDetails = (props: AccountChildProps) => {
 									<p className={complete||signedUp?bottomButtonClass:"disabledButton"} onClick={canSubmit&&complete?trySignUp:undefined}>{buttonText}</p>
 								)}
 							</div>
+							{props.org&&
+								<div style={{padding: "1rem"}}>
+									{programData.program.feedback_survey_id?
+										<Link to={`/survey/${programData.program.feedback_survey_id}/org/${orgId}`} >View Feedback Survey Results</Link>:
+										<Link to={`/createfeedbacksurvey/${orgId}/${programData.program.id}`} >Create Feedback Survey</Link>
+									}
+								</div>
+							}
 						</>):(
 							<div className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={200} /> </div>
 						)

@@ -11,7 +11,7 @@ interface defaultProgramType {
 	start_time: string,
 	end_time: string,
 	category: string,
-	signed_up: boolean,
+	signedUp: boolean,
 	description: string,
 	min_age: string,
 	max_age: string,
@@ -19,6 +19,7 @@ interface defaultProgramType {
 	image: string,
 	questions: Question[],
 	attendees: string,
+	feedback_survey_id: number|null,
 	user_info: userInfo[]
 }
 const defaultProgram:defaultProgramType = {
@@ -34,10 +35,11 @@ const defaultProgram:defaultProgramType = {
 	max_age: "",
 	location: "",
 	category: "",
-	signed_up: false,
+	signedUp: false,
 	description: "",
 	image: "",
 	attendees: "",
+	feedback_survey_id: null,
 	questions: [],
 	user_info: []
 }
@@ -63,4 +65,4 @@ interface postProgramType {
 type postProgramReturn = {success:boolean, errors: string[], programId:string}
 
 export { defaultProgram, defaultProgramsState}
-export type {postProgramType, postProgramReturn}
+export type {postProgramType, postProgramReturn, defaultProgramType}

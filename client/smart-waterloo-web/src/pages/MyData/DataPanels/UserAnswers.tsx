@@ -7,7 +7,6 @@ const UserAnswersPanel = (props: AccountChildProps) => {
 	// const mobile = useContext(MobileContext);
 	const navigate = useNavigate();
 	let userSurveys = props.surveysData.surveys.filter((survey) => looseIncludes(props.accountData.account.surveys, survey.id))
-	console.log(userSurveys);
 	return (
 		<div onClick={() => navigate("/useranswers")} className={`dataPanel`}>
 			<div className="dataPanelInfo">

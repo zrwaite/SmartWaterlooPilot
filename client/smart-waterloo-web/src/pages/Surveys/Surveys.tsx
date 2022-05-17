@@ -8,11 +8,9 @@ import cookies from "../../modules/cookies";
 import {AccountChildProps} from "../AccountParent"
 const Surveys = (props: AccountChildProps) => {
 	const {mobile} = useContext(MobileContext);
-	// const {address} = useContext(AddressContext);
 	const navigate = useNavigate();
 	cookies.set("back", `/dashboard/${props.org?`org/${props.orgId}`:"user"}`);
-	
-
+	const displayedSurveys = props.org?props.surveysData:props.mySurveysData;
 	return (
 		<div className={"besideAside"}>
 			<div className={mobile? "":"fullScreenPanel"}>
@@ -24,11 +22,10 @@ const Surveys = (props: AccountChildProps) => {
 						<button onClick={() => navigate(`/createsurvey/${props.orgId}`)}  className={"blackButton addSurveyButton"}>Add Survey</button>
 					</div>:null}
 					{
-						props.surveysData.set?(
-							props.surveysData.surveys.map((survey, i) => {
-								const surveyCompleted = props.accountData.account.surveys.includes(parseInt(survey.id));
+						displayedSurveys.set?(
+							displayedSurveys.surveys.map((survey, i) => {
 								return (
-								<SurveyPanel completed={surveyCompleted} numQuestions={survey.questions.length} orgId={props.orgId} isOrg={props.org} index={i} key={i} {...survey}/>
+								<SurveyPanel {...props} key={i} survey={survey}/>
 							);})
 						):[1, 2, 3, 4, 5].map((_,i) => { return <div key={i} className={"center"}> <ClipLoader color={"black"} loading={true} css={""} size={100} /> </div> })
 					}

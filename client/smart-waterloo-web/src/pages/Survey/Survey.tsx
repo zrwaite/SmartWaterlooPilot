@@ -9,8 +9,8 @@ import SurveyQuestion from "../../components/AnswerInput";
 import NotFound from "../NotFound";
 import { submitSurvey } from "../../data/postData";
 import { AccountChildProps } from "../AccountParent";
-import { getDefaultUserInfoLists } from "../../data/types/account";
 import { forceNavigate } from "../../modules/navigate";
+import UserInfo from "../../components/UserInfo";
 
 const defaultSurveyData:SurveyDataType = {
 	id: "",
@@ -18,13 +18,14 @@ const defaultSurveyData:SurveyDataType = {
 	org: "- - - - - - - - -",
 	description: "- - - - - - - - -",
 	length: "? mins",
+	completed: false,
+	feedback: false,
+	program_id: null,
 	questions: [],
 	user_info: []
 }
 const defaultAnswers:string[] = [];
 const Survey = (props: AccountChildProps) => {
-	// const cookies = new Cookies()
-	// cookies.set("back", "/surveys/");
 	const { id, orgId } = useParams();
 	const {mobile} = useContext(MobileContext);
 	const [progress, setProgess] = useState(false);
@@ -41,8 +42,6 @@ const Survey = (props: AccountChildProps) => {
 	}
 	const [notFound, setNotFound] = useState(false);
 	const [surveyData, setSurveyData] = useState({survey: defaultSurveyData, set: false});
-	const [userInfoParsed, setUserInfoParsed] = useState(false);
-	const [userInfoLists, setUserInfoLists] = useState(getDefaultUserInfoLists())
 
 	if (answers.length !== surveyData.survey.questions.length) {
 		const newAnswers = [];
@@ -62,55 +61,7 @@ const Survey = (props: AccountChildProps) => {
 		
 	}
 	if (notFound || !id) return <NotFound />
-	const completed = (props.accountData.account.surveys.includes(parseInt(surveyData.survey.id)))
 
-
-	const incrementMap = (map: Map<string, number>, key:string) => {
-		let numValues = map.get(key)||0;
-		map.set(key, numValues+1);
-	}
-
-	const parseUserInfoLists = () => {
-		const newUserInfoLists = getDefaultUserInfoLists();
-		surveyData.survey.user_info.forEach((user) => {
-			const age = Math.floor(((new Date()).getTime() - (new Date(user.birth_day)).getTime()) / (1000*60*60*24*365));
-			incrementMap(newUserInfoLists.ages, age.toString());
-			incrementMap(newUserInfoLists.genders, user.gender);
-			incrementMap(newUserInfoLists.races, user.race);
-			incrementMap(newUserInfoLists.religions, user.religion);
-			incrementMap(newUserInfoLists.sexualities, user.sexuality);
-		})
-		setUserInfoLists(newUserInfoLists);
-	}
-
-	let userInfoComponents:{
-		religions: JSX.Element[]
-		genders: JSX.Element[]
-		races: JSX.Element[]
-		ages: JSX.Element[]
-		sexualities: JSX.Element[]
-	}= {
-		religions: [],
-		genders: [],
-		races: [],
-		ages: [],
-		sexualities: []
-	}
-	userInfoLists.ages.forEach((value, key) => {
-		userInfoComponents.ages.push(<p>{key}: {value}</p>)
-	})
-	userInfoLists.religions.forEach((value, key) => {
-		userInfoComponents.religions.push(<p>{key}: {value}</p>)
-	})
-	userInfoLists.sexualities.forEach((value, key) => {
-		userInfoComponents.sexualities.push(<p>{key}: {value}</p>)
-	})
-	userInfoLists.races.forEach((value, key) => {
-		userInfoComponents.races.push(<p>{key}: {value}</p>)
-	})
-	userInfoLists.genders.forEach((value, key) => {
-		userInfoComponents.genders.push(<p>{key}: {value}</p>)
-	})
 
 	if (!surveyData.set) {
 		if (props.surveysData.set) {
@@ -118,10 +69,7 @@ const Survey = (props: AccountChildProps) => {
 			if (newSurveyData) setSurveyData({survey: newSurveyData, set: true});
 			else setNotFound(true);
 		}
-	} else if (!userInfoParsed){
-		parseUserInfoLists();
-		setUserInfoParsed(true);
-	}
+	} 
 
 	return ( 
 		<>
@@ -133,36 +81,14 @@ const Survey = (props: AccountChildProps) => {
 					{progress?(
 						<div className={"surveyForm"}>
 							{owner&&(
-								<>
-								<h6>User info:</h6>
-								<p>Ages:</p>
-								<ul>
-									{userInfoComponents.ages.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								<p>Genders:</p>
-								<ul>
-									{userInfoComponents.genders.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								<p>Religions:</p>
-								<ul>
-									{userInfoComponents.religions.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								<p>Sexual Orientations:</p>
-								<ul>
-									{userInfoComponents.sexualities.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								<p>Races:</p>
-								<ul>
-									{userInfoComponents.races.map((component, key) => <li key={key}>{component}</li>)}
-								</ul>
-								</>
+								<UserInfo dataParsed={props.doneParsing} userInfo={surveyData.survey.user_info}/>
 							)}
 							{surveyData.survey.questions.map((question, i) => {
 								return <SurveyQuestion owner={owner} key={i} index={i} answer={answers[i]} setParentAnswer={childSetAnswer} {...question}/>
 							})}
 							{!owner&&<button onClick={complete&&canSubmit?trySubmitSurvey:()=>{}} className={complete&&canSubmit?"blackButton surveyButton": "disabledButton surveyButton"}>Submit</button>}
 						</div>
-						):<SurveyLanding set={surveyData.set} completed={completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
+						):<SurveyLanding set={surveyData.set} completed={surveyData.survey.completed} org={props.org} owner={owner} description={surveyData.survey.description} setParentProgress={childSetProgress}/>}
 				</div>
 			</div>
 		</>

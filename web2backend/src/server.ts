@@ -3,7 +3,8 @@ import cors from "cors";
 import env from "dotenv";
 import rateLimit from "express-rate-limit";
 import {response} from "./models/response"; //Created pre-formatted uniform response
-import {Request, Response} from "express"; //Typescript types
+import {Request, Response } from "express"; //Typescript types
+import { devCheck } from "./modules/devCheck";
 
 const frontendLimiter = rateLimit({
 	windowMs: 5 * 60 * 1000,
@@ -20,7 +21,7 @@ env.config();
 // utilities
 app.use(cors());
 app.use(express.json());
-// app.use((req, res, next)=>{console.log("request"); next();});
+app.use(devCheck);
 
 
 // routes
