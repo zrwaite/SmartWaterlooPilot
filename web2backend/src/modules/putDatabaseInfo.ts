@@ -169,4 +169,20 @@ const updateOrgVerification = async (businessNumber: string) => {
 	return {status: status, result: result};
 }
 
-export {updateOrgVerification, updateAnswersArray, addUserProgram, addUserSurvey, addUserOrg, addOrgMember};
+const updateFeedbackSurveyId = async (feedbackSurveyId: number, eventId: number) => {
+	let result;
+	let status = 400;
+	try {
+		result = await pool.query(
+			"UPDATE programs SET feedback_survey_id = $1 WHERE id = $2",
+			[feedbackSurveyId, eventId]
+		);
+		if (result && result.rowCount) status = 201;
+		else status = 404;
+	} catch (e) {
+		console.log(e);
+	}
+	return {status: status, result: result};
+}
+
+export {updateFeedbackSurveyId, updateOrgVerification, updateAnswersArray, addUserProgram, addUserSurvey, addUserOrg, addOrgMember};
