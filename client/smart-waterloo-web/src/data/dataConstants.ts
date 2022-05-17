@@ -7,7 +7,7 @@ import {AbiItem} from "web3-utils";
 import Web3 from "web3";
 
 const USE_WEB3 = false;
-const DEV = true;
+const DEV = false;
 
 let web3 = USE_WEB3?(new Web3(Web3.givenProvider)):null;
 
