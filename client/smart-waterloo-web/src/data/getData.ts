@@ -223,7 +223,8 @@ const web3GetSurveysData = async (): Promise<{
       questions: questions,
       user_info: userInfos,
       completed: false,
-      feedback: false
+      feedback: false,
+      program_id: null
     };
     surveys.push(survey);
   }
@@ -354,7 +355,8 @@ const web3GetOrgSurveysData = async (
       questions: questions,
       user_info: userInfos,
       completed: false,
-      feedback: false
+      feedback: false,
+      program_id: null
     };
     surveys.push(survey);
   }

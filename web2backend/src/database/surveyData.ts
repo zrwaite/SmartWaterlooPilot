@@ -8,7 +8,7 @@ type postQuestionValues = [string, string, string, number];
 const questionValuesTypes = [["string"], ["string"], ["object","undefined"], ['number']] as const;
 
 const surveyKeys = ["org", "name", "description", "questions", "feedback"] as const;
-const getSurveyKeys = [...surveyKeys, "id", "user_info"] as const;
+const getSurveyKeys = [...surveyKeys, "id", "user_info", "program_id"] as const;
 type surveyValues = [string, string, string, questionValues[], boolean];
 type postSurveyValues = [string, string, string, string, boolean];
 const surveyValuesTypes = [["string"], ["string"], ["string"], ["object"], ["boolean"]] as const;

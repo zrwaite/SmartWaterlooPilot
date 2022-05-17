@@ -166,7 +166,8 @@ const AccountParent = (props:AccountParentProps) => {
 		programsData.programs.forEach(program => {
 			if (program.signedUp) programOrgIds.push(program.org)
 		});
-		setMySurveysData({set: true, surveys: getMySurveys(surveysData.surveys, programOrgIds)});
+		let signedUpProgramIds =  programsData.programs.filter(program => program.signedUp).map(program => program.id);
+		setMySurveysData({set: true, surveys: getMySurveys(surveysData.surveys, programOrgIds, signedUpProgramIds)});
 		setDoneParsing(true);
 	}
 

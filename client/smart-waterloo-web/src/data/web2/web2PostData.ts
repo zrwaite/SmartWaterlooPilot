@@ -20,12 +20,14 @@ const web2PostAnswers = async (questionIds: string[], answers: string[]):Promise
 	} else return ["request failure"];
 }
 
-const web2PostSurvey = async (id:string, inputData:postSurveyType):Promise<postSurveyReturn> => {
+const web2PostSurvey = async (id:string, inputData:postSurveyType, programId: string|null):Promise<postSurveyReturn> => {
 	let json = await httpReq("/api/survey/", "POST", {
 		org: id,
 		name: inputData.name,
 		description: inputData.description,
-		questions: inputData.questions
+		questions: inputData.questions,
+		feedback: inputData.feedback,
+		program_id: programId
 	})
 	if (json) {
 		let response = JSON.parse(json);

@@ -31,7 +31,7 @@ interface CreateSurveyProps extends AccountChildProps {
 const CreateSurvey = (props:CreateSurveyProps) => {
 	const navigate = useNavigate();
 	let {mobile} = useContext(MobileContext);
-	let {orgId, eventId} = useParams();
+	let {orgId, programId} = useParams();
 	const [standardInputs, setStandardInputs] = useState(DefaultStandardInput);
 	const [questionInputs, setQuestionInputs] = useState(DefaultQuestionArray);
 	const [canSubmit, setCanSubmit] = useState(true);
@@ -52,9 +52,10 @@ const CreateSurvey = (props:CreateSurveyProps) => {
 	const greyText = {color: "grey"};
 	const link = {cursor: "pointer"};
 	const tryPostSurvey = async () => {
+		if (!programId && props.feedback) alert("ProgramId required for feedback survey");
 		setCanSubmit(false);
 		if (orgId) {
-			let {success, errors, surveyId} = await postSurvey(orgId, {eventId: eventId, feedback: props.feedback, name: standardInputs.name, description: standardInputs.description, questions: questionInputs}) 
+			let {success, errors, surveyId} = await postSurvey(orgId, {feedback: props.feedback, name: standardInputs.name, description: standardInputs.description, questions: questionInputs}, programId) 
 			if (success && surveyId) forceNavigate(`/survey/${surveyId}/org/${orgId}`);
 			else {
 				alert(JSON.stringify(errors));
