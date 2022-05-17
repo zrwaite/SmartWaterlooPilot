@@ -148,7 +148,7 @@ const postSurvey = async (surveyParams:(surveyValues)) => {
 		}
 	}
 	if (success) {
-		let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`];
+		let postSurveyArray:postSurveyValues = [surveyParams[0], surveyParams[1], surveyParams[2], `{}`, surveyParams[4]];
 		if (questionIds.length) postSurveyArray[3] = `{"${questionIds.join("\", \"")}"}`;
 		let {errors:postEntryErrors, success:postEntrySuccess, id} = await postEntryArrays({keys:surveyKeys, values: postSurveyArray}, "surveys");
 		return {success: success && postEntrySuccess, errors: [...errors, ...postEntryErrors], id: id};

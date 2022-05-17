@@ -1,11 +1,17 @@
-drop table answers;
-drop table programs;
-drop table surveys;
-drop table questions;
-drop table orgs;
-drop table users;
-drop table user_info;
-drop type type_choices;
+-- drop table answers;
+-- drop table programs;
+-- drop table surveys;
+-- drop table questions;
+-- drop table orgs;
+-- drop table users;
+-- drop table user_info;
+-- drop type type_choices;
+-- CREATE TYPE type_choices AS ENUM ('text', 'mc');
+
+create table if not exists "version"(
+	id serial primary key,
+	number int not null
+);
 
 CREATE TABLE IF NOT EXISTS "user_info"(
 	id SERIAL primary key,
@@ -65,7 +71,6 @@ create table if not exists "surveys"(
 	user_info int[] default array[]::integer[]
 );
 
-CREATE TYPE type_choices AS ENUM ('text', 'mc');
 
 create table if not exists "questions"(
 	id serial primary key,
