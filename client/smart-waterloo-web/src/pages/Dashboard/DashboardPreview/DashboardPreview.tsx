@@ -58,7 +58,7 @@ const DashboardPreview = (props:DashboardPreviewProps) => {
 			}
 			{!props.org?
 			<div className={"dashboardPreviewAddSection"}>
-				<button onClick={() => navigate(`/surveys/user`)} className={"blackButton dashboardPreviewAddButton"}>View All</button>
+				<button onClick={() => navigate(`/programs/user`)} className={"blackButton dashboardPreviewAddButton"}>View All</button>
 			</div>:null}
 			{props.org && props.verified?<div className={"dashboardPreviewAddSection"}>
 				<button onClick={() => navigate(`/createprogram/${props.orgId}`)} className={"blackButton dashboardPreviewAddButton"}>Add Program</button>
