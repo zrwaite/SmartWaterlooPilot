@@ -9,7 +9,7 @@ const LocationLink = (props:LocationLinkProps) => {
 	const isLink = isUrl(props.text);
 	return (<>
 		{isLink?
-			<a className={props.className} href={props.text} target="_blank" rel="noreferrer">{props.text}</a>:
+			<a style={{color: "#3FBAFF"}}className={props.className} href={props.text} target="_blank" rel="noreferrer">{props.text}</a>:
 			<a className={props.className} href={"https://www.google.com/maps/place/" + props.text} target="_blank" rel="noreferrer">{props.text}</a>
 		}
 	</>)
